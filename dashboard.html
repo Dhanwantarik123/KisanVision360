@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KisanVision360 Dashboard</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<!-- Sidebar -->
+
+<div class="sidebar">
+
+<h2 class="logo">
+🌾 KisanVision360
+</h2>
+
+<ul>
+
+<li class="active">
+<i class="fa-solid fa-house"></i>
+Dashboard
+</li>
+
+<li>
+<i class="fa-solid fa-cloud-sun"></i>
+Weather
+</li>
+
+<li>
+<i class="fa-solid fa-seedling"></i>
+Crop Recommendation
+</li>
+
+<li>
+<i class="fa-solid fa-leaf"></i>
+Disease Detection
+</li>
+
+<li>
+<i class="fa-solid fa-chart-line"></i>
+Market Prices
+</li>
+
+<li>
+<i class="fa-solid fa-droplet"></i>
+Irrigation
+</li>
+
+<li>
+<i class="fa-solid fa-file-lines"></i>
+Reports
+</li>
+
+<li>
+<i class="fa-solid fa-robot"></i>
+AI Assistant
+</li>
+
+<li>
+<i class="fa-solid fa-right-from-bracket"></i>
+Logout
+</li>
+
+</ul>
+
+</div>
+
+<!-- Main -->
+
+<div class="main">
+
+<!-- Topbar -->
+
+<div class="topbar">
+
+<h3>
+
+Welcome,
+
+{{ username }}
+
+👋
+
+</h3>
+
+<div class="date-time">
+
+<i class="fa-solid fa-calendar-days"></i>
+
+<span id="clock"></span>
+
+</div>
+
+</div>
+
+<!-- Hero -->
+
+<div class="hero">
+
+<div class="hero-text">
+
+<h2>
+
+🌾 Smart Farming Starts Here
+
+</h2>
+
+<p>
+
+AI-powered farming with live weather,
+market prices and crop intelligence.
+
+</p>
+
+</div>
+
+<div class="hero-img">
+
+<img src="{{ url_for('static',
+filename='images/farm-banner.png') }}">
+
+</div>
+
+</div>
+
+<!-- Weather Cards -->
+
+<div class="cards">
+
+<div class="card">
+
+<i class="fa-solid fa-temperature-half"></i>
+
+<h3>Temperature</h3>
+
+<h2>{{ weather.temperature }}°C</h2>
+
+<p>{{ weather.condition }}</p>
+
+</div>
+
+<div class="card">
+
+<i class="fa-solid fa-droplet"></i>
+
+<h3>Humidity</h3>
+
+<h2>{{ weather.humidity }}%</h2>
+
+<p>Live Data</p>
+
+</div>
+
+<div class="card">
+
+<i class="fa-solid fa-wind"></i>
+
+<h3>Wind Speed</h3>
+
+<h2>{{ weather.wind }} m/s</h2>
+
+<p>Live Data</p>
+
+</div>
+
+<div class="card">
+
+<i class="fa-solid fa-cloud-rain"></i>
+
+<h3>Rainfall</h3>
+
+<h2>{{ weather.rainfall }} mm</h2>
+
+<p>Today's Rain</p>
+
+</div>
+
+<div class="card">
+
+<img
+src="https://openweathermap.org/img/wn/{{ weather.icon }}@2x.png">
+
+<h3>{{ weather.condition }}</h3>
+
+<p>{{ weather.description }}</p>
+
+</div>
+
+</div>
+
+<!-- Analytics -->
+
+<div class="analytics">
+
+<div class="analytics-card">
+
+<h3>🧠 Farm Health Score</h3>
+
+<h1>{{ farm.health }}%</h1>
+
+<div class="progress">
+
+<div
+class="progress-bar"
+style="width:{{ farm.health }}%">
+
+{{ farm.health }}%
+
+</div>
+
+</div>
+
+<p>{{ farm.status }}</p>
+
+</div>
+
+<div class="analytics-card">
+
+<h3>💦 Irrigation Status</h3>
+
+<h1>{{ irrigation.status }}</h1>
+
+<p>
+
+Next Irrigation
+
+{{ irrigation.time }}
+
+</p>
+
+</div>
+
+</div>
+
+<!-- Forecast -->
+
+<div class="section">
+
+<h2>7-Day Forecast</h2>
+
+<div class="forecast">
+
+{% for day in forecast %}
+
+<div class="forecast-card">
+
+<h5>{{ day.day }}</h5>
+
+<img
+src="https://openweathermap.org/img/wn/{{ day.icon }}@2x.png">
+
+<h4>{{ day.temp }}°C</h4>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+<!-- Notifications -->
+
+<div class="section">
+
+<h2>Recent Alerts</h2>
+
+{% for item in notifications %}
+
+<div class="notification">
+
+{{ item }}
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<!-- Footer -->
+
+<footer>
+
+© 2026 KisanVision360 |
+AI Powered Agriculture Platform
+
+</footer>
+
+</div>
+
+<script src="{{ url_for('static',
+filename='js/dashboard.js') }}"></script>
+
+</body>
+
+</html>

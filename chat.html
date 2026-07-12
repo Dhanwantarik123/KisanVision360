@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Chat</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💬 Farmer & Consumer Chat</h1>
+
+<div style="height:250px;border:1px solid gray;padding:10px;overflow:auto;">
+
+<p><b>Consumer:</b> I need 500 Kg Wheat.</p>
+
+<p><b>Farmer:</b> Available. Price ₹17,500.</p>
+
+<p><b>Consumer:</b> Delivery in 3 days?</p>
+
+<p><b>Farmer:</b> Yes, possible.</p>
+
+</div>
+
+<br>
+
+<input type="text" placeholder="Type your message">
+
+<br><br>
+
+<button>Send</button>
+
+<br><br>
+
+<a href="/notifications">
+
+<button>Confirm Order</button>
+
+</a>
+
+</div>
+
+</body>
+</html>

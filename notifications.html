@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KisanVision360 | Notifications</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/notifications.css') }}">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+<!-- Floating AI Assistant -->
+
+<div class="chatbot-button" onclick="toggleChat()">
+
+    <i class="fa-solid fa-robot"></i>
+
+</div>
+
+<div class="chatbot-box" id="chatBox">
+
+    <div class="chat-header">
+
+        <div>
+
+            🤖 <b>KisanVision360 AI</b><br>
+
+            <small>Online</small>
+
+        </div>
+
+        <i class="fa-solid fa-xmark" onclick="toggleChat()"></i>
+
+    </div>
+
+    <div class="chat-body" id="chatBody">
+
+        <div class="bot-message">
+
+            👋 Hello {{ name }}
+
+            <br><br>
+
+            Ask me about:
+
+            <br>🌦 Weather
+
+            <br>🌱 Crops
+
+            <br>💧 Irrigation
+
+            <br>🐛 Pest
+
+            <br>📈 Market Price
+
+            <br>🏛 Government Schemes
+
+        </div>
+
+    </div>
+
+    <div class="chat-input">
+
+        <input
+        id="userMessage"
+        type="text"
+        placeholder="Ask your farming question...">
+
+        <button onclick="sendMessage()">
+
+            <i class="fa-solid fa-paper-plane"></i>
+
+        </button>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+<body>
+
+<div class="dashboard-container">
+
+<!-- Sidebar -->
+
+<div class="sidebar">
+
+<img src="{{ url_for('static', filename='images/logo.png') }}" class="logo">
+
+<h2>KisanVision360</h2>
+
+<a href="/farmer">
+<i class="fas fa-home"></i>
+Dashboard
+</a>
+
+<a href="/weather">
+<i class="fas fa-cloud-sun"></i>
+Weather
+</a>
+
+<a href="/marketplace">
+<i class="fas fa-store"></i>
+Marketplace
+</a>
+
+<a href="/notifications" class="active">
+<i class="fas fa-bell"></i>
+Notifications
+</a>
+
+<a href="/profile">
+<i class="fas fa-user"></i>
+Profile
+</a>
+
+<a href="/settings">
+<i class="fas fa-cog"></i>
+Settings
+</a>
+
+<a href="/logout">
+<i class="fas fa-right-from-bracket"></i>
+Logout
+</a>
+
+</div>
+
+<!-- Main Content -->
+
+<div class="main-content">
+
+<div class="topbar">
+
+<h1>🔔 Notifications</h1>
+
+<h3>Welcome {{ name }}</h3>
+
+</div>
+
+{% if weather %}
+
+<div class="weather-banner">
+
+🌤 {{ weather.city }} |
+🌡 {{ weather.temperature }}°C |
+☁ {{ weather.condition }}
+
+</div>
+
+{% endif %}
+
+<div class="notification-list">
+
+{% for item in notifications %}
+
+<div class="notification-card {{ item.type }}">
+
+<div class="icon">
+
+{% if item.type=="warning" %}
+
+<i class="fas fa-triangle-exclamation"></i>
+
+{% elif item.type=="market" %}
+
+<i class="fas fa-indian-rupee-sign"></i>
+
+{% elif item.type=="ai" %}
+
+<i class="fas fa-robot"></i>
+
+{% elif item.type=="chat" %}
+
+<i class="fas fa-comments"></i>
+
+{% else %}
+
+<i class="fas fa-bell"></i>
+
+{% endif %}
+
+</div>
+
+<div class="content">
+
+<h3>{{ item.title }}</h3>
+
+<p>{{ item.message }}</p>
+
+<span>{{ item.time }}</span>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<br>
+
+<a href="/farmer">
+
+<button>
+
+<i class="fas fa-arrow-left"></i>
+
+Back to Dashboard
+
+</button>
+
+</a>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

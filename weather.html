@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KisanVision360 | Live Weather</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/weather.css') }}">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- Sidebar -->
+    {% include 'components/sidebar.html' %}
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- Header -->
+
+        <div class="topbar">
+
+            <div>
+
+                <h1>
+                    <i class="fa-solid fa-cloud-sun"></i>
+                    Live Weather Dashboard
+                </h1>
+
+                <p>
+                    {{ weather.city }}, {{ weather.country }}
+                </p>
+
+            </div>
+
+            <div class="profile">
+
+                <img
+                src="{{ url_for('static', filename='images/farmer.jpg') }}">
+
+                <span>{{ name }}</span>
+
+            </div>
+
+        </div>
+
+        <!-- Weather Banner -->
+
+        <div class="weather-banner">
+
+            <div class="left-weather">
+
+                <h2>
+                    📍 {{ weather.city }}
+                </h2>
+
+                <h1>
+                    {{ weather.temperature }}°C
+                </h1>
+
+                <p>
+                    {{ weather.description }}
+                </p>
+
+                <img
+                src="https://openweathermap.org/img/wn/{{ weather.icon }}@4x.png">
+
+            </div>
+
+            <div class="right-weather">
+
+                <div class="mini-card">
+
+                    <i class="fa-solid fa-temperature-half"></i>
+
+                    <h3>Feels Like</h3>
+
+                    <p>{{ weather.feels_like }} °C</p>
+
+                </div>
+
+                <div class="mini-card">
+
+                    <i class="fa-solid fa-droplet"></i>
+
+                    <h3>Humidity</h3>
+
+                    <p>{{ weather.humidity }} %</p>
+
+                </div>
+
+                <div class="mini-card">
+
+                    <i class="fa-solid fa-wind"></i>
+
+                    <h3>Wind</h3>
+
+                    <p>{{ weather.wind }} m/s</p>
+
+                </div>
+
+                <div class="mini-card">
+
+                    <i class="fa-solid fa-cloud"></i>
+
+                    <h3>Cloud Cover</h3>
+
+                    <p>{{ weather.clouds }} %</p>
+
+                </div>
+
+                <div class="mini-card">
+
+                    <i class="fa-solid fa-eye"></i>
+
+                    <h3>Visibility</h3>
+
+                    <p>{{ weather.visibility }} km</p>
+
+                </div>
+
+                <div class="mini-card">
+
+                    <i class="fa-solid fa-cloud-rain"></i>
+
+                    <h3>Rainfall</h3>
+
+                    <p>{{ weather.rainfall }} mm</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Weather Cards -->
+
+        <div class="weather-grid">
+
+            <div class="weather-card">
+
+                <i class="fa-solid fa-temperature-high"></i>
+
+                <h3>Temperature</h3>
+
+                <h2>{{ weather.temperature }}°C</h2>
+
+            </div>
+
+            <div class="weather-card">
+
+                <i class="fa-solid fa-droplet"></i>
+
+                <h3>Humidity</h3>
+
+                <h2>{{ weather.humidity }}%</h2>
+
+            </div>
+
+            <div class="weather-card">
+
+                <i class="fa-solid fa-wind"></i>
+
+                <h3>Wind Speed</h3>
+
+                <h2>{{ weather.wind }} m/s</h2>
+
+            </div>
+
+            <div class="weather-card">
+
+                <i class="fa-solid fa-cloud-rain"></i>
+
+                <h3>Rainfall</h3>
+
+                <h2>{{ weather.rainfall }} mm</h2>
+
+            </div>
+
+            <div class="weather-card">
+
+                <i class="fa-solid fa-gauge-high"></i>
+
+                <h3>Pressure</h3>
+
+                <h2>{{ weather.pressure }} hPa</h2>
+
+            </div>
+
+            <div class="weather-card">
+
+                <i class="fa-solid fa-cloud"></i>
+
+                <h3>Condition</h3>
+
+                <h2>{{ weather.condition }}</h2>
+
+            </div>
+
+        </div>
+
+        <!-- Buttons -->
+
+        <div class="weather-buttons">
+
+            <a href="/recommendation">
+
+                <button>
+
+                    <i class="fa-solid fa-robot"></i>
+
+                    AI Crop Recommendation
+
+                </button>
+
+            </a>
+
+            <a href="/farmer">
+
+                <button>
+
+                    <i class="fa-solid fa-house"></i>
+
+                    Back Dashboard
+
+                </button>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Floating Chatbot Button -->
+
+<div class="chatbot-button" onclick="openChat()">
+
+    <i class="fa-solid fa-comments"></i>
+
+</div>
+
+<!-- Chatbot -->
+
+<div class="chatbot-box" id="chatBox">
+
+    <div class="chat-header">
+
+        🌱 KisanVision360 AI
+
+        <span onclick="closeChat()">✖</span>
+
+    </div>
+
+    <div class="chat-body" id="chatBody">
+
+        <div class="bot-message">
+
+            👋 Hello {{ name }}<br><br>
+
+            I can help you with
+
+            <br><br>
+
+            🌦 Weather
+
+            <br>
+
+            🌾 Crops
+
+            <br>
+
+            💧 Irrigation
+
+            <br>
+
+            🐛 Diseases
+
+            <br>
+
+            🧪 Fertilizer
+
+            <br>
+
+            📈 Market Prices
+
+        </div>
+
+    </div>
+
+    <div class="chat-input">
+
+        <input
+        id="userMessage"
+        type="text"
+        placeholder="Ask your farming question...">
+
+        <button onclick="sendMessage()">
+
+            <i class="fa-solid fa-paper-plane"></i>
+
+        </button>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+
+</body>
+</html>

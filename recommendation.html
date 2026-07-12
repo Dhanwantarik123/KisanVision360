@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI Recommendation</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+<!-- Floating AI Assistant -->
+
+<div class="chatbot-button" onclick="toggleChat()">
+
+    <i class="fa-solid fa-robot"></i>
+
+</div>
+
+<div class="chatbot-box" id="chatBox">
+
+    <div class="chat-header">
+
+        <div>
+
+            🤖 <b>KisanVision360 AI</b><br>
+
+            <small>Online</small>
+
+        </div>
+
+        <i class="fa-solid fa-xmark" onclick="toggleChat()"></i>
+
+    </div>
+
+    <div class="chat-body" id="chatBody">
+
+        <div class="bot-message">
+
+            👋 Hello {{ name }}
+
+            <br><br>
+
+            Ask me about:
+
+            <br>🌦 Weather
+
+            <br>🌱 Crops
+
+            <br>💧 Irrigation
+
+            <br>🐛 Pest
+
+            <br>📈 Market Price
+
+            <br>🏛 Government Schemes
+
+        </div>
+
+    </div>
+
+    <div class="chat-input">
+
+        <input
+        id="userMessage"
+        type="text"
+        placeholder="Ask your farming question...">
+
+        <button onclick="sendMessage()">
+
+            <i class="fa-solid fa-paper-plane"></i>
+
+        </button>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+<body>
+
+<div class="container">
+
+<h1>🤖 AI Crop Recommendation</h1>
+
+<table border="1" width="100%" cellpadding="10">
+
+<tr>
+<th>Category</th>
+<th>Recommendation</th>
+</tr>
+
+<tr>
+<td>Crop</td>
+<td>Soybean</td>
+</tr>
+
+<tr>
+<td>Irrigation</td>
+<td>Water every 3 days</td>
+</tr>
+
+<tr>
+<td>Fertilizer</td>
+<td>NPK 20:20:20</td>
+</tr>
+
+<tr>
+<td>Pest Alert</td>
+<td>Low Risk</td>
+</tr>
+
+<tr>
+<td>Yield</td>
+<td>25 Quintal/Acre</td>
+</tr>
+
+</table>
+
+<br>
+
+<a href="/marketplace">
+
+<button>Go to Marketplace</button>
+
+</a>
+
+<br><br>
+
+<a href="/farmer">
+
+<button>Back</button>
+
+</a>
+
+</div>
+<!-- ================= FLOATING AI CHATBOT ================= -->
+
+
+<div class="chatbot-button" onclick="openChat()">
+
+    <i class="fa-solid fa-robot"></i>
+
+</div>
+
+
+
+<div class="chatbot-box" id="chatBox">
+
+
+    <div class="chat-header">
+
+        🌱 KisanVision360 AI
+
+        <span onclick="closeChat()">
+            ✖
+        </span>
+
+    </div>
+
+
+
+    <div class="chat-body" id="chatBody">
+
+        <p class="bot-message">
+            Hello 👋<br>
+            I am KisanVision360 AI Assistant.<br>
+            Ask me about crops, weather, fertilizer, irrigation.
+        </p>
+
+    </div>
+
+
+
+
+    <div class="chat-input">
+
+
+        <input 
+        id="userMessage"
+        placeholder="Ask farming question...">
+
+
+        <button onclick="sendMessage()">
+
+            <i class="fa-solid fa-paper-plane"></i>
+
+        </button>
+
+
+    </div>
+
+
+
+</div>
+
+
+
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+</body>
+
+</html>

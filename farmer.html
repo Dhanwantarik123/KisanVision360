@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KisanVision360 | Farmer Dashboard</title>
+
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+
+</head>
+
+
+<body>
+
+
+<!-- ================= TOP NAVIGATION ================= -->
+
+
+<div class="top-navigation">
+
+
+    <div class="brand">
+
+        🌾 KisanVision360
+
+        <small>
+            AI Smart Farming
+        </small>
+
+    </div>
+
+
+
+    <div class="nav-menu">
+
+
+        <a href="/farmer" class="active">
+            🏠 Dashboard
+        </a>
+
+
+        <a href="/weather">
+            🌦️ Weather
+        </a>
+
+
+        <a href="/recommendation">
+            🌱 Crop Advisory
+        </a>
+
+
+        <a href="/irrigation">
+            💧 Irrigation
+        </a>
+
+
+        <a href="/pest">
+            🐛 Pest & Disease
+        </a>
+
+
+        <a href="/market">
+            📈 Market Prices
+        </a>
+
+
+        <a href="/schemes">
+            🏛️ Government Schemes
+        </a>
+
+
+        <a href="/marketplace">
+            🛒 Marketplace
+        </a>
+
+
+        <a href="/tools">
+            🧰 Farmer Tools
+        </a>
+
+
+        <a href="/reports">
+            📊 Reports
+        </a>
+
+
+        <a href="/notifications">
+            🔔 Alerts
+        </a>
+
+
+        <a href="/settings">
+            ⚙️ Settings
+        </a>
+
+
+        <a href="/help">
+            ❓ Help
+        </a>
+
+
+    </div>
+
+
+
+
+    <div class="user-profile">
+
+
+        <img src="{{ url_for('static', filename='images/farmer.png') }}">
+
+
+        <span>
+
+        {{name}}
+
+        </span>
+
+
+    </div>
+
+
+
+</div>
+
+
+
+
+
+<!-- ================= MAIN ================= -->
+
+
+<div class="main">
+
+
+
+
+
+<!-- ================= WELCOME ================= -->
+
+
+<div class="topbar">
+
+
+<div>
+
+
+<h1>
+
+Welcome,
+{{name}}
+
+👋
+
+</h1>
+
+
+<p>
+
+AI Powered Smart Agriculture Dashboard
+
+</p>
+
+
+</div>
+
+
+
+<div class="live-time">
+
+
+<i class="fa-solid fa-calendar-days"></i>
+
+
+<span id="clock"></span>
+
+
+</div>
+
+
+
+</div>
+<!-- ================= FLOATING AI CHATBOT ================= -->
+
+
+<div class="chatbot-button" onclick="openChat()">
+
+    <i class="fa-solid fa-robot"></i>
+
+</div>
+
+
+
+<div class="chatbot-box" id="chatBox">
+
+
+    <div class="chat-header">
+
+        🌱 KisanVision360 AI
+
+        <span onclick="closeChat()">
+            ✖
+        </span>
+
+    </div>
+
+
+
+    <div class="chat-body" id="chatBody">
+
+        <p class="bot-message">
+            Hello 👋<br>
+            I am KisanVision360 AI Assistant.<br>
+            Ask me about crops, weather, fertilizer, irrigation.
+        </p>
+
+    </div>
+
+
+
+
+    <div class="chat-input">
+
+
+        <input 
+        id="userMessage"
+        placeholder="Ask farming question...">
+
+
+        <button onclick="sendMessage()">
+
+            <i class="fa-solid fa-paper-plane"></i>
+
+        </button>
+
+
+    </div>
+
+
+
+</div>
+
+
+
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+
+
+
+
+
+
+<!-- ================= WEATHER SUMMARY ================= -->
+
+
+<div class="weather-summary">
+
+
+<div class="weather-title">
+
+
+<h2>
+
+📍 {{ weather.city }}, {{ weather.country }}
+
+</h2>
+
+
+<h1>
+
+{{ weather.temperature }}°C
+
+</h1>
+
+
+<p>
+
+{{ weather.description }}
+
+</p>
+
+
+<img src="https://openweathermap.org/img/wn/{{ weather.icon }}@2x.png">
+
+
+</div>
+
+
+
+
+<div class="weather-data">
+
+
+<div class="weather-box">
+
+🌡
+
+<h3>
+
+Feels Like
+
+</h3>
+
+<p>
+
+{{weather.feels_like}} °C
+
+</p>
+
+</div>
+
+
+
+<div class="weather-box">
+
+💧
+
+<h3>
+Humidity
+</h3>
+
+<p>
+{{weather.humidity}} %
+</p>
+
+</div>
+
+
+
+
+<div class="weather-box">
+
+🌬
+
+<h3>
+Wind Speed
+</h3>
+
+<p>
+{{weather.wind}} m/s
+</p>
+
+</div>
+
+
+
+
+<div class="weather-box">
+
+☁
+
+<h3>
+Cloud Cover
+</h3>
+
+<p>
+{{weather.clouds}} %
+</p>
+
+</div>
+
+
+
+
+<div class="weather-box">
+
+🌧
+
+<h3>
+Rainfall
+</h3>
+
+<p>
+{{weather.rainfall}} mm
+</p>
+
+</div>
+
+
+
+<div class="weather-box">
+
+👁
+
+<h3>
+Visibility
+</h3>
+
+<p>
+{{weather.visibility}} km
+</p>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- ================= HERO ================= -->
+
+
+<div class="hero">
+
+
+<div class="hero-left">
+
+
+<span class="badge">
+
+🌱 AI Powered Agriculture
+
+</span>
+
+
+
+<h2>
+
+Smart Farming Starts Here
+
+</h2>
+
+
+
+<p>
+
+
+Monitor live weather,
+AI recommendations,
+market prices,
+crop health,
+irrigation,
+and smart farm analytics from one dashboard.
+
+
+</p>
+
+
+
+<div class="hero-buttons">
+
+
+<a href="/weather" class="hero-btn">
+
+
+<i class="fa-solid fa-cloud-sun"></i>
+
+Weather
+
+
+</a>
+
+
+
+
+<a href="/recommendation"
+class="hero-btn green">
+
+
+<i class="fa-solid fa-robot"></i>
+
+
+AI Advisor
+
+
+</a>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+<div class="hero-right">
+
+
+<img src="{{ url_for('static', filename='images/farm-banner.png') }}">
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- ================= FEATURE CARDS ================= -->
+
+
+<div class="feature-grid">
+
+
+
+<div class="feature-card">
+
+🌱
+
+<h3>
+Crop Advisory
+</h3>
+
+<p>
+AI crop recommendation and fertilizer advice
+</p>
+
+</div>
+
+
+
+
+<div class="feature-card">
+
+💧
+
+<h3>
+Smart Irrigation
+</h3>
+
+<p>
+Water management and irrigation scheduling
+</p>
+
+</div>
+
+
+
+
+<div class="feature-card">
+
+🐛
+
+<h3>
+Pest Detection
+</h3>
+
+<p>
+AI disease prediction system
+</p>
+
+</div>
+
+
+
+
+<div class="feature-card">
+
+📈
+
+<h3>
+Market Prices
+</h3>
+
+<p>
+Live mandi price information
+</p>
+
+</div>
+
+
+
+
+<div class="feature-card">
+
+📊
+
+<h3>
+Farm Reports
+</h3>
+
+<p>
+Analytics and productivity reports
+</p>
+
+</div>
+
+
+
+
+<div class="feature-card">
+
+🏛️
+
+<h3>
+Government Schemes
+</h3>
+
+<p>
+Farmer schemes and subsidies
+</p>
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+<script>
+
+function updateClock(){
+
+let now=new Date();
+
+document.getElementById("clock").innerHTML =
+now.toLocaleString();
+
+}
+
+
+setInterval(updateClock,1000);
+
+updateClock();
+
+
+</script>
+
+
+
+</body>
+
+</html>

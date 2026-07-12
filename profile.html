@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>
+KisanVision360 | Profile
+</title>
+
+
+<link rel="stylesheet"
+href="{{ url_for('static',
+filename='css/profile.css') }}">
+
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+</head>
+
+
+<body>
+
+
+<div class="dashboard-container">
+
+
+
+<!-- ================= SIDEBAR ================= -->
+
+
+<div class="sidebar">
+
+
+<img src="{{url_for('static',
+filename='images/logo.png')}}"
+class="logo">
+
+
+<h2>
+KisanVision360
+</h2>
+
+
+<p>
+AI Smart Farming
+</p>
+
+
+
+<a href="/farmer">
+
+<i class="fa fa-home"></i>
+
+Dashboard
+
+</a>
+
+
+
+<a href="/weather">
+
+<i class="fa fa-cloud-sun"></i>
+
+Weather
+
+</a>
+
+
+
+<a href="/recommendation">
+
+<i class="fa fa-seedling"></i>
+
+Crop Advisory
+
+</a>
+
+
+
+<a href="/marketplace">
+
+<i class="fa fa-store"></i>
+
+Marketplace
+
+</a>
+
+
+
+<a href="/notifications">
+
+<i class="fa fa-bell"></i>
+
+Alerts
+
+</a>
+
+
+
+<a href="/profile" class="active">
+
+<i class="fa fa-user"></i>
+
+Profile
+
+</a>
+
+
+
+<a href="/settings">
+
+<i class="fa fa-gear"></i>
+
+Settings
+
+</a>
+
+
+
+<a href="/logout">
+
+<i class="fa fa-right-from-bracket"></i>
+
+Logout
+
+</a>
+
+
+</div>
+
+
+
+
+<!-- ================= MAIN ================= -->
+
+
+<div class="main-content">
+
+
+
+<!-- TOPBAR -->
+
+
+<div class="topbar">
+
+
+<div>
+
+<h1>
+👤 My Profile
+</h1>
+
+
+<p>
+Manage your farmer account
+</p>
+
+
+</div>
+
+
+<div class="user">
+
+
+<img src="{{ profile_pic if profile_pic else url_for('static',filename='images/farmer.jpg') }}">
+
+
+<span>
+{{name}}
+</span>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<!-- PROFILE HEADER -->
+
+
+<div class="profile-card">
+
+
+
+<div class="dp-box">
+
+
+<img src="{{ profile_pic if profile_pic else url_for('static',filename='images/farmer.jpg') }}"
+class="profile-image">
+
+
+<form action="/upload-profile"
+method="POST"
+enctype="multipart/form-data">
+
+
+<label for="photo">
+
+<i class="fa fa-camera"></i>
+
+</label>
+
+
+<input type="file"
+id="photo"
+name="profile"
+hidden
+onchange="this.form.submit()">
+
+
+</form>
+
+
+</div>
+
+
+
+
+<h2>
+{{name}}
+</h2>
+
+
+<p>
+🌾 {{role}}
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- FARMER STATUS -->
+
+
+<div class="status-grid">
+
+
+<div class="status-card">
+
+
+<i class="fa fa-location-dot"></i>
+
+
+<h3>
+Nagpur
+</h3>
+
+
+<p>
+Farm Location
+</p>
+
+
+</div>
+
+
+
+
+<div class="status-card">
+
+
+<i class="fa fa-temperature-half"></i>
+
+
+<h3>
+
+{{weather.temperature}} °C
+
+</h3>
+
+
+<p>
+Current Temperature
+</p>
+
+
+</div>
+
+
+
+
+<div class="status-card">
+
+
+<i class="fa fa-cloud"></i>
+
+
+<h3>
+
+{{weather.condition}}
+
+</h3>
+
+
+<p>
+Weather Status
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- DETAILS -->
+
+
+<div class="details-card">
+
+
+<h2>
+Personal Information
+</h2>
+
+
+
+<div class="row">
+
+
+<div>
+
+<label>
+Full Name
+</label>
+
+<input value="{{name}}" readonly>
+
+</div>
+
+
+
+<div>
+
+<label>
+Mobile Number
+</label>
+
+<input value="{{mobile}}" readonly>
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="row">
+
+
+<div>
+
+<label>
+Email
+</label>
+
+<input value="{{email}}" readonly>
+
+</div>
+
+
+
+
+<div>
+
+<label>
+Role
+</label>
+
+<input value="{{role}}" readonly>
+
+</div>
+
+
+</div>
+
+
+
+
+<a href="/settings">
+
+<button>
+
+<i class="fa fa-edit"></i>
+
+Edit Profile
+
+</button>
+
+</a>
+
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+</body>
+
+</html>

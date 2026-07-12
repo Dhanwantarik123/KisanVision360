@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>KisanVision360 AI Chatbot</title>
+
+
+<link rel="stylesheet"
+href="{{url_for('static',
+filename='css/chatbot.css')}}">
+
+
+</head>
+
+
+<body>
+
+
+<div class="chat-container">
+
+
+<div class="chat-header">
+
+🌱 KisanVision360 AI Assistant
+
+</div>
+
+
+
+<div id="chat-box">
+
+
+<div class="bot">
+
+Hello {{name}} 👋
+
+<br>
+
+I am your farming assistant.
+
+Ask me about:
+
+<br>
+🌱 Crops
+<br>
+🌦 Weather
+<br>
+💧 Irrigation
+<br>
+🐛 Pest
+<br>
+📈 Market
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="input-area">
+
+
+<input 
+id="message"
+placeholder="Ask farming question...">
+
+
+<button onclick="sendMessage()">
+
+Send
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+<script src="{{url_for('static',
+filename='js/chatbot.js')}}"></script>
+
+
+</body>
+
+</html>

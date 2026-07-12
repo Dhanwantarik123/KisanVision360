@@ -1,0 +1,1296 @@
+/* =========================
+   KisanVision360 Dashboard
+   Premium Agriculture UI
+========================= */
+
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+
+body{
+
+    background:#f4f8f2;
+    color:#333;
+}
+
+
+/* =========================
+SIDEBAR
+========================= */
+
+
+.sidebar{
+
+    position:fixed;
+    width:260px;
+    height:100vh;
+    background:linear-gradient(
+        180deg,
+        #0f5132,
+        #198754
+    );
+
+    color:white;
+    padding:25px 15px;
+    overflow-y:auto;
+
+}
+
+
+
+.logo{
+
+    text-align:center;
+    margin-bottom:30px;
+
+}
+
+
+.logo img{
+
+    width:75px;
+    height:75px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+
+.logo h2{
+
+    margin-top:10px;
+    font-size:24px;
+}
+
+
+.logo p{
+
+    font-size:14px;
+    opacity:0.8;
+}
+
+
+
+/* MENU */
+
+
+.sidebar a{
+
+    display:flex;
+    align-items:center;
+
+    gap:15px;
+
+    padding:14px 18px;
+
+    margin:8px 0;
+
+    color:white;
+
+    text-decoration:none;
+
+    border-radius:12px;
+
+    transition:0.3s;
+
+    font-size:16px;
+
+}
+
+
+.sidebar a i{
+
+    width:25px;
+
+}
+
+
+
+.sidebar a:hover,
+.sidebar .active{
+
+    background:white;
+
+    color:#198754;
+
+    transform:translateX(5px);
+
+}
+
+
+
+/* =========================
+MAIN AREA
+========================= */
+
+
+.main{
+
+    margin-left:260px;
+
+    padding:25px;
+
+}
+
+
+
+/* =========================
+TOP BAR
+========================= */
+
+
+.topbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:white;
+
+    padding:20px 25px;
+
+    border-radius:20px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+
+}
+
+
+
+.topbar h1{
+
+    color:#14532d;
+
+    font-size:30px;
+
+}
+
+
+.topbar p{
+
+    color:#777;
+
+    margin-top:5px;
+
+}
+
+
+
+.top-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+
+.live-time{
+
+    background:#e8f5e9;
+
+    padding:12px 18px;
+
+    border-radius:20px;
+
+    color:#198754;
+
+}
+
+
+
+.profile img{
+
+    width:55px;
+
+    height:55px;
+
+    border-radius:50%;
+
+    border:3px solid #198754;
+
+}
+
+
+
+/* =========================
+WEATHER CARD
+========================= */
+
+
+.main>h2{
+
+    margin-top:30px;
+
+    color:#14532d;
+
+}
+
+
+
+.main>h1{
+
+    font-size:55px;
+
+    color:#198754;
+
+}
+
+
+
+.main>p{
+
+    margin:8px 0;
+
+    color:#555;
+
+}
+
+
+
+/* Weather Icon */
+
+
+.main>img{
+
+    width:90px;
+
+    background:#e8f5e9;
+
+    border-radius:50%;
+
+}
+
+
+
+/* =========================
+HERO SECTION
+========================= */
+
+
+.hero{
+
+    margin-top:35px;
+
+    background:white;
+
+    border-radius:25px;
+
+    padding:35px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:30px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.08);
+
+}
+
+
+
+.hero-left{
+
+    flex:1;
+
+}
+
+
+.badge{
+
+    display:inline-block;
+
+    background:#d1fae5;
+
+    color:#047857;
+
+    padding:10px 18px;
+
+    border-radius:30px;
+
+    font-weight:600;
+
+}
+
+
+
+.hero h2{
+
+    font-size:38px;
+
+    margin:20px 0;
+
+    color:#14532d;
+
+}
+
+
+
+.hero p{
+
+    font-size:17px;
+
+    line-height:1.7;
+
+    color:#666;
+
+    max-width:600px;
+
+}
+
+
+
+/* Hero Image */
+
+
+.hero-right img{
+
+    width:450px;
+
+    border-radius:25px;
+
+}
+
+
+
+/* BUTTONS */
+
+
+.hero-buttons{
+
+    margin-top:25px;
+
+    display:flex;
+
+    gap:20px;
+
+}
+
+
+
+.hero-btn{
+
+
+    text-decoration:none;
+
+    background:#198754;
+
+    color:white;
+
+    padding:14px 28px;
+
+    border-radius:30px;
+
+    font-weight:600;
+
+    transition:0.3s;
+
+}
+
+
+
+.hero-btn:hover{
+
+    transform:translateY(-3px);
+
+    background:#146c43;
+
+}
+
+
+
+.hero-btn.green{
+
+    background:#0f5132;
+
+}
+
+
+
+/* =========================
+RESPONSIVE
+========================= */
+
+
+@media(max-width:900px){
+
+
+.sidebar{
+
+    width:80px;
+
+}
+
+
+.logo h2,
+.logo p,
+.sidebar a{
+
+    font-size:0;
+
+}
+
+
+.main{
+
+    margin-left:90px;
+
+}
+
+
+
+.hero{
+
+    flex-direction:column;
+
+}
+
+
+
+.hero-right img{
+
+    width:100%;
+
+}
+
+
+}
+
+
+
+@media(max-width:600px){
+
+
+.topbar{
+
+    flex-direction:column;
+
+    gap:20px;
+
+}
+
+
+.hero h2{
+
+    font-size:28px;
+
+}
+
+
+}
+/* =====================================
+   KisanVision360 Farmer Dashboard CSS
+   ===================================== */
+
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+
+body{
+
+    background:#f3f8f2;
+
+    color:#333;
+
+}
+
+
+
+/* =====================================
+   TOP NAVIGATION
+   ===================================== */
+
+
+.top-navigation{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:1000;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:20px;
+
+    background:white;
+
+    padding:15px 25px;
+
+    border-radius:0 0 20px 20px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+
+}
+
+
+
+/* BRAND */
+
+
+.brand{
+
+    font-size:25px;
+
+    font-weight:700;
+
+    color:#14532d;
+
+    white-space:nowrap;
+
+}
+
+
+
+.brand small{
+
+    display:block;
+
+    font-size:12px;
+
+    color:#198754;
+
+}
+
+
+
+/* NAV MENU */
+
+
+.nav-menu{
+
+    display:flex;
+
+    gap:8px;
+
+    overflow-x:auto;
+
+    scrollbar-width:none;
+
+}
+
+
+
+.nav-menu::-webkit-scrollbar{
+
+    display:none;
+
+}
+
+
+
+.nav-menu a{
+
+    text-decoration:none;
+
+    color:#333;
+
+    padding:10px 15px;
+
+    border-radius:25px;
+
+    font-size:14px;
+
+    font-weight:500;
+
+    white-space:nowrap;
+
+    transition:.3s;
+
+}
+
+
+
+.nav-menu a:hover,
+.nav-menu .active{
+
+
+    background:#198754;
+
+    color:white;
+
+}
+
+
+
+/* USER PROFILE */
+
+
+.user-profile{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    color:#14532d;
+
+    font-weight:600;
+
+}
+
+
+
+.user-profile img{
+
+    width:45px;
+
+    height:45px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:3px solid #198754;
+
+}
+
+
+
+
+
+/* =====================================
+ MAIN SECTION
+===================================== */
+
+
+.main{
+
+    padding:30px;
+
+}
+
+
+
+/* =====================================
+   LEFT SIDE TOPBAR NAVIGATION
+===================================== */
+
+
+.top-navigation{
+
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    width:270px;
+
+    height:100vh;
+
+    background:white;
+
+    padding:25px 15px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:flex-start;
+
+    gap:20px;
+
+    box-shadow:5px 0 20px rgba(0,0,0,0.08);
+
+    overflow-y:auto;
+
+}
+
+
+
+/* BRAND */
+
+.brand{
+
+    text-align:center;
+
+    font-size:26px;
+
+    font-weight:700;
+
+    color:#14532d;
+
+    padding-bottom:20px;
+
+    border-bottom:1px solid #ddd;
+
+}
+
+
+.brand small{
+
+    display:block;
+
+    font-size:14px;
+
+    color:#198754;
+
+}
+
+
+
+/* MENU */
+
+.nav-menu{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+}
+
+
+
+.nav-menu a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:14px 18px;
+
+    border-radius:15px;
+
+    color:#333;
+
+    text-decoration:none;
+
+    font-size:15px;
+
+    transition:0.3s;
+
+}
+
+
+
+.nav-menu a:hover,
+.nav-menu .active{
+
+
+    background:#198754;
+
+    color:white;
+
+
+}
+
+
+
+/* USER PROFILE */
+
+
+.user-profile{
+
+    margin-top:auto;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:15px;
+
+    background:#e8f5e9;
+
+    border-radius:15px;
+
+    color:#14532d;
+
+}
+
+
+
+.user-profile img{
+
+    width:45px;
+
+    height:45px;
+
+    border-radius:50%;
+
+}
+
+
+
+
+
+/* MAIN CONTENT MOVE RIGHT */
+
+
+.main{
+
+    margin-left:290px;
+
+    padding:30px;
+
+}
+
+
+/* =====================================
+ WEATHER SUMMARY
+===================================== */
+
+
+.weather-summary{
+
+    margin-top:30px;
+
+    background:linear-gradient(
+        135deg,
+        #198754,
+        #0f5132
+    );
+
+    color:white;
+
+    padding:30px;
+
+    border-radius:25px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:30px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+
+}
+
+
+
+.weather-title h2{
+
+    font-size:24px;
+
+}
+
+
+
+.weather-title h1{
+
+    font-size:60px;
+
+    margin:15px 0;
+
+}
+
+
+
+.weather-title img{
+
+    width:90px;
+
+}
+
+
+
+.weather-data{
+
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(3,150px);
+
+    gap:15px;
+
+
+}
+
+
+
+.weather-box{
+
+
+    background:white;
+
+    color:#14532d;
+
+    padding:20px;
+
+    border-radius:18px;
+
+    text-align:center;
+
+}
+
+
+
+.weather-box h3{
+
+    font-size:15px;
+
+    margin:8px;
+
+}
+
+
+
+.weather-box p{
+
+    font-size:20px;
+
+    font-weight:700;
+
+    color:#198754;
+
+}
+
+
+
+
+
+/* =====================================
+ HERO SECTION
+===================================== */
+
+
+.hero{
+
+
+    margin-top:35px;
+
+    background:white;
+
+    border-radius:25px;
+
+    padding:35px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:30px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+
+}
+
+
+
+.hero-left{
+
+    flex:1;
+
+}
+
+
+
+.badge{
+
+
+    background:#d1fae5;
+
+    color:#047857;
+
+    padding:10px 18px;
+
+    border-radius:30px;
+
+    font-weight:600;
+
+}
+
+
+
+.hero h2{
+
+
+    font-size:38px;
+
+    color:#14532d;
+
+    margin:20px 0;
+
+
+}
+
+
+
+.hero p{
+
+    font-size:17px;
+
+    line-height:1.7;
+
+    color:#666;
+
+}
+
+
+
+.hero-right img{
+
+    width:450px;
+
+    border-radius:25px;
+
+}
+
+
+
+
+
+/* BUTTON */
+
+
+.hero-buttons{
+
+    margin-top:25px;
+
+    display:flex;
+
+    gap:15px;
+
+}
+
+
+
+.hero-btn{
+
+    text-decoration:none;
+
+    background:#198754;
+
+    color:white;
+
+    padding:14px 30px;
+
+    border-radius:30px;
+
+    font-weight:600;
+
+}
+
+
+
+.hero-btn:hover{
+
+    background:#0f5132;
+
+}
+
+
+
+.hero-btn.green{
+
+    background:#14532d;
+
+}
+
+
+
+
+
+/* =====================================
+ FEATURE CARDS
+===================================== */
+
+
+.feature-grid{
+
+
+    margin-top:35px;
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(auto-fit,minmax(250px,1fr));
+
+    gap:25px;
+
+
+}
+
+
+
+.feature-card{
+
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:22px;
+
+    text-align:center;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+
+
+.feature-card:hover{
+
+
+    transform:translateY(-8px);
+
+
+}
+
+
+
+.feature-card:first-letter{
+
+    font-size:40px;
+
+}
+
+
+
+.feature-card h3{
+
+    margin:15px;
+
+    color:#14532d;
+
+}
+
+
+
+.feature-card p{
+
+    color:#666;
+
+}
+
+
+
+
+
+/* =====================================
+ RESPONSIVE
+===================================== */
+
+
+@media(max-width:1200px){
+
+
+.top-navigation{
+
+    flex-direction:column;
+
+}
+
+
+
+.weather-summary{
+
+    flex-direction:column;
+
+}
+
+
+
+.weather-data{
+
+    grid-template-columns:
+
+    repeat(2,1fr);
+
+}
+
+
+
+.hero{
+
+    flex-direction:column;
+
+}
+
+
+
+.hero-right img{
+
+    width:100%;
+
+}
+
+
+}
+
+
+
+@media(max-width:600px){
+
+
+.main{
+
+    padding:15px;
+
+}
+
+
+
+.topbar{
+
+    flex-direction:column;
+
+    gap:20px;
+
+}
+
+
+
+.weather-data{
+
+    grid-template-columns:1fr;
+
+}
+
+
+
+.hero h2{
+
+    font-size:28px;
+
+}
+
+
+
+.nav-menu a{
+
+    font-size:12px;
+
+}
+
+
+
+}

@@ -1,0 +1,234 @@
+/* ==========================
+   KisanVision360 Sidebar
+========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f5f7f8;
+}
+
+/* Sidebar */
+
+.sidebar{
+
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    width:250px;
+
+    height:100vh;
+
+    background:linear-gradient(180deg,#0f7a3d,#0b5f2d);
+
+    color:white;
+
+    padding:20px;
+
+    overflow-y:auto;
+
+    box-shadow:4px 0 20px rgba(0,0,0,.15);
+
+}
+
+/* Logo */
+
+.logo{
+
+    width:90px;
+
+    height:90px;
+
+    border-radius:50%;
+
+    display:block;
+
+    margin:0 auto;
+
+    object-fit:cover;
+
+    border:3px solid white;
+
+}
+
+/* Heading */
+
+.sidebar h2{
+
+    text-align:center;
+
+    margin-top:12px;
+
+    font-size:24px;
+
+}
+
+.sidebar p{
+
+    text-align:center;
+
+    color:#d7ffe3;
+
+    margin-bottom:25px;
+
+    font-size:14px;
+
+}
+
+/* Menu */
+
+.sidebar a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    text-decoration:none;
+
+    color:white;
+
+    padding:14px 18px;
+
+    margin-bottom:8px;
+
+    border-radius:12px;
+
+    transition:.3s;
+
+    font-size:16px;
+
+    font-weight:500;
+
+}
+
+.sidebar a i{
+
+    width:24px;
+
+    text-align:center;
+
+    font-size:18px;
+
+}
+
+/* Hover */
+
+.sidebar a:hover{
+
+    background:white;
+
+    color:#0b6b37;
+
+    transform:translateX(5px);
+
+}
+
+/* Active */
+
+.sidebar a.active{
+
+    background:white;
+
+    color:#0b6b37;
+
+    font-weight:700;
+
+}
+
+/* Logout */
+
+.logout{
+
+    margin-top:20px;
+
+    background:#d32f2f;
+
+}
+
+.logout:hover{
+
+    background:#b71c1c !important;
+
+    color:white !important;
+
+}
+
+/* Scrollbar */
+
+.sidebar::-webkit-scrollbar{
+
+    width:5px;
+
+}
+
+.sidebar::-webkit-scrollbar-thumb{
+
+    background:#90ee90;
+
+    border-radius:20px;
+
+}
+
+/* Main Content */
+
+.main-content{
+
+    margin-left:250px;
+
+    width:calc(100% - 250px);
+
+    padding:30px;
+
+}
+
+/* Mobile */
+
+@media(max-width:900px){
+
+.sidebar{
+
+    width:80px;
+
+}
+
+.sidebar h2,
+.sidebar p,
+.sidebar a span{
+
+    display:none;
+
+}
+
+.sidebar a{
+
+    justify-content:center;
+
+}
+
+.main-content{
+
+    margin-left:80px;
+
+    width:calc(100% - 80px);
+
+}
+
+.logo{
+
+    width:55px;
+
+    height:55px;
+
+}
+
+}

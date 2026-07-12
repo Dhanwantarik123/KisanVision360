@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Consumer Dashboard</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🛒 Consumer Dashboard</h1>
+
+<a href="/marketplace"><button>Marketplace</button></a>
+
+<br><br>
+
+<a href="/consumer-request"><button>Post Crop Requirement</button></a>
+
+<br><br>
+
+<a href="/chat"><button>Chat with Farmer</button></a>
+
+<br><br>
+
+<a href="/notifications"><button>Notifications</button></a>
+
+<br><br>
+
+<a href="/profile"><button>Profile</button></a>
+
+</div>
+<h2>Welcome {{ name }}</h2>
+
+<h3>📍 {{ weather.city }}</h3>
+
+<p>🌡 Temperature : {{ weather.temperature }} °C</p>
+
+<p>☁ Condition : {{ weather.description }}</p>
+
+<p>💧 Humidity : {{ weather.humidity }}%</p>
+
+<p>🌬 Wind : {{ weather.wind }} m/s</p>
+
+<p>🌧 Rainfall : {{ weather.rainfall }} mm</p>
+
+<hr>
+
+<h3>🌾 Today's Crop Prices</h3>
+
+<table>
+
+<tr>
+<th>Crop</th>
+<th>Market</th>
+<th>Price</th>
+</tr>
+
+{% for crop in prices %}
+
+<tr>
+
+<td>{{ crop.commodity }}</td>
+
+<td>{{ crop.market }}</td>
+
+<td>₹ {{ crop.modal_price }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+</body>
+</html>

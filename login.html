@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>KisanVision360 | Login</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/login.css') }}">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="overlay">
+
+<div class="login-box">
+
+<img src="{{ url_for('static', filename='images/logo.png') }}" class="logo">
+
+<h1>KisanVision360</h1>
+
+<p>AI Powered Smart Agriculture Platform</p>
+
+<div class="ai-tag">
+
+🤖 AI | 🌦 Weather | 🌾 Marketplace
+
+</div>
+{% if error %}
+<div style="background:#ff4d4d;color:white;padding:10px;border-radius:8px;margin-bottom:15px;">
+    {{ error }}
+</div>
+{% endif %}
+<form action="/login" method="POST">
+
+<div class="input-box">
+
+<i class="fas fa-phone"></i>
+
+<input
+type="text"
+name="login"
+placeholder="Mobile Number or Email"
+required>
+</div>
+
+<div class="input-box">
+
+<i class="fas fa-lock"></i>
+
+<input
+type="password"
+id="password"
+name="password"
+placeholder="Password"
+required>
+
+<i class="fas fa-eye eye"
+onclick="togglePassword()"></i>
+
+</div>
+
+<div class="options">
+
+<label>
+
+<input type="checkbox">
+
+Remember Me
+
+</label>
+
+<a href="#">Forgot Password?</a>
+
+</div>
+
+<button type="submit">
+
+<i class="fas fa-right-to-bracket"></i>
+
+Login
+
+</button>
+
+</form>
+
+<div class="divider">
+
+<span>OR</span>
+
+</div>
+
+<a href="/signup">
+
+<button class="signup-btn">
+
+<i class="fas fa-user-plus"></i>
+
+Create New Account
+
+</button>
+
+</a>
+
+<br><br>
+
+<a href="/language">
+
+🌐 Change Language
+
+</a>
+
+</div>
+
+</div>
+
+<script>
+
+function togglePassword(){
+
+var x=document.getElementById("password");
+
+if(x.type==="password")
+
+x.type="text";
+
+else
+
+x.type="password";
+
+}
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KisanVision360 | Smart Irrigation</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/sidebar.css') }}">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/irrigation.css') }}">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+<!-- Floating AI Assistant -->
+
+<div class="chatbot-button" onclick="toggleChat()">
+
+    <i class="fa-solid fa-robot"></i>
+
+</div>
+
+<div class="chatbot-box" id="chatBox">
+
+    <div class="chat-header">
+
+        <div>
+
+            🤖 <b>KisanVision360 AI</b><br>
+
+            <small>Online</small>
+
+        </div>
+
+        <i class="fa-solid fa-xmark" onclick="toggleChat()"></i>
+
+    </div>
+
+    <div class="chat-body" id="chatBody">
+
+        <div class="bot-message">
+
+            👋 Hello {{ name }}
+
+            <br><br>
+
+            Ask me about:
+
+            <br>🌦 Weather
+
+            <br>🌱 Crops
+
+            <br>💧 Irrigation
+
+            <br>🐛 Pest
+
+            <br>📈 Market Price
+
+            <br>🏛 Government Schemes
+
+        </div>
+
+    </div>
+
+    <div class="chat-input">
+
+        <input
+        id="userMessage"
+        type="text"
+        placeholder="Ask your farming question...">
+
+        <button onclick="sendMessage()">
+
+            <i class="fa-solid fa-paper-plane"></i>
+
+        </button>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+<body>
+
+<div class="dashboard-container">
+
+    <!-- Common Sidebar -->
+    {% include 'components/sidebar.html' %}
+
+    <div class="main-content">
+
+        <!-- Header -->
+
+        <div class="topbar">
+
+            <div>
+
+                <h1>
+                    <i class="fa-solid fa-droplet"></i>
+                    Smart Irrigation Advisor
+                </h1>
+
+                <p>
+                    AI Based Water Management System
+                </p>
+
+            </div>
+
+            <div class="profile">
+
+                <img src="{{ url_for('static', filename='images/farmer.jpg') }}">
+
+                <span>{{ name }}</span>
+
+            </div>
+
+        </div>
+
+        <!-- Form Card -->
+
+        <div class="irrigation-card">
+
+            <form method="POST">
+
+                <label>
+                    Crop Type
+                </label>
+
+                <input
+                type="text"
+                name="crop"
+                placeholder="Example: Wheat"
+                required>
+
+                <label>
+                    Soil Condition
+                </label>
+
+                <select name="soil">
+
+                    <option value="wet">Wet Soil</option>
+
+                    <option value="normal">Normal Soil</option>
+
+                    <option value="dry">Dry Soil</option>
+
+                </select>
+
+                <label>
+                    Recent Rainfall (mm)
+                </label>
+
+                <input
+                type="number"
+                name="rainfall"
+                placeholder="Example: 45"
+                required>
+
+                <button type="submit">
+
+                    <i class="fa-solid fa-water"></i>
+
+                    Check Irrigation
+
+                </button>
+
+            </form>
+
+        </div>
+
+        {% if result %}
+
+        <div class="result-card">
+
+            <h2>{{ result.status }}</h2>
+
+            <p>{{ result.reason }}</p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
