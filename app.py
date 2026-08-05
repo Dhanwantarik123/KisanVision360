@@ -11,10 +11,17 @@ from utils.schemes import get_schemes
 
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
-
-
+from flask import url_for
+from werkzeug.utils import secure_filename
+import os
 app = Flask(__name__)
 
+app.config["UPLOAD_FOLDER"] = "static/uploads"
+
+os.makedirs(
+    app.config["UPLOAD_FOLDER"],
+    exist_ok=True
+)
 app.secret_key = "kisanvision360_secret_key"
 WEATHER_API_KEY = "a03114f8eb4b0276cd6efa27c6f4613d"   # Replace with your OpenWeather API Key
 CITY = "Nagpur"
@@ -27,9 +34,13 @@ def language():
 
 @app.route("/set-language", methods=["POST"])
 def set_language():
-    session["language"] = request.form["language"]
-    return redirect("/login")
 
+    if "user_id" not in session:
+        return redirect("/login")
+
+    session["language"] = request.form["language"]
+
+    return redirect("/settings")
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
@@ -81,6 +92,304 @@ def login():
     return render_template("login.html")
 
 
+@app.route("/disease")
+def disease():
+    return render_template("disease.html")
+
+
+
+@app.route("/orders")
+def orders():
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    cursor.execute("""
+        SELECT
+            id,
+            request_id,
+            total_amount,
+            payment_status,
+            delivery_status,
+            order_date
+        FROM orders
+        WHERE farmer_id=%s OR consumer_id=%s
+        ORDER BY order_date DESC
+    """, (session["user_id"], session["user_id"]))
+
+    orders = cursor.fetchall()
+
+    return render_template(
+        "orders.html",
+        orders=orders,
+        name=session["name"]
+    )
+@app.route("/place_order/<int:product_id>", methods=["POST"])
+def place_order(product_id):
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    qty = int(request.form.get("quantity", 1))
+
+    cursor.execute(
+        "SELECT name, price FROM products WHERE id=%s",
+        (product_id,)
+    )
+
+    product = cursor.fetchone()
+
+    if not product:
+        return "Product not found"
+
+    name = product[0]
+    price = float(product[1])
+
+    total = price * qty
+
+    cursor.execute("""
+        INSERT INTO orders
+        (user_id, product_name, quantity, price, total)
+        VALUES(%s,%s,%s,%s,%s)
+    """,
+    (
+        session["user_id"],
+        name,
+        qty,
+        price,
+        total
+    ))
+
+    db.commit()
+
+    return redirect("/orders")
+
+@app.route("/finance")
+def finance():
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    if session.get("role","").lower() != "farmer":
+        return redirect("/dashboard")
+
+    user_id = session["user_id"]
+
+    # Total Income
+    cursor.execute("""
+        SELECT IFNULL(SUM(amount),0)
+        FROM transactions
+        WHERE farmer_id=%s
+        AND type='Income'
+    """,(user_id,))
+
+    income = cursor.fetchone()[0]
+
+    # Total Expense
+    cursor.execute("""
+        SELECT IFNULL(SUM(amount),0)
+        FROM transactions
+        WHERE farmer_id=%s
+        AND type='Expense'
+    """,(user_id,))
+
+    expenses = cursor.fetchone()[0]
+
+    profit = income - expenses
+
+    # Recent Transactions
+    cursor.execute("""
+        SELECT description,
+               amount,
+               type
+        FROM transactions
+        WHERE farmer_id=%s
+        ORDER BY id DESC
+        LIMIT 10
+    """,(user_id,))
+
+    transactions = cursor.fetchall()
+
+    return render_template(
+
+        "finance.html",
+
+        name=session["name"],
+
+        income=income,
+
+        expenses=expenses,
+
+        profit=profit,
+
+        transactions=transactions
+
+    )
+
+
+@app.route("/income", methods=["GET", "POST"])
+def income():
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    user_id = session["user_id"]
+
+    if request.method == "POST":
+
+        description = request.form["description"]
+        amount = request.form["amount"]
+
+        cursor.execute("""
+            INSERT INTO transactions
+            (farmer_id, description, amount, type)
+            VALUES(%s,%s,%s,'Income')
+        """, (user_id, description, amount))
+
+        db.commit()
+
+        return redirect("/income")
+
+    cursor.execute("""
+        SELECT
+            DATE(created_at),
+            description,
+            amount
+        FROM transactions
+        WHERE farmer_id=%s
+        AND type='Income'
+        ORDER BY id DESC
+    """, (user_id,))
+
+    income_list = cursor.fetchall()
+
+    return render_template(
+        "income.html",
+        name=session["name"],
+        income_list=income_list
+    )
+@app.route("/expense", methods=["GET","POST"])
+def expense():
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    user_id = session["user_id"]
+
+    if request.method == "POST":
+
+        description = request.form["description"]
+        amount = request.form["amount"]
+
+        cursor.execute("""
+            INSERT INTO transactions
+            (farmer_id,description,amount,type)
+            VALUES(%s,%s,%s,'Expense')
+        """,(user_id,description,amount))
+
+        db.commit()
+
+        return redirect("/expense")
+
+    cursor.execute("""
+        SELECT
+            DATE(created_at),
+            description,
+            amount
+        FROM transactions
+        WHERE farmer_id=%s
+        AND type='Expense'
+        ORDER BY id DESC
+    """,(user_id,))
+
+    expense_list = cursor.fetchall()
+
+    return render_template(
+        "expense.html",
+        name=session["name"],
+        expense_list=expense_list
+    )
+@app.route("/predict_disease", methods=["POST"])
+def predict_disease():
+
+    file = request.files["image"]
+
+
+    if file.filename == "":
+        return render_template(
+            "disease.html",
+            error="Please select an image."
+        )
+
+
+    image_name = file.filename
+
+
+    upload_folder = app.config["UPLOAD_FOLDER"]
+
+
+    # create folder if missing
+    os.makedirs(
+        upload_folder,
+        exist_ok=True
+    )
+
+
+    upload_path = os.path.join(
+        upload_folder,
+        image_name
+    )
+
+
+    file.save(upload_path)
+
+
+
+    disease_name = "Crop Early Blight"
+
+    status = "Disease Detected"
+
+    accuracy = 96.45
+
+
+    symptoms = "Brown spots appear on leaves and yellowing occurs."
+
+    treatment = "Spray Mancozeb every 7 days."
+
+    prevention = "Avoid overwatering and remove infected leaves."
+
+
+
+    return render_template(
+        "disease.html",
+        image=image_name,
+        prediction=disease_name,
+        status=status,
+        confidence=accuracy,
+        symptoms=symptoms,
+        treatment=treatment,
+        prevention=prevention
+    )
+@app.route("/government")
+def government():
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    if session.get("role","").lower()!="farmer":
+        return redirect("/dashboard")
+
+    schemes=get_schemes()
+
+    return render_template(
+
+        "government.html",
+
+        name=session["name"],
+
+        schemes=schemes
+
+    )
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
 
@@ -126,23 +435,35 @@ def signup():
         return redirect("/login")
 
     return render_template("signup.html")
+
 @app.route("/dashboard")
 def dashboard():
 
     if "user_id" not in session:
         return redirect("/login")
 
-    if session["role"] == "Farmer":
+
+    role = session.get("role")
+
+
+    if role == "Farmer":
+
         return redirect("/farmer")
 
-    elif session["role"] == "Consumer":
+
+    elif role == "Consumer":
+
         return redirect("/consumer")
 
-    elif session["role"] == "Admin":
+
+    elif role == "Admin":
+
         return redirect("/admin")
 
-    return redirect("/login")
 
+    else:
+
+        return redirect("/login")
 
 @app.route("/farmer")
 def farmer():
@@ -289,20 +610,7 @@ def get_weather_data():
             "rainfall": "N/A"
 
         }
-@app.route("/chatbot")
-def chatbot():
 
-    if "user_id" not in session:
-        return redirect("/login")
-
-    return render_template(
-        "chatbot.html",
-        name=session["name"]
-    )
-
-
-
-@app.route("/ask_chatbot", methods=["POST"])
 def ask_chatbot():
 
     user_message = request.json["message"].lower()
@@ -426,8 +734,37 @@ def irrigation():
     )
 
 
+from flask import request, jsonify
 
+@app.route("/ask_chatbot", methods=["POST"])
+def ask_chatbot():
 
+    data = request.get_json()
+
+    message = data.get("message", "").lower()
+
+    if "weather" in message:
+        reply = "🌦 Today's weather is suitable for farming."
+
+    elif "crop" in message:
+        reply = "🌱 Soybean and Cotton are recommended."
+
+    elif "irrigation" in message:
+        reply = "💧 Irrigate your field early in the morning."
+
+    elif "market" in message or "price" in message:
+        reply = "📈 Soybean: ₹5100/quintal"
+
+    elif "scheme" in message:
+        reply = "🏛 PM-KISAN and Crop Insurance are available."
+
+    elif "disease" in message:
+        reply = "🐛 Upload a crop image to detect diseases."
+
+    else:
+        reply = "🤖 I'm here to help! Ask me about weather, crops, irrigation, diseases, market prices, or government schemes."
+
+    return jsonify({"reply": reply})
 @app.route("/schemes")
 def schemes():
 
@@ -828,13 +1165,15 @@ def alerts():
     )
 
 
-
 @app.route("/help")
 def help():
 
+    if "user_id" not in session:
+        return redirect("/login")
+
     return render_template(
         "help.html",
-        name=session["name"]
+        name=session.get("name", "")
     )
 @app.route("/consumer-request")
 def consumer_request():
@@ -972,25 +1311,88 @@ def notifications():
         weather=weather,
         notifications=notifications
     )
+@app.route("/change-password", methods=["GET", "POST"])
+def change_password():
 
-@app.route("/profile")
+    if "user_id" not in session:
+        return redirect("/login")
+
+    if request.method == "POST":
+
+        current_password = request.form["current_password"]
+        new_password = request.form["new_password"]
+        confirm_password = request.form["confirm_password"]
+
+        if new_password != confirm_password:
+            return "<script>alert('New passwords do not match');window.location='/change-password';</script>"
+
+        cursor.execute(
+            "SELECT password FROM users WHERE id=%s",
+            (session["user_id"],)
+        )
+
+        user = cursor.fetchone()
+
+        if not user:
+            return redirect("/login")
+
+        if user[0] != current_password:
+            return "<script>alert('Current password is incorrect');window.location='/change-password';</script>"
+
+        cursor.execute(
+            "UPDATE users SET password=%s WHERE id=%s",
+            (new_password, session["user_id"])
+        )
+
+        db.commit()
+
+        return "<script>alert('Password Changed Successfully');window.location='/settings';</script>"
+
+    return render_template("change_password.html")
+@app.route("/profile", methods=["GET","POST"])
 def profile():
 
     if "user_id" not in session:
         return redirect("/login")
 
 
+    if request.method == "POST":
+
+        name = request.form["name"]
+        mobile = request.form["mobile"]
+        email = request.form["email"]
+
+
+        cursor.execute("""
+        UPDATE users
+        SET fullname=%s, mobile=%s, email=%s
+        WHERE id=%s
+        """,
+        (
+            name,
+            mobile,
+            email,
+            session["user_id"]
+        ))
+
+        db.commit()
+
+        return redirect("/profile")
+
+
+
     cursor.execute("""
     SELECT fullname,mobile,email,role,profile_pic
     FROM users
     WHERE id=%s
-    """,(session["user_id"],))
+    """,
+    (session["user_id"],))
 
 
-    user=cursor.fetchone()
+    user = cursor.fetchone()
 
 
-    weather=get_weather_data()
+    weather = get_weather_data()
 
 
     return render_template(
@@ -1002,19 +1404,30 @@ def profile():
         profile_pic=user[4],
         weather=weather
     )
-@app.route("/upload-profile",methods=["POST"])
+@app.route("/upload-profile", methods=["POST"])
 def upload_profile():
 
-    file=request.files["profile"]
+    if "user_id" not in session:
+        return redirect("/login")
+
+
+    file = request.files["profile"]
 
 
     if file:
 
-        filename=secure_filename(file.filename)
+        filename = secure_filename(file.filename)
 
-        path="static/profile/"+filename
+        filepath = os.path.join(
+            app.config["UPLOAD_FOLDER"],
+            filename
+        )
 
-        file.save(path)
+
+        file.save(filepath)
+
+
+        db_path = "/" + filepath.replace("\\","/")
 
 
         cursor.execute("""
@@ -1023,8 +1436,8 @@ def upload_profile():
         WHERE id=%s
         """,
         (
-        "/"+path,
-        session["user_id"]
+            db_path,
+            session["user_id"]
         ))
 
 
@@ -1069,6 +1482,7 @@ def settings():
         role=user[3],
         weather=weather
     )
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
