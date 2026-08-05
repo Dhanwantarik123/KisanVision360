@@ -4,7 +4,6 @@
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>KisanVision360 | Notifications</title>
@@ -16,34 +15,28 @@ href="{{ url_for('static', filename='css/notifications.css') }}">
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
-<!-- Floating AI Assistant -->
 
+<body>
+
+<!-- AI Chatbot -->
 <div class="chatbot-button" onclick="toggleChat()">
-
     <i class="fa-solid fa-robot"></i>
-
 </div>
 
 <div class="chatbot-box" id="chatBox">
 
     <div class="chat-header">
-
         <div>
-
             🤖 <b>KisanVision360 AI</b><br>
-
             <small>Online</small>
-
         </div>
 
         <i class="fa-solid fa-xmark" onclick="toggleChat()"></i>
-
     </div>
 
     <div class="chat-body" id="chatBody">
 
         <div class="bot-message">
-
             👋 Hello {{ name }}
 
             <br><br>
@@ -51,17 +44,11 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
             Ask me about:
 
             <br>🌦 Weather
-
             <br>🌱 Crops
-
             <br>💧 Irrigation
-
             <br>🐛 Pest
-
             <br>📈 Market Price
-
             <br>🏛 Government Schemes
-
         </div>
 
     </div>
@@ -69,160 +56,125 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     <div class="chat-input">
 
         <input
-        id="userMessage"
-        type="text"
-        placeholder="Ask your farming question...">
+            id="userMessage"
+            type="text"
+            placeholder="Ask your farming question...">
 
         <button onclick="sendMessage()">
-
             <i class="fa-solid fa-paper-plane"></i>
-
         </button>
 
     </div>
 
 </div>
 
-<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
-<body>
-
+<!-- Dashboard -->
 <div class="dashboard-container">
 
-<!-- Sidebar -->
+    <!-- Sidebar -->
+    <div class="sidebar">
 
-<div class="sidebar">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo">
 
-<img src="{{ url_for('static', filename='images/logo.png') }}" class="logo">
+        <h2>KisanVision360</h2>
 
-<h2>KisanVision360</h2>
+        <a href="/farmer"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="/weather"><i class="fas fa-cloud-sun"></i> Weather</a>
+        <a href="/marketplace"><i class="fas fa-store"></i> Marketplace</a>
+        <a href="/notifications" class="active"><i class="fas fa-bell"></i> Notifications</a>
+        <a href="/profile"><i class="fas fa-user"></i> Profile</a>
+        <a href="/settings"><i class="fas fa-cog"></i> Settings</a>
+        <a href="/logout"><i class="fas fa-right-from-bracket"></i> Logout</a>
 
-<a href="/farmer">
-<i class="fas fa-home"></i>
-Dashboard
-</a>
+    </div>
 
-<a href="/weather">
-<i class="fas fa-cloud-sun"></i>
-Weather
-</a>
+    <!-- Main Content -->
+    <div class="main-content">
 
-<a href="/marketplace">
-<i class="fas fa-store"></i>
-Marketplace
-</a>
+        <div class="topbar">
 
-<a href="/notifications" class="active">
-<i class="fas fa-bell"></i>
-Notifications
-</a>
+            <h1><i class="fas fa-bell"></i> Notifications</h1>
 
-<a href="/profile">
-<i class="fas fa-user"></i>
-Profile
-</a>
+            <h3>Welcome {{ name }}</h3>
 
-<a href="/settings">
-<i class="fas fa-cog"></i>
-Settings
-</a>
+        </div>
 
-<a href="/logout">
-<i class="fas fa-right-from-bracket"></i>
-Logout
-</a>
+        {% if weather %}
 
-</div>
+        <div class="weather-banner">
 
-<!-- Main Content -->
+            🌤 {{ weather.city }}
+            &nbsp; | &nbsp;
+            🌡 {{ weather.temperature }}°C
+            &nbsp; | &nbsp;
+            ☁ {{ weather.condition }}
 
-<div class="main-content">
+        </div>
 
-<div class="topbar">
+        {% endif %}
 
-<h1>🔔 Notifications</h1>
+        <div class="notification-list">
 
-<h3>Welcome {{ name }}</h3>
+            {% for item in notifications %}
 
-</div>
+            <div class="notification-card {{ item.type }}">
 
-{% if weather %}
+                <div class="icon">
 
-<div class="weather-banner">
+                    {% if item.type=="warning" %}
+                    <i class="fas fa-triangle-exclamation"></i>
 
-🌤 {{ weather.city }} |
-🌡 {{ weather.temperature }}°C |
-☁ {{ weather.condition }}
+                    {% elif item.type=="market" %}
+                    <i class="fas fa-indian-rupee-sign"></i>
 
-</div>
+                    {% elif item.type=="ai" %}
+                    <i class="fas fa-robot"></i>
 
-{% endif %}
+                    {% elif item.type=="chat" %}
+                    <i class="fas fa-comments"></i>
 
-<div class="notification-list">
+                    {% else %}
+                    <i class="fas fa-bell"></i>
 
-{% for item in notifications %}
+                    {% endif %}
 
-<div class="notification-card {{ item.type }}">
+                </div>
 
-<div class="icon">
+                <div class="content">
 
-{% if item.type=="warning" %}
+                    <h3>{{ item.title }}</h3>
 
-<i class="fas fa-triangle-exclamation"></i>
+                    <p>{{ item.message }}</p>
 
-{% elif item.type=="market" %}
+                    <small>{{ item.time }}</small>
 
-<i class="fas fa-indian-rupee-sign"></i>
+                </div>
 
-{% elif item.type=="ai" %}
+            </div>
 
-<i class="fas fa-robot"></i>
+            {% endfor %}
 
-{% elif item.type=="chat" %}
+        </div>
 
-<i class="fas fa-comments"></i>
+        <br>
 
-{% else %}
+        <a href="/farmer">
 
-<i class="fas fa-bell"></i>
+            <button class="back-btn">
 
-{% endif %}
+                <i class="fas fa-arrow-left"></i>
 
-</div>
+                Back to Dashboard
 
-<div class="content">
+            </button>
 
-<h3>{{ item.title }}</h3>
+        </a>
 
-<p>{{ item.message }}</p>
-
-<span>{{ item.time }}</span>
+    </div>
 
 </div>
 
-</div>
-
-{% endfor %}
-
-</div>
-
-<br>
-
-<a href="/farmer">
-
-<button>
-
-<i class="fas fa-arrow-left"></i>
-
-Back to Dashboard
-
-</button>
-
-</a>
-
-</div>
-
-</div>
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
 
 </body>
-
 </html>

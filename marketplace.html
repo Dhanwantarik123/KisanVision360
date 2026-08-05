@@ -4,504 +4,76 @@
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>KisanVision360 | Marketplace</title>
-
+<title>Marketplace</title>
 
 <link rel="stylesheet"
-href="{{ url_for('static', filename='css/marketplace.css') }}">
-
+href="{{ url_for('static',filename='css/dashboard.css') }}">
 
 <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
 </head>
 
-<!-- Floating AI Assistant -->
-
-<div class="chatbot-button" onclick="toggleChat()">
-
-    <i class="fa-solid fa-robot"></i>
-
-</div>
-
-<div class="chatbot-box" id="chatBox">
-
-    <div class="chat-header">
-
-        <div>
-
-            🤖 <b>KisanVision360 AI</b><br>
-
-            <small>Online</small>
-
-        </div>
-
-        <i class="fa-solid fa-xmark" onclick="toggleChat()"></i>
-
-    </div>
-
-    <div class="chat-body" id="chatBody">
-
-        <div class="bot-message">
-
-            👋 Hello {{ name }}
-
-            <br><br>
-
-            Ask me about:
-
-            <br>🌦 Weather
-
-            <br>🌱 Crops
-
-            <br>💧 Irrigation
-
-            <br>🐛 Pest
-
-            <br>📈 Market Price
-
-            <br>🏛 Government Schemes
-
-        </div>
-
-    </div>
-
-    <div class="chat-input">
-
-        <input
-        id="userMessage"
-        type="text"
-        placeholder="Ask your farming question...">
-
-        <button onclick="sendMessage()">
-
-            <i class="fa-solid fa-paper-plane"></i>
-
-        </button>
-
-    </div>
-
-</div>
-
-<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
 <body>
 
+{% include 'includes/sidebar.html' %}
 
-<div class="dashboard-container">
+<div class="main">
 
+<div class="header">
 
-<!-- ================= SIDEBAR ================= -->
+<h1><i class="fa-solid fa-store"></i> Marketplace</h1>
 
-
-{% include 'components/sidebar.html' %}
-
-
-
-
-<!-- ================= MAIN ================= -->
-
-
-<div class="main-content">
-
-
-
-<!-- TOPBAR -->
-
-<div class="topbar">
-
-
-<div>
-
-<h1>
-🛒 Farmer Marketplace
-</h1>
-
-
-<p>
-Buy, Sell & Track Agriculture Market Prices
-</p>
-
+<input type="text" placeholder="Search Product...">
 
 </div>
 
-
-
-<div class="profile">
-
-
-<img src="{{ url_for('static',filename='images/farmer.png') }}">
-
-
-<span>
-{{name}}
-</span>
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-<!-- WEATHER SUMMARY -->
-
-
-{% if weather %}
-
-
-<div class="weather-banner">
-
-
-<i class="fa-solid fa-location-dot"></i>
-
-{{weather.city}}
-
-
-
-&nbsp;&nbsp; | &nbsp;&nbsp;
-
-
-
-🌡 {{weather.temperature}}°C
-
-
-
-&nbsp;&nbsp; | &nbsp;&nbsp;
-
-
-
-☁ {{weather.condition}}
-
-
-
-</div>
-
-
-{% endif %}
-
-
-
-
-
-
-<!-- ACTION BUTTONS -->
-
-
-<div class="action-box">
-
-
-<a href="/add-product">
-
-
-<button>
-
-<i class="fa-solid fa-plus"></i>
-
-Sell Product
-
-</button>
-
-
-</a>
-
-
-
-
-<a href="/consumer-request">
-
-
-<button>
-
-<i class="fa-solid fa-cart-shopping"></i>
-
-Consumer Requirement
-
-</button>
-
-
-</a>
-
-
-</div>
-
-
-
-
-
-
-
-
-<!-- MARKET PRICE -->
-
-
-<div class="market-card">
-
-
-<h2>
-
-📈 Today's Government Mandi Prices
-
-</h2>
-
-
-
-
-<div class="search-box">
-
-
-<input type="text"
-placeholder="Search crop...">
-
-
-</div>
-
-
-
-
-
-<table>
-
-
-<thead>
-
-
-<tr>
-
-<th>
-Crop
-</th>
-
-
-<th>
-Market
-</th>
-
-
-<th>
-State
-</th>
-
-
-<th>
-Price ₹/Quintal
-</th>
-
-
-<th>
-Date
-</th>
-
-
-</tr>
-
-
-</thead>
-
-
-
-
-
-<tbody>
-
-
-
-{% for crop in prices %}
-
-
-<tr>
-
-
-<td>
-
-{{crop.commodity}}
-
-</td>
-
-
-
-<td>
-
-{{crop.market}}
-
-</td>
-
-
-
-
-<td>
-
-{{crop.state}}
-
-</td>
-
-
-
-
-<td class="price">
-
-
-₹ {{crop.modal_price}}
-
-</td>
-
-
-
-
-<td>
-
-{{crop.arrival_date}}
-
-</td>
-
-
-
-</tr>
-
-
-
-{% endfor %}
-
-
-
-</tbody>
-
-
-
-</table>
-
-
-</div>
-
-
-
-
-
-
-
-
-<!-- FARMER PRODUCTS -->
-
-
-<div class="product-section">
-
-
-<h2>
-
-🌱 Farmer Products
-
-</h2>
-
-
-
-
-<div class="product-grid">
-
-
+<div class="cards">
 
 {% for product in products %}
 
+<div class="card">
 
+<img src="{{ url_for('static',filename='images/marketplace/' + product.image) }}"
+width="100%"
+height="180">
 
-<div class="product-card">
+<h2>{{ product.product_name }}</h2>
 
+<p>₹ {{ product.price }}</p>
 
-<img src="{{url_for(
-'static',
-filename='uploads/products/'+product.image
-)}}">
+<p>{{ product.category }}</p>
 
+<p>{{ product.quantity }} Kg</p>
 
-<h3>
+<p>{{ product.description }}</p>
 
-{{product.product_name}}
+<button onclick="buyProduct({{ product.id }})">
 
-</h3>
-
-
-
-<p>
-
-Category:
-{{product.category}}
-
-</p>
-
-
-<h2>
-
-₹ {{product.price}}
-
-</h2>
-
-
-
-<button>
-
-Contact Farmer
+Buy Now
 
 </button>
 
-
-
 </div>
-
-
-
 
 {% endfor %}
 
-
+</div>
 
 </div>
 
+<script>
 
+function buyProduct(id){
 
-</div>
+window.location="/marketplace/product/"+id;
 
+}
 
-
-
-
-
-
-
-<br>
-
-
-<a href="/farmer">
-
-
-<button>
-
-<i class="fa-solid fa-arrow-left"></i>
-
-Back Dashboard
-
-</button>
-
-
-</a>
-
-
-
-</div>
-
-
-
-</div>
-
-
+</script>
 
 </body>
-
 
 </html>

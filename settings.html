@@ -1,538 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>KisanVision360 | Settings</title>
-
-
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/settings.css') }}">
-
+<title>Settings</title>
 
 <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+href="{{ url_for('static',filename='css/settings.css') }}">
 
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
 </head>
 
-<!-- Floating AI Assistant -->
-
-<div class="chatbot-button" onclick="toggleChat()">
-
-    <i class="fa-solid fa-robot"></i>
-
-</div>
-
-<div class="chatbot-box" id="chatBox">
-
-    <div class="chat-header">
-
-        <div>
-
-            🤖 <b>KisanVision360 AI</b><br>
-
-            <small>Online</small>
-
-        </div>
-
-        <i class="fa-solid fa-xmark" onclick="toggleChat()"></i>
-
-    </div>
-
-    <div class="chat-body" id="chatBody">
-
-        <div class="bot-message">
-
-            👋 Hello {{ name }}
-
-            <br><br>
-
-            Ask me about:
-
-            <br>🌦 Weather
-
-            <br>🌱 Crops
-
-            <br>💧 Irrigation
-
-            <br>🐛 Pest
-
-            <br>📈 Market Price
-
-            <br>🏛 Government Schemes
-
-        </div>
-
-    </div>
-
-    <div class="chat-input">
-
-        <input
-        id="userMessage"
-        type="text"
-        placeholder="Ask your farming question...">
-
-        <button onclick="sendMessage()">
-
-            <i class="fa-solid fa-paper-plane"></i>
-
-        </button>
-
-    </div>
-
-</div>
-
-<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
 <body>
 
+{% include 'includes/sidebar.html' %}
 
-<div class="dashboard-container">
+<div class="main">
 
-
-<!-- ================= SIDEBAR ================= -->
-
-
-<div class="sidebar">
-
-
-<img src="{{ url_for('static', filename='images/logo.png') }}"
-class="logo">
-
-
-<h2>KisanVision360</h2>
-
-
-
-<a href="/farmer">
-<i class="fa fa-home"></i>
-Dashboard
-</a>
-
-
-<a href="/weather">
-<i class="fa fa-cloud-sun"></i>
-Weather
-</a>
-
-
-<a href="/recommendation">
-<i class="fa fa-seedling"></i>
-Crop Advisory
-</a>
-
-
-<a href="/irrigation">
-<i class="fa fa-water"></i>
-Irrigation
-</a>
-
-
-<a href="/pest">
-<i class="fa fa-bug"></i>
-Pest & Disease
-</a>
-
-
-<a href="/marketplace">
-<i class="fa fa-store"></i>
-Marketplace
-</a>
-
-
-<a href="/tools">
-<i class="fa fa-tractor"></i>
-Farmer Tools
-</a>
-
-
-<a href="/reports">
-<i class="fa fa-chart-line"></i>
-Reports
-</a>
-
-
-<a href="/notifications">
-<i class="fa fa-bell"></i>
-Alerts
-</a>
-
-
-<a href="/settings" class="active">
-<i class="fa fa-gear"></i>
-Settings
-</a>
-
-
-<a href="/help">
-<i class="fa fa-circle-question"></i>
-Help
-</a>
-
-
-<a href="/logout">
-<i class="fa fa-right-from-bracket"></i>
-Logout
-</a>
-
-
-</div>
-
-
-
-
-
-<!-- ================= MAIN CONTENT ================= -->
-
-
-<div class="main-content">
-
-
-
-<!-- TOP BAR -->
-
-
-<div class="topbar">
-
+<div class="header">
 
 <div>
 
-<h1>
-⚙️ Settings
-</h1>
+<h1><i class="fa-solid fa-gear"></i> Settings</h1>
 
-
-<p>
-Manage your KisanVision360 account
-</p>
-
+<p>Manage your KisanVision360 account</p>
 
 </div>
 
+<div class="top-right">
 
+<input type="text" placeholder="Search Settings">
 
-<div class="user-profile">
+<i class="fa-solid fa-bell notification"></i>
 
+<div class="profile">
 
-<img src="{{ url_for('static', filename='images/farmer.jpg') }}">
+<img src="{{ url_for('static',filename='images/farmers/default.png') }}">
 
+<div>
 
-<h3>
-{{ name }}
-</h3>
+<b>{{ user.fullname }}</b>
 
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-<!-- USER INFORMATION -->
-
-
-<div class="settings-grid">
-
-
-
-<div class="setting-card">
-
-
-<i class="fa fa-user"></i>
-
-
-<h2>
-Profile Information
-</h2>
-
-
-<p>
-Name : {{ name }}
-</p>
-
-
-<p>
-Mobile : {{ mobile }}
-</p>
-
-
-<p>
-Email : {{ email }}
-</p>
-
-
-<p>
-Role : {{ role }}
-</p>
-
-
-<a href="/profile">
-
-<button>
-Edit Profile
-</button>
-
-</a>
-
+<p>{{ user.role }}</p>
 
 </div>
 
+</div>
 
+</div>
 
+</div>
 
+<div class="weather-strip">
 
+📍 Nagpur &nbsp; | &nbsp; 🌡 27°C &nbsp; | &nbsp; ☁ Rain
 
+</div>
 
-<!-- LANGUAGE -->
+<div class="cards">
 
+<!-- Profile -->
 
-<div class="setting-card">
+<div class="card">
 
+<i class="fa-solid fa-user fa-2x"></i>
 
-<i class="fa fa-language"></i>
+<h2>Profile Information</h2>
 
+<p>Name : {{ user.fullname }}</p>
 
-<h2>
-Language
-</h2>
+<p>Mobile : {{ user.mobile }}</p>
 
+<p>Email : {{ user.email }}</p>
 
-<p>
-Select your preferred language
-</p>
+<p>Role : {{ user.role }}</p>
 
+<button>Edit Profile</button>
 
-<select>
+</div>
 
+<!-- Language -->
 
-<option>
-English
-</option>
+<div class="card">
 
+<i class="fa-solid fa-language fa-2x"></i>
 
-<option>
-हिंदी
-</option>
+<h2>Language</h2>
 
+<select onchange="location=this.value">
 
-<option>
-मराठी
-</option>
+<option value="/change-language/en">English</option>
 
+<option value="/change-language/hi">हिन्दी</option>
+
+<option value="/change-language/mr">मराठी</option>
 
 </select>
 
-
 </div>
 
+<!-- Notification -->
 
+<div class="card">
 
+<i class="fa-solid fa-bell fa-2x"></i>
 
+<h2>Notifications</h2>
 
-
-
-<!-- NOTIFICATIONS -->
-
-
-<div class="setting-card">
-
-
-<i class="fa fa-bell"></i>
-
-
-<h2>
-Notifications
-</h2>
-
-
-<p>
-Weather and farming alerts
-</p>
-
+<p>Weather & Farming Alerts</p>
 
 <label class="switch">
 
+<input type="checkbox">
 
-<input type="checkbox" checked>
-
-
-<span></span>
-
+<span class="slider"></span>
 
 </label>
 
+</div>
+
+<!-- Weather -->
+
+<div class="card">
+
+<i class="fa-solid fa-cloud-sun fa-2x"></i>
+
+<h2>Current Weather</h2>
+
+<p>Location : Nagpur</p>
+
+<p>Temperature : 27°C</p>
+
+<p>Condition : Rain</p>
 
 </div>
 
+<!-- Security -->
 
+<div class="card">
 
+<i class="fa-solid fa-lock fa-2x"></i>
 
+<h2>Security</h2>
 
+<p>Manage password & account security</p>
 
-
-<!-- WEATHER -->
-
-
-<div class="setting-card">
-
-
-<i class="fa fa-cloud-sun"></i>
-
-
-<h2>
-Current Weather
-</h2>
-
-
-{% if weather %}
-
-<p>
-Location : {{ weather.city }}
-</p>
-
-
-<p>
-Temperature : {{ weather.temperature }} °C
-</p>
-
-
-<p>
-Condition : {{ weather.condition }}
-</p>
-
-
-{% endif %}
-
+<button>Change Password</button>
 
 </div>
 
+<!-- Help -->
 
+<div class="card">
 
+<i class="fa-solid fa-headset fa-2x"></i>
 
+<h2>Help & Support</h2>
 
+<p>Farmer Assistance</p>
 
-
-
-<!-- SECURITY -->
-
-
-<div class="setting-card">
-
-
-<i class="fa fa-lock"></i>
-
-
-<h2>
-Security
-</h2>
-
-
-<p>
-Manage password and account security
-</p>
-
-
-<button>
-Change Password
-</button>
-
+<button>Open Help</button>
 
 </div>
 
+<!-- Logout -->
 
+<div class="card logout">
 
+<i class="fa-solid fa-right-from-bracket fa-2x"></i>
 
+<h2>Logout</h2>
 
+<p>Sign out safely</p>
 
+<a href="{{ url_for('auth.logout') }}">
 
-<!-- HELP -->
-
-
-<div class="setting-card">
-
-
-<i class="fa fa-headset"></i>
-
-
-<h2>
-Help & Support
-</h2>
-
-
-<p>
-Farmer assistance and support
-</p>
-
-
-<a href="/help">
-
-<button>
-Open Help
-</button>
+<button class="logout-btn">Logout</button>
 
 </a>
 
+</div>
 
 </div>
 
-
-
-
-
-
-
-<!-- LOGOUT -->
-
-
-<div class="setting-card logout">
-
-
-<i class="fa fa-right-from-bracket"></i>
-
-
-<h2>
-Logout
-</h2>
-
-
-<p>
-Sign out safely from KisanVision360
-</p>
-
-
-<a href="/logout">
-
-<button>
-Logout
-</button>
-
-</a>
-
-
 </div>
-
-
-
-
-</div>
-
-
-
-</div>
-
-
-
-</div>
-
-
 
 </body>
 

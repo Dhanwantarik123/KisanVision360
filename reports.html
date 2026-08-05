@@ -5,113 +5,224 @@
 
 <meta charset="UTF-8">
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>KisanVision360 | Reports</title>
 
 <link rel="stylesheet"
-href="{{url_for('static',
-filename='css/reports.css')}}">
+href="{{ url_for('static', filename='css/sidebar.css') }}">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/reports.css') }}">
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
-
 <body>
 
+{% include "components/sidebar.html" %}
 
-<div class="container">
+<div class="main-content">
 
+    <div class="topbar">
 
-<h1>
-📊 Farm Reports & Analytics
-</h1>
+        <div>
 
+            <h2>📊 Farm Reports & Analytics</h2>
 
-<div class="report-grid">
+            <p>Monitor your farm performance and insights.</p>
 
+        </div>
 
-<div class="report-card">
+        <div class="profile">
 
-<i class="fa-solid fa-seedling"></i>
+            <img src="{{ url_for('static', filename='images/farmer.jpg') }}">
 
-<h2>
-Crop Performance
-</h2>
+            <div>
 
-<p>
-Track crop growth, production and yield analysis.
-</p>
+                <h4>{{ name }}</h4>
+
+                <p>Farmer</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Statistics -->
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <i class="fa-solid fa-seedling"></i>
+
+            <h3>Total Crops</h3>
+
+            <h2>12</h2>
+
+        </div>
+
+        <div class="stat-card">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            <h3>Total Yield</h3>
+
+            <h2>250 Qt</h2>
+
+        </div>
+
+        <div class="stat-card">
+
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+
+            <h3>Total Income</h3>
+
+            <h2>₹1,80,000</h2>
+
+        </div>
+
+        <div class="stat-card">
+
+            <i class="fa-solid fa-droplet"></i>
+
+            <h3>Water Used</h3>
+
+            <h2>4500 L</h2>
+
+        </div>
+
+    </div>
+
+    <!-- Reports -->
+
+    <div class="report-grid">
+
+        <div class="report-card">
+
+            <i class="fa-solid fa-seedling"></i>
+
+            <h2>Crop Performance</h2>
+
+            <p>Track crop growth and productivity.</p>
+
+        </div>
+
+        <div class="report-card">
+
+            <i class="fa-solid fa-cloud-sun"></i>
+
+            <h2>Weather Report</h2>
+
+            <p>Temperature, rainfall and humidity history.</p>
+
+        </div>
+
+        <div class="report-card">
+
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+
+            <h2>Income Report</h2>
+
+            <p>Analyze profit and selling price.</p>
+
+        </div>
+
+        <div class="report-card">
+
+            <i class="fa-solid fa-droplet"></i>
+
+            <h2>Water Usage</h2>
+
+            <p>Irrigation and water consumption report.</p>
+
+        </div>
+
+    </div>
+
+    <!-- Table -->
+
+    <div class="table-card">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Crop</th>
+
+                    <th>Area</th>
+
+                    <th>Yield</th>
+
+                    <th>Income</th>
+
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>Soybean</td>
+
+                    <td>5 Acre</td>
+
+                    <td>120 Qt</td>
+
+                    <td>₹72,000</td>
+
+                    <td><span class="success">Good</span></td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Wheat</td>
+
+                    <td>3 Acre</td>
+
+                    <td>80 Qt</td>
+
+                    <td>₹54,000</td>
+
+                    <td><span class="success">Good</span></td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Cotton</td>
+
+                    <td>2 Acre</td>
+
+                    <td>50 Qt</td>
+
+                    <td>₹60,000</td>
+
+                    <td><span class="warning">Average</span></td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </div>
 
+{% include "components/chatbot.html" %}
 
-
-<div class="report-card">
-
-<i class="fa-solid fa-cloud-sun"></i>
-
-<h2>
-Weather Report
-</h2>
-
-<p>
-View rainfall, temperature and climate history.
-</p>
-
-</div>
-
-
-
-
-<div class="report-card">
-
-<i class="fa-solid fa-indian-rupee-sign"></i>
-
-<h2>
-Income Report
-</h2>
-
-<p>
-Analyze crop selling price and profit.
-</p>
-
-</div>
-
-
-
-
-<div class="report-card">
-
-<i class="fa-solid fa-droplet"></i>
-
-<h2>
-Water Usage
-</h2>
-
-<p>
-Monitor irrigation and water consumption.
-</p>
-
-</div>
-
-
-
-</div>
-
-
-
-<a href="/farmer">
-
-<button>
-⬅ Back Dashboard
-</button>
-
-</a>
-
-
-</div>
-
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
 
 </body>
 

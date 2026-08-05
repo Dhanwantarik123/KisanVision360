@@ -1,92 +1,66 @@
-<!DOCTYPE html>
+<!-- Floating AI Button -->
 
-<html>
+<div class="chatbot-button" onclick="toggleChat()">
 
-<head>
-
-<title>KisanVision360 AI Chatbot</title>
-
-
-<link rel="stylesheet"
-href="{{url_for('static',
-filename='css/chatbot.css')}}">
-
-
-</head>
-
-
-<body>
-
-
-<div class="chat-container">
-
-
-<div class="chat-header">
-
-🌱 KisanVision360 AI Assistant
+    <i class="fa-solid fa-robot"></i>
 
 </div>
 
+<!-- Chatbot Window -->
 
+<div class="chatbot-box" id="chatBox">
 
-<div id="chat-box">
+    <div class="chat-header">
 
+        <div>
 
-<div class="bot">
+            🤖 <b>KisanVision360 AI</b><br>
 
-Hello {{name}} 👋
+            <small>🟢 Online</small>
 
-<br>
+        </div>
 
-I am your farming assistant.
+        <i class="fa-solid fa-xmark" onclick="toggleChat()"></i>
 
-Ask me about:
+    </div>
 
-<br>
-🌱 Crops
-<br>
-🌦 Weather
-<br>
-💧 Irrigation
-<br>
-🐛 Pest
-<br>
-📈 Market
+    <div class="chat-body" id="chatBody">
+
+        <div class="bot-message">
+
+            👋 Hello <b>{{ name }}</b>
+
+            <br><br>
+
+            I can help you with:
+
+            <br>🌦 Weather
+            <br>🌱 Crop Recommendation
+            <br>💧 Irrigation
+            <br>🐛 Disease Detection
+            <br>🧪 Fertilizer
+            <br>📈 Market Prices
+            <br>🏛 Government Schemes
+
+        </div>
+
+    </div>
+
+    <div class="chat-input">
+
+        <input
+            type="text"
+            id="userMessage"
+            placeholder="Ask AI...">
+
+        <button onclick="sendMessage()">
+
+            <i class="fa-solid fa-paper-plane"></i>
+
+        </button>
+
+    </div>
 
 </div>
 
-
-</div>
-
-
-
-
-
-<div class="input-area">
-
-
-<input 
-id="message"
-placeholder="Ask farming question...">
-
-
-<button onclick="sendMessage()">
-
-Send
-
-</button>
-
-
-</div>
-
-
-</div>
-
-
-<script src="{{url_for('static',
-filename='js/chatbot.js')}}"></script>
-
-
-</body>
-
-</html>
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>

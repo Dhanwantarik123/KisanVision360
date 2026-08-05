@@ -4,23 +4,15 @@
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
-<title>
-KisanVision360 | Profile
-</title>
-
+<title>KisanVision360 | Profile</title>
 
 <link rel="stylesheet"
-href="{{ url_for('static',
-filename='css/profile.css') }}">
-
+href="{{ url_for('static', filename='css/profile.css') }}">
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
 
 </head>
 
@@ -31,122 +23,19 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 <div class="dashboard-container">
 
 
+<!-- SIDEBAR -->
 
-<!-- ================= SIDEBAR ================= -->
+{% include 'components/sidebar.html' %}
 
 
-<div class="sidebar">
 
-
-<img src="{{url_for('static',
-filename='images/logo.png')}}"
-class="logo">
-
-
-<h2>
-KisanVision360
-</h2>
-
-
-<p>
-AI Smart Farming
-</p>
-
-
-
-<a href="/farmer">
-
-<i class="fa fa-home"></i>
-
-Dashboard
-
-</a>
-
-
-
-<a href="/weather">
-
-<i class="fa fa-cloud-sun"></i>
-
-Weather
-
-</a>
-
-
-
-<a href="/recommendation">
-
-<i class="fa fa-seedling"></i>
-
-Crop Advisory
-
-</a>
-
-
-
-<a href="/marketplace">
-
-<i class="fa fa-store"></i>
-
-Marketplace
-
-</a>
-
-
-
-<a href="/notifications">
-
-<i class="fa fa-bell"></i>
-
-Alerts
-
-</a>
-
-
-
-<a href="/profile" class="active">
-
-<i class="fa fa-user"></i>
-
-Profile
-
-</a>
-
-
-
-<a href="/settings">
-
-<i class="fa fa-gear"></i>
-
-Settings
-
-</a>
-
-
-
-<a href="/logout">
-
-<i class="fa fa-right-from-bracket"></i>
-
-Logout
-
-</a>
-
-
-</div>
-
-
-
-
-<!-- ================= MAIN ================= -->
-
+<!-- MAIN CONTENT -->
 
 <div class="main-content">
 
 
 
 <!-- TOPBAR -->
-
 
 <div class="topbar">
 
@@ -157,26 +46,22 @@ Logout
 👤 My Profile
 </h1>
 
-
 <p>
 Manage your farmer account
 </p>
 
-
 </div>
+
 
 
 <div class="user">
 
-
 <img src="{{ profile_pic if profile_pic else url_for('static',filename='images/farmer.jpg') }}">
-
 
 <span>
 {{name}}
 </span>
 
-
 </div>
 
 
@@ -185,13 +70,9 @@ Manage your farmer account
 
 
 
-
-
-<!-- PROFILE HEADER -->
-
+<!-- PROFILE CARD -->
 
 <div class="profile-card">
-
 
 
 <div class="dp-box">
@@ -199,6 +80,7 @@ Manage your farmer account
 
 <img src="{{ profile_pic if profile_pic else url_for('static',filename='images/farmer.jpg') }}"
 class="profile-image">
+
 
 
 <form action="/upload-profile"
@@ -220,11 +102,11 @@ hidden
 onchange="this.form.submit()">
 
 
+
 </form>
 
 
 </div>
-
 
 
 
@@ -245,28 +127,22 @@ onchange="this.form.submit()">
 
 
 
-
-<!-- FARMER STATUS -->
-
+<!-- STATUS -->
 
 <div class="status-grid">
 
 
 <div class="status-card">
 
-
 <i class="fa fa-location-dot"></i>
-
 
 <h3>
 Nagpur
 </h3>
 
-
 <p>
 Farm Location
 </p>
-
 
 </div>
 
@@ -275,45 +151,58 @@ Farm Location
 
 <div class="status-card">
 
-
 <i class="fa fa-temperature-half"></i>
 
 
+{% if weather %}
+
 <h3>
-
 {{weather.temperature}} °C
-
 </h3>
+
+{% else %}
+
+<h3>
+N/A
+</h3>
+
+{% endif %}
 
 
 <p>
 Current Temperature
 </p>
 
-
 </div>
+
 
 
 
 
 <div class="status-card">
 
-
 <i class="fa fa-cloud"></i>
 
 
+{% if weather %}
+
 <h3>
-
 {{weather.condition}}
-
 </h3>
+
+{% else %}
+
+<h3>
+No Data
+</h3>
+
+{% endif %}
 
 
 <p>
 Weather Status
 </p>
 
-
 </div>
 
 
@@ -324,8 +213,7 @@ Weather Status
 
 
 
-
-<!-- DETAILS -->
+<!-- PERSONAL INFORMATION -->
 
 
 <div class="details-card">
@@ -401,7 +289,8 @@ Role
 
 
 
-<a href="/settings">
+
+<a href="/edit-profile">
 
 <button>
 
@@ -416,9 +305,6 @@ Edit Profile
 
 
 </div>
-
-
-
 
 
 
