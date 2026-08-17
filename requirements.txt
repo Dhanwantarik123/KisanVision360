@@ -13,3 +13,5 @@ requests
 numpy
 pandas
 mysql-connector-python==9.0.0
+tensorflow
+opencv-python-headless
