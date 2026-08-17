@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>KisanVision360 | Sign Up</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<img src="{{ url_for('static', filename='images/logo.png') }}"
+class="logo">
+
+<h1>KisanVision360</h1>
+
+<h2>Create New Account</h2>
+
+{% if error %}
+
+<div class="error">
+
+{{ error }}
+
+</div>
+
+{% endif %}
+
+<form method="POST">
+
+<div class="input-box">
+
+<i class="fas fa-user"></i>
+
+<input
+type="text"
+name="fullname"
+placeholder="Full Name"
+required>
+
+</div>
+
+<div class="input-box">
+
+<i class="fas fa-phone"></i>
+
+<input
+type="text"
+name="mobile"
+placeholder="Mobile Number"
+required>
+
+</div>
+
+<div class="input-box">
+
+<i class="fas fa-envelope"></i>
+
+<input
+type="email"
+name="email"
+placeholder="Email Address"
+required>
+
+</div>
+
+<div class="input-box">
+
+<i class="fas fa-lock"></i>
+
+<input
+type="password"
+id="password"
+name="password"
+placeholder="Password"
+required>
+
+<i class="fas fa-eye toggle-password"
+onclick="togglePassword()"></i>
+
+</div>
+
+<div class="input-box">
+
+<i class="fas fa-users"></i>
+
+<select name="role">
+
+<option value="Farmer">👨‍🌾 Farmer</option>
+
+<option value="Consumer">🛒 Consumer</option>
+
+</select>
+
+</div>
+
+<br>
+
+<button type="submit">
+
+<i class="fas fa-user-plus"></i>
+
+Create Account
+
+</button>
+
+</form>
+
+<br>
+
+<p style="color:white;">
+
+Already have an account?
+
+<a href="/login">
+
+<b>Login Here</b>
+
+</a>
+
+</p>
+
+</div>
+
+<script>
+
+function togglePassword(){
+
+var x=document.getElementById("password");
+
+if(x.type==="password")
+
+x.type="text";
+
+else
+
+x.type="password";
+
+}
+
+</script>
+
+</body>
+
+</html>

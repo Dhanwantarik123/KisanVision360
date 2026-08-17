@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>
+Nearby Dealers
+</title>
+
+
+<link rel="stylesheet"
+href="{{url_for('static',
+filename='css/dealers.css')}}">
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<h1>
+📍 Nearby Farm Machinery Dealers
+</h1>
+
+
+
+{% for dealer in dealers %}
+
+
+<div class="dealer-card">
+
+
+<h2>
+{{dealer.name}}
+</h2>
+
+
+<p>
+📍 Location:
+{{dealer.location}}
+</p>
+
+
+<p>
+☎ {{dealer.phone}}
+</p>
+
+
+<button>
+Contact Dealer
+</button>
+
+
+</div>
+
+
+
+{% endfor %}
+
+
+
+</div>
+
+
+</body>
+
+</html>

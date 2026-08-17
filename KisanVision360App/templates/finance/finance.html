@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>KisanVision360 | Finance</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/sidebar.css') }}">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/finance.css') }}">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+{% include "components/sidebar.html" %}
+
+<div class="main-content">
+
+<div class="topbar">
+
+<div>
+
+<h2>💰 Finance Dashboard</h2>
+
+<p>Manage your farm income and expenses</p>
+
+</div>
+
+<div class="profile">
+
+<img src="{{ url_for('static', filename='images/farmer.jpg') }}">
+
+<div>
+
+<h4>{{ name }}</h4>
+
+<p>Farmer</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="finance-grid">
+
+<div class="finance-card">
+
+<i class="fa-solid fa-wallet"></i>
+
+<h3>Total Income</h3>
+
+<h2>₹ {{ income }}</h2>
+
+</div>
+
+<div class="finance-card">
+
+<i class="fa-solid fa-money-bill-wave"></i>
+
+<h3>Expenses</h3>
+
+<h2>₹ {{ expenses }}</h2>
+
+</div>
+
+<div class="finance-card">
+
+<i class="fa-solid fa-chart-line"></i>
+
+<h3>Net Profit</h3>
+
+<h2>₹ {{ profit }}</h2>
+
+</div>
+
+</div>
+
+<div class="table-card">
+
+<h2>Recent Transactions</h2>
+
+<table>
+
+<tr>
+
+<th>Description</th>
+
+<th>Amount</th>
+
+<th>Type</th>
+
+</tr>
+
+{% for t in transactions %}
+
+<tr>
+
+<td>{{ t[0] }}</td>
+
+<td>₹ {{ t[1] }}</td>
+
+<td>
+
+{% if t[2]=="Income" %}
+
+<span class="income">{{ t[2] }}</span>
+
+{% else %}
+
+<span class="expense">{{ t[2] }}</span>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

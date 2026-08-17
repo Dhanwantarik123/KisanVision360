@@ -1,0 +1,757 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f8f5;
+    color: #164d32;
+}
+
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+.main-content {
+    padding: 22px;
+}
+
+
+/* =========================
+   TOPBAR
+========================= */
+
+.topbar {
+    background: white;
+    min-height: 72px;
+    border-radius: 18px;
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 5px 20px rgba(0, 80, 40, 0.08);
+    margin-bottom: 20px;
+}
+
+.title-section {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.title-icon {
+    width: 48px;
+    height: 48px;
+    background: #e1f5e9;
+    color: #0b8f4d;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.title-section h1 {
+    font-size: 24px;
+    color: #075d36;
+    margin-bottom: 4px;
+}
+
+.title-section p {
+    font-size: 12px;
+    color: #7b8b83;
+}
+
+
+/* =========================
+   PROFILE
+========================= */
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f7fbf8;
+    padding: 8px 14px;
+    border-radius: 14px;
+}
+
+.profile img {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #19a35b;
+}
+
+.profile h4 {
+    color: #145f3b;
+    font-size: 13px;
+}
+
+.profile span {
+    color: #7b8b83;
+    font-size: 11px;
+}
+
+
+/* =========================
+   BANNER
+========================= */
+
+.finance-banner {
+    background: linear-gradient(
+        135deg,
+        #08783f,
+        #18a45b
+    );
+
+    border-radius: 20px;
+
+    padding: 22px 28px;
+
+    color: white;
+
+    margin-bottom: 22px;
+
+    box-shadow:
+        0 10px 25px rgba(0, 120, 60, 0.18);
+}
+
+.banner-content {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.banner-icon {
+    width: 55px;
+    height: 55px;
+
+    background: rgba(255,255,255,0.18);
+
+    border-radius: 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 25px;
+}
+
+.finance-banner h2 {
+    font-size: 21px;
+    margin-bottom: 5px;
+}
+
+.finance-banner p {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+
+/* =========================
+   FINANCE CARDS
+========================= */
+
+.finance-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 18px;
+
+    margin-bottom: 25px;
+}
+
+.finance-card {
+    background: white;
+
+    padding: 20px;
+
+    border-radius: 18px;
+
+    min-height: 160px;
+
+    box-shadow:
+        0 7px 20px rgba(0, 80, 40, 0.08);
+
+    position: relative;
+
+    overflow: hidden;
+
+    transition: 0.3s;
+}
+
+.finance-card:hover {
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 12px 28px rgba(0, 80, 40, 0.14);
+}
+
+.finance-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 90px;
+    height: 90px;
+
+    border-radius: 50%;
+
+    right: -30px;
+    bottom: -30px;
+
+    opacity: 0.08;
+
+    background: #149653;
+}
+
+.card-top {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 14px;
+}
+
+.card-icon {
+    width: 43px;
+    height: 43px;
+
+    border-radius: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 19px;
+}
+
+.income-card .card-icon {
+    background: #e3f8ec;
+    color: #0a9550;
+}
+
+.expense-card .card-icon {
+    background: #fff0ee;
+    color: #e94d42;
+}
+
+.profit-card .card-icon {
+    background: #eaf3ff;
+    color: #2877c7;
+}
+
+.card-label {
+    font-size: 10px;
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    color: #91a098;
+}
+
+.finance-card h3 {
+    font-size: 14px;
+
+    color: #66756e;
+
+    margin-bottom: 7px;
+}
+
+.finance-card h2 {
+    font-size: 27px;
+
+    color: #075d36;
+
+    margin-bottom: 10px;
+}
+
+.finance-card p {
+    font-size: 11px;
+
+    color: #7e8d85;
+}
+
+.income-card p i {
+    color: #0a9550;
+}
+
+.expense-card p i {
+    color: #e94d42;
+}
+
+.profit-card p i {
+    color: #2877c7;
+}
+
+
+/* =========================
+   SECTION HEADER
+========================= */
+
+.section-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin: 20px 0 12px;
+}
+
+.section-header h2 {
+    font-size: 18px;
+
+    color: #075d36;
+
+    margin-bottom: 4px;
+}
+
+.section-header p {
+    font-size: 12px;
+
+    color: #89978f;
+}
+
+
+/* =========================
+   ACTION GRID
+========================= */
+
+.action-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 15px;
+
+    margin-bottom: 28px;
+}
+
+.action-card {
+    background: white;
+
+    border-radius: 16px;
+
+    padding: 18px;
+
+    text-decoration: none;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    position: relative;
+
+    box-shadow:
+        0 5px 18px rgba(0, 70, 40, 0.07);
+
+    transition: 0.3s;
+
+    border: 1px solid #edf3ef;
+}
+
+.action-card:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 10px 25px rgba(0, 70, 40, 0.12);
+}
+
+.action-icon {
+    width: 43px;
+    height: 43px;
+
+    flex-shrink: 0;
+
+    border-radius: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 17px;
+}
+
+.income-action .action-icon {
+    background: #e4f8ec;
+    color: #07944d;
+}
+
+.expense-action .action-icon {
+    background: #fff0ed;
+    color: #e34d40;
+}
+
+.profit-action .action-icon {
+    background: #eaf3ff;
+    color: #2679c9;
+}
+
+.calculator-action .action-icon {
+    background: #fff5dd;
+    color: #e49a00;
+}
+
+.action-card h3 {
+    font-size: 13px;
+
+    color: #145f3b;
+
+    margin-bottom: 4px;
+}
+
+.action-card p {
+    font-size: 10px;
+
+    color: #87958e;
+
+    line-height: 1.4;
+}
+
+.action-arrow {
+    position: absolute;
+
+    right: 13px;
+
+    color: #a7b3ad;
+
+    font-size: 12px;
+}
+
+
+/* =========================
+   TRANSACTION SECTION
+========================= */
+
+.transaction-section {
+    margin-top: 5px;
+}
+
+.transaction-count {
+    background: #e4f7ec;
+
+    color: #098a49;
+
+    padding: 7px 12px;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+
+    font-weight: bold;
+}
+
+
+/* =========================
+   TABLE
+========================= */
+
+.table-card {
+    background: white;
+
+    border-radius: 18px;
+
+    padding: 18px;
+
+    box-shadow:
+        0 7px 20px rgba(0, 70, 40, 0.08);
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 650px;
+}
+
+thead {
+    background: #0d8d4b;
+
+    color: white;
+}
+
+th {
+    padding: 13px;
+
+    text-align: left;
+
+    font-size: 11px;
+}
+
+td {
+    padding: 14px 13px;
+
+    border-bottom: 1px solid #edf1ee;
+
+    font-size: 12px;
+
+    color: #52615a;
+}
+
+tbody tr {
+    transition: 0.2s;
+}
+
+tbody tr:hover {
+    background: #f5fbf7;
+}
+
+td strong {
+    color: #174f34;
+}
+
+.description-cell {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    font-weight: 600;
+}
+
+.small-income-icon,
+.small-expense-icon {
+    width: 32px;
+    height: 32px;
+
+    border-radius: 9px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.small-income-icon {
+    background: #e4f8ec;
+    color: #07944d;
+}
+
+.small-expense-icon {
+    background: #fff0ed;
+    color: #e34d40;
+}
+
+
+/* =========================
+   BADGES
+========================= */
+
+.type-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 6px 10px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+
+    font-weight: bold;
+}
+
+.type-badge.income {
+    background: #e4f8ec;
+    color: #078b49;
+}
+
+.type-badge.expense {
+    background: #fff0ed;
+    color: #df4a3e;
+}
+
+.date {
+    color: #78867f;
+
+    font-size: 11px;
+}
+
+.date i {
+    margin-right: 4px;
+}
+
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.empty-state {
+    text-align: center;
+
+    padding: 45px 20px;
+}
+
+.empty-icon {
+    width: 70px;
+    height: 70px;
+
+    margin: auto;
+
+    border-radius: 20px;
+
+    background: #e8f7ee;
+
+    color: #119354;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 28px;
+
+    margin-bottom: 15px;
+}
+
+.empty-state h3 {
+    color: #205b40;
+
+    margin-bottom: 7px;
+}
+
+.empty-state p {
+    color: #8a9791;
+
+    font-size: 12px;
+
+    margin-bottom: 20px;
+}
+
+.empty-buttons {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+}
+
+.empty-buttons a {
+    text-decoration: none;
+}
+
+.empty-buttons button {
+    border: none;
+
+    padding: 10px 16px;
+
+    border-radius: 8px;
+
+    color: white;
+
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.empty-income-btn {
+    background: #118f4d;
+}
+
+.empty-expense-btn {
+    background: #e05246;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.finance-footer {
+    text-align: center;
+
+    color: #8a9790;
+
+    font-size: 11px;
+
+    padding: 25px 0 10px;
+}
+
+.finance-footer i {
+    color: #159453;
+
+    margin-right: 5px;
+}
+
+.finance-footer span {
+    margin: 0 7px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1000px) {
+
+    .finance-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .action-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .main-content {
+        padding: 12px;
+    }
+
+    .topbar {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 12px;
+    }
+
+    .finance-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .action-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .finance-banner {
+        padding: 18px;
+    }
+
+    .banner-content {
+        align-items: flex-start;
+    }
+
+    .profile {
+        width: 100%;
+    }
+
+    .empty-buttons {
+        flex-direction: column;
+    }
+
+}

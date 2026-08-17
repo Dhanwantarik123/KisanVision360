@@ -1,0 +1,884 @@
+/* =====================================
+ KisanVision360 FARMER DASHBOARD CSS
+ Premium Agriculture UI
+===================================== */
+
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+
+
+body{
+
+    background:
+
+    linear-gradient(
+        rgba(27, 72, 46, 0.75),
+        rgba(10,70,35,0.75)
+    ),
+
+    url(""\\Ubuntu-20.04\home\dhanwantari\KisanVision360\static\images\background.jpg"");
+
+
+    background-size:cover;
+
+    background-position:center;
+
+    background-attachment:fixed;
+
+}
+
+
+
+
+
+/* ==============================
+ MAIN CONTENT
+============================== */
+
+
+.main-content{
+
+    margin-left:260px;
+
+    padding:25px;
+
+}
+
+
+
+
+
+
+
+/* ==============================
+ TOPBAR
+============================== */
+
+
+.topbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:
+
+    rgba(255,255,255,0.20);
+
+
+    backdrop-filter:blur(15px);
+
+
+    padding:20px 25px;
+
+
+    border-radius:25px;
+
+
+    color:white;
+
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.2);
+
+}
+
+
+
+.topbar h1{
+
+    font-size:32px;
+
+}
+
+
+.topbar p{
+
+    margin-top:8px;
+
+    opacity:.9;
+
+}
+
+
+
+
+
+
+.top-right{
+
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+}
+
+
+
+
+
+
+
+/* ==============================
+ LIVE DATE
+============================== */
+
+
+.live-time{
+
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+
+    background:white;
+
+
+    color:#198754;
+
+
+    padding:12px 18px;
+
+
+    border-radius:20px;
+
+}
+
+
+
+.live-time i{
+
+    font-size:25px;
+
+}
+
+
+
+
+
+
+
+
+
+/* ==============================
+ PROFILE
+============================== */
+
+
+.profile{
+
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+
+    background:white;
+
+
+    color:#14532d;
+
+
+    padding:10px 15px;
+
+
+    border-radius:20px;
+
+}
+
+
+
+.profile img{
+
+
+    width:55px;
+
+    height:55px;
+
+
+    border-radius:50%;
+
+
+    border:3px solid #198754;
+
+
+    object-fit:cover;
+
+}
+
+
+
+
+
+
+
+
+/* ==============================
+ NOTIFICATION
+============================== */
+
+
+.notification{
+
+
+    background:white;
+
+
+    color:#198754;
+
+
+    padding:15px;
+
+
+    border-radius:50%;
+
+
+    position:relative;
+
+
+}
+
+
+
+.notification span{
+
+
+    position:absolute;
+
+
+    top:-5px;
+
+    right:-5px;
+
+
+    background:red;
+
+
+    color:white;
+
+
+    width:20px;
+
+    height:20px;
+
+
+    border-radius:50%;
+
+
+    text-align:center;
+
+
+    font-size:12px;
+
+}
+
+
+
+
+
+
+
+/* ==============================
+ WEATHER SUMMARY
+============================== */
+
+
+.weather-summary{
+
+
+    margin-top:30px;
+
+
+    padding:35px;
+
+
+    border-radius:30px;
+
+
+    background:
+
+
+    linear-gradient(
+        135deg,
+        #198754,
+        #0f5132
+    );
+
+
+    color:white;
+
+
+    display:flex;
+
+
+    justify-content:space-between;
+
+
+    gap:30px;
+
+
+    box-shadow:
+    0 15px 35px rgba(0,0,0,.25);
+
+
+}
+
+
+
+
+.weather-main{
+
+    text-align:center;
+
+}
+
+
+
+
+.weather-main h2{
+
+    font-size:25px;
+
+}
+
+
+
+.weather-main h1{
+
+
+    font-size:70px;
+
+    margin:15px 0;
+
+}
+
+
+
+.weather-main img{
+
+
+    width:130px;
+
+}
+
+
+
+
+
+
+
+
+/* WEATHER CARDS */
+
+
+.weather-grid{
+
+
+    display:grid;
+
+
+    grid-template-columns:
+
+    repeat(2,180px);
+
+
+    gap:20px;
+
+}
+
+
+
+
+.weather-card{
+
+
+    background:white;
+
+
+    color:#14532d;
+
+
+    padding:25px;
+
+
+    border-radius:22px;
+
+
+    text-align:center;
+
+
+    transition:.3s;
+
+
+}
+
+
+
+.weather-card:hover{
+
+
+    transform:translateY(-8px);
+
+}
+
+
+
+.weather-card i{
+
+
+    font-size:35px;
+
+
+    color:#198754;
+
+
+}
+
+
+
+.weather-card h3{
+
+
+    margin:10px 0;
+
+}
+
+
+
+.weather-card p{
+
+
+    font-size:22px;
+
+
+    font-weight:bold;
+
+
+}
+
+
+
+
+
+
+
+
+
+/* ==============================
+ HERO
+============================== */
+
+
+.hero{
+
+
+    margin-top:30px;
+
+
+    background:white;
+
+
+    padding:40px;
+
+
+    border-radius:30px;
+
+
+    display:flex;
+
+
+    justify-content:space-between;
+
+
+    align-items:center;
+
+
+    gap:30px;
+
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.15);
+
+
+}
+
+
+
+
+
+.hero-text{
+
+
+    width:55%;
+
+}
+
+
+
+
+.hero-text span{
+
+
+    background:#d1fae5;
+
+
+    color:#047857;
+
+
+    padding:10px 20px;
+
+
+    border-radius:30px;
+
+
+    font-weight:bold;
+
+
+}
+
+
+
+
+
+.hero-text h1{
+
+
+    color:#14532d;
+
+
+    font-size:45px;
+
+
+    margin:20px 0;
+
+
+}
+
+
+
+
+
+.hero-text p{
+
+
+    color:#666;
+
+
+    font-size:18px;
+
+
+    line-height:1.6;
+
+
+}
+
+
+
+
+
+.hero-text a{
+
+
+    display:inline-block;
+
+
+    margin-top:25px;
+
+
+    margin-right:15px;
+
+
+    padding:15px 25px;
+
+
+    border-radius:30px;
+
+
+    background:#198754;
+
+
+    color:white;
+
+
+    text-decoration:none;
+
+
+    font-weight:600;
+
+
+}
+
+
+
+
+
+
+
+.hero-image img{
+
+
+    width:450px;
+
+
+    border-radius:30px;
+
+
+}
+
+
+
+
+
+
+
+
+
+/* ==============================
+ FEATURES
+============================== */
+
+
+.features{
+
+
+    margin-top:35px;
+
+
+    display:grid;
+
+
+    grid-template-columns:
+
+    repeat(3,1fr);
+
+
+    gap:25px;
+
+
+}
+
+
+
+
+
+.card{
+
+
+    background:white;
+
+
+    padding:30px;
+
+
+    border-radius:25px;
+
+
+    text-align:center;
+
+
+    color:#14532d;
+
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,.1);
+
+
+    transition:.3s;
+
+
+}
+
+
+
+
+.card:hover{
+
+
+    transform:translateY(-10px);
+
+
+}
+
+
+
+.features a{
+
+
+    text-decoration:none;
+
+
+}
+
+
+
+
+
+.card h3{
+
+
+    margin:15px 0;
+
+
+}
+
+
+
+.card p{
+
+
+    color:#666;
+
+
+}
+
+
+
+
+
+
+
+
+/* ==============================
+ FOOTER
+============================== */
+
+
+footer{
+
+
+    color:white;
+
+
+    text-align:center;
+
+
+    padding:30px;
+
+
+}
+
+
+
+
+
+
+
+
+
+/* ==============================
+ RESPONSIVE
+============================== */
+
+
+@media(max-width:1100px){
+
+
+.main-content{
+
+    margin-left:80px;
+
+}
+
+
+
+.weather-summary{
+
+
+    flex-direction:column;
+
+}
+
+
+
+.hero{
+
+
+    flex-direction:column;
+
+}
+
+
+
+.hero-text{
+
+    width:100%;
+
+}
+
+
+
+.hero-image img{
+
+
+    width:100%;
+
+}
+
+
+
+.features{
+
+
+    grid-template-columns:1fr 1fr;
+
+}
+
+
+}
+
+
+
+
+
+@media(max-width:600px){
+
+
+
+.topbar{
+
+
+    flex-direction:column;
+
+
+    gap:20px;
+
+
+}
+
+
+
+.weather-grid{
+
+
+    grid-template-columns:1fr;
+
+}
+
+
+
+.features{
+
+
+    grid-template-columns:1fr;
+
+}
+
+
+
+}

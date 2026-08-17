@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>KisanVision360 | Government Schemes</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/schemes.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+
+<body>
+
+
+<div class="dashboard-container">
+
+
+    <!-- SIDEBAR -->
+
+    <div class="sidebar">
+
+        <img
+            src="{{ url_for('static',
+            filename='images/logo.png') }}"
+            class="logo"
+            alt="KisanVision360">
+
+
+        <h2>KisanVision360</h2>
+
+        <p class="subtitle">
+            AI Smart Farming
+        </p>
+
+
+        <div class="menu-title">
+            NAVIGATION
+        </div>
+
+
+        <a href="/farmer">
+
+            <i class="fas fa-home"></i>
+
+            <span>Dashboard</span>
+
+        </a>
+
+
+        <a href="/weather">
+
+            <i class="fas fa-cloud-sun"></i>
+
+            <span>Weather</span>
+
+        </a>
+
+
+        <a href="/marketplace">
+
+            <i class="fas fa-store"></i>
+
+            <span>Marketplace</span>
+
+        </a>
+
+
+        <a href="/notifications">
+
+            <i class="fas fa-bell"></i>
+
+            <span>Notifications</span>
+
+        </a>
+
+
+        <!-- GOVERNMENT SCHEMES -->
+
+        <a href="{{ url_for('schemes') }}"
+           class="active">
+
+            <i class="fas fa-landmark"></i>
+
+            <span>Government Schemes</span>
+
+        </a>
+
+
+        <a href="/profile">
+
+            <i class="fas fa-user"></i>
+
+            <span>Profile</span>
+
+        </a>
+
+
+        <a href="/settings">
+
+            <i class="fas fa-cog"></i>
+
+            <span>Settings</span>
+
+        </a>
+
+
+        <a href="/logout">
+
+            <i class="fas fa-right-from-bracket"></i>
+
+            <span>Logout</span>
+
+        </a>
+
+    </div>
+
+
+
+    <!-- MAIN CONTENT -->
+
+    <div class="main-content">
+
+
+        <!-- TOPBAR -->
+
+        <div class="topbar">
+
+            <div>
+
+                <h1>
+
+                    <i class="fas fa-landmark"></i>
+
+                    Government Schemes
+
+                </h1>
+
+                <p>
+                    Government support and schemes for farmers
+                </p>
+
+            </div>
+
+
+            <div class="user-info">
+
+                <i class="fas fa-user-circle"></i>
+
+                <div>
+
+                    <strong>
+                        {{ name }}
+                    </strong>
+
+                    <small>
+                        Farmer
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- INTRODUCTION -->
+
+        <div class="scheme-banner">
+
+            <div class="banner-icon">
+
+                <i class="fas fa-hand-holding-heart"></i>
+
+            </div>
+
+
+            <div>
+
+                <h2>
+                    Farmer Government Schemes
+                </h2>
+
+                <p>
+                    Explore financial assistance, crop insurance,
+                    irrigation and agricultural support schemes.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- SEARCH -->
+
+        <div class="search-box">
+
+            <i class="fas fa-search"></i>
+
+            <input
+                type="text"
+                id="schemeSearch"
+                placeholder="Search government scheme...">
+
+        </div>
+
+
+
+        <!-- SCHEMES -->
+
+        <div class="scheme-grid"
+             id="schemeGrid">
+
+
+            {% for scheme in schemes %}
+
+
+            <div class="scheme-card">
+
+
+                <div class="scheme-icon">
+
+                    <i class="fas fa-seedling"></i>
+
+                </div>
+
+
+                <div class="scheme-content">
+
+
+                    <h2>
+                        {{ scheme.name }}
+                    </h2>
+
+
+                    <p class="description">
+
+                        {{ scheme.description }}
+
+                    </p>
+
+
+
+                    <div class="scheme-info">
+
+
+                        <div>
+
+                            <span>
+                                <i class="fas fa-indian-rupee-sign"></i>
+                                Benefit
+                            </span>
+
+                            <strong>
+                                {{ scheme.benefit }}
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                <i class="fas fa-user-check"></i>
+                                Eligibility
+                            </span>
+
+                            <strong>
+                                {{ scheme.eligibility }}
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <a
+                        href="{{ scheme.link }}"
+                        target="_blank"
+                        class="apply-btn">
+
+                        View Official Website
+
+                        <i class="fas fa-arrow-up-right-from-square"></i>
+
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+
+        <!-- NO RESULT -->
+
+        <div id="noResult"
+             class="no-result">
+
+            <i class="fas fa-search"></i>
+
+            <h2>
+                No Scheme Found
+            </h2>
+
+            <p>
+                Try another search.
+            </p>
+
+        </div>
+
+
+
+        <!-- BACK -->
+
+        <a href="/farmer"
+           class="back-btn">
+
+            <i class="fas fa-arrow-left"></i>
+
+            Back to Dashboard
+
+        </a>
+
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+const searchInput =
+    document.getElementById("schemeSearch");
+
+const cards =
+    document.querySelectorAll(".scheme-card");
+
+const noResult =
+    document.getElementById("noResult");
+
+
+searchInput.addEventListener(
+    "input",
+    function () {
+
+        const search =
+            this.value.toLowerCase().trim();
+
+        let found = false;
+
+
+        cards.forEach(function(card) {
+
+            const text =
+                card.innerText.toLowerCase();
+
+
+            if (text.includes(search)) {
+
+                card.style.display = "flex";
+
+                found = true;
+
+            } else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+
+        if (found) {
+
+            noResult.style.display = "none";
+
+        } else {
+
+            noResult.style.display = "block";
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

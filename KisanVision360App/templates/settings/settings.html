@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Settings</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static',filename='css/settings.css') }}">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+<body>
+
+{% include 'includes/sidebar.html' %}
+
+<div class="main">
+
+<div class="header">
+
+<div>
+
+<h1><i class="fa-solid fa-gear"></i> Settings</h1>
+
+<p>Manage your KisanVision360 account</p>
+
+</div>
+
+<div class="top-right">
+
+<input type="text" placeholder="Search Settings">
+
+<i class="fa-solid fa-bell notification"></i>
+
+<div class="profile">
+
+<img src="{{ url_for('static',filename='images/farmers/default.png') }}">
+
+<div>
+
+<b>{{ user.fullname }}</b>
+
+<p>{{ user.role }}</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="weather-strip">
+
+📍 Nagpur &nbsp; | &nbsp; 🌡 27°C &nbsp; | &nbsp; ☁ Rain
+
+</div>
+
+<div class="cards">
+
+<!-- Profile -->
+
+<div class="card">
+
+<i class="fa-solid fa-user fa-2x"></i>
+
+<h2>Profile Information</h2>
+
+<p>Name : {{ user.fullname }}</p>
+
+<p>Mobile : {{ user.mobile }}</p>
+
+<p>Email : {{ user.email }}</p>
+
+<p>Role : {{ user.role }}</p>
+
+<button>Edit Profile</button>
+
+</div>
+
+<!-- Language -->
+
+<div class="card">
+
+<i class="fa-solid fa-language fa-2x"></i>
+
+<h2>Language</h2>
+
+<select onchange="location=this.value">
+
+<option value="/change-language/en">English</option>
+
+<option value="/change-language/hi">हिन्दी</option>
+
+<option value="/change-language/mr">मराठी</option>
+
+</select>
+
+</div>
+
+<!-- Notification -->
+
+<div class="card">
+
+<i class="fa-solid fa-bell fa-2x"></i>
+
+<h2>Notifications</h2>
+
+<p>Weather & Farming Alerts</p>
+
+<label class="switch">
+
+<input type="checkbox">
+
+<span class="slider"></span>
+
+</label>
+
+</div>
+
+<!-- Weather -->
+
+<div class="card">
+
+<i class="fa-solid fa-cloud-sun fa-2x"></i>
+
+<h2>Current Weather</h2>
+
+<p>Location : Nagpur</p>
+
+<p>Temperature : 27°C</p>
+
+<p>Condition : Rain</p>
+
+</div>
+
+<!-- Security -->
+
+<div class="card">
+
+<i class="fa-solid fa-lock fa-2x"></i>
+
+<h2>Security</h2>
+
+<p>Manage password & account security</p>
+
+<button>Change Password</button>
+
+</div>
+
+<!-- Help -->
+
+<div class="card">
+
+<i class="fa-solid fa-headset fa-2x"></i>
+
+<h2>Help & Support</h2>
+
+<p>Farmer Assistance</p>
+
+<button>Open Help</button>
+
+</div>
+
+<!-- Logout -->
+
+<div class="card logout">
+
+<i class="fa-solid fa-right-from-bracket fa-2x"></i>
+
+<h2>Logout</h2>
+
+<p>Sign out safely</p>
+
+<a href="{{ url_for('auth.logout') }}">
+
+<button class="logout-btn">Logout</button>
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

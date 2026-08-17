@@ -1,0 +1,122 @@
+<!-- ==============================
+     Floating AI Button
+================================ -->
+
+<div class="chatbot-button" onclick="toggleChat()">
+
+    <i class="fa-solid fa-robot"></i>
+
+</div>
+
+<!-- ==============================
+     Chat Window
+================================ -->
+
+<div class="chatbot-box" id="chatBox">
+
+    <!-- Header -->
+
+    <div class="chat-header">
+
+        <div class="chat-user">
+
+            <div class="ai-avatar">
+
+                🤖
+
+            </div>
+
+            <div>
+
+                <h3>KisanVision360 AI</h3>
+
+                <span class="status">
+
+                    ● Online
+
+                </span>
+
+            </div>
+
+        </div>
+
+        <button class="close-btn" onclick="toggleChat()">
+
+            <i class="fa-solid fa-xmark"></i>
+
+        </button>
+
+    </div>
+
+    <!-- Chat Body -->
+
+    <div class="chat-body" id="chat-box">
+
+        <div class="bot">
+
+            👋 <b>Hello {{ name }}</b>
+
+            <br><br>
+
+            Welcome to KisanVision360 AI Assistant 🌱
+
+            <br><br>
+
+            I can help you with:
+
+            <div class="suggestions">
+
+                <button onclick="quickQuestion('Weather Today')">
+                    🌦 Weather
+                </button>
+
+                <button onclick="quickQuestion('Best Crop')">
+                    🌱 Crop
+                </button>
+
+                <button onclick="quickQuestion('Irrigation Advice')">
+                    💧 Irrigation
+                </button>
+
+                <button onclick="quickQuestion('Market Price')">
+                    📈 Market
+                </button>
+
+                <button onclick="quickQuestion('Government Schemes')">
+                    🏛 Schemes
+                </button>
+
+                <button onclick="quickQuestion('Disease Detection')">
+                    🐛 Disease
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Input -->
+
+    <div class="chat-footer">
+
+        <input
+
+            id="message"
+
+            placeholder="Ask anything about farming...">
+
+        <button onclick="sendMessage()">
+
+            <i class="fa-solid fa-paper-plane"></i>
+
+        </button>
+
+    </div>
+
+</div>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/chatbot.css') }}">
+
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>

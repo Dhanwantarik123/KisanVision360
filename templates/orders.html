@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>KisanVision360 | My Orders</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/sidebar.css') }}">
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/orders.css') }}">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+
+<body>
+
+{% include "components/sidebar.html" %}
+
+
+<div class="main-content">
+
+
+<!-- ================= TOPBAR ================= -->
+
+<div class="topbar">
+
+    <div>
+
+        <h1>
+            <i class="fa-solid fa-box-open"></i>
+            My Orders
+        </h1>
+
+        <p>
+            Track your marketplace orders
+        </p>
+
+    </div>
+
+
+    <div class="profile">
+
+        <img
+        src="{{ url_for(
+            'static',
+            filename='images/farmer.jpg'
+        ) }}">
+
+        <div>
+
+            <h4>{{ name }}</h4>
+
+            <span>Farmer</span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= SUMMARY ================= -->
+
+<div class="order-summary">
+
+
+    <div class="summary-card">
+
+        <div class="summary-icon">
+            <i class="fa-solid fa-box"></i>
+        </div>
+
+        <div>
+
+            <h3>
+                {{ orders|length }}
+            </h3>
+
+            <p>
+                Total Orders
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+        <div class="summary-icon delivered">
+            <i class="fa-solid fa-truck"></i>
+        </div>
+
+        <div>
+
+            <h3>
+                My Orders
+            </h3>
+
+            <p>
+                Marketplace Purchases
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+        <div class="summary-icon payment">
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+        </div>
+
+        <div>
+
+            <h3>
+                Secure
+            </h3>
+
+            <p>
+                Payment Tracking
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= ORDER SECTION ================= -->
+
+<div class="order-section">
+
+
+    <div class="section-title">
+
+        <div>
+
+            <h2>
+                <i class="fa-solid fa-receipt"></i>
+                Order History
+            </h2>
+
+            <p>
+                View your recent marketplace purchases
+            </p>
+
+        </div>
+
+
+        <span class="order-count">
+
+            {{ orders|length }} Orders
+
+        </span>
+
+    </div>
+
+
+    <!-- ================= TABLE ================= -->
+
+    {% if orders %}
+
+    <div class="table-card">
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Order ID
+                        </th>
+
+                        <th>
+                            Product / Request
+                        </th>
+
+                        <th>
+                            Quantity
+                        </th>
+
+                        <th>
+                            Price
+                        </th>
+
+                        <th>
+                            Total
+                        </th>
+
+                        <th>
+                            Payment
+                        </th>
+
+                        <th>
+                            Delivery
+                        </th>
+
+                        <th>
+                            Date
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                {% for order in orders %}
+
+                <tr>
+
+
+                    <!-- ORDER ID -->
+
+                    <td>
+
+                        <span class="order-id">
+
+                            #{{ order[0] }}
+
+                        </span>
+
+                    </td>
+
+
+                    <!-- PRODUCT -->
+
+                    <td>
+
+                        <div class="product-cell">
+
+                            <div class="product-icon">
+
+                                <i class="fa-solid fa-seedling"></i>
+
+                            </div>
+
+                            <span>
+
+                                {{ order[1] }}
+
+                            </span>
+
+                        </div>
+
+                    </td>
+
+
+                    <!-- QUANTITY -->
+
+                    <td>
+
+                        <span class="quantity">
+
+                            {{ order[2] }}
+
+                        </span>
+
+                    </td>
+
+
+                    <!-- PRICE -->
+
+                    <td>
+
+                        ₹{{ order[3] }}
+
+                    </td>
+
+
+                    <!-- TOTAL -->
+
+                    <td>
+
+                        <strong class="total">
+
+                            ₹{{ order[4] }}
+
+                        </strong>
+
+                    </td>
+
+
+                    <!-- PAYMENT -->
+
+                    <td>
+
+                        {% if order|length > 7 %}
+
+                            {% if order[7] == "Paid" %}
+
+                            <span class="badge paid">
+
+                                <i class="fa-solid fa-check"></i>
+
+                                Paid
+
+                            </span>
+
+                            {% else %}
+
+                            <span class="badge pending">
+
+                                <i class="fa-solid fa-clock"></i>
+
+                                {{ order[7] }}
+
+                            </span>
+
+                            {% endif %}
+
+                        {% else %}
+
+                            <span class="badge pending">
+
+                                Pending
+
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <!-- DELIVERY -->
+
+                    <td>
+
+                        {% if order[5] == "Delivered" %}
+
+                        <span class="badge delivered-badge">
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+                            Delivered
+
+                        </span>
+
+                        {% elif order[5] == "Cancelled" %}
+
+                        <span class="badge cancelled">
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                            Cancelled
+
+                        </span>
+
+                        {% elif order[5] == "Shipped" %}
+
+                        <span class="badge shipped">
+
+                            <i class="fa-solid fa-truck"></i>
+
+                            Shipped
+
+                        </span>
+
+                        {% else %}
+
+                        <span class="badge processing">
+
+                            <i class="fa-solid fa-spinner"></i>
+
+                            {{ order[5] }}
+
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <!-- DATE -->
+
+                    <td>
+
+                        <span class="date">
+
+                            <i class="fa-regular fa-calendar"></i>
+
+                            {{ order[6] }}
+
+                        </span>
+
+                    </td>
+
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    {% else %}
+
+
+    <!-- ================= EMPTY ================= -->
+
+    <div class="empty-orders">
+
+        <div class="empty-icon">
+
+            <i class="fa-solid fa-box-open"></i>
+
+        </div>
+
+        <h2>
+            No Orders Yet
+        </h2>
+
+        <p>
+            You have not placed any marketplace orders yet.
+        </p>
+
+        <a href="/marketplace">
+
+            <button>
+
+                <i class="fa-solid fa-store"></i>
+
+                Go to Marketplace
+
+            </button>
+
+        </a>
+
+    </div>
+
+    {% endif %}
+
+
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+
+<div class="orders-footer">
+
+    <i class="fa-solid fa-leaf"></i>
+
+    KisanVision360
+
+    <span>•</span>
+
+    Smart Farming Marketplace
+
+</div>
+
+
+</div>
+
+
+</body>
+
+</html>

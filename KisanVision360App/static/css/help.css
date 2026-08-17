@@ -1,0 +1,125 @@
+body{
+
+background:#f1f8e9;
+
+font-family:Arial;
+
+}
+
+
+.container{
+
+padding:40px;
+
+}
+
+
+
+h1{
+
+color:#166534;
+
+text-align:center;
+
+}
+
+
+
+.help-card{
+
+background:white;
+
+padding:25px;
+
+margin:20px;
+
+border-radius:20px;
+
+box-shadow:0 8px 20px #ccc;
+
+}
+
+
+
+button{
+
+background:#198754;
+
+color:white;
+
+padding:12px 25px;
+
+border:none;
+
+border-radius:20px;
+
+}
+body{
+    margin:0;
+    padding:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7f9;
+}
+
+.container{
+    width:80%;
+    margin:40px auto;
+}
+
+h1{
+    text-align:center;
+    color:#2E7D32;
+    margin-bottom:30px;
+}
+
+.help-card{
+    background:#fff;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 4px 10px rgba(0,0,0,.1);
+    transition:.3s;
+}
+
+.help-card:hover{
+    transform:translateY(-5px);
+}
+
+.help-card h2{
+    color:#1B5E20;
+    margin-bottom:10px;
+}
+
+.help-card p{
+    color:#555;
+    line-height:1.6;
+}
+
+button{
+    width:220px;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:#2E7D32;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    display:block;
+    margin:30px auto;
+}
+
+button:hover{
+    background:#1B5E20;
+}
+
+@media(max-width:768px){
+
+.container{
+    width:95%;
+}
+
+button{
+    width:100%;
+}
+
+}

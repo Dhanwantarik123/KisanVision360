@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>KisanVision360 | Marketplace</title>
+
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/sidebar.css') }}">
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/marketplace.css') }}">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+
+<body>
+
+
+<div class="dashboard-container">
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+{% include "components/sidebar.html" %}
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<div class="main-content">
+
+
+<!-- =====================================================
+     TOP BAR
+===================================================== -->
+
+<header class="topbar">
+
+
+    <div class="page-title">
+
+        <div class="title-icon">
+
+            <i class="fa-solid fa-store"></i>
+
+        </div>
+
+
+        <div>
+
+            <h1>
+                Farmer Marketplace
+            </h1>
+
+            <p>
+                Buy, Sell & Track Agriculture Market Prices
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="top-right">
+
+
+        <!-- SEARCH -->
+
+        <div class="top-search">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                type="text"
+                id="productSearch"
+                placeholder="Search products...">
+
+        </div>
+
+
+
+        <!-- NOTIFICATION -->
+
+        <a href="/notifications"
+           class="notification">
+
+            <i class="fa-solid fa-bell"></i>
+
+            {% if notifications_count %}
+
+            <span>
+                {{ notifications_count }}
+            </span>
+
+            {% else %}
+
+            <span>
+                0
+            </span>
+
+            {% endif %}
+
+        </a>
+
+
+
+        <!-- PROFILE -->
+
+        <div class="profile">
+
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='images/farmer.jpg'
+                ) }}">
+
+            <div>
+
+                <h4>
+                    {{ name }}
+                </h4>
+
+                <small>
+                    Farmer
+                </small>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     WEATHER
+===================================================== -->
+
+{% if weather %}
+
+<div class="weather-banner">
+
+
+    <div class="weather-location">
+
+        <i class="fa-solid fa-location-dot"></i>
+
+        <strong>
+            {{ weather.city }}
+        </strong>
+
+    </div>
+
+
+    <div>
+
+        🌡
+
+        {{ weather.temperature }}°C
+
+    </div>
+
+
+    <div>
+
+        ☁
+
+        {{ weather.condition }}
+
+    </div>
+
+
+    {% if weather.humidity %}
+
+    <div>
+
+        💧
+
+        {{ weather.humidity }}%
+
+    </div>
+
+    {% endif %}
+
+
+</div>
+
+{% endif %}
+
+
+
+<!-- =====================================================
+     WELCOME BANNER
+===================================================== -->
+
+<div class="marketplace-banner">
+
+
+    <div>
+
+        <h2>
+            🌾 Welcome to KisanVision360 Marketplace
+        </h2>
+
+        <p>
+            Sell your farm products directly and discover
+            current agriculture market prices.
+        </p>
+
+    </div>
+
+
+    <div class="banner-icon">
+
+        <i class="fa-solid fa-seedling"></i>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     ACTION BUTTONS
+===================================================== -->
+
+<div class="action-buttons">
+
+
+    <a href="/add-product"
+       class="action-btn sell-btn">
+
+        <i class="fa-solid fa-plus"></i>
+
+        <div>
+
+            <strong>
+                Sell Product
+            </strong>
+
+            <small>
+                List your farm products
+            </small>
+
+        </div>
+
+    </a>
+
+
+
+    <a href="/consumer-request"
+       class="action-btn request-btn">
+
+        <i class="fa-solid fa-cart-shopping"></i>
+
+        <div>
+
+            <strong>
+                Consumer Requirement
+            </strong>
+
+            <small>
+                View buyer requirements
+            </small>
+
+        </div>
+
+    </a>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     MANDI PRICES
+===================================================== -->
+
+<section class="market-card">
+
+
+    <div class="section-header">
+
+
+        <div>
+
+            <h2>
+                <i class="fa-solid fa-chart-line"></i>
+
+                Today's Government Mandi Prices
+            </h2>
+
+            <p>
+                Current crop market information
+            </p>
+
+        </div>
+
+
+        <div class="crop-search">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                type="text"
+                id="cropSearch"
+                placeholder="Search crop...">
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="table-wrapper">
+
+        <table id="priceTable">
+
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Crop
+                    </th>
+
+                    <th>
+                        Market
+                    </th>
+
+                    <th>
+                        State
+                    </th>
+
+                    <th>
+                        Price ₹/Quintal
+                    </th>
+
+                    <th>
+                        Date
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+
+            {% for crop in prices %}
+
+            <tr>
+
+
+                <td>
+
+                    <div class="crop-name">
+
+                        <div class="crop-icon">
+
+                            <i class="fa-solid fa-wheat-awn"></i>
+
+                        </div>
+
+                        {{ crop.commodity }}
+
+                    </div>
+
+                </td>
+
+
+                <td>
+                    {{ crop.market }}
+                </td>
+
+
+                <td>
+                    {{ crop.state }}
+                </td>
+
+
+                <td>
+
+                    <strong class="price">
+
+                        ₹ {{ crop.modal_price }}
+
+                    </strong>
+
+                </td>
+
+
+                <td>
+
+                    <span class="date">
+
+                        <i class="fa-regular fa-calendar"></i>
+
+                        {{ crop.arrival_date }}
+
+                    </span>
+
+                </td>
+
+
+            </tr>
+
+            {% else %}
+
+            <tr>
+
+                <td colspan="5"
+                    class="no-data">
+
+                    <i class="fa-solid fa-database"></i>
+
+                    <p>
+                        No mandi price data available.
+                    </p>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     FARMER PRODUCTS
+===================================================== -->
+
+<section class="product-section">
+
+
+    <div class="section-header">
+
+
+        <div>
+
+            <h2>
+
+                <i class="fa-solid fa-seedling"></i>
+
+                Farmer Products
+
+            </h2>
+
+
+            <p>
+
+                Fresh products available from farmers
+
+            </p>
+
+        </div>
+
+
+        <span class="product-count">
+
+            {{ products|length }}
+
+            Products
+
+        </span>
+
+
+    </div>
+
+
+
+    <div class="product-grid"
+         id="productGrid">
+
+
+    {% for product in products %}
+
+
+        <div class="product-card">
+
+
+            <!-- PRODUCT IMAGE -->
+
+            <div class="product-image">
+
+                {% if product.image %}
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename='uploads/products/' + product.image
+                    ) }}"
+                    alt="{{ product.product_name }}">
+
+                {% else %}
+
+                <div class="no-image">
+
+                    <i class="fa-solid fa-seedling"></i>
+
+                </div>
+
+                {% endif %}
+
+
+                <span class="available-badge">
+
+                    <i class="fa-solid fa-circle"></i>
+
+                    Available
+
+                </span>
+
+            </div>
+
+
+
+            <!-- PRODUCT CONTENT -->
+
+            <div class="product-content">
+
+
+                <span class="category">
+
+                    {{ product.category }}
+
+                </span>
+
+
+                <h3>
+
+                    {{ product.product_name }}
+
+                </h3>
+
+
+                <p class="farmer-info">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    Farmer Product
+
+                </p>
+
+
+                <div class="product-bottom">
+
+
+                    <div>
+
+                        <small>
+                            Price
+                        </small>
+
+                        <h2>
+
+                            ₹ {{ product.price }}
+
+                        </h2>
+
+                    </div>
+
+
+                    <button
+                        class="contact-btn"
+                        onclick="contactFarmer(
+                            '{{ product.product_name }}'
+                        )">
+
+                        <i class="fa-solid fa-phone"></i>
+
+                        Contact
+
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    {% else %}
+
+
+        <div class="empty-products">
+
+            <div class="empty-icon">
+
+                <i class="fa-solid fa-box-open"></i>
+
+            </div>
+
+
+            <h2>
+                No Products Available
+            </h2>
+
+
+            <p>
+                No farmer products have been listed yet.
+            </p>
+
+
+            <a href="/add-product">
+
+                <button>
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Sell Your Product
+
+                </button>
+
+            </a>
+
+        </div>
+
+
+    {% endfor %}
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     DASHBOARD BUTTON
+===================================================== -->
+
+<div class="dashboard-button">
+
+    <a href="/farmer">
+
+        <button>
+
+            <i class="fa-solid fa-house"></i>
+
+            Back to Dashboard
+
+        </button>
+
+    </a>
+
+</div>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <i class="fa-solid fa-leaf"></i>
+
+    KisanVision360
+
+    <span>•</span>
+
+    Smart Farming Marketplace
+
+</footer>
+
+
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     CHATBOT
+===================================================== -->
+
+{% include 'components/chatbot.html' %}
+
+
+<script
+src="{{ url_for('static', filename='js/chatbot.js') }}">
+</script>
+
+
+
+<!-- =====================================================
+     MARKETPLACE JAVASCRIPT
+===================================================== -->
+
+<script>
+
+
+/* =========================
+   PRODUCT SEARCH
+========================= */
+
+const productSearch =
+    document.getElementById("productSearch");
+
+
+if (productSearch) {
+
+    productSearch.addEventListener(
+        "input",
+        function () {
+
+            const search =
+                this.value.toLowerCase();
+
+            const cards =
+                document.querySelectorAll(
+                    ".product-card"
+                );
+
+
+            cards.forEach(function(card) {
+
+                const text =
+                    card.innerText.toLowerCase();
+
+
+                if (text.includes(search)) {
+
+                    card.style.display = "";
+
+                } else {
+
+                    card.style.display = "none";
+
+                }
+
+            });
+
+        }
+    );
+
+}
+
+
+
+/* =========================
+   CROP SEARCH
+========================= */
+
+const cropSearch =
+    document.getElementById("cropSearch");
+
+
+if (cropSearch) {
+
+    cropSearch.addEventListener(
+        "input",
+        function () {
+
+            const search =
+                this.value.toLowerCase();
+
+            const rows =
+                document.querySelectorAll(
+                    "#priceTable tbody tr"
+                );
+
+
+            rows.forEach(function(row) {
+
+                const text =
+                    row.innerText.toLowerCase();
+
+
+                if (text.includes(search)) {
+
+                    row.style.display = "";
+
+                } else {
+
+                    row.style.display = "none";
+
+                }
+
+            });
+
+        }
+    );
+
+}
+
+
+
+/* =========================
+   CONTACT FARMER
+========================= */
+
+function contactFarmer(product) {
+
+    alert(
+        "Contact request for " +
+        product +
+        " will be available soon."
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+
+<html>
+
+
+<head>
+
+<title>
+KisanVision360 | Government Schemes
+</title>
+
+
+<link rel="stylesheet"
+href="{{url_for('static',
+filename='css/schemes.css')}}">
+
+
+</head>
+
+
+
+<body>
+
+
+<div class="container">
+
+
+<h1>
+🏛 Government Agriculture Schemes
+</h1>
+
+
+<p>
+Find useful government schemes for farmers
+</p>
+
+
+
+
+<div class="scheme-grid">
+
+
+
+{% for scheme in schemes %}
+
+
+
+<div class="scheme-card">
+
+
+<h2>
+{{scheme.name}}
+</h2>
+
+
+
+<h4>
+Department
+</h4>
+
+<p>
+{{scheme.department}}
+</p>
+
+
+
+<h4>
+Purpose
+</h4>
+
+<p>
+{{scheme.purpose}}
+</p>
+
+
+
+<h4>
+Eligibility
+</h4>
+
+<p>
+{{scheme.eligibility}}
+</p>
+
+
+
+
+<a href="{{scheme.link}}"
+target="_blank">
+
+Official Website
+
+</a>
+
+
+
+</div>
+
+
+
+{% endfor %}
+
+
+
+</div>
+
+
+</div>
+
+
+</body>
+
+
+</html>

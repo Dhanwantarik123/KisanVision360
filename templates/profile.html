@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KisanVision360 | Profile</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/profile.css') }}">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+
+<body>
+
+
+<div class="dashboard-container">
+
+
+<!-- SIDEBAR -->
+
+{% include 'components/sidebar.html' %}
+
+
+
+<!-- MAIN CONTENT -->
+
+<div class="main-content">
+
+
+
+<!-- TOPBAR -->
+
+<div class="topbar">
+
+
+<div>
+
+<h1>
+👤 My Profile
+</h1>
+
+<p>
+Manage your farmer account
+</p>
+
+</div>
+
+
+
+<div class="user">
+
+<img src="{{ profile_pic if profile_pic else url_for('static',filename='images/farmer.jpg') }}">
+
+<span>
+{{name}}
+</span>
+
+</div>
+
+
+</div>
+
+
+
+
+<!-- PROFILE CARD -->
+
+<div class="profile-card">
+
+
+<div class="dp-box">
+
+
+<img src="{{ profile_pic if profile_pic else url_for('static',filename='images/farmer.jpg') }}"
+class="profile-image">
+
+
+
+<form action="/upload-profile"
+method="POST"
+enctype="multipart/form-data">
+
+
+<label for="photo">
+
+<i class="fa fa-camera"></i>
+
+</label>
+
+
+<input type="file"
+id="photo"
+name="profile"
+hidden
+onchange="this.form.submit()">
+
+
+
+</form>
+
+
+</div>
+
+
+
+<h2>
+{{name}}
+</h2>
+
+
+<p>
+🌾 {{role}}
+</p>
+
+
+</div>
+
+
+
+
+
+
+<!-- STATUS -->
+
+<div class="status-grid">
+
+
+<div class="status-card">
+
+<i class="fa fa-location-dot"></i>
+
+<h3>
+Nagpur
+</h3>
+
+<p>
+Farm Location
+</p>
+
+</div>
+
+
+
+
+<div class="status-card">
+
+<i class="fa fa-temperature-half"></i>
+
+
+{% if weather %}
+
+<h3>
+{{weather.temperature}} °C
+</h3>
+
+{% else %}
+
+<h3>
+N/A
+</h3>
+
+{% endif %}
+
+
+<p>
+Current Temperature
+</p>
+
+</div>
+
+
+
+
+
+<div class="status-card">
+
+<i class="fa fa-cloud"></i>
+
+
+{% if weather %}
+
+<h3>
+{{weather.condition}}
+</h3>
+
+{% else %}
+
+<h3>
+No Data
+</h3>
+
+{% endif %}
+
+
+<p>
+Weather Status
+</p>
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<!-- PERSONAL INFORMATION -->
+
+
+<div class="details-card">
+
+
+<h2>
+Personal Information
+</h2>
+
+
+
+<div class="row">
+
+
+<div>
+
+<label>
+Full Name
+</label>
+
+<input value="{{name}}" readonly>
+
+</div>
+
+
+
+<div>
+
+<label>
+Mobile Number
+</label>
+
+<input value="{{mobile}}" readonly>
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="row">
+
+
+<div>
+
+<label>
+Email
+</label>
+
+<input value="{{email}}" readonly>
+
+</div>
+
+
+
+
+<div>
+
+<label>
+Role
+</label>
+
+<input value="{{role}}" readonly>
+
+</div>
+
+
+</div>
+
+
+
+
+
+<a href="/edit-profile">
+
+<button>
+
+<i class="fa fa-edit"></i>
+
+Edit Profile
+
+</button>
+
+</a>
+
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+</body>
+
+</html>

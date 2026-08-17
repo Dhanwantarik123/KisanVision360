@@ -1,0 +1,238 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f8f3;
+    color: #263238;
+}
+
+
+.main-content {
+    padding: 25px;
+}
+
+
+.topbar {
+    background: white;
+    padding: 22px 28px;
+    border-radius: 18px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+
+.topbar h1 {
+    margin: 0;
+    color: #1b5e20;
+}
+
+
+.topbar p {
+    margin: 8px 0 0;
+    color: #78909c;
+}
+
+
+.sell-card {
+    max-width: 850px;
+    margin: auto;
+    background: white;
+    padding: 35px;
+    border-radius: 22px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+
+.form-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+
+.title-icon {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e8f5e9;
+    color: #2e7d32;
+    border-radius: 15px;
+    font-size: 25px;
+}
+
+
+.form-title h2 {
+    margin: 0;
+}
+
+
+.form-title p {
+    margin: 5px 0;
+    color: #78909c;
+}
+
+
+.form-group {
+    margin-bottom: 22px;
+}
+
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #37474f;
+}
+
+
+.form-group label i {
+    color: #2e7d32;
+    margin-right: 7px;
+}
+
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #cfd8dc;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: none;
+    background: #fafafa;
+}
+
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #43a047;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(67,160,71,0.1);
+}
+
+
+.form-group textarea {
+    resize: vertical;
+}
+
+
+.form-group small {
+    display: block;
+    margin-top: 7px;
+    color: #78909c;
+}
+
+
+.two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+
+.error-message {
+    background: #ffebee;
+    color: #c62828;
+    padding: 14px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+
+.form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+
+.cancel-btn,
+.sell-submit {
+    padding: 13px 22px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+.cancel-btn {
+    background: #eceff1;
+    color: #455a64;
+}
+
+
+.sell-submit {
+    border: none;
+    background: #2e7d32;
+    color: white;
+}
+
+
+.cancel-btn:hover {
+    background: #cfd8dc;
+}
+
+
+.sell-submit:hover {
+    background: #1b5e20;
+}
+
+
+footer {
+    text-align: center;
+    margin: 30px;
+    color: #78909c;
+}
+
+
+footer i {
+    color: #43a047;
+}
+
+
+footer span {
+    margin: 0 8px;
+}
+
+
+@media (max-width: 700px) {
+
+    .main-content {
+        padding: 15px;
+    }
+
+
+    .sell-card {
+        padding: 20px;
+    }
+
+
+    .two-column {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+
+    .form-buttons {
+        flex-direction: column;
+    }
+
+
+    .cancel-btn,
+    .sell-submit {
+        text-align: center;
+        width: 100%;
+    }
+
+}

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KisanVision360 | Government Schemes</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/sidebar.css') }}">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/government.css') }}">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<!-- Sidebar -->
+{% include "components/sidebar.html" %}
+
+<!-- Main Content -->
+<div class="main-content">
+
+    <!-- Topbar -->
+    <div class="topbar">
+
+        <div>
+
+            <h1>🏛 Government Schemes</h1>
+
+            <p>Explore Central & State Agriculture Schemes</p>
+
+        </div>
+
+        <div class="profile">
+
+            <img src="{{ url_for('static', filename='images/farmer.jpg') }}">
+
+            <div>
+
+                <h3>{{ name }}</h3>
+
+                <span>Farmer</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Statistics -->
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <i class="fa-solid fa-landmark"></i>
+
+            <h2>{{ schemes|length }}</h2>
+
+            <p>Total Schemes</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+
+            <h2>₹6,000</h2>
+
+            <p>PM-KISAN Benefit</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <i class="fa-solid fa-seedling"></i>
+
+            <h2>12+</h2>
+
+            <p>Agriculture Programs</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <i class="fa-solid fa-users"></i>
+
+            <h2>All Farmers</h2>
+
+            <p>Eligible Categories</p>
+
+        </div>
+
+    </div>
+
+    <!-- Search -->
+
+    <div class="search-box">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search Government Scheme...">
+
+    </div>
+
+    <!-- Category Filter -->
+
+    <div class="filter">
+
+        <button class="filter-btn active"
+                onclick="filterSchemes('all')">
+
+            All
+
+        </button>
+
+        <button class="filter-btn"
+                onclick="filterSchemes('Financial')">
+
+            Financial
+
+        </button>
+
+        <button class="filter-btn"
+                onclick="filterSchemes('Insurance')">
+
+            Insurance
+
+        </button>
+
+        <button class="filter-btn"
+                onclick="filterSchemes('Irrigation')">
+
+            Irrigation
+
+        </button>
+
+        <button class="filter-btn"
+                onclick="filterSchemes('Loan')">
+
+            Loan
+
+        </button>
+
+    </div>
+
+    <!-- Scheme Cards -->
+
+    <div class="scheme-grid" id="schemeContainer">
+
+        {% for scheme in schemes %}
+
+        <div class="scheme-card"
+             data-category="{{ scheme.category }}">
+
+            <div class="scheme-icon">
+
+                <i class="fa-solid fa-landmark"></i>
+
+            </div>
+
+            <div class="scheme-body">
+
+                <h2>{{ scheme.name }}</h2>
+
+                <span class="category">
+
+                    {{ scheme.category }}
+
+                </span>
+
+                <p>
+
+                    <b>Department</b><br>
+
+                    {{ scheme.department }}
+
+                </p>
+
+                <p>
+
+                    <b>Benefit</b><br>
+
+                    {{ scheme.benefit }}
+
+                </p>
+
+                <p>
+
+                    <b>Eligibility</b><br>
+
+                    {{ scheme.eligibility }}
+
+                </p>
+
+                <div class="card-buttons">
+
+                    <a href="{{ scheme.website }}"
+                       target="_blank">
+
+                        <button class="apply-btn">
+
+                            Apply Now
+
+                        </button>
+
+                    </a>
+
+                    <button class="details-btn">
+
+                        Details
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<!-- Floating Chatbot -->
+
+{% include "components/chatbot.html" %}
+
+<script src="{{ url_for('static', filename='js/government.js') }}"></script>
+
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+
+</body>
+
+</html>

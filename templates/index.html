@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KisanVision360</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+
+height:100vh;
+
+background:url("{{ url_for('static',filename='images/background.jpg') }}");
+
+background-size:cover;
+
+background-position:center;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+overflow:hidden;
+
+}
+
+.overlay{
+
+position:absolute;
+
+width:100%;
+
+height:100%;
+
+background:rgba(0,0,0,.55);
+
+backdrop-filter:blur(4px);
+
+}
+
+.card-box{
+
+position:relative;
+
+z-index:2;
+
+width:650px;
+
+padding:40px;
+
+border-radius:30px;
+
+background:rgba(255,255,255,.12);
+
+backdrop-filter:blur(20px);
+
+box-shadow:0 20px 50px rgba(0,0,0,.3);
+
+text-align:center;
+
+color:white;
+
+}
+
+.logo{
+
+width:220px;
+
+margin-bottom:20px;
+
+border-radius:50%;
+
+box-shadow:0 0 40px rgba(255,255,255,.3);
+
+}
+
+h1{
+
+font-size:55px;
+
+font-weight:bold;
+
+}
+
+.subtitle{
+
+font-size:20px;
+
+margin-bottom:30px;
+
+opacity:.9;
+
+}
+
+.features{
+
+display:flex;
+
+justify-content:center;
+
+gap:20px;
+
+flex-wrap:wrap;
+
+margin-bottom:35px;
+
+}
+
+.feature{
+
+background:rgba(255,255,255,.15);
+
+padding:12px 20px;
+
+border-radius:50px;
+
+}
+
+.feature i{
+
+color:#7CFC00;
+
+margin-right:8px;
+
+}
+
+select{
+
+height:55px;
+
+border-radius:12px;
+
+font-size:18px;
+
+margin-bottom:25px;
+
+}
+
+.btn-start{
+
+width:100%;
+
+height:55px;
+
+font-size:20px;
+
+font-weight:bold;
+
+background:#28a745;
+
+border:none;
+
+border-radius:12px;
+
+transition:.3s;
+
+}
+
+.btn-start:hover{
+
+background:#1d7f33;
+
+transform:translateY(-3px);
+
+}
+
+.footer{
+
+margin-top:25px;
+
+font-size:14px;
+
+opacity:.8;
+
+}
+
+@media(max-width:768px){
+
+.card-box{
+
+width:90%;
+
+padding:25px;
+
+}
+
+.logo{
+
+width:150px;
+
+}
+
+h1{
+
+font-size:38px;
+
+}
+
+.subtitle{
+
+font-size:16px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="overlay"></div>
+
+<div class="card-box">
+
+<img src="{{ url_for('static',filename='images/logo.png') }}" class="logo">
+
+<h1>KisanVision360</h1>
+
+<p class="subtitle">
+
+AI Powered Smart Agriculture Platform
+
+</p>
+
+<div class="features">
+
+<div class="feature">
+
+<i class="fa-solid fa-cloud-sun"></i>
+
+Live Weather
+
+</div>
+
+<div class="feature">
+
+<i class="fa-solid fa-seedling"></i>
+
+AI Crop Advisory
+
+</div>
+
+<div class="feature">
+
+<i class="fa-solid fa-chart-line"></i>
+
+Market Prices
+
+</div>
+
+<div class="feature">
+
+<i class="fa-solid fa-robot"></i>
+
+AI Assistant
+
+</div>
+
+</div>
+
+<h4>Select Your Language</h4>
+
+<select class="form-select">
+
+<option>English</option>
+
+<option>हिन्दी</option>
+
+<option>मराठी</option>
+
+</select>
+
+<a href="/dashboard" class="btn btn-success btn-start">
+
+<i class="fa-solid fa-arrow-right"></i>
+
+Enter Dashboard
+
+</a>
+
+<div class="footer">
+
+© 2026 KisanVision360 | Smart Farming • Better Tomorrow
+
+</div>
+
+</div>
+
+</body>
+
+</html>

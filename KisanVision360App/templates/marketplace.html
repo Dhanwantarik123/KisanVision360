@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>KisanVision360 | Marketplace</title>
+
+
+<!-- Sidebar CSS -->
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/sidebar.css') }}">
+
+
+<!-- Marketplace CSS -->
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/marketplace.css') }}">
+
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+</head>
+
+
+<body>
+
+
+<div class="dashboard-container">
+
+
+<!-- ================= SIDEBAR ================= -->
+
+
+{% include 'components/sidebar.html' %}
+
+
+
+
+<!-- ================= MAIN CONTENT ================= -->
+
+
+<div class="main-content">
+
+
+
+<!-- ================= TOP BAR ================= -->
+
+
+<header class="topbar">
+
+
+<div>
+
+
+<h1>
+
+<i class="fa-solid fa-store"></i>
+
+Farmer Marketplace
+
+</h1>
+
+
+<p>
+
+Buy, Sell & Track Agriculture Market Prices
+
+</p>
+
+
+</div>
+
+
+
+<div class="top-right">
+
+
+
+<!-- Search -->
+
+<div class="search-box">
+
+
+<i class="fa-solid fa-search"></i>
+
+
+<input type="text"
+placeholder="Search Products">
+
+
+</div>
+
+
+
+
+
+<!-- Notification -->
+
+
+<div class="notification">
+
+
+<i class="fa-solid fa-bell"></i>
+
+
+<span>
+
+3
+
+</span>
+
+
+</div>
+
+
+
+
+
+<!-- Profile -->
+
+
+<div class="profile">
+
+
+<img
+src="{{ url_for('static',filename='images/farmer.jpg') }}">
+
+
+
+<div>
+
+
+<h4>
+
+{{name}}
+
+</h4>
+
+
+<small>
+
+Farmer
+
+</small>
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+</header>
+
+
+
+
+
+<!-- ================= WEATHER SUMMARY ================= -->
+
+
+{% if weather %}
+
+
+<div class="weather-banner">
+
+
+<i class="fa-solid fa-location-dot"></i>
+
+
+{{weather.city}}
+
+
+
+&nbsp; | &nbsp;
+
+
+🌡 {{weather.temperature}}°C
+
+
+
+&nbsp; | &nbsp;
+
+
+☁ {{weather.condition}}
+
+
+
+</div>
+
+
+{% endif %}
+
+
+
+
+
+
+
+<!-- ================= ACTION BUTTONS ================= -->
+
+
+<div class="buttons">
+
+
+
+<a href="/add-product">
+
+
+<button class="green-btn">
+
+
+<i class="fa-solid fa-plus"></i>
+
+
+Sell Product
+
+
+</button>
+
+
+</a>
+
+
+
+
+
+<a href="/consumer-request">
+
+
+<button class="blue-btn">
+
+
+<i class="fa-solid fa-cart-shopping"></i>
+
+
+Consumer Requirement
+
+
+</button>
+
+
+</a>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- ================= MANDI PRICE ================= -->
+
+
+<section class="market-card">
+
+
+<h2>
+
+📈 Today's Government Mandi Prices
+
+</h2>
+
+
+
+<div class="search-box">
+
+
+<i class="fa-solid fa-search"></i>
+
+
+<input type="text"
+placeholder="Search crop">
+
+
+</div>
+
+
+
+
+
+<table>
+
+
+<thead>
+
+
+<tr>
+
+
+<th>Crop</th>
+
+<th>Market</th>
+
+<th>State</th>
+
+<th>Price ₹/Quintal</th>
+
+<th>Date</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+
+<tbody>
+
+
+
+{% for crop in prices %}
+
+
+
+<tr>
+
+
+<td>
+
+{{crop.commodity}}
+
+</td>
+
+
+<td>
+
+{{crop.market}}
+
+</td>
+
+
+<td>
+
+{{crop.state}}
+
+</td>
+
+
+<td class="price">
+
+₹ {{crop.modal_price}}
+
+</td>
+
+
+<td>
+
+{{crop.arrival_date}}
+
+</td>
+
+
+
+</tr>
+
+
+
+{% endfor %}
+
+
+
+</tbody>
+
+
+
+</table>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- ================= FARMER PRODUCTS ================= -->
+
+
+<section class="product-section">
+
+
+<h2>
+
+🌱 Farmer Products
+
+</h2>
+
+
+
+
+<div class="product-grid">
+
+
+
+{% for product in products %}
+
+
+
+<div class="product-card">
+
+
+
+<img
+
+src="{{url_for(
+'static',
+filename='uploads/products/'+product.image
+)}}">
+
+
+
+<h3>
+
+{{product.product_name}}
+
+</h3>
+
+
+
+<p>
+
+Category:
+{{product.category}}
+
+</p>
+
+
+
+<h2>
+
+₹ {{product.price}}
+
+</h2>
+
+
+
+
+<button>
+
+
+<i class="fa-solid fa-phone"></i>
+
+Contact Farmer
+
+
+</button>
+
+
+
+</div>
+
+
+
+{% endfor %}
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+<a href="/farmer">
+
+
+<button class="gray-btn">
+
+
+<i class="fa-solid fa-house"></i>
+
+
+Dashboard
+
+
+</button>
+
+
+</a>
+
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<!-- CHATBOT SAME AS WEATHER -->
+
+
+{% include 'components/chatbot.html' %}
+
+
+
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+
+
+</body>
+
+
+</html>

@@ -1,0 +1,406 @@
+/* =========================
+   KisanVision360 Sidebar
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+.dashboard-container{
+    display:flex;
+    width:100%;
+}
+
+/* Sidebar */
+
+.sidebar{
+
+    width:270px;
+
+    height:100vh;
+
+    background:linear-gradient(180deg,#0b6b3a,#0f8d4e);
+
+    position:fixed;
+
+    left:0;
+
+    top:0;
+
+    overflow-y:auto;
+
+    color:#fff;
+
+    box-shadow:5px 0 20px rgba(0,0,0,.15);
+
+}
+
+/* Logo */
+
+.logo{
+
+    text-align:center;
+
+    padding:25px;
+
+    border-bottom:1px solid rgba(255,255,255,.15);
+
+}
+
+.logo img{
+
+    width:90px;
+
+    height:90px;
+
+    object-fit:contain;
+
+    margin-bottom:10px;
+
+}
+
+.logo h2{
+
+    font-size:24px;
+
+    font-weight:700;
+
+}
+
+.logo p{
+
+    font-size:13px;
+
+    color:#d9f5df;
+
+    margin-top:5px;
+
+}
+
+/* Menu */
+
+.sidebar-menu{
+
+    margin-top:20px;
+
+}
+
+.sidebar-menu ul{
+
+    list-style:none;
+
+}
+
+.sidebar-menu li{
+
+    margin:8px 15px;
+
+}
+
+.sidebar-menu a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    text-decoration:none;
+
+    color:white;
+
+    padding:14px 18px;
+
+    border-radius:12px;
+
+    transition:.3s;
+
+    font-size:16px;
+
+}
+
+.sidebar-menu a i{
+
+    width:24px;
+
+    font-size:18px;
+
+    text-align:center;
+
+}
+
+/* Hover */
+
+.sidebar-menu a:hover{
+
+    background:white;
+
+    color:#0b6b3a;
+
+    transform:translateX(5px);
+
+}
+
+/* Active */
+
+.sidebar-menu .active a{
+
+    background:white;
+
+    color:#0b6b3a;
+
+    font-weight:bold;
+
+}
+
+/* Bottom Profile */
+
+.sidebar-profile{
+
+    position:absolute;
+
+    bottom:20px;
+
+    left:15px;
+
+    right:15px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:12px;
+
+    border-radius:15px;
+
+    background:rgba(255,255,255,.12);
+
+}
+
+.sidebar-profile img{
+
+    width:50px;
+
+    height:50px;
+
+    border-radius:50%;
+
+    border:2px solid white;
+
+}
+
+.sidebar-profile h4{
+
+    font-size:15px;
+
+}
+
+.sidebar-profile p{
+
+    font-size:12px;
+
+    color:#d9f5df;
+
+}
+
+/* Main Content */
+
+.main-content{
+
+    margin-left:270px;
+
+    width:calc(100% - 270px);
+
+    padding:25px;
+
+}
+
+/* Scrollbar */
+
+.sidebar::-webkit-scrollbar{
+
+    width:6px;
+
+}
+
+.sidebar::-webkit-scrollbar-thumb{
+
+    background:#4cd37a;
+
+    border-radius:20px;
+
+}
+
+/* Mobile */
+
+@media(max-width:900px){
+
+.sidebar{
+
+    width:85px;
+
+}
+
+.logo h2,
+.logo p,
+.sidebar-menu span,
+.sidebar-profile div{
+
+    display:none;
+
+}
+
+.main-content{
+
+    margin-left:85px;
+
+    width:calc(100% - 85px);
+
+}
+
+.sidebar-menu a{
+
+    justify-content:center;
+
+}
+
+}
+/* ===================================
+   PREMIUM SIDEBAR EFFECTS
+=================================== */
+
+/* Active menu animation */
+.sidebar-menu li.active a{
+    background:#ffffff;
+    color:#0b6b3a;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+}
+
+.sidebar-menu li.active a::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:8px;
+
+    width:5px;
+
+    height:70%;
+
+    background:#16a34a;
+
+    border-radius:0 10px 10px 0;
+
+}
+
+.sidebar-menu a{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+/* Hover glow */
+
+.sidebar-menu a:hover{
+
+    box-shadow:0 10px 20px rgba(0,0,0,.18);
+
+}
+
+/* Icon animation */
+
+.sidebar-menu a i{
+
+    transition:.3s;
+
+}
+
+.sidebar-menu a:hover i{
+
+    transform:scale(1.2) rotate(-8deg);
+
+}
+
+/* Logo animation */
+
+.logo img{
+
+    transition:.4s;
+
+}
+
+.logo img:hover{
+
+    transform:rotate(10deg) scale(1.08);
+
+}
+
+/* Profile card */
+
+.sidebar-profile{
+
+    transition:.3s;
+
+}
+
+.sidebar-profile:hover{
+
+    background:rgba(255,255,255,.22);
+
+}
+
+/* Menu spacing */
+
+.sidebar-menu ul{
+
+    padding-bottom:90px;
+
+}
+
+/* Divider */
+
+.sidebar-menu::before{
+
+    content:"Navigation";
+
+    display:block;
+
+    color:#d7ffe3;
+
+    font-size:12px;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+
+    padding:10px 25px;
+
+}
+
+/* Notification Badge */
+
+.badge{
+
+    margin-left:auto;
+
+    background:#ff4444;
+
+    color:white;
+
+    font-size:11px;
+
+    padding:2px 8px;
+
+    border-radius:20px;
+
+}
