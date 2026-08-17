@@ -8,9 +8,10 @@ MarkupSafe==2.1.5
 mysql-connector-python==9.0.0
 werkzeug==3.0.6
 zipp==3.20.2
+
 gunicorn
 requests
-numpy
-pandas
-tensorflow
-opencv-python-headless
+numpy==1.26.4
+pandas==2.2.3
+tensorflow==2.15.1
+opencv-python-headless==4.10.0.84
