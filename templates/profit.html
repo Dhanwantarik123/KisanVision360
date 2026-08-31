@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>KisanVision360 | Profit Analysis</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/sidebar.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/finance.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+
+<body>
+
+{% include "components/sidebar.html" %}
+
+
+<main class="main-content">
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+        <div class="title-section">
+
+            <div class="title-icon">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+
+            <div>
+
+                <h1>Profit Analysis</h1>
+
+                <p>
+                    View your farm income, expenses and net profit
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="profile">
+
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='images/farmer.jpg'
+                ) }}"
+                alt="Farmer">
+
+            <div>
+
+                <h4>{{ name }}</h4>
+
+                <span>
+                    <i class="fa-solid fa-circle"></i>
+                    Farmer
+                </span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- PROFIT BANNER -->
+
+    <section class="finance-banner">
+
+        <div class="banner-content">
+
+            <div class="banner-icon">
+
+                <i class="fa-solid fa-chart-pie"></i>
+
+            </div>
+
+            <div>
+
+                <h2>
+                    Farm Profit Analysis
+                </h2>
+
+                <p>
+                    Understand your overall farming financial performance.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- STATISTICS -->
+
+    <section class="finance-grid">
+
+
+        <!-- TOTAL INCOME -->
+
+        <div class="finance-card income-card">
+
+            <div class="card-top">
+
+                <div class="card-icon">
+
+                    <i class="fa-solid fa-arrow-trend-up"></i>
+
+                </div>
+
+                <span class="card-label">
+                    INCOME
+                </span>
+
+            </div>
+
+            <h3>
+                Total Income
+            </h3>
+
+            <h2>
+                ₹ {{ "%.2f"|format(total_income|float) }}
+            </h2>
+
+            <p>
+                <i class="fa-solid fa-circle-check"></i>
+                Total money received
+            </p>
+
+        </div>
+
+
+        <!-- TOTAL EXPENSE -->
+
+        <div class="finance-card expense-card">
+
+            <div class="card-top">
+
+                <div class="card-icon">
+
+                    <i class="fa-solid fa-arrow-trend-down"></i>
+
+                </div>
+
+                <span class="card-label">
+                    EXPENSE
+                </span>
+
+            </div>
+
+            <h3>
+                Total Expenses
+            </h3>
+
+            <h2>
+                ₹ {{ "%.2f"|format(total_expense|float) }}
+            </h2>
+
+            <p>
+                <i class="fa-solid fa-circle-check"></i>
+                Total money spent
+            </p>
+
+        </div>
+
+
+        <!-- NET PROFIT -->
+
+        <div class="finance-card profit-card">
+
+            <div class="card-top">
+
+                <div class="card-icon">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                </div>
+
+                <span class="card-label">
+                    PROFIT
+                </span>
+
+            </div>
+
+            <h3>
+                Net Profit
+            </h3>
+
+            <h2>
+                ₹ {{ "%.2f"|format(profit|float) }}
+            </h2>
+
+
+            {% if profit >= 0 %}
+
+            <p>
+
+                <i class="fa-solid fa-face-smile"></i>
+
+                Your farm is profitable
+
+            </p>
+
+            {% else %}
+
+            <p>
+
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                Expenses are higher than income
+
+            </p>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- PROFIT CALCULATION -->
+
+    <section class="transaction-section">
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+
+                    <i class="fa-solid fa-calculator"></i>
+
+                    Profit Calculation
+
+                </h2>
+
+                <p>
+                    Simple calculation of your farm profit
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-card">
+
+            <div style="
+                padding:30px;
+                font-size:15px;
+                color:#365a45;
+            ">
+
+                <p style="margin-bottom:15px;">
+
+                    <strong>Total Income:</strong>
+
+                    ₹ {{ "%.2f"|format(total_income|float) }}
+
+                </p>
+
+
+                <p style="margin-bottom:15px;">
+
+                    <strong>Total Expenses:</strong>
+
+                    ₹ {{ "%.2f"|format(total_expense|float) }}
+
+                </p>
+
+
+                <hr style="
+                    margin:20px 0;
+                    border:none;
+                    border-top:1px solid #e5eee7;
+                ">
+
+
+                <p style="
+                    font-size:20px;
+                    font-weight:bold;
+                    color:#087c42;
+                ">
+
+                    Net Profit:
+
+                    ₹ {{ "%.2f"|format(profit|float) }}
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ACTIONS -->
+
+    <section class="action-grid">
+
+        <a
+            href="{{ url_for('finance') }}"
+            class="action-card income-action">
+
+            <div class="action-icon">
+
+                <i class="fa-solid fa-wallet"></i>
+
+            </div>
+
+            <div>
+
+                <h3>
+                    Finance Dashboard
+                </h3>
+
+                <p>
+                    Back to finance dashboard
+                </p>
+
+            </div>
+
+            <i class="fa-solid fa-arrow-right action-arrow"></i>
+
+        </a>
+
+
+        <a
+            href="{{ url_for('income') }}"
+            class="action-card income-action">
+
+            <div class="action-icon">
+
+                <i class="fa-solid fa-plus"></i>
+
+            </div>
+
+            <div>
+
+                <h3>
+                    Add Income
+                </h3>
+
+                <p>
+                    Record new income
+                </p>
+
+            </div>
+
+            <i class="fa-solid fa-arrow-right action-arrow"></i>
+
+        </a>
+
+
+        <a
+            href="{{ url_for('expense') }}"
+            class="action-card expense-action">
+
+            <div class="action-icon">
+
+                <i class="fa-solid fa-minus"></i>
+
+            </div>
+
+            <div>
+
+                <h3>
+                    Add Expense
+                </h3>
+
+                <p>
+                    Record new expense
+                </p>
+
+            </div>
+
+            <i class="fa-solid fa-arrow-right action-arrow"></i>
+
+        </a>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer class="finance-footer">
+
+        <i class="fa-solid fa-leaf"></i>
+
+        KisanVision360 Smart Farming Finance
+
+        <span>•</span>
+
+        Profit Analysis
+
+    </footer>
+
+</main>
+
+</body>
+
+</html>

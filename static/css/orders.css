@@ -1,3 +1,7 @@
+/* =========================================================
+   KISANVISION360 - ORDERS PAGE
+========================================================= */
+
 * {
     margin: 0;
     padding: 0;
@@ -11,17 +15,23 @@ body {
 }
 
 
-/* ================= MAIN ================= */
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
 
 .main-content {
+    min-height: 100vh;
+    margin-left: 270px;
     padding: 22px;
 }
 
 
-/* ================= TOPBAR ================= */
+/* =========================================================
+   TOPBAR
+========================================================= */
 
 .topbar {
-    background: white;
+    background: #ffffff;
     border-radius: 18px;
     padding: 15px 20px;
 
@@ -31,7 +41,7 @@ body {
 
     margin-bottom: 20px;
 
-    box-shadow: 0 5px 20px rgba(0,80,40,0.08);
+    box-shadow: 0 5px 20px rgba(0, 80, 40, 0.08);
 }
 
 .topbar h1 {
@@ -42,6 +52,7 @@ body {
 
 .topbar h1 i {
     color: #0b9550;
+    margin-right: 6px;
 }
 
 .topbar p {
@@ -50,7 +61,9 @@ body {
 }
 
 
-/* ================= PROFILE ================= */
+/* =========================================================
+   PROFILE
+========================================================= */
 
 .profile {
     display: flex;
@@ -83,48 +96,46 @@ body {
 }
 
 
-/* ================= SUMMARY ================= */
+/* =========================================================
+   ORDER SUMMARY
+========================================================= */
 
 .order-summary {
     display: grid;
-    grid-template-columns: repeat(3,1fr);
-
+    grid-template-columns: repeat(4, 1fr);
     gap: 18px;
-
     margin-bottom: 25px;
 }
 
 .summary-card {
-    background: white;
-
+    background: #ffffff;
     padding: 20px;
 
     border-radius: 17px;
 
     display: flex;
     align-items: center;
-
     gap: 14px;
 
-    box-shadow: 0 6px 20px rgba(0,70,40,0.07);
+    box-shadow: 0 6px 20px rgba(0, 70, 40, 0.07);
 
-    transition: 0.3s;
+    transition: 0.3s ease;
 }
 
 .summary-card:hover {
     transform: translateY(-4px);
-
-    box-shadow: 0 10px 25px rgba(0,70,40,0.12);
+    box-shadow: 0 10px 25px rgba(0, 70, 40, 0.12);
 }
 
 .summary-icon {
     width: 48px;
     height: 48px;
 
+    flex-shrink: 0;
+
     border-radius: 13px;
 
     background: #e3f7eb;
-
     color: #07934d;
 
     display: flex;
@@ -144,6 +155,11 @@ body {
     color: #dc9900;
 }
 
+.summary-icon.support {
+    background: #f1eaff;
+    color: #7b4cc4;
+}
+
 .summary-card h3 {
     color: #145f3b;
     font-size: 18px;
@@ -156,7 +172,9 @@ body {
 }
 
 
-/* ================= SECTION ================= */
+/* =========================================================
+   ORDER SECTION
+========================================================= */
 
 .order-section {
     margin-top: 10px;
@@ -178,6 +196,7 @@ body {
 
 .section-title h2 i {
     color: #0a9550;
+    margin-right: 5px;
 }
 
 .section-title p {
@@ -198,33 +217,40 @@ body {
 }
 
 
-/* ================= TABLE ================= */
+/* =========================================================
+   TABLE CARD
+========================================================= */
 
 .table-card {
-    background: white;
+    background: #ffffff;
 
     border-radius: 18px;
 
     padding: 18px;
 
-    box-shadow: 0 7px 22px rgba(0,70,40,0.08);
+    box-shadow: 0 7px 22px rgba(0, 70, 40, 0.08);
 }
 
 .table-wrapper {
+    width: 100%;
     overflow-x: auto;
 }
 
+
+/* =========================================================
+   TABLE
+========================================================= */
+
 table {
     width: 100%;
-
-    min-width: 900px;
+    min-width: 1050px;
 
     border-collapse: collapse;
 }
 
 thead {
     background: #0b8d4b;
-    color: white;
+    color: #ffffff;
 }
 
 th {
@@ -245,10 +271,12 @@ td {
     color: #53625a;
 
     font-size: 12px;
+
+    vertical-align: middle;
 }
 
 tbody tr {
-    transition: 0.2s;
+    transition: 0.2s ease;
 }
 
 tbody tr:hover {
@@ -260,11 +288,14 @@ tbody tr:last-child td {
 }
 
 
-/* ================= ORDER ID ================= */
+/* =========================================================
+   ORDER ID
+========================================================= */
 
 .order-id {
-    background: #e7f7ed;
+    display: inline-block;
 
+    background: #e7f7ed;
     color: #078b49;
 
     padding: 6px 9px;
@@ -272,31 +303,53 @@ tbody tr:last-child td {
     border-radius: 7px;
 
     font-weight: bold;
-
     font-size: 11px;
 }
 
 
-/* ================= PRODUCT ================= */
+/* =========================================================
+   PRODUCT
+========================================================= */
 
 .product-cell {
     display: flex;
     align-items: center;
     gap: 9px;
 
-    font-weight: 600;
+    min-width: 180px;
 
+    font-weight: 600;
     color: #245d41;
+}
+
+.product-cell > div:last-child {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-cell strong {
+    font-size: 12px;
+    color: #245d41;
+}
+
+.product-cell small {
+    margin-top: 3px;
+
+    color: #91a098;
+
+    font-size: 9px;
+    font-weight: normal;
 }
 
 .product-icon {
     width: 34px;
     height: 34px;
 
+    flex-shrink: 0;
+
     border-radius: 9px;
 
     background: #e6f7ed;
-
     color: #0b9550;
 
     display: flex;
@@ -304,7 +357,14 @@ tbody tr:last-child td {
     justify-content: center;
 }
 
+
+/* =========================================================
+   QUANTITY
+========================================================= */
+
 .quantity {
+    display: inline-block;
+
     background: #f1f5f2;
 
     padding: 6px 10px;
@@ -314,17 +374,26 @@ tbody tr:last-child td {
     font-weight: bold;
 }
 
+
+/* =========================================================
+   TOTAL
+========================================================= */
+
 .total {
     color: #087c42;
+    font-weight: bold;
 }
 
 
-/* ================= BADGES ================= */
+/* =========================================================
+   BADGES
+========================================================= */
 
 .badge {
     display: inline-flex;
 
     align-items: center;
+    justify-content: center;
 
     gap: 5px;
 
@@ -333,7 +402,6 @@ tbody tr:last-child td {
     border-radius: 20px;
 
     font-size: 10px;
-
     font-weight: bold;
 
     white-space: nowrap;
@@ -370,7 +438,9 @@ tbody tr:last-child td {
 }
 
 
-/* ================= DATE ================= */
+/* =========================================================
+   DATE
+========================================================= */
 
 .date {
     color: #78857e;
@@ -385,10 +455,92 @@ tbody tr:last-child td {
 }
 
 
-/* ================= EMPTY ================= */
+/* =========================================================
+   REMOVE ORDER BUTTON
+========================================================= */
+
+.remove-order-btn {
+    border: none;
+
+    background: #ffe9e7;
+    color: #d83f35;
+
+    padding: 8px 12px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-size: 10px;
+    font-weight: bold;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    white-space: nowrap;
+
+    transition: all 0.25s ease;
+}
+
+.remove-order-btn i {
+    font-size: 11px;
+}
+
+.remove-order-btn:hover {
+    background: #d83f35;
+    color: #ffffff;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 5px 14px rgba(216, 63, 53, 0.25);
+}
+
+.remove-order-btn:active {
+    transform: scale(0.95);
+}
+
+
+/* =========================================================
+   LOCKED ORDER
+========================================================= */
+
+.order-locked {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    background: #f1f3f2;
+    color: #89938e;
+
+    padding: 8px 10px;
+
+    border-radius: 8px;
+
+    font-size: 10px;
+    font-weight: bold;
+
+    white-space: nowrap;
+}
+
+.order-locked i {
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   EMPTY ORDERS
+========================================================= */
 
 .empty-orders {
-    background: white;
+    background: #ffffff;
 
     border-radius: 18px;
 
@@ -396,7 +548,7 @@ tbody tr:last-child td {
 
     text-align: center;
 
-    box-shadow: 0 7px 20px rgba(0,70,40,0.07);
+    box-shadow: 0 7px 20px rgba(0, 70, 40, 0.07);
 }
 
 .empty-icon {
@@ -409,7 +561,6 @@ tbody tr:last-child td {
     border-radius: 20px;
 
     background: #e5f7ed;
-
     color: #0a9550;
 
     display: flex;
@@ -426,16 +577,28 @@ tbody tr:last-child td {
 
 .empty-orders p {
     color: #89958f;
+
     font-size: 12px;
+
     margin-bottom: 20px;
 }
 
-.empty-orders button {
-    border: none;
+
+/* =========================================================
+   MARKETPLACE BUTTON
+========================================================= */
+
+.marketplace-btn {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    text-decoration: none;
 
     background: #0b8d4b;
-
-    color: white;
+    color: #ffffff;
 
     padding: 11px 18px;
 
@@ -443,15 +606,83 @@ tbody tr:last-child td {
 
     cursor: pointer;
 
+    font-size: 12px;
     font-weight: bold;
+
+    transition: 0.3s ease;
 }
 
-.empty-orders button:hover {
+.marketplace-btn:hover {
     background: #076c39;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 7px 15px rgba(11, 141, 75, 0.25);
 }
 
 
-/* ================= FOOTER ================= */
+/* =========================================================
+   QUICK LINKS
+========================================================= */
+
+.quick-links {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 15px;
+
+    margin-top: 25px;
+}
+
+.quick-links a {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    background: #ffffff;
+
+    color: #245d41;
+
+    text-decoration: none;
+
+    padding: 13px;
+
+    border-radius: 12px;
+
+    font-size: 12px;
+    font-weight: bold;
+
+    border: 1px solid #e2ebe5;
+
+    transition: 0.3s ease;
+}
+
+.quick-links a i {
+    color: #0b9550;
+
+    font-size: 15px;
+}
+
+.quick-links a:hover {
+    background: #f0faf3;
+
+    border-color: #b9dfc5;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 5px 15px rgba(0, 70, 40, 0.08);
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
 
 .orders-footer {
     text-align: center;
@@ -465,6 +696,7 @@ tbody tr:last-child td {
 
 .orders-footer i {
     color: #159453;
+
     margin-right: 5px;
 }
 
@@ -473,27 +705,77 @@ tbody tr:last-child td {
 }
 
 
-/* ================= RESPONSIVE ================= */
+/* =========================================================
+   ANIMATION
+========================================================= */
 
-@media (max-width: 900px) {
+.topbar,
+.summary-card,
+.table-card,
+.empty-orders,
+.quick-links {
+    animation: fadeUp 0.5s ease;
+}
 
-    .order-summary {
-        grid-template-columns: 1fr 1fr;
+@keyframes fadeUp {
+
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 
 }
 
 
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .main-content {
+        margin-left: 80px;
+    }
+
+    .order-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .quick-links {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
 @media (max-width: 650px) {
 
     .main-content {
+        margin-left: 0;
         padding: 12px;
     }
 
     .topbar {
         flex-direction: column;
+
         align-items: flex-start;
+
         gap: 12px;
+
+        padding: 15px;
+    }
+
+    .topbar h1 {
+        font-size: 21px;
     }
 
     .profile {
@@ -506,8 +788,66 @@ tbody tr:last-child td {
 
     .section-title {
         flex-direction: column;
+
         align-items: flex-start;
+
         gap: 10px;
+    }
+
+    .table-card {
+        padding: 10px;
+    }
+
+    .quick-links {
+        grid-template-columns: 1fr;
+    }
+
+    .empty-orders {
+        padding: 45px 15px;
+    }
+
+    .remove-order-btn {
+        padding: 7px 9px;
+
+        font-size: 9px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+
+    .main-content {
+        padding: 8px;
+    }
+
+    .topbar h1 {
+        font-size: 19px;
+    }
+
+    .topbar p {
+        font-size: 11px;
+    }
+
+    .summary-card {
+        padding: 15px;
+    }
+
+    .summary-icon {
+        width: 43px;
+        height: 43px;
+    }
+
+    .summary-card h3 {
+        font-size: 16px;
+    }
+
+    .section-title h2 {
+        font-size: 17px;
     }
 
 }

@@ -1,46 +1,52 @@
-<!-- ==============================
-     Floating AI Button
-================================ -->
+<!-- =====================================================
+     KisanVision360 AI CHATBOT
+===================================================== -->
 
-<div class="chatbot-button" onclick="toggleChat()">
+<div
+    class="chatbot-button"
+    id="chatbotButton"
+    onclick="toggleChat()"
+    title="KisanVision360 AI Assistant">
 
     <i class="fa-solid fa-robot"></i>
 
 </div>
 
-<!-- ==============================
-     Chat Window
-================================ -->
 
-<div class="chatbot-box" id="chatBox">
+<div
+    class="chatbot-box"
+    id="chatBox">
 
-    <!-- Header -->
+    <!-- HEADER -->
 
     <div class="chat-header">
 
         <div class="chat-user">
 
             <div class="ai-avatar">
-
                 🤖
-
             </div>
 
             <div>
 
-                <h3>KisanVision360 AI</h3>
+                <h3>
+                    KisanVision360 AI
+                </h3>
 
                 <span class="status">
-
-                    ● Online
-
+                    <i class="fa-solid fa-circle"></i>
+                    Online
                 </span>
 
             </div>
 
         </div>
 
-        <button class="close-btn" onclick="toggleChat()">
+
+        <button
+            type="button"
+            class="close-btn"
+            onclick="toggleChat()">
 
             <i class="fa-solid fa-xmark"></i>
 
@@ -48,47 +54,89 @@
 
     </div>
 
-    <!-- Chat Body -->
 
-    <div class="chat-body" id="chat-box">
+    <!-- CHAT BODY -->
 
-        <div class="bot">
+    <div
+        class="chat-body"
+        id="chat-box">
 
-            👋 <b>Hello {{ name }}</b>
+        <div class="bot-message">
 
-            <br><br>
+            <div class="message-avatar">
+                🤖
+            </div>
 
-            Welcome to KisanVision360 AI Assistant 🌱
+            <div class="message-content">
 
-            <br><br>
+                <div class="bot">
 
-            I can help you with:
+                    👋 <b>
+                        Hello {{ name|default('Farmer') }}
+                    </b>
 
-            <div class="suggestions">
+                    <br><br>
 
-                <button onclick="quickQuestion('Weather Today')">
-                    🌦 Weather
-                </button>
+                    I am <strong>KisanVision360 AI</strong> 🌱
 
-                <button onclick="quickQuestion('Best Crop')">
-                    🌱 Crop
-                </button>
+                    <br><br>
 
-                <button onclick="quickQuestion('Irrigation Advice')">
-                    💧 Irrigation
-                </button>
+                    Ask me anything related to your
+                    KisanVision360 application.
 
-                <button onclick="quickQuestion('Market Price')">
-                    📈 Market
-                </button>
+                    <div class="suggestions">
 
-                <button onclick="quickQuestion('Government Schemes')">
-                    🏛 Schemes
-                </button>
+                        <button
+                            type="button"
+                            onclick="quickQuestion('What is the live weather today?')">
+                            🌦 Weather
+                        </button>
 
-                <button onclick="quickQuestion('Disease Detection')">
-                    🐛 Disease
-                </button>
+                        <button
+                            type="button"
+                            onclick="quickQuestion('What are the latest mandi prices?')">
+                            📈 Market
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="quickQuestion('Which crop should I grow?')">
+                            🌱 Crop
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="quickQuestion('Give me irrigation advice')">
+                            💧 Irrigation
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="quickQuestion('How can I detect crop disease?')">
+                            🐛 Disease
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="quickQuestion('Show my orders')">
+                            📦 Orders
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="quickQuestion('What is my finance status?')">
+                            💰 Finance
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="quickQuestion('Tell me about government schemes')">
+                            🏛 Schemes
+                        </button>
+
+                    </div>
+
+                </div>
 
             </div>
 
@@ -96,17 +144,36 @@
 
     </div>
 
-    <!-- Input -->
+
+    <!-- TYPING -->
+
+    <div
+        class="typing"
+        id="typingIndicator"
+        style="display:none;">
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+        AI is thinking...
+
+    </div>
+
+
+    <!-- INPUT -->
 
     <div class="chat-footer">
 
         <input
-
+            type="text"
             id="message"
+            autocomplete="off"
+            placeholder="Ask anything about KisanVision360...">
 
-            placeholder="Ask anything about farming...">
-
-        <button onclick="sendMessage()">
+        <button
+            type="button"
+            onclick="sendMessage()">
 
             <i class="fa-solid fa-paper-plane"></i>
 
@@ -116,7 +183,18 @@
 
 </div>
 
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/chatbot.css') }}">
 
-<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+<link
+    rel="stylesheet"
+    href="{{ url_for(
+        'static',
+        filename='css/chatbot.css'
+    ) }}">
+
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/chatbot.js'
+    ) }}">
+</script>

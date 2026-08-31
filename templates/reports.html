@@ -1,22 +1,26 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<title>KisanVision360 | Reports</title>
+    <title>KisanVision360 | Farm Reports</title>
 
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/sidebar.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/sidebar.css') }}">
 
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/reports.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/reports.css') }}">
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
@@ -24,129 +28,832 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 {% include "components/sidebar.html" %}
 
+
 <div class="main-content">
 
-    <div class="topbar">
+<div class="reports-container">
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="reports-header">
+
+    <div>
+
+        <h1>
+            <i class="fa-solid fa-chart-pie"></i>
+            Farm Reports
+        </h1>
+
+        <p>
+            Complete analysis of your farm
+            using Finance & Weather data
+        </p>
+
+    </div>
+
+
+    <div class="profile">
+
+        <img
+            src="{{ url_for('static',
+            filename='images/farmer.jpg') }}"
+            alt="Farmer">
 
         <div>
 
-            <h2>📊 Farm Reports & Analytics</h2>
+            <h4>
+                {{ name|default("Farmer") }}
+            </h4>
 
-            <p>Monitor your farm performance and insights.</p>
+            <span>
+                <i class="fa-solid fa-user"></i>
+                Farmer
+            </span>
 
         </div>
 
-        <div class="profile">
+    </div>
 
-            <img src="{{ url_for('static', filename='images/farmer.jpg') }}">
+</header>
+
+
+<!-- =====================================================
+     ACTION BUTTONS
+===================================================== -->
+
+<div class="action-buttons">
+
+    <a href="{{ url_for('farmer') }}"
+       class="action dashboard">
+
+        <i class="fa-solid fa-house"></i>
+        Dashboard
+
+    </a>
+
+
+    <a href="{{ url_for('finance') }}"
+       class="action finance">
+
+        <i class="fa-solid fa-wallet"></i>
+        Finance
+
+    </a>
+
+
+    <a href="{{ url_for('weather') }}"
+       class="action weather">
+
+        <i class="fa-solid fa-cloud-sun"></i>
+        Weather
+
+    </a>
+
+
+    <button
+        onclick="window.print()"
+        class="action print">
+
+        <i class="fa-solid fa-print"></i>
+        Print Report
+
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     FARM SCORE
+===================================================== -->
+
+<div class="score-section">
+
+    <div class="score-circle">
+
+        <strong>
+            {{ farm_score|default(0) }}
+        </strong>
+
+        <span>
+            / 100
+        </span>
+
+    </div>
+
+
+    <div class="score-content">
+
+        <h2>
+            Overall Farm Health
+        </h2>
+
+        <h3>
+            {{ farm_status|default("Needs Attention") }}
+        </h3>
+
+        <p>
+            This score combines your financial
+            performance and current weather conditions.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     FINANCE SUMMARY
+===================================================== -->
+
+<h2 class="section-title">
+
+    <i class="fa-solid fa-indian-rupee-sign"></i>
+
+    Financial Summary
+
+</h2>
+
+
+<div class="stats-grid">
+
+
+    <!-- INCOME -->
+
+    <div class="stat-card income">
+
+        <div class="stat-icon">
+
+            <i class="fa-solid fa-arrow-trend-up"></i>
+
+        </div>
+
+        <div>
+
+            <p>Total Income</p>
+
+            <h2>
+                ₹ {{ "%.2f"|format(income|default(0)) }}
+            </h2>
+
+            <small>
+                {{ income_count|default(0) }}
+                income transactions
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <!-- EXPENSE -->
+
+    <div class="stat-card expense">
+
+        <div class="stat-icon">
+
+            <i class="fa-solid fa-arrow-trend-down"></i>
+
+        </div>
+
+        <div>
+
+            <p>Total Expenses</p>
+
+            <h2>
+                ₹ {{ "%.2f"|format(expenses|default(0)) }}
+            </h2>
+
+            <small>
+                {{ expense_count|default(0) }}
+                expense transactions
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <!-- PROFIT -->
+
+    <div class="stat-card profit">
+
+        <div class="stat-icon">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+        </div>
+
+        <div>
+
+            <p>Net Profit</p>
+
+            <h2>
+                ₹ {{ "%.2f"|format(profit|default(0)) }}
+            </h2>
+
+            {% if profit|default(0) > 0 %}
+
+            <small class="success">
+                <i class="fa-solid fa-circle-check"></i>
+                Profitable
+            </small>
+
+            {% elif profit|default(0) < 0 %}
+
+            <small class="danger">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Loss
+            </small>
+
+            {% else %}
+
+            <small>
+                Break-even
+            </small>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- MARGIN -->
+
+    <div class="stat-card margin">
+
+        <div class="stat-icon">
+
+            <i class="fa-solid fa-percent"></i>
+
+        </div>
+
+        <div>
+
+            <p>Profit Margin</p>
+
+            <h2>
+                {{ profit_margin|default(0) }}%
+            </h2>
+
+            <small>
+                Expense Ratio:
+                {{ expense_ratio|default(0) }}%
+            </small>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     WEATHER
+===================================================== -->
+
+<h2 class="section-title">
+
+    <i class="fa-solid fa-cloud-sun"></i>
+
+    Current Weather Report
+
+</h2>
+
+
+<div class="weather-report">
+
+
+    <div class="weather-location">
+
+        <div class="weather-icon">
+
+            <i class="fa-solid fa-cloud-sun"></i>
+
+        </div>
+
+        <div>
+
+            <h2>
+                {{ weather.city|default("Nagpur") }}
+            </h2>
+
+            <p>
+                {{ weather.country|default("India") }}
+            </p>
+
+            <strong>
+                {{ weather.description|default("Weather unavailable") }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="weather-values">
+
+
+        <div>
+
+            <i class="fa-solid fa-temperature-half"></i>
+
+            <span>Temperature</span>
+
+            <strong>
+                {{ weather.temperature|default(0) }}°C
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <i class="fa-solid fa-droplet"></i>
+
+            <span>Humidity</span>
+
+            <strong>
+                {{ weather.humidity|default(0) }}%
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <i class="fa-solid fa-cloud-rain"></i>
+
+            <span>Rainfall</span>
+
+            <strong>
+                {{ weather.rainfall|default(0) }} mm
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <i class="fa-solid fa-wind"></i>
+
+            <span>Wind</span>
+
+            <strong>
+                {{ weather.wind|default(0) }} m/s
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <i class="fa-solid fa-gauge-high"></i>
+
+            <span>Pressure</span>
+
+            <strong>
+                {{ weather.pressure|default(0) }} hPa
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <i class="fa-solid fa-cloud"></i>
+
+            <span>Cloud Cover</span>
+
+            <strong>
+                {{ weather.clouds|default(0) }}%
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <i class="fa-solid fa-eye"></i>
+
+            <span>Visibility</span>
+
+            <strong>
+                {{ weather.visibility|default(0) }} km
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <i class="fa-solid fa-sun"></i>
+
+            <span>UV Index</span>
+
+            <strong>
+                {{ weather.uv_index|default("N/A") }}
+            </strong>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     COMBINED ANALYSIS
+===================================================== -->
+
+<h2 class="section-title">
+
+    <i class="fa-solid fa-brain"></i>
+
+    Smart Farm Analysis
+
+</h2>
+
+
+<div class="analysis-grid">
+
+
+    <!-- FINANCE ANALYSIS -->
+
+    <div class="analysis-card">
+
+        <div class="analysis-header">
+
+            <i class="fa-solid fa-wallet"></i>
 
             <div>
 
-                <h4>{{ name }}</h4>
+                <h3>
+                    Financial Analysis
+                </h3>
 
-                <p>Farmer</p>
+                <p>
+                    Based on your Finance records
+                </p>
 
             </div>
 
         </div>
 
+
+        <div class="analysis-row">
+
+            <span>Income</span>
+
+            <strong>
+                ₹ {{ "%.2f"|format(income|default(0)) }}
+            </strong>
+
+        </div>
+
+
+        <div class="analysis-row">
+
+            <span>Expenses</span>
+
+            <strong>
+                ₹ {{ "%.2f"|format(expenses|default(0)) }}
+            </strong>
+
+        </div>
+
+
+        <div class="analysis-row">
+
+            <span>Profit</span>
+
+            <strong>
+                ₹ {{ "%.2f"|format(profit|default(0)) }}
+            </strong>
+
+        </div>
+
+
+        <div class="analysis-row">
+
+            <span>Financial Score</span>
+
+            <strong>
+                {{ financial_score|default(0) }}/100
+            </strong>
+
+        </div>
+
     </div>
 
-    <!-- Statistics -->
 
-    <div class="stats-grid">
 
-        <div class="stat-card">
+    <!-- WEATHER ANALYSIS -->
 
-            <i class="fa-solid fa-seedling"></i>
+    <div class="analysis-card">
 
-            <h3>Total Crops</h3>
-
-            <h2>12</h2>
-
-        </div>
-
-        <div class="stat-card">
-
-            <i class="fa-solid fa-chart-line"></i>
-
-            <h3>Total Yield</h3>
-
-            <h2>250 Qt</h2>
-
-        </div>
-
-        <div class="stat-card">
-
-            <i class="fa-solid fa-indian-rupee-sign"></i>
-
-            <h3>Total Income</h3>
-
-            <h2>₹1,80,000</h2>
-
-        </div>
-
-        <div class="stat-card">
-
-            <i class="fa-solid fa-droplet"></i>
-
-            <h3>Water Used</h3>
-
-            <h2>4500 L</h2>
-
-        </div>
-
-    </div>
-
-    <!-- Reports -->
-
-    <div class="report-grid">
-
-        <div class="report-card">
-
-            <i class="fa-solid fa-seedling"></i>
-
-            <h2>Crop Performance</h2>
-
-            <p>Track crop growth and productivity.</p>
-
-        </div>
-
-        <div class="report-card">
+        <div class="analysis-header">
 
             <i class="fa-solid fa-cloud-sun"></i>
 
-            <h2>Weather Report</h2>
+            <div>
 
-            <p>Temperature, rainfall and humidity history.</p>
+                <h3>
+                    Weather Analysis
+                </h3>
 
-        </div>
+                <p>
+                    Current weather conditions
+                </p>
 
-        <div class="report-card">
-
-            <i class="fa-solid fa-indian-rupee-sign"></i>
-
-            <h2>Income Report</h2>
-
-            <p>Analyze profit and selling price.</p>
+            </div>
 
         </div>
 
-        <div class="report-card">
 
-            <i class="fa-solid fa-droplet"></i>
+        <div class="analysis-row">
 
-            <h2>Water Usage</h2>
+            <span>Temperature</span>
 
-            <p>Irrigation and water consumption report.</p>
+            <strong>
+                {{ weather.temperature|default(0) }}°C
+            </strong>
+
+        </div>
+
+
+        <div class="analysis-row">
+
+            <span>Humidity</span>
+
+            <strong>
+                {{ weather.humidity|default(0) }}%
+            </strong>
+
+        </div>
+
+
+        <div class="analysis-row">
+
+            <span>Rainfall</span>
+
+            <strong>
+                {{ weather.rainfall|default(0) }} mm
+            </strong>
+
+        </div>
+
+
+        <div class="analysis-row">
+
+            <span>Weather Score</span>
+
+            <strong>
+                {{ weather_score|default(0) }}/100
+            </strong>
 
         </div>
 
     </div>
 
-    <!-- Table -->
+</div>
 
-    <div class="table-card">
+
+<!-- =====================================================
+     PROBLEMS
+===================================================== -->
+
+<div class="problem-card">
+
+    <div class="card-title">
+
+        <i class="fa-solid fa-triangle-exclamation"></i>
+
+        <div>
+
+            <h2>
+                Problems Detected
+            </h2>
+
+            <p>
+                Important issues identified from your data
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="problem-list">
+
+        {% for problem in warning_points %}
+
+        <div class="problem">
+
+            <i class="fa-solid fa-circle-exclamation"></i>
+
+            <span>
+                {{ problem }}
+            </span>
+
+        </div>
+
+        {% else %}
+
+        <div class="no-problem">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            No major problems detected.
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     POSITIVE PERFORMANCE
+===================================================== -->
+
+<div class="positive-card">
+
+    <div class="card-title">
+
+        <i class="fa-solid fa-circle-check"></i>
+
+        <div>
+
+            <h2>
+                Positive Performance
+            </h2>
+
+            <p>
+                Good points identified from your farm data
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="positive-list">
+
+        {% for point in positive_points %}
+
+        <div>
+
+            <i class="fa-solid fa-check"></i>
+
+            {{ point }}
+
+        </div>
+
+        {% else %}
+
+        <div>
+            Update Finance data to get more insights.
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     SMART SOLUTIONS
+===================================================== -->
+
+<div class="solutions-card">
+
+    <div class="card-title">
+
+        <div class="solution-main-icon">
+
+            <i class="fa-solid fa-lightbulb"></i>
+
+        </div>
+
+        <div>
+
+            <h2>
+                Smart Solutions
+            </h2>
+
+            <p>
+                Recommended actions based on Finance
+                + Weather conditions
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="solutions-grid">
+
+        {% for solution in solutions %}
+
+        <div class="solution">
+
+            <div class="solution-number">
+                {{ loop.index }}
+            </div>
+
+            <div>
+
+                <h3>
+                    {{ solution.title }}
+                </h3>
+
+                <p>
+                    {{ solution.description }}
+                </p>
+
+                <strong>
+                    <i class="fa-solid fa-arrow-right"></i>
+                    Solution:
+                </strong>
+
+                <span>
+                    {{ solution.action }}
+                </span>
+
+            </div>
+
+        </div>
+
+        {% else %}
+
+        <div class="solution">
+
+            <div class="solution-number">
+                1
+            </div>
+
+            <div>
+
+                <h3>
+                    Continue Monitoring
+                </h3>
+
+                <p>
+                    Your farm data is currently normal.
+                </p>
+
+                <strong>
+                    Solution:
+                </strong>
+
+                <span>
+                    Continue updating Finance and Weather data.
+                </span>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     TRANSACTION HISTORY
+===================================================== -->
+
+<div class="transaction-card">
+
+    <div class="card-title">
+
+        <i class="fa-solid fa-receipt"></i>
+
+        <div>
+
+            <h2>
+                Finance Transaction History
+            </h2>
+
+            <p>
+                Data taken directly from Finance
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-container">
 
         <table>
 
@@ -154,63 +861,81 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
                 <tr>
 
-                    <th>Crop</th>
+                    <th>
+                        Description
+                    </th>
 
-                    <th>Area</th>
+                    <th>
+                        Amount
+                    </th>
 
-                    <th>Yield</th>
+                    <th>
+                        Type
+                    </th>
 
-                    <th>Income</th>
-
-                    <th>Status</th>
+                    <th>
+                        Date
+                    </th>
 
                 </tr>
 
             </thead>
 
+
             <tbody>
 
-                <tr>
-
-                    <td>Soybean</td>
-
-                    <td>5 Acre</td>
-
-                    <td>120 Qt</td>
-
-                    <td>₹72,000</td>
-
-                    <td><span class="success">Good</span></td>
-
-                </tr>
+            {% for row in transactions %}
 
                 <tr>
 
-                    <td>Wheat</td>
+                    <td>
+                        {{ row[0] }}
+                    </td>
 
-                    <td>3 Acre</td>
+                    <td>
+                        ₹ {{ "%.2f"|format(row[1]|float) }}
+                    </td>
 
-                    <td>80 Qt</td>
+                    <td>
 
-                    <td>₹54,000</td>
+                        {% if row[2]|lower == "income" %}
 
-                    <td><span class="success">Good</span></td>
+                        <span class="income-badge">
+                            <i class="fa-solid fa-arrow-up"></i>
+                            Income
+                        </span>
+
+                        {% else %}
+
+                        <span class="expense-badge">
+                            <i class="fa-solid fa-arrow-down"></i>
+                            Expense
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+                        {{ row[3] }}
+                    </td>
 
                 </tr>
+
+            {% else %}
 
                 <tr>
 
-                    <td>Cotton</td>
+                    <td colspan="4"
+                        class="empty">
 
-                    <td>2 Acre</td>
+                        No Finance transactions available.
 
-                    <td>50 Qt</td>
-
-                    <td>₹60,000</td>
-
-                    <td><span class="warning">Average</span></td>
+                    </td>
 
                 </tr>
+
+            {% endfor %}
 
             </tbody>
 
@@ -220,10 +945,132 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 </div>
 
-{% include "components/chatbot.html" %}
 
-<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+<!-- =====================================================
+     MODULE LINKS
+===================================================== -->
+
+<div class="module-links">
+
+
+    <a href="{{ url_for('finance') }}">
+
+        <i class="fa-solid fa-wallet"></i>
+
+        <div>
+
+            <strong>
+                Finance
+            </strong>
+
+            <span>
+                Manage income & expenses
+            </span>
+
+        </div>
+
+        <i class="fa-solid fa-arrow-right"></i>
+
+    </a>
+
+
+    <a href="{{ url_for('weather') }}">
+
+        <i class="fa-solid fa-cloud-sun"></i>
+
+        <div>
+
+            <strong>
+                Live Weather
+            </strong>
+
+            <span>
+                Monitor weather conditions
+            </span>
+
+        </div>
+
+        <i class="fa-solid fa-arrow-right"></i>
+
+    </a>
+
+
+    <a href="{{ url_for('recommendation') }}">
+
+        <i class="fa-solid fa-seedling"></i>
+
+        <div>
+
+            <strong>
+                AI Crop Recommendation
+            </strong>
+
+            <span>
+                Get crop recommendations
+            </span>
+
+        </div>
+
+        <i class="fa-solid fa-arrow-right"></i>
+
+    </a>
+
+
+    <a href="{{ url_for('irrigation') }}">
+
+        <i class="fa-solid fa-droplet"></i>
+
+        <div>
+
+            <strong>
+                Smart Irrigation
+            </strong>
+
+            <span>
+                Plan irrigation using weather
+            </span>
+
+        </div>
+
+        <i class="fa-solid fa-arrow-right"></i>
+
+    </a>
+
+</div>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <i class="fa-solid fa-leaf"></i>
+
+    KisanVision360
+
+    <span>•</span>
+
+    AI-Powered Smart Farming Platform
+
+    <span>•</span>
+
+    Finance + Weather Reports
+
+    <span>•</span>
+
+    Made in India 🇮🇳
+
+</footer>
+
+
+</div>
+
+</div>
 
 </body>
 
 </html>
+```
+
+This template expects the Flask route to provide `income`, `expenses`, `profit`, `financial_score`, `weather`, `weather_score`, `farm_score`, `warning_points`, `positive_points`, `solutions`, and `transactions`.

@@ -3,16 +3,588 @@
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
 
-<title>KisanVision360 | Profile</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/profile.css') }}">
+    <title>KisanVision360 | My Profile</title>
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- SIDEBAR -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/sidebar.css') }}">
+
+
+    <!-- PROFILE CSS -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/profile.css') }}">
+
+
+    <!-- FONT AWESOME -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            background: #f4f7f4;
+
+            font-family: Arial, sans-serif;
+
+        }
+
+
+        .profile-page {
+
+            padding: 25px;
+
+        }
+
+
+        /* ================= TOPBAR ================= */
+
+        .profile-topbar {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 20px;
+
+            margin-bottom: 25px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .profile-topbar h1 {
+
+            margin: 0;
+
+            color: #1b5e20;
+
+            font-size: 30px;
+
+        }
+
+
+        .profile-topbar p {
+
+            margin-top: 8px;
+
+            color: #666;
+
+        }
+
+
+        .top-actions {
+
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .top-btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 11px 16px;
+
+            border-radius: 9px;
+
+            text-decoration: none;
+
+            color: white;
+
+            font-weight: 600;
+
+        }
+
+
+        .dashboard-btn {
+
+            background: #455a64;
+
+        }
+
+
+        .settings-btn {
+
+            background: #2e7d32;
+
+        }
+
+
+        .dashboard-btn:hover {
+
+            background: #263238;
+
+        }
+
+
+        .settings-btn:hover {
+
+            background: #1b5e20;
+
+        }
+
+
+        /* ================= PROFILE HERO ================= */
+
+        .profile-card {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1b5e20,
+                    #43a047
+                );
+
+            color: white;
+
+            border-radius: 20px;
+
+            padding: 30px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 25px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 7px 25px rgba(0,0,0,0.12);
+
+        }
+
+
+        .dp-box {
+
+            position: relative;
+
+            width: 125px;
+
+            height: 125px;
+
+            flex-shrink: 0;
+
+        }
+
+
+        .profile-image {
+
+            width: 125px;
+
+            height: 125px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            border: 5px solid white;
+
+        }
+
+
+        .camera-button {
+
+            position: absolute;
+
+            right: 3px;
+
+            bottom: 3px;
+
+            width: 38px;
+
+            height: 38px;
+
+            border-radius: 50%;
+
+            background: #ff9800;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            cursor: pointer;
+
+            border: 3px solid white;
+
+        }
+
+
+        .profile-card h2 {
+
+            margin: 0 0 8px;
+
+            font-size: 27px;
+
+        }
+
+
+        .profile-card p {
+
+            margin: 5px 0;
+
+            opacity: 0.95;
+
+        }
+
+
+        .role-badge {
+
+            display: inline-block;
+
+            margin-top: 8px;
+
+            padding: 7px 12px;
+
+            background: rgba(255,255,255,0.18);
+
+            border-radius: 20px;
+
+            font-size: 13px;
+
+        }
+
+
+        /* ================= STATUS ================= */
+
+        .section-title {
+
+            color: #333;
+
+            margin: 25px 0 15px;
+
+        }
+
+
+        .status-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(200px, 1fr));
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .status-card {
+
+            background: white;
+
+            padding: 22px;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,0.08);
+
+            border-left: 5px solid #2e7d32;
+
+        }
+
+
+        .status-card i {
+
+            font-size: 25px;
+
+            color: #2e7d32;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .status-card h3 {
+
+            margin: 5px 0;
+
+            color: #333;
+
+            font-size: 21px;
+
+        }
+
+
+        .status-card p {
+
+            margin: 0;
+
+            color: #777;
+
+            font-size: 13px;
+
+        }
+
+
+        /* ================= DETAILS ================= */
+
+        .details-card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.08);
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .details-card h2 {
+
+            margin-top: 0;
+
+            color: #1b5e20;
+
+        }
+
+
+        .info-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(250px, 1fr));
+
+            gap: 18px;
+
+        }
+
+
+        .info-item label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-size: 13px;
+
+            color: #777;
+
+            font-weight: 600;
+
+        }
+
+
+        .info-value {
+
+            width: 100%;
+
+            background: #f7f9f7;
+
+            border: 1px solid #e1e5e1;
+
+            padding: 12px;
+
+            border-radius: 9px;
+
+            color: #333;
+
+            min-height: 43px;
+
+        }
+
+
+        /* ================= ACCOUNT ================= */
+
+        .account-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(230px, 1fr));
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .account-card {
+
+            background: white;
+
+            padding: 22px;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,0.08);
+
+        }
+
+
+        .account-card i {
+
+            font-size: 27px;
+
+            color: #2e7d32;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .account-card h3 {
+
+            margin: 5px 0;
+
+            color: #333;
+
+        }
+
+
+        .account-card p {
+
+            color: #777;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+        }
+
+
+        .account-btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 9px 13px;
+
+            border-radius: 8px;
+
+            background: #2e7d32;
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+        }
+
+
+        .account-btn:hover {
+
+            background: #1b5e20;
+
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        .profile-footer {
+
+            text-align: center;
+
+            color: #777;
+
+            padding: 25px 10px;
+
+        }
+
+
+        .profile-footer i {
+
+            color: #2e7d32;
+
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 650px) {
+
+            .profile-page {
+
+                padding: 15px;
+
+            }
+
+
+            .profile-card {
+
+                flex-direction: column;
+
+                text-align: center;
+
+            }
+
+
+            .profile-topbar h1 {
+
+                font-size: 24px;
+
+            }
+
+
+            .top-actions {
+
+                width: 100%;
+
+            }
+
+
+            .top-btn {
+
+                flex: 1;
+
+                justify-content: center;
+
+            }
+
+        }
+
+    </style>
 
 </head>
 
@@ -23,296 +595,571 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 <div class="dashboard-container">
 
 
-<!-- SIDEBAR -->
+    <!-- ================= SIDEBAR ================= -->
 
-{% include 'components/sidebar.html' %}
-
-
-
-<!-- MAIN CONTENT -->
-
-<div class="main-content">
+    {% include "components/sidebar.html" %}
 
 
 
-<!-- TOPBAR -->
+    <!-- ================= MAIN CONTENT ================= -->
 
-<div class="topbar">
+    <div class="main-content">
 
 
-<div>
+        <div class="profile-page">
 
-<h1>
-👤 My Profile
-</h1>
 
-<p>
-Manage your farmer account
-</p>
+            <!-- ================= TOPBAR ================= -->
+
+            <div class="profile-topbar">
+
+
+                <div>
+
+                    <h1>
+
+                        <i class="fa-solid fa-user"></i>
+
+                        My Profile
+
+                    </h1>
+
+                    <p>
+
+                        Manage your KisanVision360
+                        farmer account.
+
+                    </p>
+
+                </div>
+
+
+
+                <div class="top-actions">
+
+
+                    <a
+                        href="/farmer"
+                        class="top-btn dashboard-btn">
+
+                        <i class="fa-solid fa-house"></i>
+
+                        Dashboard
+
+                    </a>
+
+
+                    <a
+                        href="/settings"
+                        class="top-btn settings-btn">
+
+                        <i class="fa-solid fa-gear"></i>
+
+                        Settings
+
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ================= PROFILE HERO ================= -->
+
+            <div class="profile-card">
+
+
+                <div class="dp-box">
+
+
+                    <img
+                        src="{{ profile_pic if profile_pic else url_for('static', filename='images/farmer.jpg') }}"
+                        class="profile-image"
+                        alt="Profile Photo">
+
+
+                    <form
+                        action="/upload-profile"
+                        method="POST"
+                        enctype="multipart/form-data">
+
+
+                        <label
+                            for="photo"
+                            class="camera-button"
+                            title="Change Profile Photo">
+
+                            <i class="fa-solid fa-camera"></i>
+
+                        </label>
+
+
+                        <input
+                            type="file"
+                            id="photo"
+                            name="profile"
+                            accept="image/*"
+                            hidden
+                            onchange="this.form.submit()">
+
+                    </form>
+
+
+                </div>
+
+
+
+                <div>
+
+
+                    <h2>
+                        {{ name }}
+                    </h2>
+
+
+                    <p>
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        Nagpur, Maharashtra
+
+                    </p>
+
+
+                    <span class="role-badge">
+
+                        <i class="fa-solid fa-user-check"></i>
+
+                        {{ role }}
+
+                    </span>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ================= STATUS ================= -->
+
+            <h2 class="section-title">
+
+                <i class="fa-solid fa-chart-simple"></i>
+
+                Current Status
+
+            </h2>
+
+
+            <div class="status-grid">
+
+
+                <!-- LOCATION -->
+
+                <div class="status-card">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    <h3>
+                        Nagpur
+                    </h3>
+
+                    <p>
+                        Farm Location
+                    </p>
+
+                </div>
+
+
+
+                <!-- TEMPERATURE -->
+
+                <div class="status-card">
+
+                    <i class="fa-solid fa-temperature-half"></i>
+
+
+                    {% if weather %}
+
+                        <h3>
+                            {{ weather.temperature }} °C
+                        </h3>
+
+                    {% else %}
+
+                        <h3>
+                            N/A
+                        </h3>
+
+                    {% endif %}
+
+
+                    <p>
+                        Current Temperature
+                    </p>
+
+                </div>
+
+
+
+                <!-- WEATHER -->
+
+                <div class="status-card">
+
+                    <i class="fa-solid fa-cloud"></i>
+
+
+                    {% if weather %}
+
+                        <h3>
+                            {{ weather.condition }}
+                        </h3>
+
+                    {% else %}
+
+                        <h3>
+                            No Data
+                        </h3>
+
+                    {% endif %}
+
+
+                    <p>
+                        Weather Status
+                    </p>
+
+                </div>
+
+
+
+                <!-- ACCOUNT -->
+
+                <div class="status-card">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    <h3>
+                        Active
+                    </h3>
+
+                    <p>
+                        Account Status
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ================= PERSONAL INFORMATION ================= -->
+
+            <div class="details-card">
+
+
+                <h2>
+
+                    <i class="fa-solid fa-address-card"></i>
+
+                    Personal Information
+
+                </h2>
+
+
+                <div class="info-grid">
+
+
+                    <div class="info-item">
+
+                        <label>
+                            Full Name
+                        </label>
+
+                        <div class="info-value">
+                            {{ name }}
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="info-item">
+
+                        <label>
+                            Mobile Number
+                        </label>
+
+                        <div class="info-value">
+
+                            {{ mobile }}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="info-item">
+
+                        <label>
+                            Email Address
+                        </label>
+
+                        <div class="info-value">
+
+                            {{ email }}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="info-item">
+
+                        <label>
+                            Account Role
+                        </label>
+
+                        <div class="info-value">
+
+                            {{ role }}
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <br>
+
+
+                <a
+                    href="/edit-profile"
+                    class="account-btn">
+
+                    <i class="fa-solid fa-pen"></i>
+
+                    Edit Profile
+
+                </a>
+
+
+            </div>
+
+
+
+            <!-- ================= ACCOUNT MANAGEMENT ================= -->
+
+            <h2 class="section-title">
+
+                <i class="fa-solid fa-user-gear"></i>
+
+                Account Management
+
+            </h2>
+
+
+            <div class="account-grid">
+
+
+                <!-- EDIT PROFILE -->
+
+                <div class="account-card">
+
+                    <i class="fa-solid fa-user-pen"></i>
+
+                    <h3>
+                        Edit Profile
+                    </h3>
+
+                    <p>
+
+                        Update your name, mobile number,
+                        email and other account information.
+
+                    </p>
+
+                    <a
+                        href="/edit-profile"
+                        class="account-btn">
+
+                        Edit Profile
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+
+
+                <!-- PASSWORD -->
+
+                <div class="account-card">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    <h3>
+                        Change Password
+                    </h3>
+
+                    <p>
+
+                        Change your account password
+                        and keep your account secure.
+
+                    </p>
+
+                    <a
+                        href="/change-password"
+                        class="account-btn">
+
+                        Change Password
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+
+
+                <!-- SETTINGS -->
+
+                <div class="account-card">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    <h3>
+                        Account Settings
+                    </h3>
+
+                    <p>
+
+                        Manage language, notifications,
+                        weather and other preferences.
+
+                    </p>
+
+                    <a
+                        href="/settings"
+                        class="account-btn">
+
+                        Open Settings
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+
+
+                <!-- HELP -->
+
+                <div class="account-card">
+
+                    <i class="fa-solid fa-circle-question"></i>
+
+                    <h3>
+                        Help & Support
+                    </h3>
+
+                    <p>
+
+                        Get assistance with KisanVision360
+                        farmer services and features.
+
+                    </p>
+
+                    <a
+                        href="/help"
+                        class="account-btn">
+
+                        Open Help
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ================= LOGOUT ================= -->
+
+            <div class="account-card">
+
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+
+                <h3>
+                    Logout
+                </h3>
+
+
+                <p>
+
+                    Sign out safely from your
+                    KisanVision360 account.
+
+                </p>
+
+
+                <a
+                    href="/logout"
+                    class="account-btn">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    Logout
+
+                </a>
+
+
+            </div>
+
+
+
+            <!-- ================= FOOTER ================= -->
+
+            <div class="profile-footer">
+
+                <i class="fa-solid fa-leaf"></i>
+
+                KisanVision360
+
+                <span>•</span>
+
+                Smart Farming Platform
+
+                <span>•</span>
+
+                Made in India 🇮🇳
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
 
 </div>
-
-
-
-<div class="user">
-
-<img src="{{ profile_pic if profile_pic else url_for('static',filename='images/farmer.jpg') }}">
-
-<span>
-{{name}}
-</span>
-
-</div>
-
-
-</div>
-
-
-
-
-<!-- PROFILE CARD -->
-
-<div class="profile-card">
-
-
-<div class="dp-box">
-
-
-<img src="{{ profile_pic if profile_pic else url_for('static',filename='images/farmer.jpg') }}"
-class="profile-image">
-
-
-
-<form action="/upload-profile"
-method="POST"
-enctype="multipart/form-data">
-
-
-<label for="photo">
-
-<i class="fa fa-camera"></i>
-
-</label>
-
-
-<input type="file"
-id="photo"
-name="profile"
-hidden
-onchange="this.form.submit()">
-
-
-
-</form>
-
-
-</div>
-
-
-
-<h2>
-{{name}}
-</h2>
-
-
-<p>
-🌾 {{role}}
-</p>
-
-
-</div>
-
-
-
-
-
-
-<!-- STATUS -->
-
-<div class="status-grid">
-
-
-<div class="status-card">
-
-<i class="fa fa-location-dot"></i>
-
-<h3>
-Nagpur
-</h3>
-
-<p>
-Farm Location
-</p>
-
-</div>
-
-
-
-
-<div class="status-card">
-
-<i class="fa fa-temperature-half"></i>
-
-
-{% if weather %}
-
-<h3>
-{{weather.temperature}} °C
-</h3>
-
-{% else %}
-
-<h3>
-N/A
-</h3>
-
-{% endif %}
-
-
-<p>
-Current Temperature
-</p>
-
-</div>
-
-
-
-
-
-<div class="status-card">
-
-<i class="fa fa-cloud"></i>
-
-
-{% if weather %}
-
-<h3>
-{{weather.condition}}
-</h3>
-
-{% else %}
-
-<h3>
-No Data
-</h3>
-
-{% endif %}
-
-
-<p>
-Weather Status
-</p>
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-<!-- PERSONAL INFORMATION -->
-
-
-<div class="details-card">
-
-
-<h2>
-Personal Information
-</h2>
-
-
-
-<div class="row">
-
-
-<div>
-
-<label>
-Full Name
-</label>
-
-<input value="{{name}}" readonly>
-
-</div>
-
-
-
-<div>
-
-<label>
-Mobile Number
-</label>
-
-<input value="{{mobile}}" readonly>
-
-</div>
-
-
-</div>
-
-
-
-
-
-<div class="row">
-
-
-<div>
-
-<label>
-Email
-</label>
-
-<input value="{{email}}" readonly>
-
-</div>
-
-
-
-
-<div>
-
-<label>
-Role
-</label>
-
-<input value="{{role}}" readonly>
-
-</div>
-
-
-</div>
-
-
-
-
-
-<a href="/edit-profile">
-
-<button>
-
-<i class="fa fa-edit"></i>
-
-Edit Profile
-
-</button>
-
-</a>
-
-
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
 
 
 </body>

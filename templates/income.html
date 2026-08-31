@@ -1,128 +1,171 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<title>KisanVision360 | Income</title>
+    <title>KisanVision360 | Income</title>
 
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/sidebar.css') }}">
+    <!-- Sidebar CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/sidebar.css') }}">
 
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/income.css') }}">
+    <!-- Income CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/income.css') }}">
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
 <body>
 
-{% include "components/sidebar.html" %}
+    <!-- Sidebar -->
+    {% include "components/sidebar.html" %}
 
-<div class="main-content">
 
-<div class="topbar">
+    <!-- Main Content -->
+    <div class="main-content">
 
-<div>
+        <!-- Topbar -->
+        <div class="topbar">
 
-<h2>💵 Farm Income</h2>
+            <div>
+                <h2>💵 Farm Income</h2>
+                <p>Manage Crop Sales & Other Income</p>
+            </div>
 
-<p>Manage Crop Sales & Other Income</p>
+            <div class="profile">
 
-</div>
+                <img src="{{ url_for('static', filename='images/farmer.jpg') }}"
+                     alt="Farmer">
 
-<div class="profile">
+                <div>
+                    <h4>{{ name }}</h4>
+                    <p>Farmer</p>
+                </div>
 
-<img src="{{ url_for('static', filename='images/farmer.jpg') }}">
+            </div>
 
-<div>
+        </div>
 
-<h4>{{ name }}</h4>
 
-<p>Farmer</p>
+        <!-- Back to Orders Button -->
+        <div class="back-button">
 
-</div>
+            <a href="{{ url_for('finance') }}">
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Finance
+            </a>
 
-</div>
+        </div>
 
-</div>
 
-<div class="form-card">
+        <!-- Add Income Form -->
+        <div class="form-card">
 
-<h2>Add Income</h2>
+            <h2>Add Income</h2>
 
-<form method="POST">
+            <form method="POST">
 
-<label>Description</label>
+                <label for="description">
+                    Description
+                </label>
 
-<input
-type="text"
-name="description"
-placeholder="e.g. Wheat Sale"
-required>
+                <input
+                    type="text"
+                    id="description"
+                    name="description"
+                    placeholder="e.g. Wheat Sale"
+                    required>
 
-<label>Amount (₹)</label>
 
-<input
-type="number"
-name="amount"
-step="0.01"
-required>
+                <label for="amount">
+                    Amount (₹)
+                </label>
 
-<button type="submit">
+                <input
+                    type="number"
+                    id="amount"
+                    name="amount"
+                    placeholder="Enter amount"
+                    step="0.01"
+                    min="0"
+                    required>
 
-<i class="fa-solid fa-plus"></i>
 
-Add Income
+                <button type="submit">
 
-</button>
+                    <i class="fa-solid fa-plus"></i>
 
-</form>
+                    Add Income
 
-</div>
+                </button>
 
-<div class="table-card">
+            </form>
 
-<h2>Income History</h2>
+        </div>
 
-<table>
 
-<tr>
+        <!-- Income History -->
+        <div class="table-card">
 
-<th>Date</th>
+            <h2>Income History</h2>
 
-<th>Description</th>
+            <table>
 
-<th>Amount</th>
+                <thead>
 
-</tr>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                    </tr>
 
-{% for row in income_list %}
+                </thead>
 
-<tr>
+                <tbody>
 
-<td>{{ row[0] }}</td>
+                    {% for row in income_list %}
 
-<td>{{ row[1] }}</td>
+                    <tr>
 
-<td>₹ {{ row[2] }}</td>
+                        <td>{{ row[0] }}</td>
 
-</tr>
+                        <td>{{ row[1] }}</td>
 
-{% endfor %}
+                        <td>₹ {{ row[2] }}</td>
 
-</table>
+                    </tr>
 
-</div>
+                    {% else %}
 
-</div>
+                    <tr>
+
+                        <td colspan="3">
+                            No income records found.
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
 
 </body>
 
 </html>
+```

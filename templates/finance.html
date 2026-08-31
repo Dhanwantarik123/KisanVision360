@@ -3,626 +3,581 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<title>KisanVision360 | Finance</title>
+    <title>KisanVision360 | Finance</title>
 
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/sidebar.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/sidebar.css') }}">
 
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/finance.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/finance.css') }}">
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
 <body>
 
-{% include "components/sidebar.html" %}
+    <!-- SIDEBAR -->
+    {% include "components/sidebar.html" %}
 
 
-<div class="main-content">
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
 
 
-<!-- ================= TOP BAR ================= -->
+        <!-- TOPBAR -->
+        <header class="topbar">
 
-<div class="topbar">
+            <div class="title-section">
 
-    <div class="title-section">
+                <div class="title-icon">
+                    <i class="fa-solid fa-coins"></i>
+                </div>
 
-        <div class="title-icon">
-            <i class="fa-solid fa-coins"></i>
-        </div>
+                <div>
 
-        <div>
+                    <h1>Finance Dashboard</h1>
 
-            <h1>Finance Dashboard</h1>
+                    <p>
+                        Manage your farm income, expenses & profit
+                    </p>
 
-            <p>
-                Manage your farm income, expenses & profit
-            </p>
-
-        </div>
-
-    </div>
-
-
-    <div class="profile">
-
-        <img
-        src="{{ url_for(
-            'static',
-            filename='images/farmer.jpg'
-        ) }}">
-
-        <div>
-
-            <h4>{{ name }}</h4>
-
-            <span>Farmer</span>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- ================= WELCOME BANNER ================= -->
-
-<div class="finance-banner">
-
-    <div class="banner-content">
-
-        <div class="banner-icon">
-
-            <i class="fa-solid fa-chart-pie"></i>
-
-        </div>
-
-        <div>
-
-            <h2>
-                Smart Farm Finance
-            </h2>
-
-            <p>
-                Track your farming money and understand
-                your financial performance.
-            </p>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- ================= STAT CARDS ================= -->
-
-<div class="finance-grid">
-
-
-    <!-- INCOME -->
-
-    <div class="finance-card income-card">
-
-        <div class="card-top">
-
-            <div class="card-icon">
-
-                <i class="fa-solid fa-arrow-trend-up"></i>
+                </div>
 
             </div>
 
-            <span class="card-label">
-                INCOME
-            </span>
 
-        </div>
+            <div class="profile">
 
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename='images/farmer.jpg'
+                    ) }}"
+                    alt="Farmer">
 
-        <h3>
-            Total Income
-        </h3>
+                <div>
 
+                    <h4>{{ name }}</h4>
 
-        <h2>
-            ₹ {{ "%.2f"|format(income|float) }}
-        </h2>
+                    <span>
+                        <i class="fa-solid fa-circle"></i>
+                        Farmer
+                    </span>
 
-
-        <p>
-            <i class="fa-solid fa-circle-check"></i>
-            Money received
-        </p>
-
-    </div>
-
-
-    <!-- EXPENSE -->
-
-    <div class="finance-card expense-card">
-
-        <div class="card-top">
-
-            <div class="card-icon">
-
-                <i class="fa-solid fa-arrow-trend-down"></i>
+                </div>
 
             </div>
 
-            <span class="card-label">
-                EXPENSE
-            </span>
-
-        </div>
+        </header>
 
 
-        <h3>
-            Total Expenses
-        </h3>
+        <!-- WELCOME BANNER -->
+        <section class="finance-banner">
 
+            <div class="banner-content">
 
-        <h2>
-            ₹ {{ "%.2f"|format(expenses|float) }}
-        </h2>
+                <div class="banner-icon">
 
+                    <i class="fa-solid fa-chart-pie"></i>
 
-        <p>
-            <i class="fa-solid fa-circle-check"></i>
-            Money spent
-        </p>
+                </div>
 
-    </div>
+                <div>
 
+                    <h2>
+                        Smart Farm Finance
+                    </h2>
 
-    <!-- PROFIT -->
+                    <p>
+                        Track your farming income, expenses and
+                        understand your financial performance.
+                    </p>
 
-    <div class="finance-card profit-card">
-
-        <div class="card-top">
-
-            <div class="card-icon">
-
-                <i class="fa-solid fa-chart-line"></i>
+                </div>
 
             </div>
 
-            <span class="card-label">
-                PROFIT
-            </span>
+        </section>
 
-        </div>
 
+        <!-- FINANCE STATISTICS -->
+        <section class="finance-grid">
 
-        <h3>
-            Net Profit
-        </h3>
 
+            <!-- INCOME -->
+            <div class="finance-card income-card">
 
-        <h2>
-            ₹ {{ "%.2f"|format(profit|float) }}
-        </h2>
+                <div class="card-top">
 
+                    <div class="card-icon">
 
-        {% if profit >= 0 %}
-
-        <p>
-            <i class="fa-solid fa-face-smile"></i>
-            Your farm is profitable
-        </p>
-
-        {% else %}
-
-        <p>
-            <i class="fa-solid fa-triangle-exclamation"></i>
-            Expenses are higher than income
-        </p>
-
-        {% endif %}
-
-    </div>
-
-</div>
-
-
-<!-- ================= ACTION SECTION ================= -->
-
-<div class="section-header">
-
-    <div>
-
-        <h2>
-            Quick Actions
-        </h2>
-
-        <p>
-            Add and manage your farm finances
-        </p>
-
-    </div>
-
-</div>
-
-
-<div class="action-grid">
-
-
-    <!-- ADD INCOME -->
-
-    <a href="/income"
-       class="action-card income-action">
-
-        <div class="action-icon">
-
-            <i class="fa-solid fa-plus"></i>
-
-        </div>
-
-        <div>
-
-            <h3>
-                Add Income
-            </h3>
-
-            <p>
-                Record crop sales and other income
-            </p>
-
-        </div>
-
-        <i class="fa-solid fa-arrow-right action-arrow"></i>
-
-    </a>
-
-
-    <!-- ADD EXPENSE -->
-
-    <a href="/expense"
-       class="action-card expense-action">
-
-        <div class="action-icon">
-
-            <i class="fa-solid fa-minus"></i>
-
-        </div>
-
-        <div>
-
-            <h3>
-                Add Expense
-            </h3>
-
-            <p>
-                Record seeds, fertilizer and other costs
-            </p>
-
-        </div>
-
-        <i class="fa-solid fa-arrow-right action-arrow"></i>
-
-    </a>
-
-
-    <!-- PROFIT -->
-
-    <a href="/profit"
-       class="action-card profit-action">
-
-        <div class="action-icon">
-
-            <i class="fa-solid fa-chart-simple"></i>
-
-        </div>
-
-        <div>
-
-            <h3>
-                Profit Analysis
-            </h3>
-
-            <p>
-                View your farm profit details
-            </p>
-
-        </div>
-
-        <i class="fa-solid fa-arrow-right action-arrow"></i>
-
-    </a>
-
-
-    <!-- CALCULATOR -->
-
-    <a href="/calculator"
-       class="action-card calculator-action">
-
-        <div class="action-icon">
-
-            <i class="fa-solid fa-calculator"></i>
-
-        </div>
-
-        <div>
-
-            <h3>
-                Farm Calculator
-            </h3>
-
-            <p>
-                Calculate farming costs and returns
-            </p>
-
-        </div>
-
-        <i class="fa-solid fa-arrow-right action-arrow"></i>
-
-    </a>
-
-</div>
-
-
-<!-- ================= TRANSACTIONS ================= -->
-
-<div class="transaction-section">
-
-
-    <div class="section-header">
-
-        <div>
-
-            <h2>
-                <i class="fa-solid fa-receipt"></i>
-                Recent Transactions
-            </h2>
-
-            <p>
-                Your latest farm financial activities
-            </p>
-
-        </div>
-
-
-        <span class="transaction-count">
-
-            {{ transactions|length }}
-            Transactions
-
-        </span>
-
-    </div>
-
-
-    <div class="table-card">
-
-
-        {% if transactions %}
-
-        <div class="table-wrapper">
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>
-                        Description
-                    </th>
-
-                    <th>
-                        Amount
-                    </th>
-
-                    <th>
-                        Type
-                    </th>
-
-                    <th>
-                        Date
-                    </th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody>
-
-            {% for t in transactions %}
-
-            <tr>
-
-
-                <!-- DESCRIPTION -->
-
-                <td>
-
-                    <div class="description-cell">
-
-                        {% if t[2] == "Income" %}
-
-                        <div class="small-income-icon">
-
-                            <i class="fa-solid fa-arrow-up"></i>
-
-                        </div>
-
-                        {% else %}
-
-                        <div class="small-expense-icon">
-
-                            <i class="fa-solid fa-arrow-down"></i>
-
-                        </div>
-
-                        {% endif %}
-
-
-                        <span>
-
-                            {{ t[0] }}
-
-                        </span>
+                        <i class="fa-solid fa-arrow-trend-up"></i>
 
                     </div>
 
-                </td>
-
-
-                <!-- AMOUNT -->
-
-                <td>
-
-                    <strong>
-
-                        ₹ {{ "%.2f"|format(t[1]|float) }}
-
-                    </strong>
-
-                </td>
-
-
-                <!-- TYPE -->
-
-                <td>
-
-                    {% if t[2] == "Income" %}
-
-                    <span class="type-badge income">
-
-                        <i class="fa-solid fa-arrow-up"></i>
-
-                        Income
-
+                    <span class="card-label">
+                        INCOME
                     </span>
 
-                    {% else %}
+                </div>
 
-                    <span class="type-badge expense">
+                <h3>Total Income</h3>
 
-                        <i class="fa-solid fa-arrow-down"></i>
+                <h2>
+                    ₹ {{ "%.2f"|format(income|float) }}
+                </h2>
 
-                        Expense
-
-                    </span>
-
-                    {% endif %}
-
-                </td>
-
-
-                <!-- DATE -->
-
-                <td>
-
-                    <span class="date">
-
-                        <i class="fa-regular fa-calendar"></i>
-
-                        {{ t[3] }}
-
-                    </span>
-
-                </td>
-
-
-            </tr>
-
-            {% endfor %}
-
-            </tbody>
-
-        </table>
-
-        </div>
-
-
-        {% else %}
-
-
-        <!-- EMPTY STATE -->
-
-        <div class="empty-state">
-
-            <div class="empty-icon">
-
-                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <p>
+                    <i class="fa-solid fa-circle-check"></i>
+                    Money received
+                </p>
 
             </div>
 
-            <h3>
-                No Transactions Yet
-            </h3>
 
-            <p>
-                Start recording your farm income and expenses.
-            </p>
+            <!-- EXPENSE -->
+            <div class="finance-card expense-card">
+
+                <div class="card-top">
+
+                    <div class="card-icon">
+
+                        <i class="fa-solid fa-arrow-trend-down"></i>
+
+                    </div>
+
+                    <span class="card-label">
+                        EXPENSE
+                    </span>
+
+                </div>
+
+                <h3>Total Expenses</h3>
+
+                <h2>
+                    ₹ {{ "%.2f"|format(expenses|float) }}
+                </h2>
+
+                <p>
+                    <i class="fa-solid fa-circle-check"></i>
+                    Money spent
+                </p>
+
+            </div>
 
 
-            <div class="empty-buttons">
+            <!-- PROFIT -->
+            <div class="finance-card profit-card">
 
-                <a href="/income">
+                <div class="card-top">
 
-                    <button class="empty-income-btn">
+                    <div class="card-icon">
 
-                        <i class="fa-solid fa-plus"></i>
+                        <i class="fa-solid fa-chart-line"></i>
 
+                    </div>
+
+                    <span class="card-label">
+                        PROFIT
+                    </span>
+
+                </div>
+
+                <h3>Net Profit</h3>
+
+                <h2>
+                    ₹ {{ "%.2f"|format(profit|float) }}
+                </h2>
+
+                {% if profit >= 0 %}
+
+                <p>
+                    <i class="fa-solid fa-face-smile"></i>
+                    Your farm is profitable
+                </p>
+
+                {% else %}
+
+                <p>
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    Expenses are higher than income
+                </p>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        <!-- QUICK ACTIONS -->
+        <section class="section-header">
+
+            <div>
+
+                <h2>
+                    Quick Actions
+                </h2>
+
+                <p>
+                    Add and manage your farm finances
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <section class="action-grid">
+
+
+            <!-- ADD INCOME -->
+            <a
+                href="{{ url_for('income') }}"
+                class="action-card income-action">
+
+                <div class="action-icon">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
                         Add Income
+                    </h3>
 
-                    </button>
+                    <p>
+                        Record crop sales and other income
+                    </p>
 
-                </a>
+                </div>
+
+                <i class="fa-solid fa-arrow-right action-arrow"></i>
+
+            </a>
 
 
-                <a href="/expense">
+            <!-- ADD EXPENSE -->
+            <a
+                href="{{ url_for('expense') }}"
+                class="action-card expense-action">
 
-                    <button class="empty-expense-btn">
+                <div class="action-icon">
 
-                        <i class="fa-solid fa-minus"></i>
+                    <i class="fa-solid fa-minus"></i>
 
+                </div>
+
+                <div>
+
+                    <h3>
                         Add Expense
+                    </h3>
 
-                    </button>
+                    <p>
+                        Record seeds, fertilizer and other costs
+                    </p>
 
-                </a>
+                </div>
+
+                <i class="fa-solid fa-arrow-right action-arrow"></i>
+
+            </a>
+
+
+            <!-- PROFIT -->
+            <a
+                href="{{ url_for('profit') }}"
+                class="action-card profit-action">
+
+                <div class="action-icon">
+
+                    <i class="fa-solid fa-chart-simple"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Profit Analysis
+                    </h3>
+
+                    <p>
+                        View your farm profit details
+                    </p>
+
+                </div>
+
+                <i class="fa-solid fa-arrow-right action-arrow"></i>
+
+            </a>
+
+
+            <!-- CALCULATOR -->
+            <a
+                href="{{ url_for('calculator') }}"
+                class="action-card calculator-action">
+
+                <div class="action-icon">
+
+                    <i class="fa-solid fa-calculator"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Farm Calculator
+                    </h3>
+
+                    <p>
+                        Calculate farming costs and returns
+                    </p>
+
+                </div>
+
+                <i class="fa-solid fa-arrow-right action-arrow"></i>
+
+            </a>
+
+        </section>
+
+
+        <!-- TRANSACTIONS -->
+        <section class="transaction-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+
+                        <i class="fa-solid fa-receipt"></i>
+
+                        Recent Transactions
+
+                    </h2>
+
+                    <p>
+                        Your latest farm financial activities
+                    </p>
+
+                </div>
+
+                <span class="transaction-count">
+
+                    {{ transactions|length }}
+
+                    {{ "Transaction" if transactions|length == 1
+                       else "Transactions" }}
+
+                </span>
 
             </div>
 
-        </div>
+
+            <div class="table-card">
+
+                {% if transactions %}
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Description</th>
+
+                                <th>Amount</th>
+
+                                <th>Type</th>
+
+                                <th>Date</th>
+
+                            </tr>
+
+                        </thead>
 
 
-        {% endif %}
+                        <tbody>
+
+                        {% for t in transactions %}
+
+                            <tr>
+
+                                <!-- DESCRIPTION -->
+                                <td>
+
+                                    <div class="description-cell">
+
+                                        {% if t[2] == "Income" %}
+
+                                        <div class="small-income-icon">
+
+                                            <i class="fa-solid fa-arrow-up"></i>
+
+                                        </div>
+
+                                        {% else %}
+
+                                        <div class="small-expense-icon">
+
+                                            <i class="fa-solid fa-arrow-down"></i>
+
+                                        </div>
+
+                                        {% endif %}
+
+                                        <span>
+                                            {{ t[0] }}
+                                        </span>
+
+                                    </div>
+
+                                </td>
 
 
-    </div>
+                                <!-- AMOUNT -->
+                                <td>
 
-</div>
+                                    <strong>
 
+                                        ₹ {{ "%.2f"|format(t[1]|float) }}
 
-<!-- ================= FOOTER ================= -->
+                                    </strong>
 
-<div class="finance-footer">
-
-    <i class="fa-solid fa-leaf"></i>
-
-    KisanVision360 Smart Farming Finance
-
-    <span>•</span>
-
-    Manage your farm better
-
-</div>
+                                </td>
 
 
-</div>
+                                <!-- TYPE -->
+                                <td>
 
+                                    {% if t[2] == "Income" %}
+
+                                    <span class="type-badge income">
+
+                                        <i class="fa-solid fa-arrow-up"></i>
+
+                                        Income
+
+                                    </span>
+
+                                    {% else %}
+
+                                    <span class="type-badge expense">
+
+                                        <i class="fa-solid fa-arrow-down"></i>
+
+                                        Expense
+
+                                    </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <!-- DATE -->
+                                <td>
+
+                                    <span class="date">
+
+                                        <i class="fa-regular fa-calendar"></i>
+
+                                        {{ t[3] }}
+
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                {% else %}
+
+                <!-- EMPTY STATE -->
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+
+                    </div>
+
+                    <h3>
+                        No Transactions Yet
+                    </h3>
+
+                    <p>
+                        Start recording your farm income and expenses.
+                    </p>
+
+
+                    <div class="empty-buttons">
+
+                        <a href="{{ url_for('income') }}"
+                           class="empty-income-btn">
+
+                            <i class="fa-solid fa-plus"></i>
+
+                            Add Income
+
+                        </a>
+
+
+                        <a href="{{ url_for('expense') }}"
+                           class="empty-expense-btn">
+
+                            <i class="fa-solid fa-minus"></i>
+
+                            Add Expense
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer class="finance-footer">
+
+            <i class="fa-solid fa-leaf"></i>
+
+            KisanVision360 Smart Farming Finance
+
+            <span>•</span>
+
+            Manage your farm better
+
+        </footer>
+
+    </main>
 
 </body>
 

@@ -4,8 +4,9 @@
 
     <div class="logo">
 
-        <img src="{{ url_for('static', filename='images/logo.png') }}"
-             alt="KisanVision360">
+        <img
+            src="{{ url_for('static', filename='images/logo.png') }}"
+            alt="KisanVision360">
 
         <h2>KisanVision360</h2>
 
@@ -13,91 +14,124 @@
 
     </div>
 
+
     <!-- ================= MENU ================= -->
 
     <nav class="sidebar-menu">
 
         <ul>
 
-            <li class="{% if request.path=='/farmer' %}active{% endif %}">
-                <a href="/farmer">
+            <!-- DASHBOARD -->
+            <li class="{% if request.path == '/farmer' %}active{% endif %}">
+                <a href="{{ url_for('farmer') }}">
                     <i class="fa-solid fa-house"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
 
-            <li class="{% if request.path=='/weather' %}active{% endif %}">
-                <a href="/weather">
+
+            <!-- WEATHER -->
+            <li class="{% if request.path == '/weather' %}active{% endif %}">
+                <a href="{{ url_for('weather') }}">
                     <i class="fa-solid fa-cloud-sun"></i>
                     <span>Weather</span>
                 </a>
             </li>
 
-            <li class="{% if request.path=='/recommendation' %}active{% endif %}">
-                <a href="/recommendation">
+
+            <!-- AI RECOMMENDATION -->
+            <li class="{% if request.path == '/recommendation' %}active{% endif %}">
+                <a href="{{ url_for('recommendation') }}">
                     <i class="fa-solid fa-seedling"></i>
                     <span>AI Recommendation</span>
                 </a>
             </li>
 
-            <li class="{% if request.path=='/irrigation' %}active{% endif %}">
-                <a href="/irrigation">
+
+            <!-- IRRIGATION -->
+            <li class="{% if request.path == '/irrigation' %}active{% endif %}">
+                <a href="{{ url_for('irrigation') }}">
                     <i class="fa-solid fa-droplet"></i>
                     <span>Irrigation</span>
                 </a>
             </li>
 
-            <li class="{% if request.path=='/disease' %}active{% endif %}">
-                <a href="/disease">
+
+            <!-- DISEASE DETECTION -->
+            <li class="{% if request.path == '/disease' %}active{% endif %}">
+                <a href="{{ url_for('disease') }}">
                     <i class="fa-solid fa-bug"></i>
                     <span>Disease Detection</span>
                 </a>
             </li>
 
-            <li class="{% if request.path=='/marketplace' %}active{% endif %}">
-                <a href="/marketplace">
+
+            <!-- MARKETPLACE -->
+            <li class="{% if request.path == '/marketplace' %}active{% endif %}">
+                <a href="{{ url_for('marketplace') }}">
                     <i class="fa-solid fa-store"></i>
                     <span>Marketplace</span>
                 </a>
             </li>
 
-            <li class="{% if request.path=='/orders' %}active{% endif %}">
-                <a href="/orders">
+
+           
+
+
+            <!-- ORDERS -->
+            <li class="{% if request.path == '/orders' %}active{% endif %}">
+                <a href="{{ url_for('orders') }}">
                     <i class="fa-solid fa-cart-shopping"></i>
                     <span>Orders</span>
                 </a>
             </li>
+ <!-- FARM TOOLS -->
+            <li class="{% if request.path == '/farm-tools' %}active{% endif %}">
+                <a href="{{ url_for('tools') }}">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                    <span>Farm Tools</span>
+                </a>
+            </li>
 
-            <li class="{% if request.path=='/reports' %}active{% endif %}">
-                <a href="/reports">
+            <!-- REPORTS -->
+            <li class="{% if request.path == '/reports' %}active{% endif %}">
+                <a href="{{ url_for('reports') }}">
                     <i class="fa-solid fa-chart-line"></i>
                     <span>Reports</span>
                 </a>
             </li>
 
-            <li class="{% if request.path=='/finance' %}active{% endif %}">
-                <a href="/finance">
+
+            <!-- FINANCE -->
+            <li class="{% if request.path == '/finance' %}active{% endif %}">
+                <a href="{{ url_for('finance') }}">
                     <i class="fa-solid fa-indian-rupee-sign"></i>
                     <span>Finance</span>
                 </a>
             </li>
 
-            <li class="{% if request.path=='/government' %}active{% endif %}">
-                <a href="/schemes">
+
+            <!-- GOVERNMENT SCHEMES -->
+            <li class="{% if request.path == '/schemes' %}active{% endif %}">
+                <a href="{{ url_for('schemes') }}">
                     <i class="fas fa-landmark"></i>
                     <span>Government Schemes</span>
                 </a>
             </li>
 
-            <li class="{% if request.path=='/settings' %}active{% endif %}">
-                <a href="/settings">
+
+            <!-- SETTINGS -->
+            <li class="{% if request.path == '/settings' %}active{% endif %}">
+                <a href="{{ url_for('settings') }}">
                     <i class="fa-solid fa-gear"></i>
                     <span>Settings</span>
                 </a>
             </li>
 
+
+            <!-- LOGOUT -->
             <li>
-                <a href="/logout">
+                <a href="{{ url_for('logout') }}">
                     <i class="fa-solid fa-right-from-bracket"></i>
                     <span>Logout</span>
                 </a>
@@ -107,16 +141,18 @@
 
     </nav>
 
+
     <!-- ================= USER ================= -->
 
     <div class="sidebar-profile">
 
-        <img src="{{ url_for('static', filename='images/farmer.jpg') }}"
-             alt="Farmer">
+        <img
+            src="{{ url_for('static', filename='images/farmer.jpg') }}"
+            alt="Farmer">
 
         <div>
 
-            <h4>{{ name }}</h4>
+            <h4>{{ name|default('Farmer') }}</h4>
 
             <p>Farmer</p>
 

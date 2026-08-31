@@ -1,53 +1,704 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-<title>Chat</title>
+<title>
+KisanVision360 | Farmer Consumer Chat
+</title>
+
+
+<!-- SIDEBAR CSS -->
 
 <link rel="stylesheet"
-href="{{ url_for('static', filename='css/style.css') }}">
+      href="{{ url_for('static', filename='css/sidebar.css') }}">
+
+
+<!-- CHAT CSS -->
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/chat.css') }}">
+
+
+<!-- FONT AWESOME -->
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
+
 <body>
 
-<div class="container">
 
-<h1>💬 Farmer & Consumer Chat</h1>
+<div class="dashboard-container">
 
-<div style="height:250px;border:1px solid gray;padding:10px;overflow:auto;">
 
-<p><b>Consumer:</b> I need 500 Kg Wheat.</p>
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
 
-<p><b>Farmer:</b> Available. Price ₹17,500.</p>
+{% include "components/sidebar.html" %}
 
-<p><b>Consumer:</b> Delivery in 3 days?</p>
 
-<p><b>Farmer:</b> Yes, possible.</p>
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<div class="main-content">
+
+
+
+<!-- =====================================================
+     TOPBAR
+===================================================== -->
+
+<header class="topbar">
+
+
+    <div class="title-section">
+
+
+        <div class="title-icon">
+
+            <i class="fa-solid fa-comments"></i>
+
+        </div>
+
+
+        <div>
+
+            <h1>
+                Farmer & Consumer Chat
+            </h1>
+
+            <p>
+                Communicate directly and manage crop orders
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="profile">
+
+
+        <img
+            src="{{ url_for(
+                'static',
+                filename='images/farmer.jpg'
+            ) }}"
+            alt="Profile">
+
+
+        <div>
+
+            <h4>
+                {{ name|default('User') }}
+            </h4>
+
+            <small>
+                {{ role|default('Consumer') }}
+            </small>
+
+        </div>
+
+
+    </div>
+
+
+</header>
+
+
+
+<!-- =====================================================
+     CHAT AREA
+===================================================== -->
+
+<section class="chat-layout">
+
+
+
+<!-- =====================================================
+     CONTACT LIST
+===================================================== -->
+
+<aside class="contacts-card">
+
+
+    <div class="contacts-header">
+
+        <h2>
+            <i class="fa-solid fa-users"></i>
+            Conversations
+        </h2>
+
+    </div>
+
+
+
+    <div class="contact active">
+
+
+        <div class="contact-avatar">
+            👨‍🌾
+        </div>
+
+
+        <div class="contact-info">
+
+            <h3>
+                Farmer
+            </h3>
+
+            <p>
+                Wheat available
+            </p>
+
+        </div>
+
+
+        <span class="online-dot"></span>
+
+
+    </div>
+
+
+
+    <div class="contact">
+
+
+        <div class="contact-avatar">
+            👨‍🌾
+        </div>
+
+
+        <div class="contact-info">
+
+            <h3>
+                Local Farmer
+            </h3>
+
+            <p>
+                Rice available
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="contact">
+
+
+        <div class="contact-avatar">
+            👨‍🌾
+        </div>
+
+
+        <div class="contact-info">
+
+            <h3>
+                Farm Supplier
+            </h3>
+
+            <p>
+                New message
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+</aside>
+
+
+
+<!-- =====================================================
+     CHAT PANEL
+===================================================== -->
+
+<div class="chat-panel">
+
+
+
+<!-- CHAT HEADER -->
+
+<div class="chat-panel-header">
+
+
+    <div class="chat-person">
+
+
+        <div class="person-avatar">
+            👨‍🌾
+        </div>
+
+
+        <div>
+
+            <h2>
+                Farmer
+            </h2>
+
+            <span>
+                <i class="fa-solid fa-circle"></i>
+                Online
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="chat-actions">
+
+
+        <button
+            type="button"
+            title="Call">
+
+            <i class="fa-solid fa-phone"></i>
+
+        </button>
+
+
+        <button
+            type="button"
+            title="More">
+
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+
+        </button>
+
+
+    </div>
+
 
 </div>
 
-<br>
 
-<input type="text" placeholder="Type your message">
 
-<br><br>
+<!-- =====================================================
+     MESSAGES
+===================================================== -->
 
-<button>Send</button>
+<div
+    class="messages"
+    id="messages">
 
-<br><br>
 
-<a href="/notifications">
+    <!-- CONSUMER -->
 
-<button>Confirm Order</button>
+    <div class="message-row sent">
 
-</a>
+
+        <div class="message sent-message">
+
+            <p>
+                I need 500 Kg Wheat.
+            </p>
+
+            <span>
+                10:30 AM
+                <i class="fa-solid fa-check-double"></i>
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- FARMER -->
+
+    <div class="message-row received">
+
+
+        <div class="message received-message">
+
+            <p>
+                Wheat is available.
+                Price is ₹17,500 for 500 Kg.
+            </p>
+
+            <span>
+                10:32 AM
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- CONSUMER -->
+
+    <div class="message-row sent">
+
+
+        <div class="message sent-message">
+
+            <p>
+                Can you deliver it in 3 days?
+            </p>
+
+            <span>
+                10:35 AM
+                <i class="fa-solid fa-check-double"></i>
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- FARMER -->
+
+    <div class="message-row received">
+
+
+        <div class="message received-message">
+
+            <p>
+                Yes, delivery in 3 days is possible.
+            </p>
+
+            <span>
+                10:36 AM
+            </span>
+
+        </div>
+
+
+    </div>
+
 
 </div>
+
+
+
+<!-- =====================================================
+     MESSAGE INPUT
+===================================================== -->
+
+<form
+    class="message-form"
+    id="messageForm">
+
+
+    <button
+        type="button"
+        class="attachment-btn"
+        title="Attach File">
+
+        <i class="fa-solid fa-paperclip"></i>
+
+    </button>
+
+
+    <input
+        type="text"
+        id="messageInput"
+        name="message"
+        placeholder="Type your message..."
+        autocomplete="off"
+        required>
+
+
+    <button
+        type="submit"
+        class="send-btn"
+        title="Send Message">
+
+        <i class="fa-solid fa-paper-plane"></i>
+
+    </button>
+
+
+</form>
+
+
+</div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     ORDER SUMMARY
+===================================================== -->
+
+<section class="order-card">
+
+
+    <div class="order-title">
+
+
+        <div class="order-icon">
+
+            <i class="fa-solid fa-basket-shopping"></i>
+
+        </div>
+
+
+        <div>
+
+            <h2>
+                Current Crop Order
+            </h2>
+
+            <p>
+                Confirm the details before placing the order.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="order-details">
+
+
+        <div>
+
+            <span>
+                Crop
+            </span>
+
+            <strong>
+                Wheat
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Quantity
+            </span>
+
+            <strong>
+                500 Kg
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Total Price
+            </span>
+
+            <strong>
+                ₹17,500
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                Delivery
+            </span>
+
+            <strong>
+                3 Days
+            </strong>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="order-actions">
+
+
+        <a
+            href="/notifications"
+            class="confirm-btn">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            Confirm Order
+
+        </a>
+
+
+        <a
+            href="/marketplace"
+            class="back-btn">
+
+            <i class="fa-solid fa-store"></i>
+
+            Marketplace
+
+        </a>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <i class="fa-solid fa-leaf"></i>
+
+    <strong>
+        KisanVision360
+    </strong>
+
+    <span>
+        •
+    </span>
+
+    Farmer & Consumer Communication
+
+    <span>
+        •
+    </span>
+
+    © 2026
+
+</footer>
+
+
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+const messageForm =
+    document.getElementById("messageForm");
+
+const messageInput =
+    document.getElementById("messageInput");
+
+const messages =
+    document.getElementById("messages");
+
+
+messageForm.addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+
+        const text =
+            messageInput.value.trim();
+
+
+        if (!text) {
+            return;
+        }
+
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "message-row sent";
+
+
+        const message =
+            document.createElement("div");
+
+        message.className =
+            "message sent-message";
+
+
+        const paragraph =
+            document.createElement("p");
+
+        paragraph.textContent =
+            text;
+
+
+        const time =
+            document.createElement("span");
+
+        const now =
+            new Date();
+
+
+        time.innerHTML =
+            now.toLocaleTimeString(
+                "en-IN",
+                {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }
+            )
+            +
+            ' <i class="fa-solid fa-check"></i>';
+
+
+        message.appendChild(paragraph);
+
+        message.appendChild(time);
+
+        row.appendChild(message);
+
+        messages.appendChild(row);
+
+
+        messageInput.value = "";
+
+
+        messages.scrollTop =
+            messages.scrollHeight;
+
+    }
+);
+
+
+messages.scrollTop =
+    messages.scrollHeight;
+
+</script>
+
 
 </body>
+
 </html>

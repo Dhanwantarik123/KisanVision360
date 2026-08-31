@@ -8,15 +8,26 @@
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0">
 
-<title>Sell Product | KisanVision360</title>
+<title>
+KisanVision360 | Sell Product
+</title>
+
+
+<!-- SIDEBAR -->
 
 <link rel="stylesheet"
       href="{{ url_for('static',
       filename='css/sidebar.css') }}">
 
+
+<!-- PRODUCT CSS -->
+
 <link rel="stylesheet"
       href="{{ url_for('static',
       filename='css/add_product.css') }}">
+
+
+<!-- FONT AWESOME -->
 
 <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -30,59 +41,128 @@
 <div class="dashboard-container">
 
 
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
 {% include "components/sidebar.html" %}
 
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
 
 <div class="main-content">
 
 
-<!-- TOP BAR -->
 
-<div class="topbar">
+<!-- =====================================================
+     TOPBAR
+===================================================== -->
 
-    <div>
+<header class="topbar">
 
-        <h1>
-            <i class="fa-solid fa-plus-circle"></i>
-            Sell Your Product
-        </h1>
 
-        <p>
-            List your farm product in KisanVision360 Marketplace
-        </p>
+    <div class="title-section">
+
+
+        <div class="title-icon">
+
+            <i class="fa-solid fa-store"></i>
+
+        </div>
+
+
+        <div>
+
+            <h1>
+                Sell Your Product
+            </h1>
+
+            <p>
+                List your farm products on KisanVision360 Marketplace
+            </p>
+
+        </div>
+
 
     </div>
 
-</div>
 
 
-<!-- FORM CARD -->
+    <!-- PROFILE -->
 
-<div class="sell-card">
+    <div class="profile">
 
 
-<div class="form-title">
+        <img
+            src="{{ url_for(
+                'static',
+                filename='images/farmer.jpg'
+            ) }}"
+            alt="Farmer">
 
-    <div class="title-icon">
+
+        <div>
+
+            <h4>
+                {{ name|default('Farmer') }}
+            </h4>
+
+            <small>
+                Farmer
+            </small>
+
+        </div>
+
+
+    </div>
+
+
+</header>
+
+
+
+<!-- =====================================================
+     PAGE INTRO
+===================================================== -->
+
+<section class="page-intro">
+
+
+    <div class="intro-icon">
 
         <i class="fa-solid fa-seedling"></i>
 
     </div>
 
+
     <div>
 
+        <span>
+            FARMER MARKETPLACE
+        </span>
+
         <h2>
-            Product Details
+            Add Your Farm Product
         </h2>
 
         <p>
-            Enter your product information
+            Provide accurate product information so consumers
+            can easily find and purchase your products.
         </p>
 
     </div>
 
-</div>
 
+</section>
+
+
+
+<!-- =====================================================
+     ERROR MESSAGE
+===================================================== -->
 
 {% if error %}
 
@@ -90,11 +170,64 @@
 
     <i class="fa-solid fa-circle-exclamation"></i>
 
-    {{ error }}
+    <div>
+
+        <strong>
+            Unable to list product
+        </strong>
+
+        <p>
+            {{ error }}
+        </p>
+
+    </div>
 
 </div>
 
 {% endif %}
+
+
+
+<!-- =====================================================
+     FORM
+===================================================== -->
+
+<div class="sell-layout">
+
+
+
+<!-- =====================================================
+     PRODUCT FORM CARD
+===================================================== -->
+
+<div class="sell-card">
+
+
+    <div class="form-title">
+
+
+        <div class="title-icon">
+
+            <i class="fa-solid fa-box-open"></i>
+
+        </div>
+
+
+        <div>
+
+            <h2>
+                Product Details
+            </h2>
+
+            <p>
+                Enter your product information below
+            </p>
+
+        </div>
+
+
+    </div>
+
 
 
 <form
@@ -103,215 +236,391 @@
     enctype="multipart/form-data">
 
 
-<!-- PRODUCT NAME -->
 
-<div class="form-group">
+<!-- =================================================
+     BASIC INFORMATION
+================================================= -->
 
-    <label>
-        <i class="fa-solid fa-wheat-awn"></i>
-        Product Name
-    </label>
-
-    <input
-        type="text"
-        name="product_name"
-        placeholder="Example: Tomato"
-        required>
-
-</div>
+<div class="form-section">
 
 
-<!-- CATEGORY -->
+    <h3>
 
-<div class="form-group">
+        <i class="fa-solid fa-circle-info"></i>
 
-    <label>
-        <i class="fa-solid fa-layer-group"></i>
-        Category
-    </label>
+        Basic Information
 
-    <select
-        name="category"
-        required>
-
-        <option value="">
-            Select Category
-        </option>
-
-        <option value="Vegetables">
-            Vegetables
-        </option>
-
-        <option value="Fruits">
-            Fruits
-        </option>
-
-        <option value="Grains">
-            Grains
-        </option>
-
-        <option value="Pulses">
-            Pulses
-        </option>
-
-        <option value="Spices">
-            Spices
-        </option>
-
-        <option value="Other">
-            Other
-        </option>
-
-    </select>
-
-</div>
+    </h3>
 
 
-<!-- QUANTITY -->
 
-<div class="two-column">
+    <!-- PRODUCT NAME -->
 
+    <div class="form-group">
 
-<div class="form-group">
+        <label for="product_name">
 
-    <label>
-        <i class="fa-solid fa-weight-scale"></i>
-        Quantity
-    </label>
+            <i class="fa-solid fa-wheat-awn"></i>
 
-    <input
-        type="number"
-        name="quantity"
-        min="1"
-        placeholder="Example: 100"
-        required>
+            Product Name
 
-</div>
+        </label>
 
 
-<div class="form-group">
+        <input
+            type="text"
+            id="product_name"
+            name="product_name"
+            placeholder="Example: Tomato"
+            required>
 
-    <label>
-        Unit
-    </label>
+    </div>
 
-    <select name="unit">
 
-        <option value="kg">
-            Kilogram (kg)
-        </option>
 
-        <option value="quintal">
-            Quintal
-        </option>
+    <!-- CATEGORY -->
 
-        <option value="ton">
-            Ton
-        </option>
+    <div class="form-group">
 
-        <option value="piece">
-            Piece
-        </option>
+        <label for="category">
 
-    </select>
+            <i class="fa-solid fa-layer-group"></i>
 
-</div>
+            Category
+
+        </label>
+
+
+        <select
+            id="category"
+            name="category"
+            required>
+
+            <option value="">
+                Select Category
+            </option>
+
+            <option value="Vegetables">
+                Vegetables
+            </option>
+
+            <option value="Fruits">
+                Fruits
+            </option>
+
+            <option value="Grains">
+                Grains
+            </option>
+
+            <option value="Pulses">
+                Pulses
+            </option>
+
+            <option value="Spices">
+                Spices
+            </option>
+
+            <option value="Other">
+                Other
+            </option>
+
+        </select>
+
+    </div>
 
 
 </div>
 
 
-<!-- PRICE -->
 
-<div class="form-group">
+<!-- =================================================
+     QUANTITY & PRICE
+================================================= -->
 
-    <label>
+<div class="form-section">
 
-        <i class="fa-solid fa-indian-rupee-sign"></i>
 
-        Price
+    <h3>
 
-    </label>
+        <i class="fa-solid fa-scale-balanced"></i>
 
-    <input
-        type="number"
-        name="price"
-        min="0"
-        step="0.01"
-        placeholder="Example: 2500"
-        required>
+        Quantity & Pricing
+
+    </h3>
+
+
+
+    <div class="two-column">
+
+
+        <!-- QUANTITY -->
+
+        <div class="form-group">
+
+            <label for="quantity">
+
+                <i class="fa-solid fa-weight-scale"></i>
+
+                Quantity
+
+            </label>
+
+
+            <input
+                type="number"
+                id="quantity"
+                name="quantity"
+                min="1"
+                step="0.01"
+                placeholder="Example: 100"
+                required>
+
+        </div>
+
+
+
+        <!-- UNIT -->
+
+        <div class="form-group">
+
+            <label for="unit">
+
+                <i class="fa-solid fa-ruler"></i>
+
+                Unit
+
+            </label>
+
+
+            <select
+                id="unit"
+                name="unit">
+
+                <option value="kg">
+                    Kilogram (kg)
+                </option>
+
+                <option value="quintal">
+                    Quintal
+                </option>
+
+                <option value="ton">
+                    Ton
+                </option>
+
+                <option value="piece">
+                    Piece
+                </option>
+
+            </select>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- PRICE -->
+
+    <div class="form-group">
+
+        <label for="price">
+
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+
+            Price
+
+        </label>
+
+
+        <div class="price-input">
+
+            <span>
+                ₹
+            </span>
+
+
+            <input
+                type="number"
+                id="price"
+                name="price"
+                min="0"
+                step="0.01"
+                placeholder="Example: 2500"
+                required>
+
+        </div>
+
+
+        <small>
+            Enter the selling price for the listed quantity.
+        </small>
+
+    </div>
+
 
 </div>
 
 
-<!-- IMAGE -->
 
-<div class="form-group">
+<!-- =================================================
+     PRODUCT IMAGE
+================================================= -->
 
-    <label>
+<div class="form-section">
+
+
+    <h3>
 
         <i class="fa-solid fa-image"></i>
 
         Product Image
 
+    </h3>
+
+
+    <label
+        for="image"
+        class="image-upload">
+
+
+        <div class="upload-icon">
+
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+
+        </div>
+
+
+        <h4>
+            Upload Product Image
+        </h4>
+
+
+        <p>
+            Click to select an image
+        </p>
+
+
+        <span>
+            JPG, JPEG or PNG
+        </span>
+
+
+        <input
+            type="file"
+            id="image"
+            name="image"
+            accept="image/*">
+
     </label>
 
-    <input
-        type="file"
-        name="image"
-        accept="image/*">
 
-    <small>
-        Upload a clear image of your product.
-    </small>
+    <!-- PREVIEW -->
+
+    <div
+        id="imagePreviewContainer"
+        class="image-preview"
+        style="display:none;">
+
+
+        <img
+            id="imagePreview"
+            src=""
+            alt="Product Preview">
+
+
+        <div>
+
+            <strong>
+                Image Preview
+            </strong>
+
+            <p id="fileName"></p>
+
+        </div>
+
+
+    </div>
+
 
 </div>
 
 
-<!-- DESCRIPTION -->
 
-<div class="form-group">
+<!-- =================================================
+     DESCRIPTION
+================================================= -->
 
-    <label>
+<div class="form-section">
+
+
+    <h3>
 
         <i class="fa-solid fa-align-left"></i>
 
-        Description
+        Product Description
 
-    </label>
+    </h3>
 
-    <textarea
-        name="description"
-        rows="5"
-        placeholder="Enter product details..."></textarea>
+
+    <div class="form-group">
+
+
+        <label for="description">
+
+            Description
+
+        </label>
+
+
+        <textarea
+            id="description"
+            name="description"
+            rows="5"
+            placeholder="Describe your product, quality, freshness, harvest information, etc."></textarea>
+
+
+        <small>
+            Give consumers useful information about your product.
+        </small>
+
+
+    </div>
+
 
 </div>
 
 
-<!-- BUTTONS -->
+
+<!-- =================================================
+     BUTTONS
+================================================= -->
 
 <div class="form-buttons">
 
 
-<a href="/marketplace"
-   class="cancel-btn">
+    <a
+        href="/marketplace"
+        class="cancel-btn">
 
-    <i class="fa-solid fa-arrow-left"></i>
+        <i class="fa-solid fa-arrow-left"></i>
 
-    Cancel
+        Cancel
 
-</a>
+    </a>
 
 
-<button
-    type="submit"
-    class="sell-submit">
 
-    <i class="fa-solid fa-upload"></i>
+    <button
+        type="submit"
+        class="sell-submit">
 
-    List Product
+        <i class="fa-solid fa-cloud-arrow-up"></i>
 
-</button>
+        List Product
+
+    </button>
 
 
 </div>
@@ -323,15 +632,194 @@
 </div>
 
 
+
+<!-- =====================================================
+     SELLING TIPS
+===================================================== -->
+
+<aside class="selling-tips">
+
+
+    <div class="tips-header">
+
+        <div class="tips-icon">
+
+            <i class="fa-solid fa-lightbulb"></i>
+
+        </div>
+
+
+        <div>
+
+            <h2>
+                Selling Tips
+            </h2>
+
+            <p>
+                Get better results
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="tip">
+
+
+        <i class="fa-solid fa-camera"></i>
+
+
+        <div>
+
+            <h3>
+                Use Clear Images
+            </h3>
+
+            <p>
+                Upload a bright and clear image
+                of your actual product.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="tip">
+
+
+        <i class="fa-solid fa-indian-rupee-sign"></i>
+
+
+        <div>
+
+            <h3>
+                Set a Fair Price
+            </h3>
+
+            <p>
+                Check current market prices before
+                setting your selling price.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="tip">
+
+
+        <i class="fa-solid fa-weight-scale"></i>
+
+
+        <div>
+
+            <h3>
+                Mention Quantity
+            </h3>
+
+            <p>
+                Clearly mention available quantity
+                and measurement unit.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="tip">
+
+
+        <i class="fa-solid fa-circle-info"></i>
+
+
+        <div>
+
+            <h3>
+                Add Details
+            </h3>
+
+            <p>
+                Provide useful information about
+                quality and freshness.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="marketplace-link">
+
+
+        <i class="fa-solid fa-store"></i>
+
+
+        <div>
+
+            <strong>
+                Marketplace
+            </strong>
+
+            <p>
+                View your listed products
+            </p>
+
+        </div>
+
+
+        <a href="/marketplace">
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+        </a>
+
+
+    </div>
+
+
+</aside>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
 <footer>
 
     <i class="fa-solid fa-leaf"></i>
 
-    KisanVision360
+    <strong>
+        KisanVision360
+    </strong>
 
-    <span>•</span>
+    <span>
+        •
+    </span>
 
     Smart Farming Marketplace
+
+    <span>
+        •
+    </span>
+
+    © 2026
 
 </footer>
 
@@ -339,6 +827,77 @@
 </div>
 
 </div>
+
+
+
+<!-- =====================================================
+     IMAGE PREVIEW JAVASCRIPT
+===================================================== -->
+
+<script>
+
+const imageInput =
+    document.getElementById("image");
+
+const previewContainer =
+    document.getElementById(
+        "imagePreviewContainer"
+    );
+
+const imagePreview =
+    document.getElementById(
+        "imagePreview"
+    );
+
+const fileName =
+    document.getElementById(
+        "fileName"
+    );
+
+
+imageInput.addEventListener(
+    "change",
+    function () {
+
+        const file = this.files[0];
+
+        if (!file) {
+
+            previewContainer.style.display =
+                "none";
+
+            return;
+
+        }
+
+
+        fileName.textContent =
+            file.name;
+
+
+        const reader =
+            new FileReader();
+
+
+        reader.onload =
+            function (event) {
+
+                imagePreview.src =
+                    event.target.result;
+
+                previewContainer.style.display =
+                    "flex";
+
+            };
+
+
+        reader.readAsDataURL(file);
+
+    }
+);
+
+</script>
+
 
 </body>
 

@@ -1,264 +1,361 @@
+import os
+import json
 import tensorflow as tf
 
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
+# =========================================================
+# KISANVISION360
+# DISEASE MODEL TRAINING - KAGGLE PLANTS DATASET
+# =========================================================
 
-from tensorflow.keras.models import Sequential
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-from tensorflow.keras.layers import (
-    Conv2D,
-    MaxPooling2D,
-    Flatten,
-    Dense,
-    Dropout
+# Kaggle dataset copied/extracted into:
+# D:\KisanVision360\dataset\plants\plant
+DATASET_DIR = os.path.join(
+    BASE_DIR,
+    "dataset",
+    "plants",
+    "plant"
 )
 
-import json
-import os
+MODEL_DIR = os.path.join(
+    BASE_DIR,
+    "ai_models"
+)
 
+MODEL_PATH = os.path.join(
+    MODEL_DIR,
+    "disease_model.keras"
+)
 
+CLASS_FILE = os.path.join(
+    MODEL_DIR,
+    "disease_classes.txt"
+)
 
-# DATASET PATH
-
-dataset_path = "/home/dhanwantari/KisanVision360/dataset"
-
-
-
-IMG_SIZE = 224
-
+IMAGE_SIZE = (224, 224)
 BATCH_SIZE = 32
+EPOCHS = 10
+SEED = 42
 
 
+# =========================================================
+# CHECK DATASET
+# =========================================================
+
+print("=" * 60)
+print("KisanVision360 - Disease Model Training")
+print("=" * 60)
+
+print("Dataset:")
+print(DATASET_DIR)
+
+if not os.path.exists(DATASET_DIR):
+
+    print()
+    print("ERROR: Dataset folder not found!")
+    print()
+    print("Expected structure:")
+    print(r"D:\KisanVision360\dataset\plants\plant")
+    print()
+    exit()
 
 
-# IMAGE AUGMENTATION
+# =========================================================
+# LOAD TRAINING DATA
+# =========================================================
 
+train_data = tf.keras.utils.image_dataset_from_directory(
 
-datagen = ImageDataGenerator(
-
-    rescale=1./255,
+    DATASET_DIR,
 
     validation_split=0.2,
 
-    rotation_range=25,
+    subset="training",
 
-    zoom_range=0.2,
+    seed=SEED,
 
-    horizontal_flip=True
-
-)
-
-
-
-
-
-# TRAIN DATA
-
-
-train_data = datagen.flow_from_directory(
-
-    dataset_path,
-
-    target_size=(IMG_SIZE,IMG_SIZE),
+    image_size=IMAGE_SIZE,
 
     batch_size=BATCH_SIZE,
 
-    class_mode="categorical",
-
-    subset="training"
+    label_mode="int"
 
 )
 
 
+# =========================================================
+# LOAD VALIDATION DATA
+# =========================================================
 
+val_data = tf.keras.utils.image_dataset_from_directory(
 
+    DATASET_DIR,
 
+    validation_split=0.2,
 
-# VALIDATION DATA
+    subset="validation",
 
+    seed=SEED,
 
-val_data = datagen.flow_from_directory(
-
-    dataset_path,
-
-    target_size=(IMG_SIZE,IMG_SIZE),
+    image_size=IMAGE_SIZE,
 
     batch_size=BATCH_SIZE,
 
-    class_mode="categorical",
-
-    subset="validation"
+    label_mode="int"
 
 )
 
 
+# =========================================================
+# CLASS NAMES
+# =========================================================
+
+class_names = train_data.class_names
+
+print()
+print("=" * 60)
+print("DISEASE CLASSES")
+print("=" * 60)
+
+for i, name in enumerate(class_names):
+
+    print(
+        i,
+        "=",
+        name
+    )
+
+print()
+print("Total classes:", len(class_names))
 
 
+# =========================================================
+# PERFORMANCE
+# =========================================================
+
+AUTOTUNE = tf.data.AUTOTUNE
+
+train_data = train_data.prefetch(
+    AUTOTUNE
+)
+
+val_data = val_data.prefetch(
+    AUTOTUNE
+)
 
 
-print("\nDisease Classes:")
-
-print(train_data.class_indices)
-
-
-
-
-
-
-
+# =========================================================
 # CNN MODEL
+# =========================================================
+
+print()
+print("=" * 60)
+print("CNN MODEL")
+print("=" * 60)
+
+model = tf.keras.Sequential([
+
+    tf.keras.layers.Input(
+        shape=(224, 224, 3)
+    ),
+
+    # Normalization
+    tf.keras.layers.Rescaling(
+        1.0 / 255
+    ),
+
+    # Data augmentation
+    tf.keras.layers.RandomFlip(
+        "horizontal"
+    ),
+
+    tf.keras.layers.RandomRotation(
+        0.15
+    ),
+
+    tf.keras.layers.RandomZoom(
+        0.15
+    ),
+
+    # CNN Layer 1
+    tf.keras.layers.Conv2D(
+        32,
+        (3, 3),
+        activation="relu"
+    ),
+
+    tf.keras.layers.MaxPooling2D(),
+
+    # CNN Layer 2
+    tf.keras.layers.Conv2D(
+        64,
+        (3, 3),
+        activation="relu"
+    ),
+
+    tf.keras.layers.MaxPooling2D(),
+
+    # CNN Layer 3
+    tf.keras.layers.Conv2D(
+        128,
+        (3, 3),
+        activation="relu"
+    ),
+
+    tf.keras.layers.MaxPooling2D(),
+
+    # CNN Layer 4
+    tf.keras.layers.Conv2D(
+        256,
+        (3, 3),
+        activation="relu"
+    ),
+
+    tf.keras.layers.MaxPooling2D(),
+
+    # Classification
+    tf.keras.layers.Flatten(),
+
+    tf.keras.layers.Dense(
+        256,
+        activation="relu"
+    ),
+
+    tf.keras.layers.Dropout(
+        0.5
+    ),
+
+    # OUTPUT = 49 classes
+    tf.keras.layers.Dense(
+        len(class_names),
+        activation="softmax"
+    )
+
+])
 
 
-model = Sequential()
-
-
-
-model.add(
-Conv2D(
-32,
-(3,3),
-activation="relu",
-input_shape=(224,224,3)
-)
-)
-
-
-model.add(MaxPooling2D())
-
-
-
-model.add(
-Conv2D(
-64,
-(3,3),
-activation="relu"
-)
-)
-
-
-model.add(MaxPooling2D())
-
-
-
-model.add(
-Conv2D(
-128,
-(3,3),
-activation="relu"
-)
-)
-
-
-model.add(MaxPooling2D())
-
-
-
-model.add(Flatten())
-
-
-
-model.add(
-Dense(
-128,
-activation="relu"
-)
-)
-
-
-model.add(
-Dropout(0.5)
-)
-
-
-
-model.add(
-Dense(
-len(train_data.class_indices),
-activation="softmax"
-)
-)
-
-
-
-
-
+# =========================================================
+# COMPILE
+# =========================================================
 
 model.compile(
 
-optimizer="adam",
+    optimizer=tf.keras.optimizers.Adam(
+        learning_rate=0.001
+    ),
 
-loss="categorical_crossentropy",
+    loss="sparse_categorical_crossentropy",
 
-metrics=["accuracy"]
+    metrics=["accuracy"]
 
 )
 
 
+model.summary()
 
 
-
-
-
+# =========================================================
 # TRAIN
+# =========================================================
 
+print()
+print("=" * 60)
+print("STARTING TRAINING")
+print("=" * 60)
 
-model.fit(
+history = model.fit(
 
-train_data,
+    train_data,
 
-validation_data=val_data,
+    validation_data=val_data,
 
-epochs=20
+    epochs=EPOCHS
 
 )
 
 
-
-
-
-
-
-
-# SAVE MODEL
-
+# =========================================================
+# CREATE AI MODEL FOLDER
+# =========================================================
 
 os.makedirs(
-"ai_models",
-exist_ok=True
+    MODEL_DIR,
+    exist_ok=True
 )
 
 
+# =========================================================
+# SAVE MODEL
+# =========================================================
 
 model.save(
-"ai_models/disease_model.h5"
+    MODEL_PATH
 )
 
 
-
-
-
-
-# SAVE LABELS
-
-
-labels = train_data.class_indices
-
-
+# =========================================================
+# SAVE CLASS NAMES
+# =========================================================
 
 with open(
-"ai_models/classes.json",
-"w"
+    CLASS_FILE,
+    "w",
+    encoding="utf-8"
+) as f:
+
+    for name in class_names:
+
+        f.write(
+            name + "\n"
+        )
+
+
+# =========================================================
+# SAVE JSON TOO
+# =========================================================
+
+JSON_FILE = os.path.join(
+    MODEL_DIR,
+    "disease_classes.json"
+)
+
+with open(
+    JSON_FILE,
+    "w",
+    encoding="utf-8"
 ) as f:
 
     json.dump(
-        labels,
-        f
+        class_names,
+        f,
+        indent=4
     )
 
 
+# =========================================================
+# FINAL CHECK
+# =========================================================
 
+print()
+print("=" * 60)
+print("TRAINING COMPLETED")
+print("=" * 60)
 
-print("\nMODEL TRAINING COMPLETED")
+print()
+print("Total classes:", len(class_names))
 
-print("Saved:")
-print("ai_models/disease_model.h5")
-print("ai_models/classes.json")
+print()
+print("Model saved:")
+print(MODEL_PATH)
+
+print()
+print("Classes saved:")
+print(CLASS_FILE)
+
+print()
+print("JSON saved:")
+print(JSON_FILE)
+
+print()
+print("KisanVision360 Disease AI is ready.")

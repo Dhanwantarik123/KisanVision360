@@ -3,29 +3,78 @@
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
 
-<title>KisanVision360 | Live Weather</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/sidebar.css') }}">
+    <title>KisanVision360 | Live Weather</title>
 
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/weather.css') }}">
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Sidebar CSS -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/sidebar.css') }}">
+
+
+    <!-- Weather CSS -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/weather.css') }}">
+
+
+    <!-- Font Awesome -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+    <!-- Google Translate -->
+
+    <style>
+
+        #google_translate_element {
+            display: none;
+        }
+
+        .goog-te-banner-frame.skiptranslate {
+            display: none !important;
+        }
+
+        body {
+            top: 0 !important;
+        }
+
+        .goog-logo-link {
+            display: none !important;
+        }
+
+        .goog-te-gadget {
+            font-size: 0 !important;
+        }
+
+    </style>
 
 </head>
 
+
 <body>
+
 
 <div class="dashboard-container">
 
+
+    <!-- ================= SIDEBAR ================= -->
+
     {% include 'components/sidebar.html' %}
 
+
+    <!-- ================= MAIN CONTENT ================= -->
+
     <div class="main-content">
+
 
         <!-- ================= TOP BAR ================= -->
 
@@ -34,57 +83,99 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
             <div>
 
                 <h1>
+
                     <i class="fa-solid fa-cloud-sun"></i>
+
                     Live Weather Dashboard
+
                 </h1>
 
                 <p>
-                    {{ weather.city }}, {{ weather.country }}
+
+                    {{ weather.city|default("Nagpur") }},
+                    {{ weather.country|default("India") }}
+
                 </p>
 
             </div>
-		<div class="top-right">
 
-   	
- <a href="https://share.google/yQoXBPQ9Rb4zGkfG9" target="_blank">
-    <button class="weather-link-btn">
-        <i class="fa-solid fa-up-right-from-square"></i>
-        View Full Forecast
-    </button>
-</a>
-   	 </a>
 
-	</div>
             <div class="top-right">
+
+
+                <!-- REFRESH -->
+
+                <button
+                    type="button"
+                    class="weather-link-btn"
+                    onclick="location.reload()">
+
+                    <i class="fa-solid fa-rotate"></i>
+
+                    Refresh Weather
+
+                </button>
+
+
+                <!-- SEARCH -->
 
                 <div class="search-box">
 
                     <i class="fa-solid fa-search"></i>
 
-                    <input
-                    type="text"
-                    placeholder="Search City">
+                    <form
+                        action="{{ url_for('weather') }}"
+                        method="GET">
+
+                        <input
+                            type="text"
+                            name="city"
+                            id="citySearch"
+                            placeholder="Search City"
+                            autocomplete="off">
+
+                    </form>
 
                 </div>
 
-                <div class="notification">
+
+                <!-- NOTIFICATION -->
+
+                <a
+                    href="{{ url_for('notifications') }}"
+                    class="notification">
 
                     <i class="fa-solid fa-bell"></i>
 
-                    <span>2</span>
+                    {% if notification_count|default(0) > 0 %}
 
-                </div>
+                    <span>
+                        {{ notification_count }}
+                    </span>
+
+                    {% endif %}
+
+                </a>
+
+
+                <!-- PROFILE -->
 
                 <div class="profile">
 
                     <img
-                    src="{{ url_for('static', filename='images/farmer.jpg') }}">
+                        src="{{ url_for('static',
+                        filename='images/farmer.jpg') }}"
+                        alt="Farmer">
 
                     <div>
 
-                        <h4>{{ name }}</h4>
+                        <h4>
+                            {{ name|default("Farmer") }}
+                        </h4>
 
-                        <small>Farmer</small>
+                        <small>
+                            Farmer
+                        </small>
 
                     </div>
 
@@ -94,36 +185,55 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
         </header>
 
-        <!-- ================= WEATHER HERO ================= -->
+
+
+        <!-- ================= LIVE WEATHER ================= -->
+
+        {% if weather %}
+
 
         <section class="hero">
 
+
+            <!-- LEFT -->
+
             <div class="hero-left">
+
 
                 <div class="weather-image">
 
+                    {% if weather.icon %}
+
                     <img
-                    src="https://openweathermap.org/img/wn/{{ weather.icon }}@4x.png">
+                        src="https://openweathermap.org/img/wn/{{ weather.icon }}@4x.png"
+                        alt="{{ weather.description|default('Weather') }}">
+
+                    {% endif %}
 
                 </div>
+
 
                 <div>
 
                     <h2>
 
-                        📍 {{ weather.city }}
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        {{ weather.city|default("Nagpur") }}
 
                     </h2>
 
+
                     <h1>
 
-                        {{ weather.temperature }}°C
+                        {{ weather.temperature|default(0) }}°C
 
                     </h1>
 
+
                     <p>
 
-                        {{ weather.description }}
+                        {{ weather.description|default("Weather information") }}
 
                     </p>
 
@@ -131,145 +241,268 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
             </div>
 
+
+
+            <!-- RIGHT -->
+
             <div class="hero-right">
+
+
+                <!-- FEELS LIKE -->
 
                 <div class="mini-card">
 
                     <i class="fa-solid fa-temperature-half"></i>
 
-                    <h3>Feels Like</h3>
+                    <h3>
+                        Feels Like
+                    </h3>
 
-                    <h2>{{ weather.feels_like }}°C</h2>
+                    <h2>
+                        {{ weather.feels_like|default(0) }}°C
+                    </h2>
 
                 </div>
+
+
+
+                <!-- HUMIDITY -->
 
                 <div class="mini-card">
 
                     <i class="fa-solid fa-droplet"></i>
 
-                    <h3>Humidity</h3>
+                    <h3>
+                        Humidity
+                    </h3>
 
-                    <h2>{{ weather.humidity }}%</h2>
+                    <h2>
+                        {{ weather.humidity|default(0) }}%
+                    </h2>
 
                 </div>
+
+
+
+                <!-- WIND -->
 
                 <div class="mini-card">
 
                     <i class="fa-solid fa-wind"></i>
 
-                    <h3>Wind</h3>
+                    <h3>
+                        Wind
+                    </h3>
 
-                    <h2>{{ weather.wind }} m/s</h2>
+                    <h2>
+                        {{ weather.wind|default(0) }} m/s
+                    </h2>
 
                 </div>
+
+
+
+                <!-- CLOUD -->
 
                 <div class="mini-card">
 
                     <i class="fa-solid fa-cloud"></i>
 
-                    <h3>Cloud Cover</h3>
+                    <h3>
+                        Cloud Cover
+                    </h3>
 
-                    <h2>{{ weather.clouds }}%</h2>
+                    <h2>
+                        {{ weather.clouds|default(0) }}%
+                    </h2>
 
                 </div>
+
+
+
+                <!-- VISIBILITY -->
 
                 <div class="mini-card">
 
                     <i class="fa-solid fa-eye"></i>
 
-                    <h3>Visibility</h3>
+                    <h3>
+                        Visibility
+                    </h3>
 
-                    <h2>{{ weather.visibility }} km</h2>
+                    <h2>
+                        {{ weather.visibility|default(0) }} km
+                    </h2>
 
                 </div>
+
+
+
+                <!-- RAINFALL -->
 
                 <div class="mini-card">
 
                     <i class="fa-solid fa-cloud-rain"></i>
 
-                    <h3>Rainfall</h3>
+                    <h3>
+                        Rainfall
+                    </h3>
 
-                    <h2>{{ weather.rainfall }} mm</h2>
+                    <h2>
+                        {{ weather.rainfall|default(0) }} mm
+                    </h2>
 
                 </div>
+
 
             </div>
 
         </section>
+
+
 
         <!-- ================= WEATHER CARDS ================= -->
 
         <section class="weather-grid">
 
+
+            <!-- TEMPERATURE -->
+
             <div class="weather-card">
 
                 <i class="fa-solid fa-temperature-high"></i>
 
-                <h3>Temperature</h3>
+                <h3>
+                    Temperature
+                </h3>
 
-                <h2>{{ weather.temperature }}°C</h2>
+                <h2>
+                    {{ weather.temperature|default(0) }}°C
+                </h2>
 
             </div>
+
+
+
+            <!-- HUMIDITY -->
 
             <div class="weather-card">
 
                 <i class="fa-solid fa-droplet"></i>
 
-                <h3>Humidity</h3>
+                <h3>
+                    Humidity
+                </h3>
 
-                <h2>{{ weather.humidity }}%</h2>
+                <h2>
+                    {{ weather.humidity|default(0) }}%
+                </h2>
 
             </div>
+
+
+
+            <!-- WIND -->
 
             <div class="weather-card">
 
                 <i class="fa-solid fa-wind"></i>
 
-                <h3>Wind Speed</h3>
+                <h3>
+                    Wind Speed
+                </h3>
 
-                <h2>{{ weather.wind }} m/s</h2>
+                <h2>
+                    {{ weather.wind|default(0) }} m/s
+                </h2>
 
             </div>
+
+
+
+            <!-- PRESSURE -->
 
             <div class="weather-card">
 
                 <i class="fa-solid fa-gauge-high"></i>
 
-                <h3>Pressure</h3>
+                <h3>
+                    Pressure
+                </h3>
 
-                <h2>{{ weather.pressure }} hPa</h2>
+                <h2>
+                    {{ weather.pressure|default(0) }} hPa
+                </h2>
 
             </div>
+
+
+
+            <!-- CONDITION -->
 
             <div class="weather-card">
 
                 <i class="fa-solid fa-cloud"></i>
 
-                <h3>Condition</h3>
+                <h3>
+                    Condition
+                </h3>
 
-                <h2>{{ weather.condition }}</h2>
+                <h2>
+                    {{ weather.description|default("N/A") }}
+                </h2>
 
             </div>
+
+
+
+            <!-- UV -->
 
             <div class="weather-card">
 
                 <i class="fa-solid fa-sun"></i>
 
-                <h3>UV Index</h3>
+                <h3>
+                    UV Index
+                </h3>
 
-                <h2>6</h2>
+                <h2>
+                    {{ weather.uv_index|default("N/A") }}
+                </h2>
 
             </div>
 
+
         </section>
 
-        <!-- ================= BUTTONS ================= -->
+
+
+        <!-- ================= WEATHER STATUS ================= -->
+
+        <div class="weather-status">
+
+            <span class="live-dot"></span>
+
+            <strong>LIVE</strong>
+
+            <span>
+                Weather data is updated from the online weather service.
+            </span>
+
+        </div>
+
+
+
+        <!-- ================= ACTION BUTTONS ================= -->
 
         <div class="buttons">
 
-            <a href="/recommendation">
 
-                <button class="green-btn">
+            <a href="{{ url_for('recommendation') }}">
+
+                <button
+                    type="button"
+                    class="green-btn">
 
                     <i class="fa-solid fa-seedling"></i>
 
@@ -279,9 +512,13 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
             </a>
 
-            <a href="/irrigation">
 
-                <button class="blue-btn">
+
+            <a href="{{ url_for('irrigation') }}">
+
+                <button
+                    type="button"
+                    class="blue-btn">
 
                     <i class="fa-solid fa-droplet"></i>
 
@@ -291,9 +528,13 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
             </a>
 
-            <a href="/farmer">
 
-                <button class="gray-btn">
+
+            <a href="{{ url_for('farmer') }}">
+
+                <button
+                    type="button"
+                    class="gray-btn">
 
                     <i class="fa-solid fa-house"></i>
 
@@ -303,17 +544,188 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
             </a>
 
+
         </div>
+
+
+
+        {% else %}
+
+
+        <!-- ================= WEATHER ERROR ================= -->
+
+        <div class="weather-error">
+
+            <i class="fa-solid fa-cloud-exclamation"></i>
+
+            <h2>
+                Weather information unavailable
+            </h2>
+
+            <p>
+                Please check your internet connection or search another city.
+            </p>
+
+            <a href="{{ url_for('weather') }}">
+
+                <i class="fa-solid fa-rotate"></i>
+
+                Try Again
+
+            </a>
+
+        </div>
+
+
+        {% endif %}
+
+
+
+        <!-- ================= FOOTER ================= -->
+
+        <footer>
+
+            <i class="fa-solid fa-leaf"></i>
+
+            KisanVision360
+
+            <span>•</span>
+
+            Live Weather & Smart Farming
+
+            <span>•</span>
+
+            Made in India 🇮🇳
+
+        </footer>
+
 
     </div>
 
 </div>
 
+
+
+<!-- ================= GOOGLE TRANSLATE ================= -->
+
+<div id="google_translate_element"></div>
+
+
+<script>
+
+function googleTranslateElementInit() {
+
+    new google.translate.TranslateElement({
+
+        pageLanguage: "en",
+
+        includedLanguages:
+        "en,hi,mr,kn,te,ta,ml,gu,pa,bn",
+
+        autoDisplay: false
+
+    }, "google_translate_element");
+
+}
+
+
+function applySavedLanguage() {
+
+    const language =
+        localStorage.getItem(
+            "kisanvision360_language"
+        );
+
+
+    if (!language || language === "en") {
+        return;
+    }
+
+
+    let attempts = 0;
+
+
+    const timer = setInterval(function() {
+
+        const select =
+            document.querySelector(
+                ".goog-te-combo"
+            );
+
+
+        attempts++;
+
+
+        if (select) {
+
+            select.value = language;
+
+            select.dispatchEvent(
+                new Event("change")
+            );
+
+            clearInterval(timer);
+
+        }
+
+
+        if (attempts >= 20) {
+
+            clearInterval(timer);
+
+        }
+
+    }, 500);
+
+}
+
+
+window.addEventListener(
+    "load",
+    function() {
+
+        setTimeout(
+            applySavedLanguage,
+            1500
+        );
+
+    }
+);
+
+</script>
+
+
+
+<!-- Google Translate -->
+
+<script
+src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+</script>
+
+
+
+<!-- Weather JS -->
+
+<script
+src="{{ url_for('static',
+filename='js/weather.js') }}">
+</script>
+
+
+
+<!-- Chatbot JS -->
+
+<script
+src="{{ url_for('static',
+filename='js/chatbot.js') }}">
+</script>
+
+
+
+<!-- Chatbot -->
+
 {% include 'components/chatbot.html' %}
 
-<script src="{{ url_for('static', filename='js/weather.js') }}"></script>
-
-<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
 
 </body>
 

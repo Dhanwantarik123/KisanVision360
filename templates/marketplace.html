@@ -4,12 +4,9 @@
 <head>
 
 <meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>KisanVision360 | Marketplace</title>
-
 
 <link rel="stylesheet"
       href="{{ url_for('static', filename='css/sidebar.css') }}">
@@ -22,24 +19,11 @@
 
 </head>
 
-
 <body>
-
 
 <div class="dashboard-container">
 
-
-<!-- =====================================================
-     SIDEBAR
-===================================================== -->
-
 {% include "components/sidebar.html" %}
-
-
-
-<!-- =====================================================
-     MAIN CONTENT
-===================================================== -->
 
 <div class="main-content">
 
@@ -50,21 +34,15 @@
 
 <header class="topbar">
 
-
     <div class="page-title">
 
         <div class="title-icon">
-
             <i class="fa-solid fa-store"></i>
-
         </div>
-
 
         <div>
 
-            <h1>
-                Farmer Marketplace
-            </h1>
+            <h1>Farmer Marketplace</h1>
 
             <p>
                 Buy, Sell & Track Agriculture Market Prices
@@ -75,11 +53,7 @@
     </div>
 
 
-
     <div class="top-right">
-
-
-        <!-- SEARCH -->
 
         <div class="top-search">
 
@@ -93,33 +67,17 @@
         </div>
 
 
-
-        <!-- NOTIFICATION -->
-
         <a href="/notifications"
            class="notification">
 
             <i class="fa-solid fa-bell"></i>
 
-            {% if notifications_count %}
-
             <span>
-                {{ notifications_count }}
+                {{ notifications_count|default(0) }}
             </span>
-
-            {% else %}
-
-            <span>
-                0
-            </span>
-
-            {% endif %}
 
         </a>
 
-
-
-        <!-- PROFILE -->
 
         <div class="profile">
 
@@ -127,12 +85,13 @@
                 src="{{ url_for(
                     'static',
                     filename='images/farmer.jpg'
-                ) }}">
+                ) }}"
+                alt="Farmer">
 
             <div>
 
                 <h4>
-                    {{ name }}
+                    {{ name|default("Farmer") }}
                 </h4>
 
                 <small>
@@ -143,11 +102,9 @@
 
         </div>
 
-
     </div>
 
 </header>
-
 
 
 <!-- =====================================================
@@ -157,7 +114,6 @@
 {% if weather %}
 
 <div class="weather-banner">
-
 
     <div class="weather-location">
 
@@ -169,50 +125,65 @@
 
     </div>
 
-
     <div>
-
-        🌡
-
-        {{ weather.temperature }}°C
-
+        🌡 {{ weather.temperature }}°C
     </div>
 
-
     <div>
-
-        ☁
-
-        {{ weather.condition }}
-
+        ☁ {{ weather.condition }}
     </div>
 
-
-    {% if weather.humidity %}
-
     <div>
-
-        💧
-
-        {{ weather.humidity }}%
-
+        💧 {{ weather.humidity|default(0) }}%
     </div>
-
-    {% endif %}
-
 
 </div>
 
 {% endif %}
 
 
+<!-- =====================================================
+     FLASH MESSAGES
+===================================================== -->
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+
+    {% if messages %}
+
+        <div class="flash-container">
+
+        {% for category, message in messages %}
+
+            <div class="flash-message {{ category }}">
+
+                <span>
+                    {{ message }}
+                </span>
+
+                <button
+                    type="button"
+                    onclick="this.parentElement.remove()">
+
+                    ×
+
+                </button>
+
+            </div>
+
+        {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+{% endwith %}
+
 
 <!-- =====================================================
-     WELCOME BANNER
+     WELCOME
 ===================================================== -->
 
 <div class="marketplace-banner">
-
 
     <div>
 
@@ -221,12 +192,11 @@
         </h2>
 
         <p>
-            Sell your farm products directly and discover
-            current agriculture market prices.
+            Buy agricultural products directly from farmers
+            and sell your own farm products.
         </p>
 
     </div>
-
 
     <div class="banner-icon">
 
@@ -234,9 +204,7 @@
 
     </div>
 
-
 </div>
-
 
 
 <!-- =====================================================
@@ -266,7 +234,6 @@
     </a>
 
 
-
     <a href="/consumer-request"
        class="action-btn request-btn">
 
@@ -287,8 +254,26 @@
     </a>
 
 
-</div>
+    <a href="/orders"
+       class="action-btn order-btn">
 
+        <i class="fa-solid fa-box-open"></i>
+
+        <div>
+
+            <strong>
+                My Orders
+            </strong>
+
+            <small>
+                Track your purchases
+            </small>
+
+        </div>
+
+    </a>
+
+</div>
 
 
 <!-- =====================================================
@@ -297,16 +282,16 @@
 
 <section class="market-card">
 
-
     <div class="section-header">
-
 
         <div>
 
             <h2>
+
                 <i class="fa-solid fa-chart-line"></i>
 
                 Today's Government Mandi Prices
+
             </h2>
 
             <p>
@@ -327,39 +312,22 @@
 
         </div>
 
-
     </div>
-
 
 
     <div class="table-wrapper">
 
         <table id="priceTable">
 
-
             <thead>
 
                 <tr>
 
-                    <th>
-                        Crop
-                    </th>
-
-                    <th>
-                        Market
-                    </th>
-
-                    <th>
-                        State
-                    </th>
-
-                    <th>
-                        Price ₹/Quintal
-                    </th>
-
-                    <th>
-                        Date
-                    </th>
+                    <th>Crop</th>
+                    <th>Market</th>
+                    <th>State</th>
+                    <th>Price ₹/Quintal</th>
+                    <th>Date</th>
 
                 </tr>
 
@@ -368,11 +336,9 @@
 
             <tbody>
 
-
             {% for crop in prices %}
 
             <tr>
-
 
                 <td>
 
@@ -424,8 +390,8 @@
 
                 </td>
 
-
             </tr>
+
 
             {% else %}
 
@@ -446,16 +412,13 @@
 
             {% endfor %}
 
-
             </tbody>
 
         </table>
 
     </div>
 
-
 </section>
-
 
 
 <!-- =====================================================
@@ -467,7 +430,6 @@
 
     <div class="section-header">
 
-
         <div>
 
             <h2>
@@ -478,11 +440,8 @@
 
             </h2>
 
-
             <p>
-
                 Fresh products available from farmers
-
             </p>
 
         </div>
@@ -496,9 +455,7 @@
 
         </span>
 
-
     </div>
-
 
 
     <div class="product-grid"
@@ -508,100 +465,181 @@
     {% for product in products %}
 
 
-        <div class="product-card">
+    <!-- =================================================
+         PRODUCT CARD
+    ================================================= -->
+
+    <div class="product-card">
 
 
-            <!-- PRODUCT IMAGE -->
+        <!-- IMAGE -->
 
-            <div class="product-image">
+        <div class="product-image">
 
-                {% if product.image %}
+            {% if product.image %}
 
-                <img
-                    src="{{ url_for(
-                        'static',
-                        filename='uploads/products/' + product.image
-                    ) }}"
-                    alt="{{ product.product_name }}">
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='uploads/products/' + product.image
+                ) }}"
+                alt="{{ product.product_name }}">
+
+            {% else %}
+
+            <div class="no-image">
+
+                <i class="fa-solid fa-seedling"></i>
+
+            </div>
+
+            {% endif %}
+
+
+            <!-- STOCK STATUS -->
+
+            {% if product.quantity|float > 0 %}
+
+            <span class="available-badge">
+
+                <i class="fa-solid fa-circle"></i>
+
+                Available
+
+            </span>
+
+            {% else %}
+
+            <span class="available-badge"
+                  style="background:#d32f2f;">
+
+                <i class="fa-solid fa-circle"></i>
+
+                Out of Stock
+
+            </span>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- CONTENT -->
+
+        <div class="product-content">
+
+
+            <!-- CATEGORY -->
+
+            <span class="category">
+
+                {{ product.category|default("Other") }}
+
+            </span>
+
+
+            <!-- PRODUCT NAME -->
+
+            <h3>
+
+                {{ product.product_name }}
+
+            </h3>
+
+
+            <!-- FARMER -->
+
+            <p class="farmer-info">
+
+                <i class="fa-solid fa-user"></i>
+
+                Farmer Product
+
+            </p>
+
+
+            <!-- PRICE -->
+
+            <div class="product-price">
+
+                <small>
+                    Price
+                </small>
+
+                <h2>
+
+                    ₹ {{ product.price }}
+
+                </h2>
+
+
+                {% if product.quantity|float > 0 %}
+
+                <p>
+
+                    Available:
+
+                    {{ product.quantity|float|int }}
+
+                    {{ product.unit|default('kg') }}
+
+                </p>
 
                 {% else %}
 
-                <div class="no-image">
-
-                    <i class="fa-solid fa-seedling"></i>
-
-                </div>
+                <p>
+                    Out of stock
+                </p>
 
                 {% endif %}
-
-
-                <span class="available-badge">
-
-                    <i class="fa-solid fa-circle"></i>
-
-                    Available
-
-                </span>
 
             </div>
 
 
+            <!-- =================================================
+                 BUY NOW
+            ================================================= -->
 
-            <!-- PRODUCT CONTENT -->
-
-            <div class="product-content">
-
-
-                <span class="category">
-
-                    {{ product.category }}
-
-                </span>
+            {% if product.quantity|float > 0 %}
 
 
-                <h3>
-
-                    {{ product.product_name }}
-
-                </h3>
-
-
-                <p class="farmer-info">
-
-                    <i class="fa-solid fa-user"></i>
-
-                    Farmer Product
-
-                </p>
+            <form
+                action="{{ url_for(
+                    'place_order',
+                    product_id=product.id
+                ) }}"
+                method="POST"
+                class="order-form">
 
 
-                <div class="product-bottom">
+                <label
+                    for="quantity-{{ product.id }}">
+
+                    Quantity
+
+                </label>
 
 
-                    <div>
+                <div class="quantity-row">
 
-                        <small>
-                            Price
-                        </small>
 
-                        <h2>
-
-                            ₹ {{ product.price }}
-
-                        </h2>
-
-                    </div>
+                    <input
+                        type="number"
+                        id="quantity-{{ product.id }}"
+                        name="quantity"
+                        value="1"
+                        min="1"
+                        max="{{ product.quantity|float|int }}"
+                        required>
 
 
                     <button
-                        class="contact-btn"
-                        onclick="contactFarmer(
-                            '{{ product.product_name }}'
-                        )">
+                        type="submit"
+                        class="buy-btn">
 
-                        <i class="fa-solid fa-phone"></i>
+                        <i class="fa-solid fa-cart-shopping"></i>
 
-                        Contact
+                        Buy Now
 
                     </button>
 
@@ -609,47 +647,87 @@
                 </div>
 
 
-            </div>
+            </form>
+
+
+            {% else %}
+
+
+            <button
+                type="button"
+                class="buy-btn"
+                disabled
+                style="opacity:0.5;cursor:not-allowed;">
+
+                <i class="fa-solid fa-ban"></i>
+
+                Out of Stock
+
+            </button>
+
+
+            {% endif %}
+
+
+            <!-- =================================================
+                 CONTACT
+            ================================================= -->
+
+            <button
+                type="button"
+                class="contact-btn"
+                onclick="contactFarmer(
+                    '{{ product.product_name|escape }}'
+                )">
+
+                <i class="fa-solid fa-phone"></i>
+
+                Contact Farmer
+
+            </button>
 
 
         </div>
+
+    </div>
 
 
     {% else %}
 
 
-        <div class="empty-products">
+    <!-- =================================================
+         EMPTY
+    ================================================= -->
 
-            <div class="empty-icon">
+    <div class="empty-products">
 
-                <i class="fa-solid fa-box-open"></i>
+        <div class="empty-icon">
 
-            </div>
-
-
-            <h2>
-                No Products Available
-            </h2>
-
-
-            <p>
-                No farmer products have been listed yet.
-            </p>
-
-
-            <a href="/add-product">
-
-                <button>
-
-                    <i class="fa-solid fa-plus"></i>
-
-                    Sell Your Product
-
-                </button>
-
-            </a>
+            <i class="fa-solid fa-box-open"></i>
 
         </div>
+
+        <h2>
+            No Products Available
+        </h2>
+
+        <p>
+            No farmer products have been listed yet.
+        </p>
+
+        <a href="/add-product">
+
+            <button>
+
+                <i class="fa-solid fa-plus"></i>
+
+                Sell Your Product
+
+            </button>
+
+        </a>
+
+    </div>
 
 
     {% endfor %}
@@ -657,13 +735,11 @@
 
     </div>
 
-
 </section>
 
 
-
 <!-- =====================================================
-     DASHBOARD BUTTON
+     DASHBOARD
 ===================================================== -->
 
 <div class="dashboard-button">
@@ -681,7 +757,6 @@
     </a>
 
 </div>
-
 
 
 <!-- =====================================================
@@ -706,34 +781,27 @@
 </div>
 
 
-
 <!-- =====================================================
      CHATBOT
 ===================================================== -->
 
 {% include 'components/chatbot.html' %}
 
+<script src="{{ url_for(
+    'static',
+    filename='js/chatbot.js'
+) }}"></script>
 
-<script
-src="{{ url_for('static', filename='js/chatbot.js') }}">
-</script>
-
-
-
-<!-- =====================================================
-     MARKETPLACE JAVASCRIPT
-===================================================== -->
 
 <script>
 
 
-/* =========================
+/* =====================================================
    PRODUCT SEARCH
-========================= */
+===================================================== */
 
 const productSearch =
     document.getElementById("productSearch");
-
 
 if (productSearch) {
 
@@ -742,29 +810,25 @@ if (productSearch) {
         function () {
 
             const search =
-                this.value.toLowerCase();
+                this.value
+                .toLowerCase()
+                .trim();
 
             const cards =
                 document.querySelectorAll(
                     ".product-card"
                 );
 
-
             cards.forEach(function(card) {
 
                 const text =
-                    card.innerText.toLowerCase();
+                    card.innerText
+                    .toLowerCase();
 
-
-                if (text.includes(search)) {
-
-                    card.style.display = "";
-
-                } else {
-
-                    card.style.display = "none";
-
-                }
+                card.style.display =
+                    text.includes(search)
+                    ? ""
+                    : "none";
 
             });
 
@@ -774,14 +838,12 @@ if (productSearch) {
 }
 
 
-
-/* =========================
+/* =====================================================
    CROP SEARCH
-========================= */
+===================================================== */
 
 const cropSearch =
     document.getElementById("cropSearch");
-
 
 if (cropSearch) {
 
@@ -790,29 +852,25 @@ if (cropSearch) {
         function () {
 
             const search =
-                this.value.toLowerCase();
+                this.value
+                .toLowerCase()
+                .trim();
 
             const rows =
                 document.querySelectorAll(
                     "#priceTable tbody tr"
                 );
 
-
             rows.forEach(function(row) {
 
                 const text =
-                    row.innerText.toLowerCase();
+                    row.innerText
+                    .toLowerCase();
 
-
-                if (text.includes(search)) {
-
-                    row.style.display = "";
-
-                } else {
-
-                    row.style.display = "none";
-
-                }
+                row.style.display =
+                    text.includes(search)
+                    ? ""
+                    : "none";
 
             });
 
@@ -822,10 +880,9 @@ if (cropSearch) {
 }
 
 
-
-/* =========================
+/* =====================================================
    CONTACT FARMER
-========================= */
+===================================================== */
 
 function contactFarmer(product) {
 
@@ -836,6 +893,44 @@ function contactFarmer(product) {
     );
 
 }
+
+
+/* =====================================================
+   BUY BUTTON DEBUG
+===================================================== */
+
+document.querySelectorAll(
+    ".order-form"
+).forEach(function(form) {
+
+    form.addEventListener(
+        "submit",
+        function() {
+
+            const quantity =
+                form.querySelector(
+                    'input[name="quantity"]'
+                ).value;
+
+            console.log(
+                "Order submitted"
+            );
+
+            console.log(
+                "Product:",
+                form.action
+            );
+
+            console.log(
+                "Quantity:",
+                quantity
+            );
+
+        }
+    );
+
+});
+
 
 </script>
 

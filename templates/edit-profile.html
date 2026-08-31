@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>KisanVision360 | Edit Profile</title>
+
+
+    <!-- SIDEBAR CSS -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/sidebar.css') }}">
+
+
+    <!-- EDIT PROFILE CSS -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/edit-profile.css') }}">
+
+
+    <!-- FONT AWESOME -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+
+<body>
+
+
+<div class="dashboard-container">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    {% include "components/sidebar.html" %}
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="main-content">
+
+
+        <div class="edit-profile-page">
+
+
+            <!-- =====================================================
+                 TOPBAR
+            ====================================================== -->
+
+            <div class="edit-topbar">
+
+
+                <div>
+
+                    <h1>
+
+                        <i class="fa-solid fa-user-pen"></i>
+
+                        Edit Profile
+
+                    </h1>
+
+
+                    <p>
+
+                        Update your KisanVision360
+                        account information.
+
+                    </p>
+
+                </div>
+
+
+
+                <div class="top-actions">
+
+
+                    <a href="/profile"
+                       class="back-btn">
+
+                        <i class="fa-solid fa-arrow-left"></i>
+
+                        Back to Profile
+
+                    </a>
+
+
+                    <a href="/settings"
+                       class="settings-btn">
+
+                        <i class="fa-solid fa-gear"></i>
+
+                        Settings
+
+                    </a>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =====================================================
+                 EDIT CARD
+            ====================================================== -->
+
+            <div class="edit-card">
+
+
+                <!-- HEADER -->
+
+                <div class="edit-header">
+
+
+                    <div class="edit-icon">
+
+                        <i class="fa-solid fa-user"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Personal Information
+                        </h2>
+
+                        <p>
+                            Keep your profile information up to date.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     FORM
+                ================================================== -->
+
+                <form
+                    method="POST"
+                    enctype="multipart/form-data">
+
+
+                    <!-- =================================================
+                         PROFILE PHOTO
+                    ================================================== -->
+
+                    <div class="profile-photo-section">
+
+
+                        <div class="profile-photo-box">
+
+
+                            <img
+                                id="profilePreview"
+                                src="{{ profile_pic if profile_pic else url_for('static', filename='images/farmer.jpg') }}"
+                                alt="Profile Photo"
+                                class="edit-profile-image">
+
+
+                            <label
+                                for="profilePhoto"
+                                class="photo-camera"
+                                title="Change Profile Photo">
+
+                                <i class="fa-solid fa-camera"></i>
+
+                            </label>
+
+
+                        </div>
+
+
+
+                        <div class="photo-info">
+
+
+                            <h3>
+                                Profile Photo
+                            </h3>
+
+
+                            <p>
+                                Upload a clear photo for your
+                                KisanVision360 profile.
+                            </p>
+
+
+                            <label
+                                for="profilePhoto"
+                                class="upload-photo-btn">
+
+                                <i class="fa-solid fa-upload"></i>
+
+                                Choose Photo
+
+                            </label>
+
+
+                            <input
+                                type="file"
+                                id="profilePhoto"
+                                name="profile"
+                                accept="image/png,image/jpeg,image/jpg"
+                                hidden>
+
+
+                            <small>
+                                JPG, JPEG or PNG
+                            </small>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         FULL NAME
+                    ================================================== -->
+
+                    <div class="form-group">
+
+
+                        <label>
+
+                            <i class="fa-solid fa-user"></i>
+
+                            Full Name
+
+                        </label>
+
+
+                        <input
+                            type="text"
+                            name="name"
+                            value="{{ name if name else '' }}"
+                            placeholder="Enter your full name"
+                            required>
+
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         MOBILE
+                    ================================================== -->
+
+                    <div class="form-group">
+
+
+                        <label>
+
+                            <i class="fa-solid fa-phone"></i>
+
+                            Mobile Number
+
+                        </label>
+
+
+                        <input
+                            type="tel"
+                            name="mobile"
+                            value="{{ mobile if mobile else '' }}"
+                            placeholder="Enter mobile number"
+                            maxlength="10"
+                            required>
+
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         EMAIL
+                    ================================================== -->
+
+                    <div class="form-group">
+
+
+                        <label>
+
+                            <i class="fa-solid fa-envelope"></i>
+
+                            Email Address
+
+                        </label>
+
+
+                        <input
+                            type="email"
+                            name="email"
+                            value="{{ email if email else '' }}"
+                            placeholder="Enter email address">
+
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         LOCATION
+                    ================================================== -->
+
+                    <div class="form-group">
+
+
+                        <label>
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            Location
+
+                        </label>
+
+
+                        <input
+                            type="text"
+                            name="location"
+                            value="{{ location if location else 'Nagpur' }}"
+                            placeholder="Enter your location">
+
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         ROLE
+                    ================================================== -->
+
+                    <div class="form-group">
+
+
+                        <label>
+
+                            <i class="fa-solid fa-user-tag"></i>
+
+                            Account Role
+
+                        </label>
+
+
+                        <input
+                            type="text"
+                            value="{{ role if role else session.get('role', 'Farmer') }}"
+                            disabled>
+
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         FORM BUTTONS
+                    ================================================== -->
+
+                    <div class="form-actions">
+
+
+                        <a
+                            href="/profile"
+                            class="cancel-btn">
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                            Cancel
+
+                        </a>
+
+
+
+                        <button
+                            type="submit"
+                            class="save-btn">
+
+                            <i class="fa-solid fa-floppy-disk"></i>
+
+                            Save Changes
+
+                        </button>
+
+
+                    </div>
+
+
+                </form>
+
+
+            </div>
+
+
+
+            <!-- =====================================================
+                 INFORMATION CARD
+            ====================================================== -->
+
+            <div class="info-card">
+
+
+                <div class="info-icon">
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        Profile Information
+                    </h3>
+
+                    <p>
+
+                        Your profile information is used
+                        throughout KisanVision360.
+
+                        Keep your mobile number and email
+                        address updated.
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =====================================================
+                 FOOTER
+            ====================================================== -->
+
+            <footer class="edit-footer">
+
+
+                <i class="fa-solid fa-leaf"></i>
+
+
+                <strong>
+                    KisanVision360
+                </strong>
+
+
+                <span>
+                    •
+                </span>
+
+
+                Smart Farming Platform
+
+
+                <span>
+                    •
+                </span>
+
+
+                Made in India 🇮🇳
+
+
+            </footer>
+
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     PROFILE PHOTO PREVIEW
+====================================================== -->
+
+<script>
+
+const profilePhoto =
+    document.getElementById("profilePhoto");
+
+
+const profilePreview =
+    document.getElementById("profilePreview");
+
+
+if (profilePhoto && profilePreview) {
+
+
+    profilePhoto.addEventListener(
+        "change",
+        function () {
+
+
+            const file =
+                this.files[0];
+
+
+            if (file) {
+
+
+                if (!file.type.startsWith("image/")) {
+
+                    alert("Please select an image file.");
+
+                    this.value = "";
+
+                    return;
+
+                }
+
+
+                profilePreview.src =
+                    URL.createObjectURL(file);
+
+            }
+
+
+        }
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html>

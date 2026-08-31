@@ -1,99 +1,643 @@
-body{
+/* =========================================================
+   KISANVISION360 - MARKET PAGE
+========================================================= */
 
-background:#f1f8e9;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-font-family:'Segoe UI';
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7f5;
+    color: #263238;
+}
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.main-content {
+    min-height: 100vh;
+    padding: 25px 30px;
+}
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 18px 22px;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+}
+
+.page-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.title-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 14px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+}
+
+.page-title h1 {
+    font-size: 25px;
+    margin-bottom: 5px;
+    color: #1b5e20;
+}
+
+.page-title p {
+    color: #78909c;
+    font-size: 14px;
+}
+
+.top-right {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.notification {
+    position: relative;
+    text-decoration: none;
+    color: #455a64;
+    font-size: 21px;
+}
+
+.notification span {
+    position: absolute;
+    top: -9px;
+    right: -10px;
+    background: #e53935;
+    color: white;
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    font-size: 11px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile h4 {
+    color: #263238;
+    margin-bottom: 3px;
+}
+
+.profile small {
+    color: #78909c;
+}
+
+/* =========================================================
+   WEATHER
+========================================================= */
+
+.weather-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    background: linear-gradient(135deg, #1b5e20, #43a047);
+    color: white;
+    padding: 15px 22px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 15px rgba(46,125,50,0.20);
+}
+
+.weather-banner div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.market-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #1b5e20, #43a047);
+    color: white;
+    padding: 28px;
+    border-radius: 18px;
+    margin-bottom: 22px;
+    box-shadow: 0 8px 22px rgba(27,94,32,0.20);
+}
+
+.market-hero > div:first-child {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.hero-icon {
+    width: 65px;
+    height: 65px;
+    border-radius: 17px;
+    background: rgba(255,255,255,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.market-hero h2 {
+    font-size: 24px;
+    margin-bottom: 6px;
+}
+
+.market-hero p {
+    opacity: 0.9;
+    font-size: 14px;
+}
+
+.hero-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.15);
+    padding: 13px 18px;
+    border-radius: 12px;
+    font-weight: bold;
+}
+
+.hero-info i {
+    font-size: 20px;
+}
+
+/* =========================================================
+   SEARCH CARD
+========================================================= */
+
+.search-card {
+    background: white;
+    padding: 25px;
+    border-radius: 17px;
+    margin-bottom: 22px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+}
+
+.section-title h2 {
+    color: #1b5e20;
+    margin-bottom: 6px;
+    font-size: 20px;
+}
+
+.section-title h2 i {
+    margin-right: 8px;
+}
+
+.section-title p {
+    color: #78909c;
+    font-size: 14px;
+    margin-bottom: 18px;
+}
+
+.market-search {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.search-input {
+    flex: 1;
+    height: 48px;
+    border: 1px solid #cfd8dc;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    background: #fafafa;
+}
+
+.search-input i {
+    color: #43a047;
+    margin-right: 10px;
+}
+
+.search-input input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 15px;
+}
+
+.market-search button {
+    height: 48px;
+    border: none;
+    padding: 0 22px;
+    border-radius: 10px;
+    background: #2e7d32;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.market-search button:hover {
+    background: #1b5e20;
+    transform: translateY(-1px);
+}
+
+.clear-btn {
+    height: 48px;
+    padding: 0 18px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    text-decoration: none;
+    border-radius: 10px;
+    background: #eceff1;
+    color: #455a64;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* =========================================================
+   MARKET CARD
+========================================================= */
+
+.market-card {
+    background: white;
+    padding: 25px;
+    border-radius: 17px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+    margin-bottom: 22px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    color: #1b5e20;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.section-header h2 i {
+    margin-right: 8px;
+}
+
+.section-header p {
+    color: #78909c;
+    font-size: 13px;
+}
+
+.result-badge {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 14px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 850px;
+}
+
+thead {
+    background: #1b5e20;
+    color: white;
+}
+
+th {
+    padding: 14px 12px;
+    text-align: left;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+td {
+    padding: 15px 12px;
+    border-bottom: 1px solid #eceff1;
+    font-size: 14px;
+}
+
+tbody tr {
+    transition: 0.2s;
+}
+
+tbody tr:hover {
+    background: #f7fbf7;
+}
+
+.commodity {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.commodity-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+td .fa-location-dot {
+    color: #43a047;
+    margin-right: 5px;
+}
+
+.min-price {
+    color: #ef6c00;
+    font-weight: bold;
+}
+
+.max-price {
+    color: #2e7d32;
+    font-weight: bold;
+}
+
+.modal-price {
+    display: inline-block;
+    padding: 7px 12px;
+    border-radius: 8px;
+    background: #e8f5e9;
+    color: #1b5e20;
+}
+
+/* =========================================================
+   NO DATA
+========================================================= */
+
+.no-data {
+    text-align: center;
+    padding: 55px 20px;
+}
+
+.no-data-icon {
+    width: 75px;
+    height: 75px;
+    margin: auto;
+    border-radius: 50%;
+    background: #f1f8e9;
+    color: #7cb342;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    margin-bottom: 18px;
+}
+
+.no-data h2 {
+    color: #455a64;
+    margin-bottom: 8px;
+}
+
+.no-data p {
+    color: #90a4ae;
+    margin-bottom: 20px;
+}
+
+.no-data a {
+    text-decoration: none;
+}
+
+.no-data button {
+    border: none;
+    padding: 12px 20px;
+    border-radius: 9px;
+    background: #2e7d32;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* =========================================================
+   INFORMATION CARDS
+========================================================= */
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 22px;
+}
+
+.info-card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+}
+
+.info-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+}
+
+.info-card h3 {
+    color: #263238;
+    margin-bottom: 5px;
+}
+
+.info-card p {
+    color: #78909c;
+    font-size: 13px;
+}
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 25px 0;
+}
+
+.action-buttons a {
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 9px;
+    font-weight: bold;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.green-btn {
+    background: #2e7d32;
+    color: white;
+}
+
+.gray-btn {
+    background: #607d8b;
+    color: white;
+}
+
+.blue-btn {
+    background: #1976d2;
+    color: white;
+}
+
+.action-buttons a:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #78909c;
+    font-size: 13px;
+}
+
+footer i {
+    color: #43a047;
+    margin-right: 5px;
+}
+
+footer span {
+    margin: 0 6px;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .main-content {
+        padding: 18px;
+    }
+
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .top-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .market-hero {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+    }
+
+    .weather-banner {
+        flex-wrap: wrap;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
 
 }
 
+@media (max-width: 650px) {
 
-.container{
+    .main-content {
+        padding: 12px;
+    }
 
-width:90%;
+    .page-title h1 {
+        font-size: 20px;
+    }
 
-margin:40px auto;
+    .market-search {
+        flex-direction: column;
+        align-items: stretch;
+    }
 
-background:white;
+    .search-input,
+    .market-search button,
+    .clear-btn {
+        width: 100%;
+    }
 
-padding:30px;
+    .clear-btn {
+        justify-content: center;
+    }
 
-border-radius:25px;
+    .action-buttons {
+        flex-direction: column;
+    }
 
-box-shadow:0 10px 30px rgba(0,0,0,.15);
+    .action-buttons a {
+        justify-content: center;
+    }
 
-}
-
-
-h1{
-
-text-align:center;
-
-color:#14532d;
-
-}
-
-
-
-input{
-
-padding:14px;
-
-width:300px;
-
-border-radius:10px;
-
-border:1px solid #ccc;
-
-}
-
-
-
-button{
-
-padding:14px 25px;
-
-background:#198754;
-
-color:white;
-
-border:none;
-
-border-radius:20px;
-
-}
-
-
-
-table{
-
-width:100%;
-
-margin-top:30px;
-
-border-collapse:collapse;
-
-}
-
-
-
-th{
-
-background:#198754;
-
-color:white;
-
-padding:15px;
-
-}
-
-
-
-td{
-
-padding:12px;
-
-border-bottom:1px solid #ddd;
-
-text-align:center;
+    .market-hero h2 {
+        font-size: 20px;
+    }
 
 }

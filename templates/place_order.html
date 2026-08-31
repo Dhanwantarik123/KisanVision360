@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        KisanVision360 | Place Order
+    </title>
+
+
+    <!-- SIDEBAR CSS -->
+
+    <link rel="stylesheet"
+          href="{{ url_for(
+              'static',
+              filename='css/sidebar.css'
+          ) }}">
+
+
+    <!-- PLACE ORDER CSS -->
+
+    <link rel="stylesheet"
+          href="{{ url_for(
+              'static',
+              filename='css/place_order.css'
+          ) }}">
+
+
+    <!-- FONT AWESOME -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+
+<body>
+
+
+<div class="dashboard-container">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ===================================================== -->
+
+    {% include "components/sidebar.html" %}
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ===================================================== -->
+
+    <div class="main-content">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================= -->
+
+        <header class="topbar">
+
+
+            <div class="title-section">
+
+
+                <div class="title-icon">
+
+                    <i class="fa-solid fa-cart-shopping"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h1>
+                        Place Order
+                    </h1>
+
+                    <p>
+                        Purchase agricultural products directly
+                        from farmers.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- PROFILE -->
+
+            <div class="profile">
+
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename='images/farmer.jpg'
+                    ) }}"
+                    alt="Profile">
+
+
+                <div>
+
+                    <h4>
+                        {{ name|default('User') }}
+                    </h4>
+
+                    <small>
+                        {{ role|default('Consumer') }}
+                    </small>
+
+                </div>
+
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- =================================================
+             PAGE CONTENT
+        ================================================= -->
+
+        <section class="order-page">
+
+
+            <!-- =================================================
+                 ORDER CARD
+            ================================================= -->
+
+            <div class="place-order-card">
+
+
+                <!-- CARD HEADER -->
+
+                <div class="card-header">
+
+
+                    <div class="product-icon">
+
+                        <i class="fa-solid fa-seedling"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            MARKETPLACE ORDER
+                        </span>
+
+                        <h2>
+                            Confirm Your Order
+                        </h2>
+
+                        <p>
+                            Check the product details and quantity
+                            before placing your order.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     PRODUCT DETAILS
+                ================================================= -->
+
+                <div class="product-details">
+
+
+                    <div class="detail-item">
+
+
+                        <div class="detail-icon">
+
+                            <i class="fa-solid fa-wheat-awn"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Product
+                            </span>
+
+                            <strong>
+                                {{ product[1] }}
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="detail-item">
+
+
+                        <div class="detail-icon">
+
+                            <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Price
+                            </span>
+
+                            <strong>
+                                ₹{{ product[2] }}
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="detail-item">
+
+
+                        <div class="detail-icon">
+
+                            <i class="fa-solid fa-box"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Available Quantity
+                            </span>
+
+                            <strong>
+                                {{ product[3] }}
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     ORDER FORM
+                ================================================= -->
+
+                <form
+                    method="POST"
+                    action="{{ url_for(
+                        'place_order',
+                        product_id=product[0]
+                    ) }}"
+                    id="orderForm">
+
+
+                    <!-- QUANTITY -->
+
+                    <div class="form-group">
+
+
+                        <label for="quantity">
+
+                            <i class="fa-solid fa-weight-scale"></i>
+
+                            Quantity
+
+                        </label>
+
+
+                        <div class="quantity-box">
+
+
+                            <button
+                                type="button"
+                                onclick="decreaseQuantity()">
+
+                                <i class="fa-solid fa-minus"></i>
+
+                            </button>
+
+
+                            <input
+                                type="number"
+                                id="quantity"
+                                name="quantity"
+                                value="1"
+                                min="1"
+                                max="{{ product[3] }}"
+                                required>
+
+
+                            <button
+                                type="button"
+                                onclick="increaseQuantity()">
+
+                                <i class="fa-solid fa-plus"></i>
+
+                            </button>
+
+
+                        </div>
+
+
+                        <small>
+                            Maximum available:
+                            {{ product[3] }}
+                        </small>
+
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         TOTAL
+                    ================================================= -->
+
+                    <div class="total-card">
+
+
+                        <div>
+
+                            <span>
+                                Product Price
+                            </span>
+
+                            <strong>
+                                ₹{{ product[2] }}
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Quantity
+                            </span>
+
+                            <strong id="displayQuantity">
+                                1
+                            </strong>
+
+                        </div>
+
+
+                        <hr>
+
+
+                        <div class="grand-total">
+
+                            <span>
+                                Total Amount
+                            </span>
+
+                            <strong>
+                                ₹<span id="totalAmount">
+                                    {{ product[2] }}
+                                </span>
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         INFORMATION
+                    ================================================= -->
+
+                    <div class="order-info">
+
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+
+                        <p>
+
+                            Your order will initially be marked as
+                            <strong>Processing</strong>.
+                            You can track the order from
+                            <strong>My Orders</strong>.
+
+                        </p>
+
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         BUTTONS
+                    ================================================= -->
+
+                    <div class="form-buttons">
+
+
+                        <a
+                            href="/marketplace"
+                            class="cancel-btn">
+
+                            <i class="fa-solid fa-arrow-left"></i>
+
+                            Back to Marketplace
+
+                        </a>
+
+
+
+                        <button
+                            type="submit"
+                            class="place-order-btn">
+
+                            <i class="fa-solid fa-cart-plus"></i>
+
+                            Place Order
+
+                        </button>
+
+
+                    </div>
+
+
+                </form>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 RIGHT SIDE INFORMATION
+            ================================================= -->
+
+            <aside class="order-info-card">
+
+
+                <div class="info-main-icon">
+
+                    <i class="fa-solid fa-handshake"></i>
+
+                </div>
+
+
+                <h2>
+                    Safe Marketplace Purchase
+                </h2>
+
+
+                <p>
+                    KisanVision360 helps consumers connect
+                    directly with farmers.
+                </p>
+
+
+
+                <div class="info-feature">
+
+
+                    <i class="fa-solid fa-user-group"></i>
+
+
+                    <div>
+
+                        <h3>
+                            Direct Farmer Connection
+                        </h3>
+
+                        <p>
+                            Purchase products directly
+                            from farmers.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="info-feature">
+
+
+                    <i class="fa-solid fa-receipt"></i>
+
+
+                    <div>
+
+                        <h3>
+                            Order Tracking
+                        </h3>
+
+                        <p>
+                            Track your orders from
+                            the Orders page.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="info-feature">
+
+
+                    <i class="fa-solid fa-headset"></i>
+
+
+                    <div>
+
+                        <h3>
+                            Support
+                        </h3>
+
+                        <p>
+                            Get assistance with your
+                            marketplace order.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <a
+                    href="/orders"
+                    class="orders-btn">
+
+                    <i class="fa-solid fa-box"></i>
+
+                    View My Orders
+
+                </a>
+
+
+            </aside>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================= -->
+
+        <footer>
+
+
+            <i class="fa-solid fa-leaf"></i>
+
+
+            <strong>
+                KisanVision360
+            </strong>
+
+
+            <span>
+                •
+            </span>
+
+
+            Smart Farming Marketplace
+
+
+            <span>
+                •
+            </span>
+
+
+            © 2026
+
+
+        </footer>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+    const price =
+        parseFloat(
+            "{{ product[2] }}"
+        ) || 0;
+
+
+    const available =
+        parseInt(
+            "{{ product[3] }}"
+        ) || 1;
+
+
+    const quantityInput =
+        document.getElementById(
+            "quantity"
+        );
+
+
+    const totalAmount =
+        document.getElementById(
+            "totalAmount"
+        );
+
+
+    const displayQuantity =
+        document.getElementById(
+            "displayQuantity"
+        );
+
+
+
+    function updateTotal() {
+
+        let quantity =
+            parseInt(
+                quantityInput.value
+            ) || 1;
+
+
+        if (quantity < 1) {
+
+            quantity = 1;
+
+        }
+
+
+        if (quantity > available) {
+
+            quantity = available;
+
+        }
+
+
+        quantityInput.value =
+            quantity;
+
+
+        displayQuantity.textContent =
+            quantity;
+
+
+        const total =
+            price * quantity;
+
+
+        totalAmount.textContent =
+            total.toFixed(2);
+
+    }
+
+
+
+    function increaseQuantity() {
+
+        let quantity =
+            parseInt(
+                quantityInput.value
+            ) || 1;
+
+
+        if (quantity < available) {
+
+            quantity++;
+
+            quantityInput.value =
+                quantity;
+
+            updateTotal();
+
+        }
+
+    }
+
+
+
+    function decreaseQuantity() {
+
+        let quantity =
+            parseInt(
+                quantityInput.value
+            ) || 1;
+
+
+        if (quantity > 1) {
+
+            quantity--;
+
+            quantityInput.value =
+                quantity;
+
+            updateTotal();
+
+        }
+
+    }
+
+
+
+    quantityInput.addEventListener(
+        "input",
+        updateTotal
+    );
+
+
+    updateTotal();
+
+</script>
+
+
+</body>
+
+</html>

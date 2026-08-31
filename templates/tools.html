@@ -1,18 +1,172 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 
 <head>
 
-<title>
-KisanVision360 Farmer Tools
-</title>
+    <meta charset="UTF-8">
 
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet"
-href="{{url_for('static',
-filename='css/tools.css')}}">
+    <title>KisanVision360 | Farmer Tools</title>
 
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/sidebar.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/tools.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 25px 0;
+        }
+
+        .tool-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.10);
+            transition: 0.3s;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .tool-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 14px;
+        }
+
+        .tool-card h2 {
+            margin: 15px 0 8px;
+        }
+
+        .tool-category {
+            display: inline-block;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .tool-use {
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .tool-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1b5e20;
+        }
+
+        .tool-rent {
+            margin-top: 8px;
+        }
+
+        .tool-subsidy {
+            margin-top: 8px;
+            color: #1565c0;
+        }
+
+        .tool-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+        .tool-buttons a,
+        .tool-buttons button {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px 7px;
+            border: none;
+            border-radius: 9px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .buy-btn {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .rent-btn {
+            background: #00897b;
+            color: white;
+        }
+
+        .emi-btn {
+            background: #1565c0;
+            color: white;
+        }
+
+        .compare-btn {
+            background: #ef6c00;
+            color: white;
+        }
+
+        .review-btn {
+            background: #6a1b9a;
+            color: white;
+        }
+
+        .details-btn {
+            background: #455a64;
+            color: white;
+        }
+
+        .tool-buttons a:hover,
+        .tool-buttons button:hover {
+            opacity: 0.85;
+        }
+
+        .tool-icon {
+            color: #2e7d32;
+            margin-right: 6px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 12px 20px;
+            background: #555;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 600px) {
+
+            .tool-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tool-buttons {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+    </style>
 
 </head>
 
@@ -20,131 +174,1026 @@ filename='css/tools.css')}}">
 <body>
 
 
-<div class="main-content">
+<div class="dashboard-container">
 
 
-<div class="topbar">
+    <!-- SIDEBAR -->
 
-<h1>
-🧰 Farmer Tools Marketplace
-</h1>
+    {% include "components/sidebar.html" %}
 
-<p>
-Buy, Rent and Compare Agricultural Machines
-</p>
 
-</div>
+    <!-- MAIN CONTENT -->
 
+    <div class="main-content">
 
 
-<div class="tool-grid">
+        <!-- TOP BAR -->
 
+        <div class="topbar">
 
+            <div>
 
-{% for item in tools %}
+                <h1>
 
+                    🧰 Farmer Tools & Machinery
 
-<div class="tool-card">
+                </h1>
 
+                <p>
 
-<img src="{{item.image}}">
+                    Physical agricultural tools for real farm work
 
+                </p>
 
+            </div>
 
-<h2>
-{{item.name}}
-</h2>
+        </div>
 
-<a href="/emi" class="tool-card">
 
-💰 EMI Calculator
 
-<p>
-Calculate monthly payment for tractor and farming machines
-</p>
+        <!-- TOOL GRID -->
 
-</a>
+        <div class="tool-grid">
 
-<h3>
-💰 Live Price
-</h3>
 
-<p>
-{{item.price}}
-</p>
 
+            <!-- TRACTOR -->
 
+            <div class="tool-card">
 
-<h4>
-Category
-</h4>
+                <img
+                    src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=800&q=80"
+                    class="tool-image"
+                    alt="Tractor">
 
-<p>
-{{item.category}}
-</p>
+                <h2>
+                    🚜 Tractor
+                </h2>
 
+                <span class="tool-category">
+                    Crop Preparation
+                </span>
 
+                <p class="tool-use">
+                    Used for ploughing, tilling, transportation
+                    and other heavy farm operations.
+                </p>
 
-<div class="features">
+                <p class="tool-price">
+                    💰 Price: ₹5,00,000+
+                </p>
 
+                <p class="tool-rent">
+                    🚜 Rent: ₹1,000–₹2,500/day
+                </p>
 
-<a href="{{item.buy}}" target="_blank">
+                <p class="tool-subsidy">
+                    🏛 Government subsidy may be available
+                </p>
 
-<button>
-🛒 Buy
-</button>
 
-</a>
+                <div class="tool-buttons">
 
+                    <a
+                        href="https://www.indiamart.com/"
+                        target="_blank"
+                        class="buy-btn">
 
+                        🛒 Buy
 
-<button onclick="emi()">
+                    </a>
 
-💳 EMI
+                    <a
+                        href="https://www.indiamart.com/"
+                        target="_blank"
+                        class="rent-btn">
 
-</button>
+                        🚜 Rent
 
+                    </a>
 
-<button>
+                    <button
+                        class="emi-btn"
+                        onclick="calculateEMI('Tractor')">
 
-⚖ Compare
+                        💳 EMI
 
-</button>
+                    </button>
 
+                    <button
+                        class="compare-btn"
+                        onclick="compareTool('Tractor')">
 
-<button>
+                        ⚖ Compare
 
-⭐ Reviews
+                    </button>
 
-</button>
+                    <button
+                        class="review-btn"
+                        onclick="showReviews('Tractor')">
 
+                        ⭐ Reviews
 
-</div>
+                    </button>
 
+                    <button
+                        class="details-btn"
+                        onclick="showDetails(
+                        'Tractor',
+                        'Heavy farm machine used for ploughing, tilling and transportation.'
+                        )">
 
+                        ℹ Details
 
-<p>
-🚜 Rent:
-{{item.rent}}
-</p>
+                    </button>
 
+                </div>
 
-<p>
-🏛 Subsidy:
-{{item.subsidy}}
-</p>
+            </div>
 
 
 
-</div>
+            <!-- ROTAVATOR -->
 
+            <div class="tool-card">
 
+                <img
+                    src="https://images.unsplash.com/photo-1500595046743-cd271d694d30?auto=format&fit=crop&w=800&q=80"
+                    class="tool-image"
+                    alt="Rotavator">
 
-{% endfor %}
+                <h2>
+                    🔄 Rotavator
+                </h2>
 
+                <span class="tool-category">
+                    Soil Preparation
+                </span>
 
-</div>
+                <p class="tool-use">
+                    Breaks soil clods and mixes crop residue
+                    into the soil.
+                </p>
 
+                <p class="tool-price">
+                    💰 Price: ₹1,20,000+
+                </p>
+
+                <p class="tool-rent">
+                    🚜 Rent: ₹800–₹1,500/day
+                </p>
+
+                <p class="tool-subsidy">
+                    🏛 Subsidy may be available
+                </p>
+
+
+                <div class="tool-buttons">
+
+                    <a
+                        href="https://www.indiamart.com/"
+                        target="_blank"
+                        class="buy-btn">
+
+                        🛒 Buy
+
+                    </a>
+
+                    <a
+                        href="https://www.indiamart.com/"
+                        target="_blank"
+                        class="rent-btn">
+
+                        🚜 Rent
+
+                    </a>
+
+                    <button
+                        class="emi-btn"
+                        onclick="calculateEMI('Rotavator')">
+
+                        💳 EMI
+
+                    </button>
+
+                    <button
+                        class="compare-btn"
+                        onclick="compareTool('Rotavator')">
+
+                        ⚖ Compare
+
+                    </button>
+
+                    <button
+                        class="review-btn"
+                        onclick="showReviews('Rotavator')">
+
+                        ⭐ Reviews
+
+                    </button>
+
+                    <button
+                        class="details-btn"
+                        onclick="showDetails(
+                        'Rotavator',
+                        'Used for soil preparation and mixing crop residues.'
+                        )">
+
+                        ℹ Details
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SEED DRILL -->
+
+            <div class="tool-card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=800&q=80"
+                    class="tool-image"
+                    alt="Seed Drill">
+
+                <h2>
+                    🌱 Seed Drill
+                </h2>
+
+                <span class="tool-category">
+                    Sowing
+                </span>
+
+                <p class="tool-use">
+                    Places seeds at proper depth and spacing
+                    during sowing.
+                </p>
+
+                <p class="tool-price">
+                    💰 Price: ₹50,000+
+                </p>
+
+                <p class="tool-rent">
+                    🚜 Rent: ₹500–₹1,000/day
+                </p>
+
+                <p class="tool-subsidy">
+                    🏛 Subsidy may be available
+                </p>
+
+
+                <div class="tool-buttons">
+
+                    <a
+                        href="https://www.indiamart.com/"
+                        target="_blank"
+                        class="buy-btn">
+
+                        🛒 Buy
+
+                    </a>
+
+                    <a
+                        href="https://www.indiamart.com/"
+                        target="_blank"
+                        class="rent-btn">
+
+                        🚜 Rent
+
+                    </a>
+
+                    <button
+                        class="emi-btn"
+                        onclick="calculateEMI('Seed Drill')">
+
+                        💳 EMI
+
+                    </button>
+
+                    <button
+                        class="compare-btn"
+                        onclick="compareTool('Seed Drill')">
+
+                        ⚖ Compare
+
+                    </button>
+
+                    <button
+                        class="review-btn"
+                        onclick="showReviews('Seed Drill')">
+
+                        ⭐ Reviews
+
+                    </button>
+
+                    <button
+                        class="details-btn"
+                        onclick="showDetails(
+                        'Seed Drill',
+                        'Machine used for accurate seed placement during sowing.'
+                        )">
+
+                        ℹ Details
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- POWER SPRAYER -->
+
+            <div class="tool-card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=800&q=80"
+                    class="tool-image"
+                    alt="Power Sprayer">
+
+                <h2>
+                    💦 Power Sprayer
+                </h2>
+
+                <span class="tool-category">
+                    Crop Protection
+                </span>
+
+                <p class="tool-use">
+                    Used for spraying pesticides, insecticides,
+                    fungicides and liquid fertilizers.
+                </p>
+
+                <p class="tool-price">
+                    💰 Price: ₹8,000+
+                </p>
+
+                <p class="tool-rent">
+                    🚜 Rent: ₹300–₹700/day
+                </p>
+
+                <p class="tool-subsidy">
+                    🏛 Subsidy may be available
+                </p>
+
+
+                <div class="tool-buttons">
+
+                    <a
+                        href="https://www.indiamart.com/"
+                        target="_blank"
+                        class="buy-btn">
+
+                        🛒 Buy
+
+                    </a>
+
+                    <a
+                        href="https://www.indiamart.com/"
+                        target="_blank"
+                        class="rent-btn">
+
+                        🚜 Rent
+
+                    </a>
+
+                    <button
+                        class="emi-btn"
+                        onclick="calculateEMI('Power Sprayer')">
+
+                        💳 EMI
+
+                    </button>
+
+                    <button
+                        class="compare-btn"
+                        onclick="compareTool('Power Sprayer')">
+
+                        ⚖ Compare
+
+                    </button>
+
+                    <button
+                        class="review-btn"
+                        onclick="showReviews('Power Sprayer')">
+
+                        ⭐ Reviews
+
+                    </button>
+
+                    <button
+                        class="details-btn"
+                        onclick="showDetails(
+                        'Power Sprayer',
+                        'Used for applying crop protection chemicals and liquid fertilizers.'
+                        )">
+
+                        ℹ Details
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- WATER PUMP -->
+
+            <div class="tool-card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1530267981375-f0de937f5f13?auto=format&fit=crop&w=800&q=80"
+                    class="tool-image"
+                    alt="Water Pump">
+
+                <h2>
+                    💧 Water Pump
+                </h2>
+
+                <span class="tool-category">
+                    Irrigation
+                </span>
+
+                <p class="tool-use">
+                    Pumps water from wells, tanks and other
+                    water sources for irrigation.
+                </p>
+
+                <p class="tool-price">
+                    💰 Price: ₹10,000+
+                </p>
+
+                <p class="tool-rent">
+                    🚜 Rent: ₹400–₹800/day
+                </p>
+
+                <p class="tool-subsidy">
+                    🏛 Subsidy may be available
+                </p>
+
+
+                <div class="tool-buttons">
+
+                    <a
+                        href="https://www.indiamart.com/"
+                        target="_blank"
+                        class="buy-btn">
+
+                        🛒 Buy
+
+                    </a>
+
+                    <a
+                        href="https://www.indiamart.com/"
+                        target="_blank"
+                        class="rent-btn">
+
+                        🚜 Rent
+
+                    </a>
+
+                    <button
+                        class="emi-btn"
+                        onclick="calculateEMI('Water Pump')">
+
+                        💳 EMI
+
+                    </button>
+
+                    <button
+                        class="compare-btn"
+                        onclick="compareTool('Water Pump')">
+
+                        ⚖ Compare
+
+                    </button>
+
+                    <button
+                        class="review-btn"
+                        onclick="showReviews('Water Pump')">
+
+                        ⭐ Reviews
+
+                    </button>
+
+                    <button
+                        class="details-btn"
+                        onclick="showDetails(
+                        'Water Pump',
+                        'Used to supply water from a source to agricultural fields.'
+                        )">
+
+                        ℹ Details
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- FERTILIZER SPREADER -->
+
+            <div class="tool-card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1492496913980-501348b61469?auto=format&fit=crop&w=800&q=80"
+                    class="tool-image"
+                    alt="Fertilizer Spreader">
+
+                <h2>
+                    🧪 Fertilizer Spreader
+                </h2>
+
+                <span class="tool-category">
+                    Fertilization
+                </span>
+
+                <p class="tool-use">
+                    Distributes fertilizer uniformly across
+                    agricultural fields.
+                </p>
+
+                <p class="tool-price">
+                    💰 Price: ₹15,000+
+                </p>
+
+                <p class="tool-rent">
+                    🚜 Rent: ₹300–₹700/day
+                </p>
+
+                <p class="tool-subsidy">
+                    🏛 Subsidy may be available
+                </p>
+
+
+                <div class="tool-buttons">
+
+                    <a
+                        href="https://www.indiamart.com/"
+                        target="_blank"
+                        class="buy-btn">
+
+                        🛒 Buy
+
+                    </a>
+
+                    <a
+                        href="https://www.indiamart.com/"
+                        target="_blank"
+                        class="rent-btn">
+
+                        🚜 Rent
+
+                    </a>
+
+                    <button
+                        class="emi-btn"
+                        onclick="calculateEMI('Fertilizer Spreader')">
+
+                        💳 EMI
+
+                    </button>
+
+                    <button
+                        class="compare-btn"
+                        onclick="compareTool('Fertilizer Spreader')">
+
+                        ⚖ Compare
+
+                    </button>
+
+                    <button
+                        class="review-btn"
+                        onclick="showReviews('Fertilizer Spreader')">
+
+                        ⭐ Reviews
+
+                    </button>
+
+                    <button
+                        class="details-btn"
+                        onclick="showDetails(
+                        'Fertilizer Spreader',
+                        'Used for uniform fertilizer application in fields.'
+                        )">
+
+                        ℹ Details
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- WEEDER -->
+
+            <div class="tool-card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=800&q=80"
+                    class="tool-image"
+                    alt="Weeder">
+
+                <h2>
+                    🌿 Weeder
+                </h2>
+
+                <span class="tool-category">
+                    Weed Management
+                </span>
+
+                <p class="tool-use">
+                    Removes unwanted weeds from crop fields
+                    and improves crop growth.
+                </p>
+
+                <p class="tool-price">
+                    💰 Price: ₹5,000+
+                </p>
+
+                <p class="tool-rent">
+                    🚜 Rent: ₹200–₹500/day
+                </p>
+
+                <p class="tool-subsidy">
+                    🏛 Subsidy may be available
+                </p>
+
+
+                <div class="tool-buttons">
+
+                    <a
+                        href="https://www.indiamart.com/"
+                        target="_blank"
+                        class="buy-btn">
+
+                        🛒 Buy
+
+                    </a>
+
+                    <a
+                        href="https://www.indiamart.com/"
+                        target="_blank"
+                        class="rent-btn">
+
+                        🚜 Rent
+
+                    </a>
+
+                    <button
+                        class="emi-btn"
+                        onclick="calculateEMI('Weeder')">
+
+                        💳 EMI
+
+                    </button>
+
+                    <button
+                        class="compare-btn"
+                        onclick="compareTool('Weeder')">
+
+                        ⚖ Compare
+
+                    </button>
+
+                    <button
+                        class="review-btn"
+                        onclick="showReviews('Weeder')">
+
+                        ⭐ Reviews
+
+                    </button>
+
+                    <button
+                        class="details-btn"
+                        onclick="showDetails(
+                        'Weeder',
+                        'Used for removing unwanted weeds from crop fields.'
+                        )">
+
+                        ℹ Details
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- THRESHER -->
+
+            <div class="tool-card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80"
+                    class="tool-image"
+                    alt="Thresher">
+
+                <h2>
+                    🌾 Thresher
+                </h2>
+
+                <span class="tool-category">
+                    Harvesting
+                </span>
+
+                <p class="tool-use">
+                    Separates grain from harvested crop material
+                    after harvesting.
+                </p>
+
+                <p class="tool-price">
+                    💰 Price: ₹80,000+
+                </p>
+
+                <p class="tool-rent">
+                    🚜 Rent: ₹1,000–₹2,000/day
+                </p>
+
+                <p class="tool-subsidy">
+                    🏛 Subsidy may be available
+                </p>
+
+
+                <div class="tool-buttons">
+
+                    <a
+                        href="https://www.indiamart.com/"
+                        target="_blank"
+                        class="buy-btn">
+
+                        🛒 Buy
+
+                    </a>
+
+                    <a
+                        href="https://www.indiamart.com/"
+                        target="_blank"
+                        class="rent-btn">
+
+                        🚜 Rent
+
+                    </a>
+
+                    <button
+                        class="emi-btn"
+                        onclick="calculateEMI('Thresher')">
+
+                        💳 EMI
+
+                    </button>
+
+                    <button
+                        class="compare-btn"
+                        onclick="compareTool('Thresher')">
+
+                        ⚖ Compare
+
+                    </button>
+
+                    <button
+                        class="review-btn"
+                        onclick="showReviews('Thresher')">
+
+                        ⭐ Reviews
+
+                    </button>
+
+                    <button
+                        class="details-btn"
+                        onclick="showDetails(
+                        'Thresher',
+                        'Separates grain from harvested crops.'
+                        )">
+
+                        ℹ Details
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SOIL MOISTURE METER -->
+
+            <div class="tool-card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=800&q=80"
+                    class="tool-image"
+                    alt="Soil Moisture Meter">
+
+                <h2>
+                    📡 Soil Moisture Meter
+                </h2>
+
+                <span class="tool-category">
+                    Smart Farming
+                </span>
+
+                <p class="tool-use">
+                    Measures soil moisture to help farmers
+                    decide when irrigation is required.
+                </p>
+
+                <p class="tool-price">
+                    💰 Price: ₹1,000+
+                </p>
+
+                <p class="tool-rent">
+                    🚜 Rent: ₹100–₹300/day
+                </p>
+
+                <p class="tool-subsidy">
+                    🏛 Check applicable schemes
+                </p>
+
+
+                <div class="tool-buttons">
+
+                    <a
+                        href="https://www.indiamart.com/"
+                        target="_blank"
+                        class="buy-btn">
+
+                        🛒 Buy
+
+                    </a>
+
+                    <a
+                        href="https://www.indiamart.com/"
+                        target="_blank"
+                        class="rent-btn">
+
+                        🚜 Rent
+
+                    </a>
+
+                    <button
+                        class="emi-btn"
+                        onclick="calculateEMI('Soil Moisture Meter')">
+
+                        💳 EMI
+
+                    </button>
+
+                    <button
+                        class="compare-btn"
+                        onclick="compareTool('Soil Moisture Meter')">
+
+                        ⚖ Compare
+
+                    </button>
+
+                    <button
+                        class="review-btn"
+                        onclick="showReviews('Soil Moisture Meter')">
+
+                        ⭐ Reviews
+
+                    </button>
+
+                    <button
+                        class="details-btn"
+                        onclick="showDetails(
+                        'Soil Moisture Meter',
+                        'Measures soil moisture for better irrigation decisions.'
+                        )">
+
+                        ℹ Details
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- FARM TRAILER -->
+
+            <div class="tool-card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=800&q=80"
+                    class="tool-image"
+                    alt="Farm Trailer">
+
+                <h2>
+                    🚚 Farm Trailer
+                </h2>
+
+                <span class="tool-category">
+                    Transportation
+                </span>
+
+                <p class="tool-use">
+                    Used for transporting crops, fertilizer,
+                    seeds and farm materials.
+                </p>
+
+                <p class="tool-price">
+                    💰 Price: ₹1,50,000+
+                </p>
+
+                <p class="tool-rent">
+                    🚜 Rent: ₹700–₹1,500/day
+                </p>
+
+                <p class="tool-subsidy">
+                    🏛 Subsidy may be available
+                </p>
+
+
+                <div class="tool-buttons">
+
+                    <a
+                        href="https://www.indiamart.com/"
+                        target="_blank"
+                        class="buy-btn">
+
+                        🛒 Buy
+
+                    </a>
+
+                    <a
+                        href="https://www.indiamart.com/"
+                        target="_blank"
+                        class="rent-btn">
+
+                        🚜 Rent
+
+                    </a>
+
+                    <button
+                        class="emi-btn"
+                        onclick="calculateEMI('Farm Trailer')">
+
+                        💳 EMI
+
+                    </button>
+
+                    <button
+                        class="compare-btn"
+                        onclick="compareTool('Farm Trailer')">
+
+                        ⚖ Compare
+
+                    </button>
+
+                    <button
+                        class="review-btn"
+                        onclick="showReviews('Farm Trailer')">
+
+                        ⭐ Reviews
+
+                    </button>
+
+                    <button
+                        class="details-btn"
+                        onclick="showDetails(
+                        'Farm Trailer',
+                        'Used for transporting agricultural products and farm materials.'
+                        )">
+
+                        ℹ Details
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- BACK -->
+
+        <a
+            href="{{ url_for('farmer') }}"
+            class="back-btn">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Dashboard
+
+        </a>
+
+
+    </div>
 
 </div>
 
@@ -152,20 +1201,163 @@ Category
 
 <script>
 
-function emi(){
 
-let amount=prompt(
-"Enter Machine Price"
-);
+/* ================= EMI ================= */
 
-let emi=amount/36;
+function calculateEMI(toolName) {
 
-alert(
-"Approx EMI for 36 months: ₹"+emi.toFixed(0)
-);
+    let amount = prompt(
+        "Enter " + toolName + " price (₹)"
+    );
+
+    if (
+        amount === null ||
+        amount.trim() === ""
+    ) {
+        return;
+    }
+
+    amount = parseFloat(amount);
+
+    if (
+        isNaN(amount) ||
+        amount <= 0
+    ) {
+
+        alert("Enter a valid price.");
+
+        return;
+    }
+
+
+    let rate = prompt(
+        "Annual interest rate (%)",
+        "8"
+    );
+
+    if (rate === null) {
+        return;
+    }
+
+    rate = parseFloat(rate);
+
+
+    let months = prompt(
+        "Loan period in months",
+        "36"
+    );
+
+    if (months === null) {
+        return;
+    }
+
+    months = parseInt(months);
+
+
+    let monthlyRate =
+        rate / 12 / 100;
+
+
+    let emi;
+
+
+    if (monthlyRate === 0) {
+
+        emi = amount / months;
+
+    } else {
+
+        emi =
+            amount *
+            monthlyRate *
+            Math.pow(
+                1 + monthlyRate,
+                months
+            ) /
+            (
+                Math.pow(
+                    1 + monthlyRate,
+                    months
+                ) - 1
+            );
+
+    }
+
+
+    alert(
+        "🚜 " + toolName +
+        "\n\nEstimated EMI: ₹" +
+        emi.toFixed(0) +
+        "/month"
+    );
 
 }
 
+
+
+/* ================= COMPARE ================= */
+
+function compareTool(toolName) {
+
+    let tools =
+        JSON.parse(
+            localStorage.getItem(
+                "kisanvision360_compare"
+            ) || "[]"
+        );
+
+
+    if (!tools.includes(toolName)) {
+
+        tools.push(toolName);
+
+    }
+
+
+    localStorage.setItem(
+        "kisanvision360_compare",
+        JSON.stringify(tools)
+    );
+
+
+    alert(
+        "⚖ " +
+        toolName +
+        " added to comparison.\n\n" +
+        "Selected: " +
+        tools.join(", ")
+    );
+
+}
+
+
+
+/* ================= REVIEWS ================= */
+
+function showReviews(toolName) {
+
+    alert(
+        "⭐ Reviews\n\n" +
+        toolName +
+        "\n\nReviews will be displayed here."
+    );
+
+}
+
+
+
+/* ================= DETAILS ================= */
+
+function showDetails(toolName, description) {
+
+    alert(
+        "🧰 " +
+        toolName +
+        "\n\n" +
+        description
+    );
+
+}
 
 </script>
 

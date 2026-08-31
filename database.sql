@@ -1,3 +1,4 @@
+PRAGMA foreign_keys = ON;
 
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -17,7 +18,7 @@ CREATE TABLE IF NOT EXISTS crops (
     crop_type TEXT,
     sowing_date TEXT,
     soil_type TEXT,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS weather (
@@ -29,7 +30,7 @@ CREATE TABLE IF NOT EXISTS weather (
     rainfall REAL,
     description TEXT,
     date TEXT,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS disease (
@@ -42,7 +43,7 @@ CREATE TABLE IF NOT EXISTS disease (
     treatment TEXT,
     prevention TEXT,
     date TEXT,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS irrigation (
@@ -52,32 +53,49 @@ CREATE TABLE IF NOT EXISTS irrigation (
     soil_moisture REAL,
     irrigation_required TEXT,
     date TEXT,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS marketplace (
+CREATE TABLE IF NOT EXISTS products (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER,
-    product_name TEXT,
+    product_name TEXT NOT NULL,
     category TEXT,
-    price REAL,
-    quantity REAL,
+    quantity REAL NOT NULL DEFAULT 0,
+    unit TEXT DEFAULT 'kg',
+    price REAL NOT NULL DEFAULT 0,
     description TEXT,
     image TEXT,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS consumer_requests (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    crop TEXT NOT NULL,
+    quantity REAL NOT NULL,
+    budget REAL NOT NULL,
+    location TEXT,
+    requirement TEXT,
+    status TEXT DEFAULT 'Open',
     date TEXT,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS orders (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER,
     product_id INTEGER,
-    quantity INTEGER,
-    total_price REAL,
-    status TEXT DEFAULT 'Pending',
+    product_name TEXT,
+    quantity REAL,
+    price REAL,
+    total REAL,
+    status TEXT DEFAULT 'Processing',
+    payment_status TEXT DEFAULT 'Pending',
     date TEXT,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (product_id) REFERENCES marketplace(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS reports (
@@ -86,17 +104,17 @@ CREATE TABLE IF NOT EXISTS reports (
     report_type TEXT,
     report_data TEXT,
     date TEXT,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS notification (
+CREATE TABLE IF NOT EXISTS notifications (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER,
     title TEXT,
     message TEXT,
     is_read INTEGER DEFAULT 0,
     date TEXT,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS finance (
@@ -106,7 +124,7 @@ CREATE TABLE IF NOT EXISTS finance (
     amount REAL,
     description TEXT,
     date TEXT,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS government (
@@ -124,5 +142,16 @@ CREATE TABLE IF NOT EXISTS chatbot (
     question TEXT,
     answer TEXT,
     date TEXT,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS chat_messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sender_id INTEGER,
+    receiver_id INTEGER,
+    message TEXT,
+    date TEXT,
+    is_read INTEGER DEFAULT 0,
+    FOREIGN KEY (sender_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (receiver_id) REFERENCES users(id) ON DELETE CASCADE
 );

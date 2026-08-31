@@ -1,72 +1,102 @@
-// =============================
-// Live Search
-// =============================
-
 const searchInput = document.getElementById("searchInput");
+const schemeContainer = document.getElementById("schemeContainer");
+const schemeCount = document.getElementById("schemeCount");
 
-if(searchInput){
+let selectedCategory = "all";
 
-searchInput.addEventListener("keyup",function(){
 
-let value=this.value.toLowerCase();
+function filterSchemes(category, button) {
 
-let cards=document.querySelectorAll(".scheme-card");
+    selectedCategory = category;
 
-cards.forEach(function(card){
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+        btn.classList.remove("active");
+    });
 
-let text=card.innerText.toLowerCase();
+    if (button) {
+        button.classList.add("active");
+    }
 
-if(text.includes(value))
-{
-card.style.display="block";
-}
-else
-{
-card.style.display="none";
-}
-
-});
-
-});
-
+    applyFilters();
 }
 
 
+function applyFilters() {
 
-// =============================
-// Category Filter
-// =============================
+    const searchText =
+        searchInput.value.toLowerCase().trim();
 
-function filterSchemes(category){
+    const cards =
+        document.querySelectorAll(".scheme-card");
 
-let cards=document.querySelectorAll(".scheme-card");
+    let visibleCount = 0;
 
-let buttons=document.querySelectorAll(".filter-btn");
+    cards.forEach(card => {
 
+        const category =
+            card.dataset.category;
 
-buttons.forEach(btn=>btn.classList.remove("active"));
+        const name =
+            card.dataset.name;
 
-event.target.classList.add("active");
+        const matchesCategory =
+            selectedCategory === "all" ||
+            category === selectedCategory;
 
+        const matchesSearch =
+            name.includes(searchText) ||
+            category.toLowerCase().includes(searchText);
 
-cards.forEach(card=>{
+        if (matchesCategory && matchesSearch) {
 
-if(category=="all")
-{
-card.style.display="block";
+            card.style.display = "";
+
+            visibleCount++;
+
+        } else {
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+    if (schemeCount) {
+
+        schemeCount.textContent =
+            visibleCount + (visibleCount === 1 ? " Scheme" : " Schemes");
+
+    }
 }
-else
-{
-if(card.dataset.category===category)
-{
-card.style.display="block";
-}
-else
-{
-card.style.display="none";
-}
+
+
+if (searchInput) {
+
+    searchInput.addEventListener(
+        "input",
+        applyFilters
+    );
+
 }
 
-});
+
+function showSchemeDetails(button) {
+
+    const card =
+        button.closest(".scheme-card");
+
+    const name =
+        card.querySelector("h2").textContent;
+
+    const category =
+        card.dataset.category;
+
+    alert(
+        "Scheme: " +
+        name +
+        "\nCategory: " +
+        category +
+        "\n\nFor complete eligibility and application information, visit the Official Portal."
+    );
 
 }

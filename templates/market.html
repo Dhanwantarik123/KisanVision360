@@ -1,149 +1,671 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="en">
 
 <head>
 
+<meta charset="UTF-8">
 
-<title>
-KisanVision360 | Market Prices
-</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
+<title>KisanVision360 | Market Prices</title>
 
 <link rel="stylesheet"
-href="{{url_for('static',
-filename='css/market.css')}}">
+      href="{{ url_for('static', filename='css/sidebar.css') }}">
 
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/market.css') }}">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
-
 
 
 <body>
 
 
-
-<div class="container">
-
-
-<h1>
-📈 Live Mandi Market Prices
-</h1>
+<div class="dashboard-container">
 
 
+    <!-- ================= SIDEBAR ================= -->
 
-<form method="POST">
-
-
-<input
-name="crop"
-placeholder="Enter crop name">
-
-<button>
-
-Search Price
-
-</button>
+    {% include "components/sidebar.html" %}
 
 
-</form>
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <div class="main-content">
 
 
+        <!-- ================= TOPBAR ================= -->
+
+        <header class="topbar">
+
+            <div class="page-title">
+
+                <div class="title-icon">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                </div>
+
+                <div>
+
+                    <h1>
+                        Live Mandi Market Prices
+                    </h1>
+
+                    <p>
+                        Check current agricultural crop prices
+                    </p>
+
+                </div>
+
+            </div>
 
 
-
-{% if prices %}
-
-
-<table>
+            <div class="top-right">
 
 
-<tr>
+                <a href="/notifications"
+                   class="notification">
 
-<th>
-Commodity
-</th>
+                    <i class="fa-solid fa-bell"></i>
 
-<th>
-Market
-</th>
+                    <span>
+                        {{ notifications_count|default(0) }}
+                    </span>
 
-<th>
-State
-</th>
-
-<th>
-Min Price
-</th>
-
-<th>
-Max Price
-</th>
-
-<th>
-Modal Price
-</th>
-
-</tr>
+                </a>
 
 
+                <div class="profile">
 
-{% for item in prices %}
+                    <img
+                        src="{{ url_for(
+                            'static',
+                            filename='images/farmer.jpg'
+                        ) }}">
 
+                    <div>
 
-<tr>
+                        <h4>
+                            {{ name|default('Farmer') }}
+                        </h4>
 
+                        <small>
+                            Farmer
+                        </small>
 
-<td>
-{{item.commodity}}
-</td>
+                    </div>
 
+                </div>
 
-<td>
-{{item.market}}
-</td>
+            </div>
 
-
-<td>
-{{item.state}}
-</td>
-
-
-<td>
-₹{{item.min_price}}
-</td>
-
-
-<td>
-₹{{item.max_price}}
-</td>
-
-
-<td>
-₹{{item.modal_price}}
-</td>
-
-
-</tr>
-
-
-{% endfor %}
+        </header>
 
 
 
-</table>
+        <!-- ================= WEATHER ================= -->
+
+        {% if weather %}
+
+        <div class="weather-banner">
 
 
-{% endif %}
+            <div>
+
+                <i class="fa-solid fa-location-dot"></i>
+
+                <strong>
+                    {{ weather.city }}
+                </strong>
+
+            </div>
 
 
+            <div>
+
+                🌡
+
+                {{ weather.temperature }}°C
+
+            </div>
+
+
+            <div>
+
+                ☁
+
+                {{ weather.condition }}
+
+            </div>
+
+
+            <div>
+
+                💧
+
+                {{ weather.humidity|default(0) }}%
+
+            </div>
+
+
+        </div>
+
+        {% endif %}
+
+
+
+        <!-- ================= HERO ================= -->
+
+        <section class="market-hero">
+
+
+            <div>
+
+                <div class="hero-icon">
+
+                    <i class="fa-solid fa-wheat-awn"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Today's Agriculture Market
+                    </h2>
+
+                    <p>
+                        Search crop prices from available mandi
+                        market data.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="hero-info">
+
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                <span>
+                    Live Price Information
+                </span>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= SEARCH ================= -->
+
+        <section class="search-card">
+
+
+            <div class="section-title">
+
+                <h2>
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    Search Crop Price
+
+                </h2>
+
+                <p>
+                    Enter a crop name to find available market prices.
+                </p>
+
+            </div>
+
+
+            <form method="POST"
+                  class="market-search">
+
+
+                <div class="search-input">
+
+                    <i class="fa-solid fa-seedling"></i>
+
+                    <input
+                        type="text"
+                        name="crop"
+                        value="{{ request.form.get('crop', '') }}"
+                        placeholder="Example: Soybean, Wheat, Cotton"
+                        autocomplete="off">
+
+                </div>
+
+
+                <button type="submit">
+
+                    <i class="fa-solid fa-search"></i>
+
+                    Search Price
+
+                </button>
+
+
+                <a href="/market"
+                   class="clear-btn">
+
+                    <i class="fa-solid fa-rotate-left"></i>
+
+                    Reset
+
+                </a>
+
+
+            </form>
+
+        </section>
+
+
+
+        <!-- ================= RESULT ================= -->
+
+        <section class="market-card">
+
+
+            <div class="section-header">
+
+
+                <div>
+
+                    <h2>
+
+                        <i class="fa-solid fa-table"></i>
+
+                        Market Price Results
+
+                    </h2>
+
+
+                    {% if prices %}
+
+                    <p>
+                        {{ prices|length }}
+                        market records found
+                    </p>
+
+                    {% else %}
+
+                    <p>
+                        Search for a crop to view prices.
+                    </p>
+
+                    {% endif %}
+
+                </div>
+
+
+                {% if prices %}
+
+                <div class="result-badge">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    Data Available
+
+                </div>
+
+                {% endif %}
+
+
+            </div>
+
+
+
+            {% if prices %}
+
+
+            <div class="table-wrapper">
+
+
+                <table>
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                #
+                            </th>
+
+                            <th>
+                                Commodity
+                            </th>
+
+                            <th>
+                                Market
+                            </th>
+
+                            <th>
+                                State
+                            </th>
+
+                            <th>
+                                Min Price
+                            </th>
+
+                            <th>
+                                Max Price
+                            </th>
+
+                            <th>
+                                Modal Price
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                    {% for item in prices %}
+
+
+                    <tr>
+
+
+                        <td>
+
+                            {{ loop.index }}
+
+                        </td>
+
+
+                        <td>
+
+                            <div class="commodity">
+
+                                <div class="commodity-icon">
+
+                                    <i class="fa-solid fa-wheat-awn"></i>
+
+                                </div>
+
+                                <strong>
+                                    {{ item.commodity }}
+                                </strong>
+
+                            </div>
+
+                        </td>
+
+
+                        <td>
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            {{ item.market }}
+
+                        </td>
+
+
+                        <td>
+
+                            {{ item.state }}
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="min-price">
+
+                                ₹{{ item.min_price }}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="max-price">
+
+                                ₹{{ item.max_price }}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <strong class="modal-price">
+
+                                ₹{{ item.modal_price }}
+
+                            </strong>
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                    </tbody>
+
+
+                </table>
+
+
+            </div>
+
+
+            {% else %}
+
+
+            <!-- ================= EMPTY ================= -->
+
+            <div class="no-data">
+
+
+                <div class="no-data-icon">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                </div>
+
+
+                <h2>
+                    No Market Data Available
+                </h2>
+
+
+                <p>
+                    Enter a crop name above and click
+                    <strong>Search Price</strong>.
+                </p>
+
+
+                <a href="/marketplace">
+
+                    <button>
+
+                        <i class="fa-solid fa-store"></i>
+
+                        Go to Marketplace
+
+                    </button>
+
+                </a>
+
+
+            </div>
+
+
+            {% endif %}
+
+
+        </section>
+
+
+
+        <!-- ================= PRICE INFORMATION ================= -->
+
+        <section class="info-grid">
+
+
+            <div class="info-card">
+
+                <div class="info-icon">
+
+                    <i class="fa-solid fa-arrow-down"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Min Price
+                    </h3>
+
+                    <p>
+                        Lowest reported market price.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <div class="info-icon">
+
+                    <i class="fa-solid fa-arrow-up"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Max Price
+                    </h3>
+
+                    <p>
+                        Highest reported market price.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <div class="info-icon">
+
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Modal Price
+                    </h3>
+
+                    <p>
+                        Commonly reported market price.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= ACTION BUTTONS ================= -->
+
+        <div class="action-buttons">
+
+
+            <a href="/marketplace"
+               class="green-btn">
+
+                <i class="fa-solid fa-store"></i>
+
+                Marketplace
+
+            </a>
+
+
+            <a href="/farmer"
+               class="gray-btn">
+
+                <i class="fa-solid fa-house"></i>
+
+                Dashboard
+
+            </a>
+
+
+            <a href="/orders"
+               class="blue-btn">
+
+                <i class="fa-solid fa-box-open"></i>
+
+                My Orders
+
+            </a>
+
+
+        </div>
+
+
+
+        <!-- ================= FOOTER ================= -->
+
+        <footer>
+
+            <i class="fa-solid fa-leaf"></i>
+
+            KisanVision360
+
+            <span>•</span>
+
+            Smart Farming Marketplace
+
+        </footer>
+
+
+    </div>
 
 </div>
 
 
 
-</body>
+<!-- ================= CHATBOT ================= -->
 
+{% include "components/chatbot.html" %}
+
+
+<script src="{{ url_for(
+    'static',
+    filename='js/chatbot.js'
+) }}"></script>
+
+
+</body>
 
 </html>

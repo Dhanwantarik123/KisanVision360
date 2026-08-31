@@ -1,406 +1,1169 @@
-/* ===============================
-   KisanVision360 AI Recommendation
-==================================*/
+/* =========================================================
+   KISANVISION360
+   AI CROP RECOMMENDATION CSS
+========================================================= */
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
+* {
+    box-sizing: border-box;
 }
 
-body{
-    background:#f4f8f4;
+
+body {
+    margin: 0;
+
+    font-family: Arial, sans-serif;
+
+    background: #f4f7f4;
+
+    color: #333;
 }
 
-/* ===============================
-   Main Content
-==================================*/
 
-.main-content{
+/* =========================================================
+   MAIN PAGE
+========================================================= */
 
-    margin-left:260px;
+.recommendation-page {
+    width: 100%;
 
-    width:calc(100% - 260px);
+    max-width: 1500px;
 
-    min-height:100vh;
+    margin: auto;
 
-    padding:30px;
+    padding: 25px;
+}
 
-    overflow-x:hidden;
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    margin-bottom: 25px;
+
+    flex-wrap: wrap;
+}
+
+
+.page-heading h1 {
+    margin: 0;
+
+    color: #1b5e20;
+
+    font-size: 30px;
+
+    font-weight: 700;
+}
+
+
+.page-heading h1 i {
+    margin-right: 8px;
+}
+
+
+.page-heading p {
+    margin: 8px 0 0;
+
+    color: #666;
+
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+.profile {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    background: #ffffff;
+
+    padding: 8px 15px;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+
+.profile img {
+    width: 45px;
+
+    height: 45px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+}
+
+
+.profile h4 {
+    margin: 0;
+
+    color: #333;
+
+    font-size: 15px;
+}
+
+
+.profile p {
+    margin: 4px 0 0;
+
+    color: #777;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   AI BANNER
+========================================================= */
+
+.ai-banner {
+    background:
+        linear-gradient(
+            135deg,
+            #1b5e20,
+            #43a047
+        );
+
+    color: white;
+
+    padding: 28px;
+
+    border-radius: 18px;
+
+    margin-bottom: 25px;
+
+    box-shadow:
+        0 7px 22px rgba(27, 94, 32, 0.18);
+}
+
+
+.banner-content {
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+}
+
+
+.banner-icon {
+    width: 58px;
+
+    height: 58px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 15px;
+
+    background:
+        rgba(255, 255, 255, 0.16);
+
+    font-size: 25px;
+}
+
+
+.ai-banner h2 {
+    margin: 0 0 8px;
+
+    font-size: 23px;
+}
+
+
+.ai-banner p {
+    margin: 0;
+
+    line-height: 1.6;
+
+    opacity: 0.95;
+}
+
+
+/* =========================================================
+   INPUT CARD
+========================================================= */
+
+.input-card {
+    width: 100%;
+
+    background: #ffffff;
+
+    padding: 25px;
+
+    border-radius: 18px;
+
+    margin-bottom: 30px;
+
+    box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.08);
+}
+
+
+.card-heading {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    margin-bottom: 23px;
+}
+
+
+.heading-icon {
+    width: 45px;
+
+    height: 45px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #e8f5e9;
+
+    color: #2e7d32;
+
+    font-size: 19px;
+}
+
+
+.card-heading h2 {
+    margin: 0;
+
+    color: #1b5e20;
+
+    font-size: 21px;
+}
+
+
+.card-heading p {
+    margin: 5px 0 0;
+
+    color: #777;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.input-card form {
+    width: 100%;
+}
+
+
+/* =========================================================
+   INPUT GRID
+========================================================= */
+
+.input-grid {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 20px;
+
+    align-items: end;
+}
+
+
+/* =========================================================
+   FORM GROUP
+========================================================= */
+
+.form-group {
+    width: 100%;
+
+    min-width: 0;
+}
+
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #444;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+
+.form-group label i {
+    color: #2e7d32;
+
+    margin-right: 6px;
+}
+
+
+/* =========================================================
+   INPUT AND SELECT
+========================================================= */
+
+.form-group input,
+.form-group select {
+    display: block;
+
+    width: 100%;
+
+    height: 46px;
+
+    padding: 0 13px;
+
+    border: 1px solid #d7d7d7;
+
+    border-radius: 9px;
+
+    background: #ffffff;
+
+    color: #333;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: 0.2s;
+}
+
+
+.form-group input:hover,
+.form-group select:hover {
+    border-color: #81a982;
+}
+
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #2e7d32;
+
+    box-shadow:
+        0 0 0 3px rgba(46, 125, 50, 0.10);
+}
+
+
+.form-group select {
+    cursor: pointer;
+
+    appearance: auto;
+}
+
+
+/* =========================================================
+   RECOMMEND BUTTON
+========================================================= */
+
+.recommend-btn {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    margin-top: 22px;
+
+    padding: 13px 23px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2e7d32,
+            #43a047
+        );
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.25s;
+
+    box-shadow:
+        0 5px 12px rgba(46, 125, 50, 0.20);
+}
+
+
+.recommend-btn:hover {
+    background: #1b5e20;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 17px rgba(27, 94, 32, 0.25);
+}
+
+
+/* =========================================================
+   SUCCESS MESSAGE
+========================================================= */
+
+.success-message {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    width: 100%;
+
+    background: #e8f5e9;
+
+    border: 1px solid #a5d6a7;
+
+    border-left: 5px solid #2e7d32;
+
+    padding: 18px 20px;
+
+    border-radius: 14px;
+
+    margin-bottom: 25px;
+
+    box-shadow:
+        0 4px 12px rgba(46, 125, 50, 0.08);
+
+    animation:
+        messageSlide 0.4s ease;
+}
+
+
+.success-icon {
+    width: 46px;
+
+    height: 46px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #2e7d32;
+
+    color: white;
+
+    font-size: 21px;
+}
+
+
+.success-content h3 {
+    margin: 0 0 5px;
+
+    color: #1b5e20;
+
+    font-size: 17px;
+}
+
+
+.success-content p {
+    margin: 0;
+
+    color: #4e6b50;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+@keyframes messageSlide {
+
+    from {
+        opacity: 0;
+
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform: translateY(0);
+    }
 
 }
 
-/* ===============================
-   Top Bar
-==================================*/
 
-.topbar{
+/* =========================================================
+   RESULTS HEADING
+========================================================= */
 
-    display:flex;
+.results-heading {
+    margin-bottom: 18px;
+}
 
-    justify-content:space-between;
 
-    align-items:center;
+.results-heading h2 {
+    margin: 0;
 
-    margin-bottom:30px;
+    color: #333;
+
+    font-size: 22px;
+}
+
+
+.results-heading h2 i {
+    color: #2e7d32;
+
+    margin-right: 7px;
+}
+
+
+.results-heading p {
+    margin: 5px 0 0;
+
+    color: #777;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   RECOMMENDATION GRID
+========================================================= */
+
+.recommendation-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 20px;
+
+    margin-bottom: 30px;
+}
+
+
+/* =========================================================
+   RECOMMENDATION CARD
+========================================================= */
+
+.recommendation-card {
+    background: #ffffff;
+
+    min-height: 220px;
+
+    padding: 23px;
+
+    border-radius: 17px;
+
+    border-top: 5px solid #2e7d32;
+
+    box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.08);
+
+    transition: 0.3s;
+}
+
+
+.recommendation-card:hover {
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+
+/* =========================================================
+   CARD ICON
+========================================================= */
+
+.card-icon {
+    width: 52px;
+
+    height: 52px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 15px;
+
+    border-radius: 13px;
+
+    background: #e8f5e9;
+
+    color: #2e7d32;
+
+    font-size: 23px;
+}
+
+
+.blue-icon {
+    background: #e3f2fd;
+
+    color: #1565c0;
+}
+
+
+.orange-icon {
+    background: #fff3e0;
+
+    color: #ef6c00;
+}
+
+
+.red-icon {
+    background: #ffebee;
+
+    color: #c62828;
+}
+
+
+.yellow-icon {
+    background: #fff8e1;
+
+    color: #f9a825;
+}
+
+
+.sky-icon {
+    background: #e1f5fe;
+
+    color: #0288d1;
+}
+
+
+/* =========================================================
+   CARD CONTENT
+========================================================= */
+
+.recommendation-card h3 {
+    margin: 0 0 8px;
+
+    color: #555;
+
+    font-size: 15px;
+}
+
+
+.recommendation-card h2 {
+    margin: 0 0 10px;
+
+    color: #1b5e20;
+
+    font-size: 21px;
+}
+
+
+.recommendation-card p {
+    margin: 0;
+
+    color: #666;
+
+    line-height: 1.5;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   CONFIDENCE
+========================================================= */
+
+.confidence {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    margin-top: 12px;
+
+    padding: 6px 11px;
+
+    border-radius: 20px;
+
+    background: #e8f5e9;
+
+    color: #1b5e20;
+
+    font-size: 13px;
+
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   ADVICE CARD
+========================================================= */
+
+.advice-card {
+    background: #ffffff;
+
+    padding: 25px;
+
+    border-radius: 18px;
+
+    margin-bottom: 30px;
+
+    box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.08);
+}
+
+
+.advice-heading {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    margin-bottom: 20px;
+}
+
+
+.advice-heading-icon {
+    width: 45px;
+
+    height: 45px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #fff8e1;
+
+    color: #f57f17;
+
+    font-size: 19px;
+}
+
+
+.advice-heading h2 {
+    margin: 0;
+
+    color: #1b5e20;
+
+    font-size: 21px;
+}
+
+
+.advice-heading p {
+    margin: 5px 0 0;
+
+    color: #777;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   ADVICE GRID
+========================================================= */
+
+.advice-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 15px;
+}
+
+
+/* =========================================================
+   ADVICE ITEM
+========================================================= */
+
+.advice-item {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 12px;
+
+    background: #f8faf8;
+
+    padding: 17px;
+
+    border-radius: 12px;
+
+    border-left: 4px solid #43a047;
+
+    transition: 0.25s;
+}
+
+
+.advice-item:hover {
+    background: #eef7ef;
+
+    transform: translateY(-2px);
+}
+
+
+.advice-icon {
+    width: 38px;
+
+    height: 38px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #e8f5e9;
+
+    color: #2e7d32;
+}
+
+
+.advice-item strong {
+    color: #333;
+
+    font-size: 15px;
+}
+
+
+.advice-item p {
+    margin: 8px 0 0;
+
+    color: #666;
+
+    line-height: 1.5;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.action-buttons {
+    display: flex;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
+
+    margin-bottom: 25px;
+}
+
+
+.btn {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 12px 18px;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    color: white;
+
+    background: #2e7d32;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    transition: 0.25s;
+}
+
+
+.btn:hover {
+    color: white;
+
+    transform: translateY(-2px);
+}
+
+
+.btn.green {
+    background: #2e7d32;
+}
+
+
+.btn.green:hover {
+    background: #1b5e20;
+}
+
+
+.btn.blue {
+    background: #1565c0;
+}
+
+
+.btn.blue:hover {
+    background: #0d47a1;
+}
+
+
+.btn.orange {
+    background: #ef6c00;
+}
+
+
+.btn.orange:hover {
+    background: #e65100;
+}
+
+
+.btn.gray {
+    background: #455a64;
+}
+
+
+.btn.gray:hover {
+    background: #263238;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+    text-align: center;
+
+    color: #777;
+
+    padding: 25px 10px 10px;
+
+    font-size: 14px;
+}
+
+
+.footer i {
+    color: #2e7d32;
+
+    margin-right: 5px;
+}
+
+
+.footer span {
+    margin: 0 5px;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .input-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .recommendation-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .advice-list {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
 
 }
 
-.topbar h2{
 
-    color:#138a4b;
+/* =========================================================
+   MOBILE
+========================================================= */
 
-    font-size:30px;
+@media (max-width: 700px) {
 
-}
+    .recommendation-page {
+        padding: 15px;
+    }
 
-.topbar p{
 
-    color:#777;
+    .topbar {
+        align-items: flex-start;
+    }
 
-    margin-top:5px;
 
-}
+    .page-heading h1 {
+        font-size: 24px;
+    }
 
-/* ===============================
-   Profile
-==================================*/
 
-.profile{
+    .page-heading p {
+        font-size: 14px;
+    }
 
-    display:flex;
 
-    align-items:center;
+    .profile {
+        width: 100%;
+    }
 
-    gap:15px;
 
-    background:#fff;
+    .ai-banner {
+        padding: 21px;
+    }
 
-    padding:10px 18px;
 
-    border-radius:15px;
+    .banner-content {
+        align-items: flex-start;
+    }
 
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
 
-}
+    .banner-icon {
+        width: 45px;
 
-.profile img{
+        height: 45px;
 
-    width:55px;
+        font-size: 19px;
+    }
 
-    height:55px;
 
-    border-radius:50%;
+    .ai-banner h2 {
+        font-size: 19px;
+    }
 
-    object-fit:cover;
 
-}
+    .ai-banner p {
+        font-size: 13px;
+    }
 
-.profile h4{
 
-    color:#138a4b;
+    .input-card,
+    .advice-card {
+        padding: 20px;
+    }
 
-}
 
-.profile p{
+    .input-grid {
+        grid-template-columns: 1fr;
+    }
 
-    color:#777;
 
-    font-size:14px;
+    .recommendation-grid {
+        grid-template-columns: 1fr;
+    }
 
-}
 
-/* ===============================
-   Recommendation Grid
-==================================*/
+    .advice-list {
+        grid-template-columns: 1fr;
+    }
 
-.recommendation-grid{
 
-    display:grid;
+    .recommend-btn {
+        width: 100%;
+    }
 
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 
-    gap:25px;
+    .success-message {
+        align-items: flex-start;
 
-}
+        padding: 16px;
+    }
 
-/* ===============================
-   Cards
-==================================*/
 
-.card{
+    .success-content h3 {
+        font-size: 15px;
+    }
 
-    background:#fff;
 
-    border-radius:20px;
+    .success-content p {
+        font-size: 13px;
+    }
 
-    padding:30px;
 
-    text-align:center;
+    .action-buttons {
+        flex-direction: column;
+    }
 
-    box-shadow:0 8px 20px rgba(0,0,0,.08);
 
-    transition:.3s;
-
-}
-
-.card:hover{
-
-    transform:translateY(-8px);
-
-    box-shadow:0 15px 35px rgba(0,0,0,.15);
-
-}
-
-.card i{
-
-    font-size:45px;
-
-    color:#138a4b;
-
-    margin-bottom:18px;
-
-}
-
-.card h3{
-
-    color:#666;
-
-    margin-bottom:12px;
-
-    font-size:18px;
+    .btn {
+        width: 100%;
+    }
 
 }
 
-.card h2{
 
-    color:#138a4b;
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
 
-    font-size:28px;
+@media (max-width: 400px) {
 
-    margin-bottom:12px;
+    .recommendation-page {
+        padding: 10px;
+    }
 
-}
 
-.card p{
+    .page-heading h1 {
+        font-size: 21px;
+    }
 
-    color:#777;
 
-    line-height:1.6;
+    .input-card,
+    .advice-card,
+    .recommendation-card {
+        border-radius: 14px;
+    }
 
-    font-size:15px;
 
-}
-
-/* ===============================
-   Buttons
-==================================*/
-
-.action-buttons{
-
-    margin-top:35px;
-
-}
-
-.btn{
-
-    display:inline-block;
-
-    padding:14px 28px;
-
-    margin-right:15px;
-
-    background:#138a4b;
-
-    color:#fff;
-
-    text-decoration:none;
-
-    border-radius:12px;
-
-    font-weight:600;
-
-    transition:.3s;
-
-}
-
-.btn:hover{
-
-    background:#0e6d3d;
-
-    transform:translateY(-3px);
-
-}
-
-/* ===============================
-   Table
-==================================*/
-
-table{
-
-    width:100%;
-
-    border-collapse:collapse;
-
-    background:#fff;
-
-    border-radius:15px;
-
-    overflow:hidden;
-
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
-
-}
-
-table th{
-
-    background:#138a4b;
-
-    color:#fff;
-
-    padding:15px;
-
-}
-
-table td{
-
-    padding:15px;
-
-    border-bottom:1px solid #eee;
-
-}
-
-table tr:hover{
-
-    background:#f8fff8;
-
-}
-
-/* ===============================
-   Recommendation Banner
-==================================*/
-
-.banner{
-
-    width:100%;
-
-    background:linear-gradient(135deg,#24b65e,#138a4b);
-
-    color:white;
-
-    padding:35px;
-
-    border-radius:25px;
-
-    margin-bottom:30px;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-}
-
-.banner h1{
-
-    font-size:34px;
-
-}
-
-.banner p{
-
-    margin-top:10px;
-
-    opacity:.9;
-
-}
-
-/* ===============================
-   Statistics Cards
-==================================*/
-
-.stats{
-
-    display:grid;
-
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-
-    gap:20px;
-
-    margin-top:30px;
-
-}
-
-.stat-card{
-
-    background:white;
-
-    padding:20px;
-
-    border-radius:18px;
-
-    text-align:center;
-
-    box-shadow:0 5px 15px rgba(0,0,0,.08);
-
-}
-
-.stat-card h2{
-
-    color:#138a4b;
-
-    margin-top:10px;
-
-}
-
-.stat-card p{
-
-    color:#666;
-
-}
-
-/* ===============================
-   Responsive
-==================================*/
-
-@media(max-width:991px){
-
-.main-content{
-
-    margin-left:0;
-
-    width:100%;
-
-    padding:20px;
-
-}
-
-.topbar{
-
-    flex-direction:column;
-
-    gap:20px;
-
-    align-items:flex-start;
-
-}
-
-.profile{
-
-    width:100%;
-
-}
-
-.banner{
-
-    flex-direction:column;
-
-    text-align:center;
-
-    gap:20px;
-
-}
+    .footer {
+        font-size: 12px;
+    }
 
 }

@@ -1,212 +1,1125 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>KisanVision360 | Settings</title>
+    <meta charset="UTF-8">
 
-<link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/settings.css') }}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Settings | KisanVision360</title>
+
+
+    <!-- Sidebar CSS -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/sidebar.css') }}">
+
+
+    <!-- Settings CSS -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/settings.css') }}">
+
+
+    <!-- Font Awesome -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+    <!-- Google Translate -->
+
+    <style>
+
+        #google_translate_element {
+            display: none;
+        }
+
+        .goog-te-banner-frame.skiptranslate {
+            display: none !important;
+        }
+
+        body {
+            top: 0 !important;
+        }
+
+        .goog-logo-link {
+            display: none !important;
+        }
+
+        .goog-te-gadget {
+            font-size: 0 !important;
+        }
+
+    </style>
 
 </head>
 
+
 <body>
+
 
 <div class="dashboard-container">
 
-{% include 'components/sidebar.html' %}
 
-<div class="main-content">
+    <!-- SIDEBAR -->
 
-<header class="topbar">
+    {% include "components/sidebar.html" %}
 
-<div>
-<h1><i class="fa-solid fa-gear"></i> Settings</h1>
-<p>Manage your KisanVision360 account</p>
+
+    <!-- MAIN CONTENT -->
+
+    <div class="main-content">
+
+
+        <!-- TOP BAR -->
+
+        <div class="topbar">
+
+            <div>
+
+                <h1>
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    Settings
+
+                </h1>
+
+                <p>
+                    Manage your KisanVision360 account
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- SETTINGS CONTAINER -->
+
+        <div class="settings-container">
+
+
+            <!-- PROFILE CARD -->
+
+            <div class="settings-card profile-card">
+
+
+                <div class="card-header">
+
+                    <div class="header-icon">
+
+                        <i class="fa-solid fa-user"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Profile Information
+                        </h2>
+
+                        <p>
+                            Your KisanVision360 account information
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-section">
+
+
+                    <!-- PROFILE IMAGE -->
+
+                    <div class="profile-image-container">
+
+                        <img
+                            src="{{ url_for('static',
+                            filename='images/farmer.jpg') }}"
+                            alt="Farmer Profile"
+                            class="profile-image">
+
+                    </div>
+
+
+                    <!-- PROFILE DETAILS -->
+
+                    <div class="profile-details">
+
+
+                        <div class="detail-row">
+
+                            <span>
+                                <i class="fa-solid fa-user"></i>
+                                Name
+                            </span>
+
+                            <strong>
+                                {{ session.get('name', 'Farmer') }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="detail-row">
+
+                            <span>
+                                <i class="fa-solid fa-phone"></i>
+                                Mobile
+                            </span>
+
+                            <strong>
+                                {{ user.mobile if user else 'Not Available' }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="detail-row">
+
+                            <span>
+                                <i class="fa-solid fa-envelope"></i>
+                                Email
+                            </span>
+
+                            <strong>
+                                {{ user.email if user else 'Not Available' }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="detail-row">
+
+                            <span>
+                                <i class="fa-solid fa-user-tag"></i>
+                                Role
+                            </span>
+
+                            <strong>
+                                {{ session.get('role', 'Farmer') }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="detail-row">
+
+                            <span>
+                                <i class="fa-solid fa-location-dot"></i>
+                                Location
+                            </span>
+
+                            <strong>
+                                {{ user.location if user and user.location else 'Nagpur' }}
+                            </strong>
+
+                        </div>
+
+
+                        <a
+                            href="{{ url_for('profile') }}"
+                            class="primary-btn">
+
+                            <i class="fa-solid fa-pen"></i>
+
+                            Edit Profile
+
+                        </a>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- LANGUAGE CARD -->
+
+            <div class="settings-card">
+
+
+                <div class="card-header">
+
+                    <div class="header-icon">
+
+                        <i class="fa-solid fa-language"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Language
+                        </h2>
+
+                        <p>
+                            Select your preferred language
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="language-section">
+
+
+                    <select
+                        id="languageSelect"
+                        class="language-select">
+
+
+                        <option value="en">
+                            English
+                        </option>
+
+
+                        <option value="hi">
+                            हिन्दी
+                        </option>
+
+
+                        <option value="mr">
+                            मराठी
+                        </option>
+
+
+                        <option value="kn">
+                            ಕನ್ನಡ
+                        </option>
+
+
+                        <option value="te">
+                            తెలుగు
+                        </option>
+
+
+                        <option value="ta">
+                            தமிழ்
+                        </option>
+
+
+                        <option value="ml">
+                            മലയാളം
+                        </option>
+
+
+                        <option value="gu">
+                            ગુજરાતી
+                        </option>
+
+
+                        <option value="pa">
+                            ਪੰਜਾਬੀ
+                        </option>
+
+
+                        <option value="bn">
+                            বাংলা
+                        </option>
+
+
+                    </select>
+
+
+                    <button
+                        type="button"
+                        onclick="saveLanguage()"
+                        class="primary-btn">
+
+
+                        <i class="fa-solid fa-floppy-disk"></i>
+
+                        Save Language
+
+
+                    </button>
+
+
+                    <div
+                        id="languageMessage"
+                        class="language-message">
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- NOTIFICATIONS -->
+
+            <div class="settings-card">
+
+
+                <div class="card-header">
+
+
+                    <div class="header-icon">
+
+                        <i class="fa-solid fa-bell"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Notifications
+                        </h2>
+
+                        <p>
+                            Weather and farming alerts
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="notification-list">
+
+
+                    <div class="notification-item">
+
+                        <div>
+
+                            <strong>
+                                🌦 Weather Alerts
+                            </strong>
+
+                            <p>
+                                Receive weather and rain alerts
+                            </p>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="weatherNotification"
+                                checked
+                                onchange="saveNotificationSettings()">
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+
+                    <div class="notification-item">
+
+                        <div>
+
+                            <strong>
+                                🌱 Farming Alerts
+                            </strong>
+
+                            <p>
+                                Receive crop and farming recommendations
+                            </p>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="farmingNotification"
+                                checked
+                                onchange="saveNotificationSettings()">
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+
+                    <div class="notification-item">
+
+                        <div>
+
+                            <strong>
+                                🩺 Disease Alerts
+                            </strong>
+
+                            <p>
+                                Receive crop disease information
+                            </p>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="diseaseNotification"
+                                checked
+                                onchange="saveNotificationSettings()">
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+
+                    <div class="notification-item">
+
+                        <div>
+
+                            <strong>
+                                🛒 Order Notifications
+                            </strong>
+
+                            <p>
+                                Receive marketplace order updates
+                            </p>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="orderNotification"
+                                checked
+                                onchange="saveNotificationSettings()">
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- WEATHER -->
+
+            <div class="settings-card">
+
+
+                <div class="card-header">
+
+
+                    <div class="header-icon">
+
+                        <i class="fa-solid fa-cloud-sun"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Current Weather
+                        </h2>
+
+                        <p>
+                            Current weather for your location
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="weather-grid">
+
+
+                    <div class="weather-item">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        <span>
+                            Location
+                        </span>
+
+                        <strong>
+                            {{ weather.location if weather else 'Nagpur' }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="weather-item">
+
+                        <i class="fa-solid fa-temperature-half"></i>
+
+                        <span>
+                            Temperature
+                        </span>
+
+                        <strong>
+                            {{ weather.temperature if weather else '25.01' }} °C
+                        </strong>
+
+                    </div>
+
+
+                    <div class="weather-item">
+
+                        <i class="fa-solid fa-cloud"></i>
+
+                        <span>
+                            Condition
+                        </span>
+
+                        <strong>
+                            {{ weather.condition if weather else 'Clouds' }}
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SECURITY -->
+
+            <div class="settings-card">
+
+
+                <div class="card-header">
+
+
+                    <div class="header-icon">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Security
+                        </h2>
+
+                        <p>
+                            Manage password and account security
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <a
+                    href="{{ url_for('change_password') }}"
+                    class="settings-action">
+
+
+                    <div>
+
+                        <i class="fa-solid fa-key"></i>
+
+                        <span>
+                            Change Password
+                        </span>
+
+                    </div>
+
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+
+                </a>
+
+            </div>
+
+
+
+            <!-- HELP -->
+
+            <div class="settings-card">
+
+
+                <div class="card-header">
+
+
+                    <div class="header-icon">
+
+                        <i class="fa-solid fa-circle-question"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Help & Support
+                        </h2>
+
+                        <p>
+                            Farmer assistance and support
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <a
+                    href="{{ url_for('help') }}"
+                    class="settings-action">
+
+
+                    <div>
+
+                        <i class="fa-solid fa-headset"></i>
+
+                        <span>
+                            Open Help
+                        </span>
+
+                    </div>
+
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+
+                </a>
+
+            </div>
+
+
+
+            <!-- LOGOUT -->
+
+            <div class="settings-card logout-card">
+
+
+                <div class="card-header">
+
+
+                    <div class="header-icon logout-icon">
+
+                        <i class="fa-solid fa-right-from-bracket"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Logout
+                        </h2>
+
+                        <p>
+                            Sign out safely from KisanVision360
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <a
+                    href="{{ url_for('logout') }}"
+                    class="logout-btn">
+
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    Logout
+
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- FOOTER -->
+
+        <footer>
+
+            <i class="fa-solid fa-leaf"></i>
+
+            KisanVision360
+
+            <span>•</span>
+
+            Smart Farming Platform
+
+        </footer>
+
+
+    </div>
+
 </div>
 
-<div class="top-right">
 
-<div class="search-box">
-<i class="fa fa-search"></i>
-<input type="text" placeholder="Search Settings">
-</div>
 
-<div class="notification">
-<i class="fa fa-bell"></i>
-<span>2</span>
-</div>
+<!-- GOOGLE TRANSLATE -->
 
-<div class="profile">
-<img src="{{ url_for('static', filename='images/farmer.jpg') }}">
-<div>
-<h4>{{name}}</h4>
-<small>Farmer</small>
-</div>
-</div>
+<div id="google_translate_element"></div>
 
-</div>
-</header>
 
+<script>
 
-{% if weather %}
-<div class="weather-banner">
-<i class="fa-solid fa-location-dot"></i>
-{{weather.city}} | 🌡 {{weather.temperature}}°C | ☁ {{weather.condition}}
-</div>
-{% endif %}
 
+/* =====================================================
+   LANGUAGE
+===================================================== */
 
-<div class="settings-grid">
+function loadSavedLanguage() {
 
-<div class="setting-card">
-<i class="fa-solid fa-user"></i>
-<h2>Profile Information</h2>
+    const savedLanguage =
+        localStorage.getItem(
+            "kisanvision360_language"
+        );
 
-<p><b>Name :</b> {{name}}</p>
 
-<p><b>Mobile :</b>
-{% if mobile %}
-{{mobile}}
-{% else %}
-Not Added
-{% endif %}
-</p>
+    const select =
+        document.getElementById(
+            "languageSelect"
+        );
 
-<p><b>Email :</b> {{email}}</p>
-<p><b>Role :</b> {{role}}</p>
 
-<a href="/profile">
-<button>Edit Profile</button>
-</a>
+    if (savedLanguage && select) {
 
-</div>
+        select.value = savedLanguage;
 
+    }
 
-<div class="setting-card">
+}
 
-<i class="fa-solid fa-language"></i>
 
-<h2>Language</h2>
+function saveLanguage() {
 
-<p>Select your preferred language</p>
+    const select =
+        document.getElementById(
+            "languageSelect"
+        );
 
-<form action="/set-language" method="POST">
 
-<select name="language">
+    const language =
+        select.value;
 
-<option value="English">English</option>
-<option value="Hindi">हिन्दी</option>
-<option value="Marathi">मराठी</option>
-<option value="Gujarati">ગુજરાતી</option>
 
-</select>
+    localStorage.setItem(
+        "kisanvision360_language",
+        language
+    );
 
-<br><br>
 
-<button type="submit">
-Save Language
-</button>
+    const message =
+        document.getElementById(
+            "languageMessage"
+        );
 
-</form>
 
-</div>
+    message.innerHTML =
+        "✓ Language saved successfully";
 
 
-<div class="setting-card">
+    message.style.display =
+        "block";
 
-<i class="fa-solid fa-bell"></i>
 
-<h2>Notifications</h2>
+    /*
+     * Apply Google Translate
+     */
 
-<p>Weather and farming alerts</p>
+    if (language === "en") {
 
-<label class="switch">
-<input type="checkbox" checked>
-<span class="slider round"></span>
-</label>
+        location.reload();
 
-</div>
+        return;
 
+    }
 
-<div class="setting-card">
 
-<i class="fa-solid fa-cloud-sun"></i>
+    applyGoogleLanguage(language);
 
-<h2>Current Weather</h2>
 
-{% if weather %}
+    /*
+     * Reload after translation
+     */
 
-<p><b>Location :</b> {{weather.city}}</p>
-<p><b>Temperature :</b> {{weather.temperature}} °C</p>
-<p><b>Condition :</b> {{weather.condition}}</p>
+    setTimeout(function () {
 
-{% else %}
+        location.reload();
 
-<p>Weather data not available</p>
+    }, 1000);
 
-{% endif %}
+}
 
-</div>
 
+/* =====================================================
+   GOOGLE TRANSLATE
+===================================================== */
 
-<div class="setting-card">
+function googleTranslateElementInit() {
 
-<i class="fa-solid fa-lock"></i>
+    new google.translate.TranslateElement({
 
-<h2>Security</h2>
+        pageLanguage: "en",
 
-<p>Manage password and account security</p>
+        includedLanguages:
+        "en,hi,mr,kn,te,ta,ml,gu,pa,bn",
 
-<a href="/change-password">
-<button>Change Password</button>
-</a>
+        autoDisplay: false
 
-</div>
+    }, "google_translate_element");
 
+}
 
-<div class="setting-card">
 
-<i class="fa-solid fa-headset"></i>
+function applyGoogleLanguage(language) {
 
-<h2>Help &amp; Support</h2>
+    let attempts = 0;
 
-<p>Farmer assistance and support</p>
 
-<a href="/help">
-<button>Open Help</button>
-</a>
+    const timer =
+        setInterval(function () {
 
-</div>
 
+            const select =
+                document.querySelector(
+                    ".goog-te-combo"
+                );
 
-<div class="setting-card logout">
 
-<i class="fa-solid fa-right-from-bracket"></i>
+            attempts++;
 
-<h2>Logout</h2>
 
-<p>Sign out safely from KisanVision360</p>
+            if (select) {
 
-<a href="/logout">
-<button>Logout</button>
-</a>
+                select.value =
+                    language;
 
-</div>
 
+                select.dispatchEvent(
+                    new Event("change")
+                );
 
-</div>
 
-</div>
+                clearInterval(timer);
 
-</div>
+            }
 
 
-{% include 'components/chatbot.html' %}
+            if (attempts >= 20) {
 
-<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+                clearInterval(timer);
+
+            }
+
+
+        }, 500);
+
+}
+
+
+/* =====================================================
+   NOTIFICATIONS
+===================================================== */
+
+function saveNotificationSettings() {
+
+    localStorage.setItem(
+
+        "weatherNotification",
+
+        document.getElementById(
+            "weatherNotification"
+        ).checked
+
+    );
+
+
+    localStorage.setItem(
+
+        "farmingNotification",
+
+        document.getElementById(
+            "farmingNotification"
+        ).checked
+
+    );
+
+
+    localStorage.setItem(
+
+        "diseaseNotification",
+
+        document.getElementById(
+            "diseaseNotification"
+        ).checked
+
+    );
+
+
+    localStorage.setItem(
+
+        "orderNotification",
+
+        document.getElementById(
+            "orderNotification"
+        ).checked
+
+    );
+
+}
+
+
+function loadNotificationSettings() {
+
+
+    const weather =
+        localStorage.getItem(
+            "weatherNotification"
+        );
+
+
+    const farming =
+        localStorage.getItem(
+            "farmingNotification"
+        );
+
+
+    const disease =
+        localStorage.getItem(
+            "diseaseNotification"
+        );
+
+
+    const order =
+        localStorage.getItem(
+            "orderNotification"
+        );
+
+
+    if (weather !== null) {
+
+        document.getElementById(
+            "weatherNotification"
+        ).checked =
+            weather === "true";
+
+    }
+
+
+    if (farming !== null) {
+
+        document.getElementById(
+            "farmingNotification"
+        ).checked =
+            farming === "true";
+
+    }
+
+
+    if (disease !== null) {
+
+        document.getElementById(
+            "diseaseNotification"
+        ).checked =
+            disease === "true";
+
+    }
+
+
+    if (order !== null) {
+
+        document.getElementById(
+            "orderNotification"
+        ).checked =
+            order === "true";
+
+    }
+
+}
+
+
+/* =====================================================
+   PAGE LOAD
+===================================================== */
+
+window.addEventListener(
+    "load",
+    function () {
+
+        loadSavedLanguage();
+
+        loadNotificationSettings();
+
+
+        const language =
+            localStorage.getItem(
+                "kisanvision360_language"
+            );
+
+
+        if (
+            language &&
+            language !== "en"
+        ) {
+
+            setTimeout(
+                function () {
+
+                    applyGoogleLanguage(
+                        language
+                    );
+
+                },
+                1500
+            );
+
+        }
+
+    }
+);
+
+</script>
+
+
+<script
+src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+</script>
+
 
 </body>
+
 </html>

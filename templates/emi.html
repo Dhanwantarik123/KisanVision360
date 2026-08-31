@@ -1,64 +1,26 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<title>
-KisanVision360 | EMI Calculator
-</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-
-<link rel="stylesheet"
-href="{{url_for('static',
-filename='css/emi.css')}}">
+    <title>
+        KisanVision360 | EMI Calculator
+    </title>
 
 
-<script>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/sidebar.css') }}">
 
-function calculateEMI(){
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/emi.css') }}">
 
-
-let amount =
-document.getElementById("amount").value;
-
-
-let rate =
-document.getElementById("rate").value;
-
-
-let years =
-document.getElementById("years").value;
-
-
-
-let monthlyRate =
-rate/(12*100);
-
-
-let months =
-years*12;
-
-
-
-let emi =
-(amount*monthlyRate*Math.pow(1+monthlyRate,months))/
-(Math.pow(1+monthlyRate,months)-1);
-
-
-
-document.getElementById("result").innerHTML =
-"Monthly EMI : ₹ "
-+ Math.round(emi);
-
-
-}
-
-
-</script>
-
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
@@ -66,78 +28,491 @@ document.getElementById("result").innerHTML =
 <body>
 
 
-<div class="container">
+<!-- SIDEBAR -->
+
+{% include "components/sidebar.html" %}
 
 
-<h1>
-💰 Farm Machine EMI Calculator
-</h1>
+<!-- MAIN CONTENT -->
+
+<main class="main-content">
 
 
+    <!-- TOPBAR -->
 
-<div class="box">
+    <header class="topbar">
 
+        <div class="title-section">
 
-<label>
-Machine Price (₹)
-</label>
+            <div class="title-icon">
 
+                <i class="fa-solid fa-calculator"></i>
 
-<input id="amount"
-placeholder="Example 600000">
+            </div>
 
+            <div>
 
+                <h1>
+                    EMI Calculator
+                </h1>
 
-<label>
-Interest Rate (%)
-</label>
+                <p>
+                    Calculate your farm equipment loan EMI
+                </p>
 
+            </div>
 
-<input id="rate"
-value="8">
-
-
-
-<label>
-Loan Period (Years)
-</label>
+        </div>
 
 
-<input id="years"
-value="5">
+        <!-- PROFILE -->
+
+        <div class="profile">
+
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='images/farmer.jpg'
+                ) }}"
+                alt="Farmer">
+
+            <div>
+
+                <h4>
+                    {{ name }}
+                </h4>
+
+                <span>
+                    <i class="fa-solid fa-circle"></i>
+                    Farmer
+                </span>
+
+            </div>
+
+        </div>
+
+    </header>
 
 
+    <!-- PAGE BANNER -->
 
-<button onclick="calculateEMI()">
+    <section class="emi-banner">
 
-Calculate EMI
+        <div class="banner-icon">
 
-</button>
+            <i class="fa-solid fa-tractor"></i>
 
+        </div>
 
+        <div>
 
-<h2 id="result"></h2>
+            <h2>
+                Farm Machine EMI Calculator
+            </h2>
 
+            <p>
+                Estimate your monthly payment before
+                purchasing agricultural machinery.
+            </p>
 
-</div>
+        </div>
 
-
-
-<a href="/tools">
-
-<button class="back">
-
-⬅ Back
-
-</button>
-
-</a>
+    </section>
 
 
-</div>
+    <!-- CALCULATOR -->
+
+    <section class="calculator-section">
+
+
+        <!-- INPUT CARD -->
+
+        <div class="calculator-card">
+
+            <div class="card-heading">
+
+                <div class="heading-icon">
+
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+
+                </div>
+
+                <div>
+
+                    <h2>
+                        Loan Details
+                    </h2>
+
+                    <p>
+                        Enter your loan information
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form onsubmit="calculateEMI(); return false;">
+
+
+                <!-- MACHINE PRICE -->
+
+                <div class="form-group">
+
+                    <label for="amount">
+
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                        Machine Price
+
+                    </label>
+
+                    <div class="input-box">
+
+                        <span>₹</span>
+
+                        <input
+                            type="number"
+                            id="amount"
+                            placeholder="Example: 600000"
+                            min="1"
+                            required>
+
+                    </div>
+
+                </div>
+
+
+                <!-- INTEREST -->
+
+                <div class="form-group">
+
+                    <label for="rate">
+
+                        <i class="fa-solid fa-percent"></i>
+
+                        Interest Rate
+
+                    </label>
+
+                    <div class="input-box">
+
+                        <input
+                            type="number"
+                            id="rate"
+                            value="8"
+                            step="0.01"
+                            min="0"
+                            required>
+
+                        <span>%</span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- YEARS -->
+
+                <div class="form-group">
+
+                    <label for="years">
+
+                        <i class="fa-solid fa-calendar-days"></i>
+
+                        Loan Period
+
+                    </label>
+
+                    <div class="input-box">
+
+                        <input
+                            type="number"
+                            id="years"
+                            value="5"
+                            min="1"
+                            max="30"
+                            required>
+
+                        <span>Years</span>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="calculate-btn">
+
+                    <i class="fa-solid fa-calculator"></i>
+
+                    Calculate EMI
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- RESULT CARD -->
+
+        <div class="result-card">
+
+            <div class="result-icon">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+            </div>
+
+
+            <h2>
+                EMI Result
+            </h2>
+
+
+            <p>
+                Your estimated monthly payment
+            </p>
+
+
+            <div class="emi-result">
+
+                <span>
+                    Monthly EMI
+                </span>
+
+                <strong id="result">
+                    ₹ 0
+                </strong>
+
+            </div>
+
+
+            <div class="result-details">
+
+                <div>
+
+                    <span>
+                        Loan Amount
+                    </span>
+
+                    <strong id="loanResult">
+                        ₹ 0
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Interest Rate
+                    </span>
+
+                    <strong id="rateResult">
+                        0%
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Loan Period
+                    </span>
+
+                    <strong id="yearsResult">
+                        0 Years
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Total Payment
+                    </span>
+
+                    <strong id="totalResult">
+                        ₹ 0
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- INFORMATION -->
+
+    <section class="info-card">
+
+        <div class="info-icon">
+
+            <i class="fa-solid fa-lightbulb"></i>
+
+        </div>
+
+        <div>
+
+            <h3>
+                EMI Calculation
+            </h3>
+
+            <p>
+                EMI depends on the loan amount,
+                interest rate and repayment period.
+                Use the calculator to estimate your
+                monthly farm equipment loan payment.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- BACK -->
+
+    <div class="back-section">
+
+        <a href="{{ url_for('finance') }}">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Finance Dashboard
+
+        </a>
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <i class="fa-solid fa-leaf"></i>
+
+        KisanVision360 Smart Farming Finance
+
+        <span>•</span>
+
+        Smart Farm Financial Planning
+
+    </footer>
+
+
+</main>
+
+
+<script>
+
+function calculateEMI() {
+
+    let amount =
+        parseFloat(
+            document.getElementById("amount").value
+        );
+
+    let rate =
+        parseFloat(
+            document.getElementById("rate").value
+        );
+
+    let years =
+        parseFloat(
+            document.getElementById("years").value
+        );
+
+
+    if (
+        !amount ||
+        amount <= 0 ||
+        rate < 0 ||
+        !years ||
+        years <= 0
+    ) {
+
+        alert("Please enter valid loan details.");
+
+        return;
+
+    }
+
+
+    let months = years * 12;
+
+    let monthlyRate =
+        rate / (12 * 100);
+
+    let emi;
+
+
+    if (monthlyRate === 0) {
+
+        emi = amount / months;
+
+    }
+
+    else {
+
+        emi =
+            (
+                amount *
+                monthlyRate *
+                Math.pow(
+                    1 + monthlyRate,
+                    months
+                )
+            )
+            /
+            (
+                Math.pow(
+                    1 + monthlyRate,
+                    months
+                ) - 1
+            );
+
+    }
+
+
+    let totalPayment =
+        emi * months;
+
+
+    document.getElementById("result").innerHTML =
+        "₹ " +
+        Math.round(emi).toLocaleString("en-IN");
+
+
+    document.getElementById("loanResult").innerHTML =
+        "₹ " +
+        Math.round(amount).toLocaleString("en-IN");
+
+
+    document.getElementById("rateResult").innerHTML =
+        rate + "%";
+
+
+    document.getElementById("yearsResult").innerHTML =
+        years + " Years";
+
+
+    document.getElementById("totalResult").innerHTML =
+        "₹ " +
+        Math.round(totalPayment).toLocaleString("en-IN");
+
+}
+
+</script>
 
 
 </body>
-
 
 </html>

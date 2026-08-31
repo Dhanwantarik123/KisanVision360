@@ -1,0 +1,786 @@
+/* =====================================================
+   KISANVISION360 - FARMER & CONSUMER CHAT
+===================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f8f4;
+    color: #263326;
+}
+
+/* =====================================================
+   MAIN LAYOUT
+===================================================== */
+
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.main-content {
+    flex: 1;
+    min-width: 0;
+    padding: 0 30px 30px;
+}
+
+/* =====================================================
+   TOPBAR
+===================================================== */
+
+.topbar {
+    min-height: 90px;
+    margin: 0 -30px 25px;
+    padding: 18px 25px;
+    background: #ffffff;
+    border-bottom: 1px solid #e2ebe2;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.title-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: #e8f5e9;
+    color: #2e7d32;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+}
+
+.title-section h1 {
+    color: #1b5e20;
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.title-section p {
+    color: #777;
+    font-size: 13px;
+}
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile img {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #81c784;
+}
+
+.profile h4 {
+    color: #333;
+    font-size: 14px;
+}
+
+.profile small {
+    color: #777;
+    font-size: 12px;
+}
+
+/* =====================================================
+   CHAT LAYOUT
+===================================================== */
+
+.chat-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 20px;
+    min-height: 580px;
+    margin-bottom: 25px;
+}
+
+/* =====================================================
+   CONTACTS
+===================================================== */
+
+.contacts-card {
+    background: #ffffff;
+    border: 1px solid #e1e9e1;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(27, 94, 32, 0.06);
+}
+
+.contacts-header {
+    padding: 20px;
+    border-bottom: 1px solid #edf1ed;
+}
+
+.contacts-header h2 {
+    color: #1b5e20;
+    font-size: 17px;
+}
+
+.contacts-header i {
+    color: #43a047;
+    margin-right: 7px;
+}
+
+/* =====================================================
+   CONTACT
+===================================================== */
+
+.contact {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 17px;
+    cursor: pointer;
+
+    border-bottom: 1px solid #f0f3f0;
+    transition: 0.3s;
+}
+
+.contact:hover {
+    background: #f5faf5;
+}
+
+.contact.active {
+    background: #e8f5e9;
+    border-left: 4px solid #2e7d32;
+}
+
+.contact-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+
+    background: #f1f8f1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 23px;
+}
+
+.contact-info {
+    min-width: 0;
+}
+
+.contact-info h3 {
+    color: #333;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.contact-info p {
+    color: #888;
+    font-size: 12px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.online-dot {
+    width: 9px;
+    height: 9px;
+    background: #43a047;
+    border-radius: 50%;
+    margin-left: auto;
+}
+
+/* =====================================================
+   CHAT PANEL
+===================================================== */
+
+.chat-panel {
+    background: #ffffff;
+    border: 1px solid #e1e9e1;
+    border-radius: 18px;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    box-shadow: 0 5px 20px rgba(27, 94, 32, 0.06);
+}
+
+/* =====================================================
+   CHAT HEADER
+===================================================== */
+
+.chat-panel-header {
+    min-height: 75px;
+    padding: 13px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 1px solid #e7ece7;
+}
+
+.chat-person {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.person-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+
+    background: #e8f5e9;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 23px;
+}
+
+.chat-person h2 {
+    color: #1b5e20;
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.chat-person span {
+    color: #43a047;
+    font-size: 11px;
+}
+
+.chat-person span i {
+    font-size: 7px;
+    margin-right: 4px;
+}
+
+/* =====================================================
+   CHAT ACTIONS
+===================================================== */
+
+.chat-actions {
+    display: flex;
+    gap: 7px;
+}
+
+.chat-actions button {
+    width: 38px;
+    height: 38px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: #f1f8f1;
+    color: #2e7d32;
+
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.chat-actions button:hover {
+    background: #2e7d32;
+    color: white;
+}
+
+/* =====================================================
+   MESSAGES
+===================================================== */
+
+.messages {
+    flex: 1;
+
+    min-height: 390px;
+    max-height: 450px;
+
+    overflow-y: auto;
+
+    padding: 25px;
+
+    background: #f8fbf8;
+}
+
+/* Scrollbar */
+
+.messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.messages::-webkit-scrollbar-track {
+    background: #f1f5f1;
+}
+
+.messages::-webkit-scrollbar-thumb {
+    background: #b8d8b9;
+    border-radius: 10px;
+}
+
+/* =====================================================
+   MESSAGE ROW
+===================================================== */
+
+.message-row {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.message-row.sent {
+    justify-content: flex-end;
+}
+
+.message-row.received {
+    justify-content: flex-start;
+}
+
+/* =====================================================
+   MESSAGE BUBBLE
+===================================================== */
+
+.message {
+    max-width: 65%;
+    padding: 12px 15px;
+    border-radius: 15px;
+}
+
+.sent-message {
+    background: #2e7d32;
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.received-message {
+    background: white;
+    color: #333;
+    border: 1px solid #e1e8e1;
+    border-bottom-left-radius: 4px;
+}
+
+.message p {
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 5px;
+}
+
+.message span {
+    display: block;
+    text-align: right;
+    font-size: 10px;
+    opacity: 0.7;
+}
+
+.sent-message i {
+    margin-left: 3px;
+}
+
+/* =====================================================
+   MESSAGE FORM
+===================================================== */
+
+.message-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 14px 16px;
+
+    background: white;
+    border-top: 1px solid #e6ece6;
+}
+
+.message-form input {
+    flex: 1;
+
+    height: 45px;
+
+    padding: 0 15px;
+
+    border: 1px solid #d8e1d8;
+    border-radius: 10px;
+
+    outline: none;
+
+    font-size: 13px;
+
+    transition: 0.3s;
+}
+
+.message-form input:focus {
+    border-color: #43a047;
+    box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.1);
+}
+
+.message-form button {
+    border: none;
+    cursor: pointer;
+}
+
+.attachment-btn {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 10px;
+
+    background: #f1f8f1;
+    color: #43a047;
+}
+
+.attachment-btn:hover {
+    background: #e1f0e2;
+}
+
+.send-btn {
+    width: 45px;
+    height: 45px;
+
+    border-radius: 10px;
+
+    background: #2e7d32;
+    color: white;
+
+    transition: 0.3s;
+}
+
+.send-btn:hover {
+    background: #1b5e20;
+    transform: translateY(-1px);
+}
+
+/* =====================================================
+   ORDER CARD
+===================================================== */
+
+.order-card {
+    background: white;
+    border: 1px solid #e1e9e1;
+    border-radius: 18px;
+
+    padding: 25px;
+
+    margin-bottom: 30px;
+
+    box-shadow: 0 5px 20px rgba(27, 94, 32, 0.06);
+}
+
+.order-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    margin-bottom: 22px;
+}
+
+.order-icon {
+    width: 52px;
+    height: 52px;
+
+    border-radius: 13px;
+
+    background: #fff3e0;
+    color: #fb8c00;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 21px;
+}
+
+.order-title h2 {
+    color: #1b5e20;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.order-title p {
+    color: #777;
+    font-size: 12px;
+}
+
+/* =====================================================
+   ORDER DETAILS
+===================================================== */
+
+.order-details {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+
+    margin-bottom: 22px;
+}
+
+.order-details > div {
+    background: #f7faf7;
+    border-radius: 11px;
+    padding: 15px;
+}
+
+.order-details span {
+    display: block;
+    color: #888;
+    font-size: 11px;
+    margin-bottom: 6px;
+}
+
+.order-details strong {
+    color: #333;
+    font-size: 15px;
+}
+
+/* =====================================================
+   ORDER ACTIONS
+===================================================== */
+
+.order-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.order-actions a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    padding: 11px 18px;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    transition: 0.3s;
+}
+
+.confirm-btn {
+    background: #2e7d32;
+    color: white;
+}
+
+.confirm-btn:hover {
+    background: #1b5e20;
+    transform: translateY(-1px);
+}
+
+.back-btn {
+    background: #f1f8f1;
+    color: #2e7d32;
+}
+
+.back-btn:hover {
+    background: #e2f0e3;
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer {
+    text-align: center;
+
+    padding: 22px 10px;
+
+    border-top: 1px solid #e1e8e1;
+
+    color: #7b877b;
+
+    font-size: 12px;
+}
+
+footer i {
+    color: #43a047;
+    margin-right: 5px;
+}
+
+footer strong {
+    color: #2e7d32;
+}
+
+footer span {
+    margin: 0 5px;
+}
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 1000px) {
+
+    .main-content {
+        padding: 0 20px 25px;
+    }
+
+    .topbar {
+        margin-left: -20px;
+        margin-right: -20px;
+    }
+
+    .chat-layout {
+        grid-template-columns: 230px 1fr;
+    }
+
+    .order-details {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 750px) {
+
+    .main-content {
+        padding: 0 15px 20px;
+    }
+
+    .topbar {
+        margin-left: -15px;
+        margin-right: -15px;
+
+        padding: 15px;
+
+        min-height: 75px;
+    }
+
+    .title-section h1 {
+        font-size: 18px;
+    }
+
+    .title-section p {
+        display: none;
+    }
+
+    .profile div {
+        display: none;
+    }
+
+    .chat-layout {
+        display: flex;
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    .contacts-card {
+        width: 100%;
+    }
+
+    .contacts-header {
+        padding: 15px;
+    }
+
+    .contact {
+        padding: 12px 15px;
+    }
+
+    .chat-panel {
+        min-height: 550px;
+    }
+
+    .messages {
+        min-height: 350px;
+    }
+
+    .message {
+        max-width: 80%;
+    }
+
+    .order-details {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 450px) {
+
+    .title-icon {
+        width: 43px;
+        height: 43px;
+        font-size: 18px;
+    }
+
+    .title-section h1 {
+        font-size: 16px;
+    }
+
+    .chat-panel-header {
+        padding: 12px;
+    }
+
+    .chat-actions button {
+        width: 34px;
+        height: 34px;
+    }
+
+    .messages {
+        padding: 15px;
+    }
+
+    .message {
+        max-width: 88%;
+    }
+
+    .message-form {
+        padding: 10px;
+    }
+
+    .attachment-btn {
+        display: none;
+    }
+
+    .message-form input {
+        height: 42px;
+    }
+
+    .send-btn {
+        width: 42px;
+        height: 42px;
+    }
+
+    .order-card {
+        padding: 18px;
+    }
+
+    .order-title h2 {
+        font-size: 17px;
+    }
+
+    .order-details {
+        grid-template-columns: 1fr;
+    }
+
+    .order-actions {
+        flex-direction: column;
+    }
+
+    .order-actions a {
+        width: 100%;
+    }
+}

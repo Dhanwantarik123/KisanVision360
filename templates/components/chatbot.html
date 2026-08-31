@@ -1,59 +1,179 @@
-<!-- Floating AI Button -->
+<!-- =====================================================
+     KisanVision360 AI CHATBOT
+===================================================== -->
 
-<div class="chatbot-button" onclick="toggleChat()">
+<div
+    class="chatbot-button"
+    id="chatbotButton"
+    onclick="toggleChat()"
+    title="KisanVision360 AI Assistant">
 
     <i class="fa-solid fa-robot"></i>
 
 </div>
 
-<!-- Chatbot Window -->
 
-<div class="chatbot-box" id="chatBox">
+<div
+    class="chatbot-box"
+    id="chatBox">
+
+    <!-- HEADER -->
 
     <div class="chat-header">
 
-        <div>
+        <div class="chat-user">
 
-            🤖 <b>KisanVision360 AI</b><br>
+            <div class="ai-avatar">
+                🤖
+            </div>
 
-            <small>🟢 Online</small>
+            <div>
+
+                <h3>
+                    KisanVision360 AI
+                </h3>
+
+                <span class="status">
+                    <i class="fa-solid fa-circle"></i>
+                    Online
+                </span>
+
+            </div>
 
         </div>
 
-        <i class="fa-solid fa-xmark" onclick="toggleChat()"></i>
+
+        <button
+            type="button"
+            class="close-btn"
+            onclick="toggleChat()">
+
+            <i class="fa-solid fa-xmark"></i>
+
+        </button>
 
     </div>
 
-    <div class="chat-body" id="chatBody">
+
+    <!-- CHAT BODY -->
+
+    <div
+        class="chat-body"
+        id="chat-box">
 
         <div class="bot-message">
 
-            👋 Hello <b>{{ name }}</b>
+            <div class="message-avatar">
+                🤖
+            </div>
 
-            <br><br>
+            <div class="message-content">
 
-            I can help you with:
+                <div class="bot">
 
-            <br>🌦 Weather
-            <br>🌱 Crop Recommendation
-            <br>💧 Irrigation
-            <br>🐛 Disease Detection
-            <br>🧪 Fertilizer
-            <br>📈 Market Prices
-            <br>🏛 Government Schemes
+                    👋 <b>
+                        Hello {{ name|default('Farmer') }}
+                    </b>
+
+                    <br><br>
+
+                    I am <strong>KisanVision360 AI</strong> 🌱
+
+                    <br><br>
+
+                    Ask me anything related to your
+                    KisanVision360 application.
+
+                    <div class="suggestions">
+
+                        <button
+                            type="button"
+                            onclick="quickQuestion('What is the live weather today?')">
+                            🌦 Weather
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="quickQuestion('What are the latest mandi prices?')">
+                            📈 Market
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="quickQuestion('Which crop should I grow?')">
+                            🌱 Crop
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="quickQuestion('Give me irrigation advice')">
+                            💧 Irrigation
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="quickQuestion('How can I detect crop disease?')">
+                            🐛 Disease
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="quickQuestion('Show my orders')">
+                            📦 Orders
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="quickQuestion('What is my finance status?')">
+                            💰 Finance
+                        </button>
+
+                        <button
+                            type="button"
+                            onclick="quickQuestion('Tell me about government schemes')">
+                            🏛 Schemes
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 
     </div>
 
-    <div class="chat-input">
+
+    <!-- TYPING -->
+
+    <div
+        class="typing"
+        id="typingIndicator"
+        style="display:none;">
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+        AI is thinking...
+
+    </div>
+
+
+    <!-- INPUT -->
+
+    <div class="chat-footer">
 
         <input
             type="text"
-            id="userMessage"
-            placeholder="Ask AI...">
+            id="message"
+            autocomplete="off"
+            placeholder="Ask anything about KisanVision360...">
 
-        <button onclick="sendMessage()">
+        <button
+            type="button"
+            onclick="sendMessage()">
 
             <i class="fa-solid fa-paper-plane"></i>
 
@@ -63,4 +183,18 @@
 
 </div>
 
-<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+
+<link
+    rel="stylesheet"
+    href="{{ url_for(
+        'static',
+        filename='css/chatbot.css'
+    ) }}">
+
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/chatbot.js'
+    ) }}">
+</script>

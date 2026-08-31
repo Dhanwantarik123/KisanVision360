@@ -5,49 +5,107 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <title>KisanVision360 | AI Recommendation</title>
+    <title>
+        KisanVision360 | AI Crop Recommendation
+    </title>
+
+
+    <!-- SIDEBAR CSS -->
 
     <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/sidebar.css') }}">
+          href="{{ url_for('static',
+          filename='css/sidebar.css') }}">
+
+
+    <!-- RECOMMENDATION CSS -->
 
     <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/recommendation.css') }}">
+          href="{{ url_for('static',
+          filename='css/recommendation.css') }}">
+
+
+    <!-- FONT AWESOME -->
 
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
+
 <body>
 
-    <!-- Sidebar -->
-    {% include "components/sidebar.html" %}
 
-    <!-- Main Content -->
-    <div class="main-content">
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
 
-        <!-- Top Bar -->
+{% include "components/sidebar.html" %}
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<div class="main-content">
+
+    <div class="recommendation-page">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
         <div class="topbar">
 
-            <div>
+            <div class="page-heading">
 
-                <h2>🤖 AI Crop Recommendation</h2>
+                <h1>
 
-                <p>Smart AI recommendations for better farming decisions.</p>
+                    <i class="fa-solid fa-robot"></i>
+
+                    AI Crop Recommendation
+
+                </h1>
+
+
+                <p>
+
+                    Smart AI recommendations for
+                    better farming decisions.
+
+                </p>
 
             </div>
 
+
+            <!-- PROFILE -->
+
             <div class="profile">
 
-                <img src="{{ url_for('static', filename='images/farmer.jpg') }}" alt="Farmer">
+                <img
+                    src="{{ url_for('static',
+                    filename='images/farmer.jpg') }}"
+                    alt="Farmer">
+
 
                 <div>
 
-                    <h4>{{ name }}</h4>
+                    <h4>
 
-                    <p>Farmer</p>
+                        {{ name }}
+
+                    </h4>
+
+
+                    <p>
+
+                        Farmer
+
+                    </p>
 
                 </div>
 
@@ -55,104 +113,884 @@
 
         </div>
 
-        <!-- Recommendation Cards -->
+
+
+        <!-- =================================================
+             AI BANNER
+        ================================================== -->
+
+        <div class="ai-banner">
+
+            <div class="banner-content">
+
+                <div class="banner-icon">
+
+                    <i class="fa-solid fa-robot"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+
+                        AI-Powered Farming Assistant
+
+                    </h2>
+
+
+                    <p>
+
+                        Get crop, irrigation, fertilizer,
+                        pest and yield recommendations
+                        based on your farm conditions
+                        and current weather.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             FARM CONDITIONS
+        ================================================== -->
+
+        <div class="input-card">
+
+
+            <div class="card-heading">
+
+                <div class="heading-icon">
+
+                    <i class="fa-solid fa-sliders"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+
+                        Farm Conditions
+
+                    </h2>
+
+
+                    <p>
+
+                        Enter your farm details to generate
+                        a personalized recommendation.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 ONLY ONE FORM
+            ================================================== -->
+
+            <form
+                action="{{ url_for('recommendation') }}"
+                method="POST">
+
+
+                <div class="input-grid">
+
+
+                    <!-- SOIL -->
+
+                    <div class="form-group">
+
+                        <label for="soil">
+
+                            <i class="fa-solid fa-mountain-sun"></i>
+
+                            Soil Type
+
+                        </label>
+
+
+                        <select
+                            id="soil"
+                            name="soil"
+                            required>
+
+                            <option value="black">
+                                Black Soil
+                            </option>
+
+                            <option value="red">
+                                Red Soil
+                            </option>
+
+                            <option value="alluvial">
+                                Alluvial Soil
+                            </option>
+
+                            <option value="loamy">
+                                Loamy Soil
+                            </option>
+
+                            <option value="sandy">
+                                Sandy Soil
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- AREA -->
+
+                    <div class="form-group">
+
+                        <label for="area">
+
+                            <i class="fa-solid fa-ruler-combined"></i>
+
+                            Land Area (Acres)
+
+                        </label>
+
+
+                        <input
+                            type="number"
+                            id="area"
+                            name="area"
+                            min="0.1"
+                            step="0.1"
+                            value="5"
+                            placeholder="Example: 5"
+                            required>
+
+                    </div>
+
+
+
+                    <!-- SEASON -->
+
+                    <div class="form-group">
+
+                        <label for="season">
+
+                            <i class="fa-solid fa-calendar-days"></i>
+
+                            Season
+
+                        </label>
+
+
+                        <select
+                            id="season"
+                            name="season"
+                            required>
+
+                            <option value="kharif">
+                                Kharif
+                            </option>
+
+                            <option value="rabi">
+                                Rabi
+                            </option>
+
+                            <option value="summer">
+                                Zaid / Summer
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <!-- IRRIGATION -->
+
+                    <div class="form-group">
+
+                        <label for="irrigation">
+
+                            <i class="fa-solid fa-droplet"></i>
+
+                            Irrigation Availability
+
+                        </label>
+
+
+                        <select
+                            id="irrigation"
+                            name="irrigation"
+                            required>
+
+                            <option value="good">
+                                Good
+                            </option>
+
+                            <option value="medium">
+                                Medium
+                            </option>
+
+                            <option value="low">
+                                Low
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- GENERATE BUTTON -->
+
+                <button
+                    type="submit"
+                    class="recommend-btn">
+
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                    Generate AI Recommendation
+
+                </button>
+
+
+            </form>
+
+        </div>
+
+
+
+        <!-- =================================================
+             SUCCESS MESSAGE
+        ================================================== -->
+
+        {% if recommendation %}
+
+        <div class="success-message">
+
+            <div class="success-icon">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+            </div>
+
+
+            <div class="success-content">
+
+                <h3>
+
+                    AI Recommendation Generated Successfully!
+
+                </h3>
+
+
+                <p>
+
+                    Based on your soil type, land area,
+                    season and irrigation availability,
+                    your personalized farming recommendation
+                    is ready.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+
+        <!-- =================================================
+             RESULTS TITLE
+        ================================================== -->
+
+        <div class="results-heading">
+
+            <div>
+
+                <h2>
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    AI Recommendations
+
+                </h2>
+
+
+                <p>
+
+                    Personalized insights for your farm
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             RECOMMENDATION CARDS
+        ================================================== -->
+
         <div class="recommendation-grid">
 
-            <div class="card">
 
-                <i class="fa-solid fa-seedling"></i>
+            <!-- =================================================
+                 CROP
+            ================================================== -->
 
-                <h3>Recommended Crop</h3>
+            <div class="recommendation-card">
 
-                <h2>Soybean</h2>
+                <div class="card-icon">
 
-                <p>Suitable for current weather and soil conditions.</p>
+                    <i class="fa-solid fa-seedling"></i>
 
-            </div>
+                </div>
 
-            <div class="card">
 
-                <i class="fa-solid fa-droplet"></i>
+                <h3>
 
-                <h3>Irrigation</h3>
+                    Recommended Crop
 
-                <h2>Every 3 Days</h2>
+                </h3>
 
-                <p>Maintain proper soil moisture.</p>
 
-            </div>
+                <h2>
 
-            <div class="card">
+                    {{ recommendation["crop"] }}
 
-                <i class="fa-solid fa-flask"></i>
+                </h2>
 
-                <h3>Fertilizer</h3>
 
-                <h2>NPK 20:20:20</h2>
+                <p>
 
-                <p>Recommended dosage: 50 kg/acre.</p>
+                    {{ recommendation["reason"] }}
 
-            </div>
+                </p>
 
-            <div class="card">
 
-                <i class="fa-solid fa-bug"></i>
+                <span class="confidence">
 
-                <h3>Pest Alert</h3>
+                    <i class="fa-solid fa-shield-check"></i>
 
-                <h2>Low Risk</h2>
+                    Confidence:
 
-                <p>No major pest activity detected.</p>
+                    {{ recommendation["confidence"] }}
 
-            </div>
-
-            <div class="card">
-
-                <i class="fa-solid fa-chart-line"></i>
-
-                <h3>Expected Yield</h3>
-
-                <h2>25 Quintal/Acre</h2>
-
-                <p>Estimated using AI prediction.</p>
+                </span>
 
             </div>
 
-            <div class="card">
+
+
+            <!-- =================================================
+                 IRRIGATION
+            ================================================== -->
+
+            <div class="recommendation-card">
+
+                <div class="card-icon blue-icon">
+
+                    <i class="fa-solid fa-droplet"></i>
+
+                </div>
+
+
+                <h3>
+
+                    Irrigation
+
+                </h3>
+
+
+                <h2>
+
+                    {{ recommendation["irrigation"] }}
+
+                </h2>
+
+
+                <p>
+
+                    Maintain proper soil moisture
+                    and avoid over-irrigation.
+
+                </p>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 FERTILIZER
+            ================================================== -->
+
+            <div class="recommendation-card">
+
+                <div class="card-icon orange-icon">
+
+                    <i class="fa-solid fa-flask"></i>
+
+                </div>
+
+
+                <h3>
+
+                    Fertilizer
+
+                </h3>
+
+
+                <h2>
+
+                    {{ recommendation["fertilizer"] }}
+
+                </h2>
+
+
+                <p>
+
+                    Suggested according to
+                    selected soil conditions.
+
+                </p>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 PEST
+            ================================================== -->
+
+            <div class="recommendation-card">
+
+                <div class="card-icon red-icon">
+
+                    <i class="fa-solid fa-bug"></i>
+
+                </div>
+
+
+                <h3>
+
+                    Pest Alert
+
+                </h3>
+
+
+                <h2>
+
+                    {{ recommendation["pest_risk"] }}
+
+                </h2>
+
+
+                <p>
+
+                    Monitor leaves and stems
+                    regularly for pest symptoms.
+
+                </p>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 YIELD
+            ================================================== -->
+
+            <div class="recommendation-card">
+
+                <div class="card-icon yellow-icon">
+
+                    <i class="fa-solid fa-wheat-awn"></i>
+
+                </div>
+
+
+                <h3>
+
+                    Expected Yield
+
+                </h3>
+
+
+                <h2>
+
+                    {{ recommendation["yield"] }}
+
+                </h2>
+
+
+                <p>
+
+                    Estimated based on available
+                    farm conditions.
+
+                </p>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 WEATHER
+            ================================================== -->
+
+            <div class="recommendation-card">
+
+                <div class="card-icon sky-icon">
+
+                    <i class="fa-solid fa-cloud-sun"></i>
+
+                </div>
+
+
+                <h3>
+
+                    Current Weather
+
+                </h3>
+
+
+                <h2>
+
+                    {% if weather %}
+
+                        {{ weather.temperature }}°C
+
+                    {% else %}
+
+                        --°C
+
+                    {% endif %}
+
+                </h2>
+
+
+                <p>
+
+                    {% if weather %}
+
+                        {{ weather.description }}
+
+                    {% else %}
+
+                        Weather data unavailable.
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             SMART FARMING ADVICE
+        ================================================== -->
+
+        <div class="advice-card">
+
+
+            <div class="advice-heading">
+
+                <div class="advice-heading-icon">
+
+                    <i class="fa-solid fa-lightbulb"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+
+                        Smart Farming Advice
+
+                    </h2>
+
+
+                    <p>
+
+                        Follow these recommendations
+                        for better crop management.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="advice-list">
+
+
+                <!-- IRRIGATION -->
+
+                <div class="advice-item">
+
+                    <div class="advice-icon">
+
+                        <i class="fa-solid fa-droplet"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+
+                            Irrigation
+
+                        </strong>
+
+
+                        <p>
+
+                            Check soil moisture before
+                            irrigation and avoid unnecessary
+                            water usage.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FERTILIZER -->
+
+                <div class="advice-item">
+
+                    <div class="advice-icon">
+
+                        <i class="fa-solid fa-flask"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+
+                            Fertilizer
+
+                        </strong>
+
+
+                        <p>
+
+                            Apply fertilizer according
+                            to soil condition and crop stage.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- PEST -->
+
+                <div class="advice-item">
+
+                    <div class="advice-icon">
+
+                        <i class="fa-solid fa-bug"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+
+                            Pest Monitoring
+
+                        </strong>
+
+
+                        <p>
+
+                            Regularly inspect leaves and
+                            stems for early pest symptoms.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- WEATHER -->
+
+                <div class="advice-item">
+
+                    <div class="advice-icon">
+
+                        <i class="fa-solid fa-cloud-sun"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+
+                            Weather
+
+                        </strong>
+
+
+                        <p>
+
+                            Check live weather before
+                            spraying pesticides or fertilizer.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             ACTION BUTTONS
+        ================================================== -->
+
+        <div class="action-buttons">
+
+
+            <a
+                href="{{ url_for('disease') }}"
+                class="btn green">
+
+                <i class="fa-solid fa-microscope"></i>
+
+                Disease Detection
+
+            </a>
+
+
+
+            <a
+                href="{{ url_for('weather') }}"
+                class="btn blue">
 
                 <i class="fa-solid fa-cloud-sun"></i>
 
-                <h3>Weather Status</h3>
+                Live Weather
 
-                <h2>{{ weather.temperature }}°C</h2>
+            </a>
 
-                <p>{{ weather.description }}</p>
 
-            </div>
 
-        </div>
+            <a
+                href="{{ url_for('irrigation') }}"
+                class="btn blue">
 
-        <!-- Action Buttons -->
-        <div class="action-buttons">
+                <i class="fa-solid fa-droplet"></i>
 
-            <a href="/marketplace" class="btn">
+                Irrigation Advisor
+
+            </a>
+
+
+
+            <a
+                href="{{ url_for('marketplace') }}"
+                class="btn orange">
+
                 <i class="fa-solid fa-store"></i>
+
                 Marketplace
+
             </a>
 
-            <a href="/farmer" class="btn">
+
+
+            <a
+                href="{{ url_for('farmer') }}"
+                class="btn gray">
+
                 <i class="fa-solid fa-house"></i>
+
                 Dashboard
+
             </a>
+
 
         </div>
+
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <div class="footer">
+
+            <i class="fa-solid fa-leaf"></i>
+
+            KisanVision360
+
+            <span>•</span>
+
+            AI Powered Smart Agriculture Platform
+
+            <span>•</span>
+
+            Made in India 🇮🇳
+
+        </div>
+
 
     </div>
 
-    <!-- Chatbot -->
-    {% include "components/chatbot.html" %}
+</div>
 
-    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+
+
+<!-- =====================================================
+     CHATBOT
+===================================================== -->
+
+{% include "components/chatbot.html" %}
+
+
+<!-- CHATBOT JS -->
+
+<script src="{{ url_for('static',
+filename='js/chatbot.js') }}"></script>
+
 
 </body>
 

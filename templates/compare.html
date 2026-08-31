@@ -1,16 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
 <title>
-Machine Comparison
+KisanVision360 | Machine Comparison
 </title>
 
 
+<!-- SIDEBAR -->
+
 <link rel="stylesheet"
-href="{{url_for('static',
-filename='css/compare.css')}}">
+      href="{{ url_for('static', filename='css/sidebar.css') }}">
+
+
+<!-- PAGE CSS -->
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/compare.css') }}">
+
+
+<!-- FONT AWESOME -->
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
@@ -18,103 +36,556 @@ filename='css/compare.css')}}">
 <body>
 
 
-<div class="container">
+<div class="dashboard-container">
 
 
-<h1>
-⚖ Compare Farm Machines
-</h1>
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
 
-
-<table>
-
-
-<tr>
-
-<th>Feature</th>
-
-<th>Mahindra Tractor</th>
-
-<th>Swaraj Tractor</th>
-
-</tr>
+{% include "components/sidebar.html" %}
 
 
 
-<tr>
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
 
-<td>Price</td>
-
-<td>₹6.5 Lakh</td>
-
-<td>₹6.8 Lakh</td>
-
-</tr>
+<div class="main-content">
 
 
 
-<tr>
+<!-- =====================================================
+     TOPBAR
+===================================================== -->
 
-<td>HP</td>
-
-<td>45 HP</td>
-
-<td>50 HP</td>
-
-</tr>
+<header class="topbar">
 
 
-
-<tr>
-
-<td>Fuel Type</td>
-
-<td>Diesel</td>
-
-<td>Diesel</td>
-
-</tr>
+    <div class="title-section">
 
 
+        <div class="title-icon">
 
-<tr>
+            <i class="fa-solid fa-scale-balanced"></i>
 
-<td>Suitable Crop</td>
+        </div>
 
-<td>Wheat, Cotton</td>
 
-<td>Sugarcane, Rice</td>
+        <div>
 
-</tr>
+            <h1>
+                Machine Comparison
+            </h1>
+
+            <p>
+                Compare farm machines and choose the right one
+            </p>
+
+        </div>
+
+
+    </div>
 
 
 
-<tr>
-
-<td>Warranty</td>
-
-<td>6 Years</td>
-
-<td>5 Years</td>
-
-</tr>
+    <div class="profile">
 
 
+        <img
+            src="{{ url_for(
+                'static',
+                filename='images/farmer.jpg'
+            ) }}"
+            alt="Farmer">
 
-</table>
+
+        <div>
+
+            <h4>
+                {{ name|default('Farmer') }}
+            </h4>
+
+            <small>
+                Farmer
+            </small>
+
+        </div>
 
 
-<a href="/tools">
+    </div>
 
-<button>
-Back
-</button>
 
-</a>
+</header>
+
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="compare-hero">
+
+
+    <div>
+
+
+        <span class="hero-label">
+
+            <i class="fa-solid fa-tractor"></i>
+
+            SMART MACHINE SELECTION
+
+        </span>
+
+
+        <h2>
+            Compare Farm Machines
+        </h2>
+
+
+        <p>
+            Compare price, horsepower, fuel type,
+            crop suitability and warranty before buying
+            agricultural machinery.
+        </p>
+
+
+    </div>
+
+
+    <div class="hero-icon">
+
+        <i class="fa-solid fa-gears"></i>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     MACHINE CARDS
+===================================================== -->
+
+<section class="machines">
+
+
+    <!-- MAHINDRA -->
+
+    <div class="machine-card">
+
+
+        <div class="machine-image">
+
+            <i class="fa-solid fa-tractor"></i>
+
+        </div>
+
+
+        <div class="machine-content">
+
+
+            <span class="machine-brand">
+                MAHINDRA
+            </span>
+
+
+            <h2>
+                Mahindra Tractor
+            </h2>
+
+
+            <p>
+                Reliable tractor suitable for
+                general agricultural operations.
+            </p>
+
+
+            <div class="machine-price">
+
+                <span>
+                    Starting Price
+                </span>
+
+                <strong>
+                    ₹6.5 Lakh
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- SWARAJ -->
+
+    <div class="machine-card">
+
+
+        <div class="machine-image">
+
+            <i class="fa-solid fa-tractor"></i>
+
+        </div>
+
+
+        <div class="machine-content">
+
+
+            <span class="machine-brand">
+                SWARAJ
+            </span>
+
+
+            <h2>
+                Swaraj Tractor
+            </h2>
+
+
+            <p>
+                Powerful tractor designed for
+                demanding agricultural work.
+            </p>
+
+
+            <div class="machine-price">
+
+                <span>
+                    Starting Price
+                </span>
+
+                <strong>
+                    ₹6.8 Lakh
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     COMPARISON TABLE
+===================================================== -->
+
+<section class="comparison-section">
+
+
+    <div class="section-heading">
+
+
+        <span>
+            SIDE-BY-SIDE COMPARISON
+        </span>
+
+
+        <h2>
+            Machine Specifications
+        </h2>
+
+
+        <p>
+            Compare the important specifications of both tractors.
+        </p>
+
+
+    </div>
+
+
+
+    <div class="table-card">
+
+
+        <div class="table-wrapper">
+
+
+            <table>
+
+
+                <thead>
+
+
+                    <tr>
+
+                        <th>
+                            Feature
+                        </th>
+
+                        <th>
+
+                            <i class="fa-solid fa-tractor"></i>
+
+                            Mahindra Tractor
+
+                        </th>
+
+                        <th>
+
+                            <i class="fa-solid fa-tractor"></i>
+
+                            Swaraj Tractor
+
+                        </th>
+
+                    </tr>
+
+
+                </thead>
+
+
+                <tbody>
+
+
+                    <tr>
+
+                        <td>
+
+                            <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                            Price
+
+                        </td>
+
+                        <td>
+                            ₹6.5 Lakh
+                        </td>
+
+                        <td>
+                            ₹6.8 Lakh
+                        </td>
+
+                    </tr>
+
+
+
+                    <tr>
+
+                        <td>
+
+                            <i class="fa-solid fa-gauge-high"></i>
+
+                            Horsepower
+
+                        </td>
+
+                        <td>
+                            <strong>
+                                45 HP
+                            </strong>
+                        </td>
+
+                        <td>
+                            <strong>
+                                50 HP
+                            </strong>
+                        </td>
+
+                    </tr>
+
+
+
+                    <tr>
+
+                        <td>
+
+                            <i class="fa-solid fa-gas-pump"></i>
+
+                            Fuel Type
+
+                        </td>
+
+                        <td>
+                            Diesel
+                        </td>
+
+                        <td>
+                            Diesel
+                        </td>
+
+                    </tr>
+
+
+
+                    <tr>
+
+                        <td>
+
+                            <i class="fa-solid fa-wheat-awn"></i>
+
+                            Suitable Crops
+
+                        </td>
+
+                        <td>
+                            Wheat, Cotton
+                        </td>
+
+                        <td>
+                            Sugarcane, Rice
+                        </td>
+
+                    </tr>
+
+
+
+                    <tr>
+
+                        <td>
+
+                            <i class="fa-solid fa-shield-halved"></i>
+
+                            Warranty
+
+                        </td>
+
+                        <td>
+                            6 Years
+                        </td>
+
+                        <td>
+                            5 Years
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     QUICK VERDICT
+===================================================== -->
+
+<section class="verdict-section">
+
+
+    <div class="verdict-card">
+
+
+        <div class="verdict-icon">
+
+            <i class="fa-solid fa-lightbulb"></i>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                QUICK COMPARISON
+            </span>
+
+
+            <h2>
+                Which one is better?
+            </h2>
+
+
+            <p>
+                Mahindra offers a lower listed price and
+                longer warranty, while Swaraj provides
+                higher horsepower.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     ACTIONS
+===================================================== -->
+
+<div class="page-actions">
+
+
+    <a href="/dealers"
+       class="dealer-btn">
+
+        <i class="fa-solid fa-location-dot"></i>
+
+        Find Nearby Dealers
+
+    </a>
+
+
+    <a href="/tools"
+       class="back-btn">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Back to Tools
+
+    </a>
 
 
 </div>
 
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+
+    <i class="fa-solid fa-leaf"></i>
+
+    <strong>
+        KisanVision360
+    </strong>
+
+    <span>
+        •
+    </span>
+
+    Smart Farm Machinery
+
+    <span>
+        •
+    </span>
+
+    © 2026
+
+
+</footer>
+
+
+</div>
+
+</div>
 
 </body>
 

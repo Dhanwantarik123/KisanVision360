@@ -6,119 +6,102 @@
 
 body {
     font-family: Arial, sans-serif;
-    background: #f4f8f5;
-    color: #164d32;
+    background: #f4f8f4;
+    color: #26332a;
 }
-
-
-/* =========================
-   MAIN CONTENT
-========================= */
 
 .main-content {
-    padding: 22px;
+    margin-left: 250px;
+    padding: 25px 30px;
+    min-height: 100vh;
 }
 
 
-/* =========================
-   TOPBAR
-========================= */
+/* TOPBAR */
 
 .topbar {
     background: white;
-    min-height: 72px;
     border-radius: 18px;
-    padding: 14px 20px;
+    padding: 20px 25px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 5px 20px rgba(0, 80, 40, 0.08);
-    margin-bottom: 20px;
+    margin-bottom: 22px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.06);
 }
 
 .title-section {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 15px;
 }
 
 .title-icon {
-    width: 48px;
-    height: 48px;
-    background: #e1f5e9;
-    color: #0b8f4d;
+    width: 52px;
+    height: 52px;
     border-radius: 14px;
+    background: #e8f5e9;
+    color: #2e7d32;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
+    font-size: 23px;
 }
 
 .title-section h1 {
-    font-size: 24px;
-    color: #075d36;
-    margin-bottom: 4px;
+    color: #1b5e20;
+    font-size: 27px;
 }
 
 .title-section p {
-    font-size: 12px;
-    color: #7b8b83;
+    color: #758275;
+    margin-top: 5px;
+    font-size: 14px;
 }
-
-
-/* =========================
-   PROFILE
-========================= */
 
 .profile {
     display: flex;
     align-items: center;
-    gap: 10px;
-    background: #f7fbf8;
-    padding: 8px 14px;
-    border-radius: 14px;
+    gap: 11px;
 }
 
 .profile img {
-    width: 42px;
-    height: 42px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #19a35b;
+    border: 3px solid #43a047;
 }
 
 .profile h4 {
-    color: #145f3b;
-    font-size: 13px;
+    font-size: 16px;
+    margin-bottom: 5px;
 }
 
 .profile span {
-    color: #7b8b83;
-    font-size: 11px;
+    color: #607064;
+    font-size: 13px;
+}
+
+.profile span i {
+    color: #43a047;
+    font-size: 8px;
 }
 
 
-/* =========================
-   BANNER
-========================= */
+/* BANNER */
 
 .finance-banner {
     background: linear-gradient(
         135deg,
-        #08783f,
-        #18a45b
+        #1b5e20,
+        #43a047
     );
-
-    border-radius: 20px;
-
-    padding: 22px 28px;
-
+    border-radius: 18px;
+    padding: 24px 28px;
     color: white;
-
-    margin-bottom: 22px;
-
-    box-shadow:
-        0 10px 25px rgba(0, 120, 60, 0.18);
+    margin-bottom: 25px;
+    box-shadow: 0 8px 25px rgba(46,125,50,.20);
 }
 
 .banner-content {
@@ -128,606 +111,430 @@ body {
 }
 
 .banner-icon {
-    width: 55px;
-    height: 55px;
-
-    background: rgba(255,255,255,0.18);
-
-    border-radius: 15px;
-
+    width: 58px;
+    height: 58px;
+    background: rgba(255,255,255,.16);
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-
     font-size: 25px;
 }
 
-.finance-banner h2 {
-    font-size: 21px;
-    margin-bottom: 5px;
+.banner-content h2 {
+    font-size: 22px;
+    margin-bottom: 6px;
 }
 
-.finance-banner p {
-    font-size: 13px;
-    opacity: 0.9;
+.banner-content p {
+    opacity: .9;
+    font-size: 14px;
 }
 
 
-/* =========================
-   FINANCE CARDS
-========================= */
+/* FINANCE CARDS */
 
 .finance-grid {
     display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 18px;
-
-    margin-bottom: 25px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
 }
 
 .finance-card {
     background: white;
-
-    padding: 20px;
-
     border-radius: 18px;
-
-    min-height: 160px;
-
-    box-shadow:
-        0 7px 20px rgba(0, 80, 40, 0.08);
-
-    position: relative;
-
-    overflow: hidden;
-
-    transition: 0.3s;
+    padding: 22px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.06);
+    border-top: 4px solid #43a047;
+    transition: .3s;
 }
 
 .finance-card:hover {
     transform: translateY(-5px);
-
-    box-shadow:
-        0 12px 28px rgba(0, 80, 40, 0.14);
 }
 
-.finance-card::after {
-    content: "";
+.income-card {
+    border-top-color: #2e7d32;
+}
 
-    position: absolute;
+.expense-card {
+    border-top-color: #ef6c00;
+}
 
-    width: 90px;
-    height: 90px;
-
-    border-radius: 50%;
-
-    right: -30px;
-    bottom: -30px;
-
-    opacity: 0.08;
-
-    background: #149653;
+.profit-card {
+    border-top-color: #1565c0;
 }
 
 .card-top {
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
-    margin-bottom: 14px;
+    margin-bottom: 18px;
 }
 
 .card-icon {
-    width: 43px;
-    height: 43px;
-
-    border-radius: 12px;
-
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    font-size: 19px;
+    font-size: 20px;
 }
 
 .income-card .card-icon {
-    background: #e3f8ec;
-    color: #0a9550;
+    background: #e8f5e9;
+    color: #2e7d32;
 }
 
 .expense-card .card-icon {
-    background: #fff0ee;
-    color: #e94d42;
+    background: #fff3e0;
+    color: #ef6c00;
 }
 
 .profit-card .card-icon {
-    background: #eaf3ff;
-    color: #2877c7;
+    background: #e3f2fd;
+    color: #1565c0;
 }
 
 .card-label {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: bold;
-
     letter-spacing: 1px;
-
-    color: #91a098;
+    color: #788579;
 }
 
 .finance-card h3 {
+    color: #556457;
     font-size: 14px;
-
-    color: #66756e;
-
-    margin-bottom: 7px;
+    margin-bottom: 8px;
 }
 
 .finance-card h2 {
-    font-size: 27px;
-
-    color: #075d36;
-
-    margin-bottom: 10px;
+    color: #1b5e20;
+    font-size: 28px;
+    margin-bottom: 12px;
 }
 
 .finance-card p {
-    font-size: 11px;
+    color: #7b877d;
+    font-size: 13px;
+}
 
-    color: #7e8d85;
+.finance-card p i {
+    margin-right: 5px;
 }
 
 .income-card p i {
-    color: #0a9550;
+    color: #2e7d32;
 }
 
 .expense-card p i {
-    color: #e94d42;
+    color: #ef6c00;
 }
 
 .profit-card p i {
-    color: #2877c7;
+    color: #1565c0;
 }
 
 
-/* =========================
-   SECTION HEADER
-========================= */
+/* SECTION */
 
 .section-header {
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
-    margin: 20px 0 12px;
+    margin-bottom: 18px;
 }
 
 .section-header h2 {
-    font-size: 18px;
-
-    color: #075d36;
-
-    margin-bottom: 4px;
+    color: #1b5e20;
+    font-size: 21px;
 }
 
 .section-header p {
-    font-size: 12px;
-
-    color: #89978f;
+    color: #788579;
+    font-size: 13px;
+    margin-top: 5px;
 }
 
 
-/* =========================
-   ACTION GRID
-========================= */
+/* ACTION GRID */
 
 .action-grid {
     display: grid;
-
-    grid-template-columns:
-        repeat(4, 1fr);
-
-    gap: 15px;
-
-    margin-bottom: 28px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
 }
 
 .action-card {
     background: white;
-
     border-radius: 16px;
-
     padding: 18px;
-
-    text-decoration: none;
-
     display: flex;
-
     align-items: center;
-
-    gap: 13px;
-
-    position: relative;
-
-    box-shadow:
-        0 5px 18px rgba(0, 70, 40, 0.07);
-
-    transition: 0.3s;
-
-    border: 1px solid #edf3ef;
+    gap: 15px;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 5px 18px rgba(0,0,0,.05);
+    border: 1px solid #e7eee7;
+    transition: .3s;
 }
 
 .action-card:hover {
     transform: translateY(-4px);
-
-    box-shadow:
-        0 10px 25px rgba(0, 70, 40, 0.12);
 }
 
 .action-icon {
-    width: 43px;
-    height: 43px;
-
-    flex-shrink: 0;
-
-    border-radius: 12px;
-
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    font-size: 17px;
+    flex-shrink: 0;
 }
 
 .income-action .action-icon {
-    background: #e4f8ec;
-    color: #07944d;
+    background: #e8f5e9;
+    color: #2e7d32;
 }
 
 .expense-action .action-icon {
-    background: #fff0ed;
-    color: #e34d40;
+    background: #fff3e0;
+    color: #ef6c00;
 }
 
 .profit-action .action-icon {
-    background: #eaf3ff;
-    color: #2679c9;
+    background: #e3f2fd;
+    color: #1565c0;
 }
 
 .calculator-action .action-icon {
-    background: #fff5dd;
-    color: #e49a00;
+    background: #f3e5f5;
+    color: #7b1fa2;
 }
 
 .action-card h3 {
-    font-size: 13px;
-
-    color: #145f3b;
-
-    margin-bottom: 4px;
+    color: #263c2a;
+    font-size: 16px;
+    margin-bottom: 5px;
 }
 
 .action-card p {
-    font-size: 10px;
-
-    color: #87958e;
-
-    line-height: 1.4;
-}
-
-.action-arrow {
-    position: absolute;
-
-    right: 13px;
-
-    color: #a7b3ad;
-
+    color: #7a867c;
     font-size: 12px;
 }
 
+.action-arrow {
+    margin-left: auto;
+    color: #849184;
+}
 
-/* =========================
-   TRANSACTION SECTION
-========================= */
+
+/* TRANSACTIONS */
 
 .transaction-section {
-    margin-top: 5px;
+    margin-top: 10px;
 }
 
 .transaction-count {
-    background: #e4f7ec;
-
-    color: #098a49;
-
-    padding: 7px 12px;
-
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 8px 14px;
     border-radius: 20px;
-
-    font-size: 11px;
-
+    font-size: 12px;
     font-weight: bold;
 }
 
-
-/* =========================
-   TABLE
-========================= */
-
 .table-card {
     background: white;
-
     border-radius: 18px;
-
-    padding: 18px;
-
-    box-shadow:
-        0 7px 20px rgba(0, 70, 40, 0.08);
+    box-shadow: 0 5px 20px rgba(0,0,0,.06);
+    overflow: hidden;
 }
 
 .table-wrapper {
+    width: 100%;
     overflow-x: auto;
 }
 
 table {
     width: 100%;
-
     border-collapse: collapse;
-
-    min-width: 650px;
 }
 
 thead {
-    background: #0d8d4b;
-
-    color: white;
+    background: #f5f8f5;
 }
 
 th {
-    padding: 13px;
-
+    padding: 16px;
     text-align: left;
-
-    font-size: 11px;
+    color: #506151;
+    font-size: 12px;
+    text-transform: uppercase;
 }
 
 td {
-    padding: 14px 13px;
-
-    border-bottom: 1px solid #edf1ee;
-
-    font-size: 12px;
-
-    color: #52615a;
-}
-
-tbody tr {
-    transition: 0.2s;
-}
-
-tbody tr:hover {
-    background: #f5fbf7;
-}
-
-td strong {
-    color: #174f34;
+    padding: 16px;
+    border-top: 1px solid #edf1ed;
+    color: #4d594f;
+    font-size: 14px;
 }
 
 .description-cell {
     display: flex;
-
     align-items: center;
-
     gap: 10px;
-
-    font-weight: 600;
 }
 
 .small-income-icon,
 .small-expense-icon {
-    width: 32px;
-    height: 32px;
-
-    border-radius: 9px;
-
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .small-income-icon {
-    background: #e4f8ec;
-    color: #07944d;
+    background: #e8f5e9;
+    color: #2e7d32;
 }
 
 .small-expense-icon {
-    background: #fff0ed;
-    color: #e34d40;
+    background: #fff3e0;
+    color: #ef6c00;
 }
 
-
-/* =========================
-   BADGES
-========================= */
-
 .type-badge {
-    display: inline-flex;
-
-    align-items: center;
-
-    gap: 5px;
-
-    padding: 6px 10px;
-
+    padding: 7px 11px;
     border-radius: 20px;
-
-    font-size: 10px;
-
+    font-size: 11px;
     font-weight: bold;
 }
 
 .type-badge.income {
-    background: #e4f8ec;
-    color: #078b49;
+    background: #e8f5e9;
+    color: #2e7d32;
 }
 
 .type-badge.expense {
-    background: #fff0ed;
-    color: #df4a3e;
+    background: #fff3e0;
+    color: #ef6c00;
 }
 
 .date {
-    color: #78867f;
-
-    font-size: 11px;
+    color: #707d72;
+    font-size: 13px;
 }
 
 .date i {
-    margin-right: 4px;
+    margin-right: 5px;
 }
 
 
-/* =========================
-   EMPTY STATE
-========================= */
+/* EMPTY STATE */
 
 .empty-state {
     text-align: center;
-
-    padding: 45px 20px;
+    padding: 55px 20px;
 }
 
 .empty-icon {
     width: 70px;
     height: 70px;
-
-    margin: auto;
-
-    border-radius: 20px;
-
-    background: #e8f7ee;
-
-    color: #119354;
-
+    margin: auto auto 15px;
+    border-radius: 18px;
+    background: #e8f5e9;
+    color: #43a047;
     display: flex;
-    align-items: center;
     justify-content: center;
-
+    align-items: center;
     font-size: 28px;
-
-    margin-bottom: 15px;
 }
 
 .empty-state h3 {
-    color: #205b40;
-
+    color: #1b5e20;
     margin-bottom: 7px;
 }
 
 .empty-state p {
-    color: #8a9791;
-
-    font-size: 12px;
-
-    margin-bottom: 20px;
+    color: #788579;
+    font-size: 13px;
 }
 
 .empty-buttons {
+    margin-top: 20px;
     display: flex;
-
     justify-content: center;
-
     gap: 10px;
 }
 
-.empty-buttons a {
+.empty-income-btn,
+.empty-expense-btn {
     text-decoration: none;
-}
-
-.empty-buttons button {
-    border: none;
-
     padding: 10px 16px;
-
-    border-radius: 8px;
-
-    color: white;
-
-    cursor: pointer;
-
+    border-radius: 9px;
+    font-size: 13px;
     font-weight: bold;
 }
 
 .empty-income-btn {
-    background: #118f4d;
+    background: #2e7d32;
+    color: white;
 }
 
 .empty-expense-btn {
-    background: #e05246;
+    background: #ef6c00;
+    color: white;
 }
 
 
-/* =========================
-   FOOTER
-========================= */
+/* FOOTER */
 
 .finance-footer {
     text-align: center;
-
-    color: #8a9790;
-
-    font-size: 11px;
-
-    padding: 25px 0 10px;
+    color: #809080;
+    font-size: 12px;
+    padding: 30px 10px 15px;
 }
 
 .finance-footer i {
-    color: #159453;
-
+    color: #43a047;
     margin-right: 5px;
 }
 
 .finance-footer span {
-    margin: 0 7px;
+    margin: 0 8px;
 }
 
 
-/* =========================
-   RESPONSIVE
-========================= */
+/* RESPONSIVE */
 
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
 
     .finance-grid {
-        grid-template-columns:
-            repeat(2, 1fr);
-    }
-
-    .action-grid {
-        grid-template-columns:
-            repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr);
     }
 
 }
 
-
-@media (max-width: 700px) {
+@media (max-width: 800px) {
 
     .main-content {
-        padding: 12px;
+        margin-left: 0;
+        padding: 15px;
     }
 
     .topbar {
         flex-direction: column;
-
         align-items: flex-start;
-
-        gap: 12px;
+        gap: 18px;
     }
 
     .finance-grid {
@@ -738,16 +545,24 @@ td strong {
         grid-template-columns: 1fr;
     }
 
-    .finance-banner {
-        padding: 18px;
-    }
+}
 
-    .banner-content {
-        align-items: flex-start;
+@media (max-width: 500px) {
+
+    .title-section h1 {
+        font-size: 21px;
     }
 
     .profile {
         width: 100%;
+    }
+
+    .finance-banner {
+        padding: 20px;
+    }
+
+    .banner-content {
+        align-items: flex-start;
     }
 
     .empty-buttons {

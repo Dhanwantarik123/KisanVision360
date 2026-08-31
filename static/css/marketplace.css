@@ -1,14 +1,21 @@
 /* =========================================================
-   MARKETPLACE PAGE
+   KISANVISION360 MARKETPLACE
 ========================================================= */
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
     background: #f4f7f4;
     color: #263238;
 }
@@ -20,7 +27,9 @@ body {
 
 .main-content {
     min-height: 100vh;
+    margin-left: 270px;
     padding: 0 28px 30px;
+    width: calc(100% - 270px);
 }
 
 
@@ -62,6 +71,7 @@ body {
     margin: 0;
     font-size: 24px;
     color: #1b5e20;
+    font-weight: 700;
 }
 
 .page-title p {
@@ -102,7 +112,7 @@ body {
     border: none;
     outline: none;
     background: transparent;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 
@@ -134,7 +144,7 @@ body {
     border-radius: 20px;
     background: #e53935;
     color: white;
-    font-size: 11px;
+    font-size: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -162,10 +172,12 @@ body {
 .profile h4 {
     margin: 0;
     font-size: 14px;
+    color: #263238;
 }
 
 .profile small {
     color: #78909c;
+    font-size: 11px;
 }
 
 
@@ -178,22 +190,25 @@ body {
     align-items: center;
     gap: 28px;
     flex-wrap: wrap;
-    padding: 13px 18px;
+    padding: 14px 18px;
     margin-bottom: 20px;
     background: #ffffff;
     border-left: 5px solid #43a047;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .weather-location {
     color: #1b5e20;
+    display: flex;
+    align-items: center;
+    gap: 7px;
 }
 
 
 /* =========================================================
-   WELCOME BANNER
+   MARKETPLACE BANNER
 ========================================================= */
 
 .marketplace-banner {
@@ -216,12 +231,14 @@ body {
 .marketplace-banner h2 {
     margin: 0 0 8px;
     font-size: 23px;
+    font-weight: 700;
 }
 
 .marketplace-banner p {
     margin: 0;
     font-size: 14px;
     opacity: 0.92;
+    line-height: 1.6;
 }
 
 .banner-icon {
@@ -242,7 +259,7 @@ body {
 
 .action-buttons {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 18px;
     margin-bottom: 25px;
 }
@@ -255,16 +272,17 @@ body {
     display: flex;
     align-items: center;
     gap: 16px;
-    transition: 0.2s ease;
+    transition: 0.25s ease;
 }
 
 .action-btn:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
 }
 
 .action-btn > i {
     width: 48px;
     height: 48px;
+    flex-shrink: 0;
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -274,14 +292,18 @@ body {
 
 .action-btn strong {
     display: block;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 .action-btn small {
     display: block;
     margin-top: 5px;
     color: #607d8b;
+    font-size: 11px;
 }
+
+
+/* SELL */
 
 .sell-btn {
     background: #e8f5e9;
@@ -293,6 +315,9 @@ body {
     background: #43a047;
     color: white;
 }
+
+
+/* REQUEST */
 
 .request-btn {
     background: #fff8e1;
@@ -306,8 +331,22 @@ body {
 }
 
 
+/* ORDERS */
+
+.order-btn {
+    background: #e3f2fd;
+    color: #1565c0;
+    border: 1px solid #bbdefb;
+}
+
+.order-btn > i {
+    background: #1976d2;
+    color: white;
+}
+
+
 /* =========================================================
-   COMMON SECTION
+   COMMON SECTIONS
 ========================================================= */
 
 .market-card,
@@ -340,7 +379,7 @@ body {
 .section-header p {
     margin: 6px 0 0;
     color: #78909c;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 
@@ -367,7 +406,7 @@ body {
     width: 100%;
     border: none;
     outline: none;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 
@@ -391,14 +430,18 @@ body {
     color: #33691e;
     padding: 14px;
     text-align: left;
-    font-size: 13px;
+    font-size: 12px;
     border-bottom: 2px solid #c8e6c9;
 }
 
 #priceTable td {
     padding: 14px;
     border-bottom: 1px solid #eeeeee;
-    font-size: 13px;
+    font-size: 12px;
+}
+
+#priceTable tbody tr {
+    transition: 0.2s;
 }
 
 #priceTable tbody tr:hover {
@@ -415,6 +458,7 @@ body {
 .crop-icon {
     width: 35px;
     height: 35px;
+    flex-shrink: 0;
     border-radius: 8px;
     background: #fff8e1;
     color: #f9a825;
@@ -443,6 +487,7 @@ body {
 }
 
 .no-data i {
+    display: block;
     font-size: 30px;
     margin-bottom: 8px;
     color: #90a4ae;
@@ -462,8 +507,8 @@ body {
     color: #2e7d32;
     padding: 8px 13px;
     border-radius: 20px;
-    font-size: 12px;
-    font-weight: bold;
+    font-size: 11px;
+    font-weight: 600;
 }
 
 
@@ -482,13 +527,18 @@ body {
     border: 1px solid #e0e0e0;
     border-radius: 13px;
     overflow: hidden;
-    transition: 0.2s ease;
+    transition: 0.25s ease;
 }
 
 .product-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 7px 20px rgba(0, 0, 0, 0.10);
 }
+
+
+/* =========================================================
+   PRODUCT IMAGE
+========================================================= */
 
 .product-image {
     height: 190px;
@@ -501,6 +551,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
 }
 
 .no-image {
@@ -521,8 +572,8 @@ body {
     color: #2e7d32;
     padding: 6px 9px;
     border-radius: 20px;
-    font-size: 11px;
-    font-weight: bold;
+    font-size: 10px;
+    font-weight: 600;
     box-shadow: 0 2px 7px rgba(0, 0, 0, 0.12);
 }
 
@@ -546,8 +597,8 @@ body {
     background: #f1f8e9;
     color: #558b2f;
     border-radius: 5px;
-    font-size: 11px;
-    font-weight: bold;
+    font-size: 10px;
+    font-weight: 600;
 }
 
 .product-content h3 {
@@ -559,46 +610,123 @@ body {
 .farmer-info {
     margin: 0;
     color: #78909c;
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .farmer-info i {
     margin-right: 5px;
 }
 
-.product-bottom {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: 18px;
+
+/* =========================================================
+   PRODUCT PRICE
+========================================================= */
+
+.product-price {
+    margin-top: 17px;
+    padding: 13px;
+    background: #f8fbf8;
+    border-radius: 10px;
 }
 
-.product-bottom small {
+.product-price small {
     color: #90a4ae;
+    font-size: 10px;
+}
+
+.product-price h2 {
+    margin: 3px 0 0;
+    color: #2e7d32;
+    font-size: 21px;
+}
+
+.product-price p {
+    margin: 5px 0 0;
+    color: #78909c;
     font-size: 11px;
 }
 
-.product-bottom h2 {
-    margin: 3px 0 0;
-    color: #2e7d32;
-    font-size: 20px;
+
+/* =========================================================
+   ORDER FORM
+========================================================= */
+
+.order-form {
+    margin-top: 15px;
 }
 
-.contact-btn {
+.order-form label {
+    display: block;
+    margin-bottom: 7px;
+    color: #455a64;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.quantity-row {
+    display: flex;
+    gap: 8px;
+}
+
+.quantity-row input {
+    width: 75px;
+    height: 40px;
+    padding: 8px;
+    border: 1px solid #d7ded8;
+    border-radius: 8px;
+    outline: none;
+    text-align: center;
+    font-size: 13px;
+}
+
+.quantity-row input:focus {
+    border-color: #43a047;
+    box-shadow: 0 0 0 2px rgba(67, 160, 71, 0.1);
+}
+
+.buy-btn {
+    flex: 1;
     border: none;
     border-radius: 8px;
     background: #2e7d32;
     color: white;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.buy-btn:hover {
+    background: #1b5e20;
+    transform: translateY(-1px);
+}
+
+.buy-btn i {
+    margin-right: 5px;
+}
+
+
+/* =========================================================
+   CONTACT BUTTON
+========================================================= */
+
+.contact-btn {
+    width: 100%;
+    margin-top: 10px;
+    border: 1px solid #c8e6c9;
+    border-radius: 8px;
+    background: #e8f5e9;
+    color: #2e7d32;
     padding: 10px 14px;
     cursor: pointer;
     font-size: 12px;
-    font-weight: bold;
+    font-weight: 600;
     transition: 0.2s;
 }
 
 .contact-btn:hover {
-    background: #1b5e20;
+    background: #c8e6c9;
 }
 
 .contact-btn i {
@@ -632,11 +760,17 @@ body {
 .empty-products h2 {
     margin: 15px 0 8px;
     color: #455a64;
+    font-size: 20px;
 }
 
 .empty-products p {
     color: #90a4ae;
-    font-size: 14px;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.empty-products a {
+    text-decoration: none;
 }
 
 .empty-products button {
@@ -646,7 +780,11 @@ body {
     background: #2e7d32;
     color: white;
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 600;
+}
+
+.empty-products button:hover {
+    background: #1b5e20;
 }
 
 .empty-products button i {
@@ -674,12 +812,14 @@ body {
     color: white;
     padding: 12px 20px;
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 600;
     transition: 0.2s;
 }
 
 .dashboard-button button:hover {
     background: #2e7d32;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(46, 125, 50, 0.2);
 }
 
 .dashboard-button i {
@@ -695,7 +835,7 @@ footer {
     text-align: center;
     padding: 18px;
     color: #78909c;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 footer i {
@@ -709,46 +849,128 @@ footer span {
 
 
 /* =========================================================
-   RESPONSIVE - TABLET
+   CHATBOT SUPPORT
 ========================================================= */
 
-@media (max-width: 1100px) {
+.chatbot-button {
+    position: fixed;
+    right: 28px;
+    bottom: 28px;
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    background: #2e7d32;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    cursor: pointer;
+    z-index: 999;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.chatbot-button:hover {
+    transform: scale(1.08);
+    background: #1b5e20;
+}
+
+.chatbot-box {
+    position: fixed;
+    right: 28px;
+    bottom: 105px;
+    width: 360px;
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    display: none;
+    z-index: 999;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1200px) {
 
     .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .action-buttons {
         grid-template-columns: repeat(2, 1fr);
     }
 
     .top-search {
         width: 190px;
     }
-
 }
 
 
 /* =========================================================
-   RESPONSIVE - MOBILE
+   SIDEBAR TABLET
+========================================================= */
+
+@media (max-width: 992px) {
+
+    .main-content {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+        padding: 0 20px 25px;
+    }
+
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .top-right {
+        width: 100%;
+    }
+
+    .top-search {
+        flex: 1;
+    }
+
+    .action-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+/* =========================================================
+   MOBILE
 ========================================================= */
 
 @media (max-width: 768px) {
 
     .main-content {
+        margin-left: 0;
+        width: 100%;
         padding: 0 12px 25px;
     }
 
     .topbar {
-        align-items: flex-start;
-        flex-direction: column;
         padding: 15px;
     }
 
+    .page-title h1 {
+        font-size: 21px;
+    }
+
     .top-right {
-        width: 100%;
         flex-wrap: wrap;
     }
 
     .top-search {
-        flex: 1;
-        min-width: 180px;
+        width: 100%;
+        flex: none;
     }
 
     .profile {
@@ -763,14 +985,18 @@ footer span {
         font-size: 19px;
     }
 
-    .banner-icon {
-        width: 60px;
-        height: 60px;
-        font-size: 27px;
+    .marketplace-banner p {
+        font-size: 12px;
     }
 
-    .action-buttons {
-        grid-template-columns: 1fr;
+    .banner-icon {
+        width: 65px;
+        height: 65px;
+        font-size: 28px;
+    }
+
+    .weather-banner {
+        gap: 15px;
     }
 
     .section-header {
@@ -786,6 +1012,10 @@ footer span {
         grid-template-columns: 1fr;
     }
 
+    .chatbot-box {
+        width: 94%;
+        right: 3%;
+    }
 }
 
 
@@ -795,12 +1025,22 @@ footer span {
 
 @media (max-width: 480px) {
 
+    .main-content {
+        padding: 0 8px 20px;
+    }
+
     .page-title h1 {
-        font-size: 19px;
+        font-size: 18px;
     }
 
     .page-title p {
-        font-size: 11px;
+        font-size: 10px;
+    }
+
+    .title-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 18px;
     }
 
     .profile div {
@@ -808,8 +1048,18 @@ footer span {
     }
 
     .weather-banner {
-        gap: 12px;
-        font-size: 12px;
+        padding: 12px;
+        gap: 10px;
+        font-size: 11px;
+    }
+
+    .marketplace-banner {
+        min-height: 125px;
+        padding: 20px;
+    }
+
+    .banner-icon {
+        display: none;
     }
 
     .market-card,
@@ -817,16 +1067,28 @@ footer span {
         padding: 15px;
     }
 
-    .marketplace-banner {
-        min-height: 125px;
-    }
-
-    .banner-icon {
-        display: none;
+    .section-header h2 {
+        font-size: 17px;
     }
 
     .product-image {
         height: 210px;
     }
 
+    .quantity-row {
+        flex-direction: column;
+    }
+
+    .quantity-row input {
+        width: 100%;
+    }
+
+    .buy-btn {
+        width: 100%;
+    }
+
+    .chatbot-button {
+        right: 18px;
+        bottom: 18px;
+    }
 }

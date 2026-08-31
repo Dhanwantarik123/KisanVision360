@@ -1,17 +1,26 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 
 <head>
 
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
 <title>
-Nearby Dealers
+KisanVision360 | Nearby Dealers
 </title>
 
 
 <link rel="stylesheet"
-href="{{url_for('static',
-filename='css/dealers.css')}}">
+      href="{{ url_for('static', filename='css/sidebar.css') }}">
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/dealers.css') }}">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
@@ -19,51 +28,596 @@ filename='css/dealers.css')}}">
 <body>
 
 
-<div class="container">
+<!-- ================= SIDEBAR ================= -->
 
-
-<h1>
-📍 Nearby Farm Machinery Dealers
-</h1>
+{% include "components/sidebar.html" %}
 
 
 
-{% for dealer in dealers %}
+<!-- ================= MAIN CONTENT ================= -->
+
+<div class="main-content">
 
 
-<div class="dealer-card">
+    <!-- ================= TOPBAR ================= -->
+
+    <header class="topbar">
 
 
-<h2>
-{{dealer.name}}
-</h2>
+        <div class="title-section">
 
 
-<p>
-📍 Location:
-{{dealer.location}}
-</p>
+            <div class="title-icon">
+
+                <i class="fa-solid fa-store"></i>
+
+            </div>
 
 
-<p>
-☎ {{dealer.phone}}
-</p>
+            <div>
+
+                <h1>
+                    Nearby Farm Machinery Dealers
+                </h1>
+
+                <p>
+                    Find agricultural machinery dealers near you
+                </p>
+
+            </div>
 
 
-<button>
-Contact Dealer
-</button>
+        </div>
+
+
+
+        <!-- PROFILE -->
+
+        <div class="profile">
+
+
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='images/farmer.jpg'
+                ) }}"
+                alt="Farmer">
+
+
+            <div>
+
+                <h4>
+                    {{ name }}
+                </h4>
+
+                <span>
+                    <i class="fa-solid fa-circle"></i>
+                    Farmer
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+    </header>
+
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="dealer-banner">
+
+
+        <div class="banner-icon">
+
+            <i class="fa-solid fa-tractor"></i>
+
+        </div>
+
+
+        <div>
+
+            <h2>
+                Find Farm Machinery Near You
+            </h2>
+
+            <p>
+                Connect with trusted dealers for tractors,
+                harvesters, pumps and other agricultural equipment.
+            </p>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ================= SEARCH ================= -->
+
+    <div class="search-card">
+
+
+        <div class="search-box">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+
+            <input
+                type="text"
+                id="dealerSearch"
+                placeholder="Search dealer or location...">
+
+
+        </div>
+
+
+        <button
+            type="button"
+            onclick="findLocation()"
+            class="location-btn">
+
+            <i class="fa-solid fa-location-crosshairs"></i>
+
+            Use My Location
+
+        </button>
+
+
+    </div>
+
+
+
+    <!-- ================= STATISTICS ================= -->
+
+    <div class="dealer-stats">
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-store"></i>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    {{ dealers|length }}
+                </strong>
+
+                <span>
+                    Dealers Available
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-tractor"></i>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Farm Equipment
+                </strong>
+
+                <span>
+                    Machinery Support
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-phone"></i>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Direct Contact
+                </strong>
+
+                <span>
+                    Contact Dealers
+                </span>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ================= DEALER SECTION ================= -->
+
+    <section class="dealer-section">
+
+
+        <div class="section-heading">
+
+
+            <div>
+
+                <h2>
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    Nearby Dealers
+
+                </h2>
+
+
+                <p>
+                    Explore available farm machinery dealers
+                </p>
+
+            </div>
+
+
+            <span class="dealer-count">
+
+                {{ dealers|length }}
+
+                Dealers
+
+            </span>
+
+
+        </div>
+
+
+
+        <!-- ================= DEALER GRID ================= -->
+
+        <div class="dealer-grid"
+             id="dealerGrid">
+
+
+            {% for dealer in dealers %}
+
+
+            <div class="dealer-card"
+                 data-search="{{ dealer.name }} {{ dealer.location }}">
+
+
+                <!-- CARD HEADER -->
+
+                <div class="dealer-header">
+
+
+                    <div class="dealer-icon">
+
+                        <i class="fa-solid fa-tractor"></i>
+
+                    </div>
+
+
+                    <span class="available">
+
+                        <i class="fa-solid fa-circle"></i>
+
+                        Available
+
+                    </span>
+
+
+                </div>
+
+
+
+                <!-- DEALER INFO -->
+
+                <div class="dealer-body">
+
+
+                    <h2>
+                        {{ dealer.name }}
+                    </h2>
+
+
+                    <div class="dealer-info">
+
+
+                        <p>
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            <span>
+                                {{ dealer.location }}
+                            </span>
+
+                        </p>
+
+
+                        <p>
+
+                            <i class="fa-solid fa-phone"></i>
+
+                            <span>
+                                {{ dealer.phone }}
+                            </span>
+
+                        </p>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- BUTTONS -->
+
+                <div class="dealer-actions">
+
+
+                    <a
+                        href="tel:{{ dealer.phone }}"
+                        class="contact-btn">
+
+
+                        <i class="fa-solid fa-phone"></i>
+
+                        Contact Dealer
+
+
+                    </a>
+
+
+                    <a
+                        href="https://www.google.com/maps/search/?api=1&query={{ dealer.location | urlencode }}"
+                        target="_blank"
+                        class="map-btn">
+
+
+                        <i class="fa-solid fa-map-location-dot"></i>
+
+                        View Map
+
+
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+
+            {% else %}
+
+
+            <!-- EMPTY -->
+
+            <div class="empty-state">
+
+
+                <div class="empty-icon">
+
+                    <i class="fa-solid fa-store-slash"></i>
+
+                </div>
+
+
+                <h2>
+                    No Dealers Found
+                </h2>
+
+
+                <p>
+                    No farm machinery dealers are currently available.
+                </p>
+
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ================= INFORMATION ================= -->
+
+    <section class="dealer-info-banner">
+
+
+        <div class="info-icon">
+
+            <i class="fa-solid fa-circle-info"></i>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                Looking for Farm Equipment?
+            </h3>
+
+
+            <p>
+                Contact a nearby dealer to enquire about tractors,
+                harvesters, irrigation equipment, pumps and other
+                agricultural machinery.
+            </p>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <i class="fa-solid fa-leaf"></i>
+
+        <strong>
+            KisanVision360
+        </strong>
+
+        <span>
+            •
+        </span>
+
+        Smart Farming Equipment Support
+
+    </footer>
 
 
 </div>
 
 
 
-{% endfor %}
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+
+/* ================= SEARCH ================= */
+
+const searchInput =
+    document.getElementById("dealerSearch");
+
+
+const dealerCards =
+    document.querySelectorAll(".dealer-card");
+
+
+if (searchInput) {
+
+    searchInput.addEventListener(
+        "input",
+        function () {
+
+
+            const searchValue =
+                this.value.toLowerCase().trim();
+
+
+            dealerCards.forEach(
+                function(card) {
+
+
+                    const text =
+                        card.dataset.search.toLowerCase();
+
+
+                    if (
+                        text.includes(searchValue)
+                    ) {
+
+                        card.style.display =
+                            "block";
+
+                    }
+
+                    else {
+
+                        card.style.display =
+                            "none";
+
+                    }
+
+                }
+            );
+
+
+        }
+    );
+
+}
 
 
 
-</div>
+/* ================= LOCATION ================= */
+
+function findLocation() {
+
+
+    if (!navigator.geolocation) {
+
+        alert(
+            "Location service is not supported by your browser."
+        );
+
+        return;
+
+    }
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position) {
+
+
+            const latitude =
+                position.coords.latitude;
+
+
+            const longitude =
+                position.coords.longitude;
+
+
+            window.open(
+                "https://www.google.com/maps/search/?api=1&query="
+                + latitude
+                + ","
+                + longitude,
+                "_blank"
+            );
+
+
+        },
+
+
+        function() {
+
+            alert(
+                "Unable to access your location. Please allow location permission."
+            );
+
+        }
+
+    );
+
+}
+
+</script>
 
 
 </body>

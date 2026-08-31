@@ -1,18 +1,34 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 
 <head>
 
-<title>
-KisanVision360 | Pest Detection
-</title>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>KisanVision360 | AI Pest & Disease Detection</title>
 
 
-<link rel="stylesheet"
-href="{{url_for('static',
-filename='css/pest.css')}}">
+    <!-- SIDEBAR CSS -->
 
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/sidebar.css') }}">
+
+
+    <!-- PEST CSS -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/pest.css') }}">
+
+
+    <!-- FONT AWESOME -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
@@ -20,86 +36,746 @@ filename='css/pest.css')}}">
 <body>
 
 
-<div class="container">
+<div class="dashboard-container">
 
 
-<h1>
-🐛 AI Pest & Disease Detection
-</h1>
+    <!-- ================= SIDEBAR ================= -->
 
-
-<p>
-Upload crop leaf image for AI analysis
-</p>
+    {% include "components/sidebar.html" %}
 
 
 
+    <!-- ================= MAIN CONTENT ================= -->
 
-<form method="POST"
-enctype="multipart/form-data">
-
-
-<input 
-type="file"
-name="crop_image"
-accept="image/*"
-required>
+    <div class="main-content">
 
 
+        <!-- ================= TOPBAR ================= -->
 
-<button>
-
-Analyze Crop
-
-</button>
+        <div class="topbar">
 
 
-</form>
+            <div>
+
+                <h1>
+
+                    <i class="fa-solid fa-microscope"></i>
+
+                    AI Pest & Disease Detection
+
+                </h1>
 
 
+                <p>
 
+                    Detect crop diseases and pests using
+                    artificial intelligence.
 
+                </p>
 
-{% if image %}
-
-
-<img src="{{url_for(
-'static',
-filename='uploads/'+image
-)}}">
-
-
-{% endif %}
+            </div>
 
 
 
+            <div class="profile">
+
+                <img
+                    src="{{ url_for('static',
+                    filename='images/farmer.jpg') }}"
+                    alt="Farmer">
+
+
+                <div>
+
+                    <h4>
+                        {{ name }}
+                    </h4>
+
+                    <p>
+                        Farmer
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
 
 
 
-{% if prediction %}
+        <!-- ================= INTRO ================= -->
+
+        <div class="intro-card">
 
 
-<div class="result">
+            <div class="intro-icon">
+
+                <i class="fa-solid fa-leaf"></i>
+
+            </div>
 
 
-<h2>
-Detection Result
-</h2>
+            <div>
+
+                <h2>
+                    Smart Crop Health Analysis
+                </h2>
 
 
-<h1>
-{{prediction}}
-</h1>
+                <p>
+
+                    Upload a clear photograph of your
+                    crop leaf. KisanVision360 AI will
+                    analyze the image and provide a
+                    possible disease or pest result.
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ================= UPLOAD SECTION ================= -->
+
+        <div class="detection-grid">
+
+
+            <!-- UPLOAD CARD -->
+
+            <div class="upload-card">
+
+
+                <div class="card-header">
+
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                    <div>
+
+                        <h2>
+                            Upload Crop Image
+                        </h2>
+
+                        <p>
+                            Select a clear leaf image
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <form
+                    method="POST"
+                    enctype="multipart/form-data"
+                    id="diseaseForm">
+
+
+                    <label
+                        for="crop_image"
+                        class="upload-area">
+
+
+                        <i class="fa-solid fa-image"></i>
+
+
+                        <h3>
+                            Choose Crop Image
+                        </h3>
+
+
+                        <p>
+                            JPG, JPEG or PNG
+                        </p>
+
+
+                        <span>
+                            Click to Browse
+                        </span>
+
+
+                    </label>
+
+
+                    <input
+                        type="file"
+                        id="crop_image"
+                        name="crop_image"
+                        accept="image/*"
+                        required
+                        hidden
+                        onchange="previewImage(event)">
+
+
+                    <!-- IMAGE PREVIEW -->
+
+                    <div
+                        id="preview-container"
+                        class="preview-container"
+                        style="display:none;">
+
+
+                        <h3>
+                            Image Preview
+                        </h3>
+
+
+                        <img
+                            id="image-preview"
+                            alt="Crop Preview">
+
+
+                        <button
+                            type="button"
+                            class="remove-btn"
+                            onclick="removeImage()">
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                            Remove Image
+
+                        </button>
+
+
+                    </div>
+
+
+
+                    <button
+                        type="submit"
+                        class="analyze-btn">
+
+
+                        <i class="fa-solid fa-robot"></i>
+
+
+                        Analyze Crop
+
+
+                    </button>
+
+
+                </form>
+
+
+            </div>
+
+
+
+            <!-- INFORMATION CARD -->
+
+            <div class="info-card">
+
+
+                <h2>
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    How It Works
+
+                </h2>
+
+
+                <div class="step">
+
+
+                    <span>
+                        1
+                    </span>
+
+
+                    <div>
+
+                        <h3>
+                            Upload Image
+                        </h3>
+
+                        <p>
+                            Take a clear photo of
+                            the affected leaf.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="step">
+
+
+                    <span>
+                        2
+                    </span>
+
+
+                    <div>
+
+                        <h3>
+                            AI Analysis
+                        </h3>
+
+                        <p>
+                            The AI model analyzes
+                            the uploaded image.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="step">
+
+
+                    <span>
+                        3
+                    </span>
+
+
+                    <div>
+
+                        <h3>
+                            Detection Result
+                        </h3>
+
+                        <p>
+                            View the detected disease
+                            or healthy condition.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="step">
+
+
+                    <span>
+                        4
+                    </span>
+
+
+                    <div>
+
+                        <h3>
+                            Take Action
+                        </h3>
+
+                        <p>
+                            Follow recommended
+                            prevention measures.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ================= RESULT ================= -->
+
+        {% if prediction %}
+
+
+        <div class="result-section">
+
+
+            <div class="result-header">
+
+
+                <i class="fa-solid fa-clipboard-check"></i>
+
+
+                <div>
+
+                    <h2>
+                        AI Detection Result
+                    </h2>
+
+                    <p>
+                        Analysis completed successfully
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- RESULT CONTENT -->
+
+            <div class="result-grid">
+
+
+                <!-- IMAGE -->
+
+                <div class="result-image">
+
+
+                    {% if image %}
+
+                    <img
+                        src="{{ url_for(
+                        'static',
+                        filename='uploads/' + image
+                        ) }}"
+                        alt="Analyzed Crop">
+
+
+                    {% endif %}
+
+
+                </div>
+
+
+
+                <!-- PREDICTION -->
+
+                <div class="result-details">
+
+
+                    <span class="result-label">
+
+                        DETECTED CONDITION
+
+                    </span>
+
+
+                    <h1>
+
+                        {{ prediction }}
+
+                    </h1>
+
+
+                    {% if confidence %}
+
+                    <div class="confidence">
+
+
+                        <div class="confidence-top">
+
+                            <span>
+                                AI Confidence
+                            </span>
+
+                            <strong>
+                                {{ confidence }}%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar"
+                                style="width: {{ confidence }}%;">
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    {% endif %}
+
+
+
+                    <!-- HEALTHY -->
+
+                    {% if prediction|lower == "healthy" %}
+
+
+                    <div class="health-message">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+
+                        <div>
+
+                            <h3>
+                                Crop Appears Healthy
+                            </h3>
+
+                            <p>
+
+                                No major disease symptoms
+                                were detected in the uploaded
+                                image.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    {% else %}
+
+
+                    <div class="warning-message">
+
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+
+                        <div>
+
+                            <h3>
+                                Possible Crop Problem Detected
+                            </h3>
+
+                            <p>
+
+                                Check the affected crop
+                                carefully and follow suitable
+                                prevention measures.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    {% endif %}
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ================= SOLUTION ================= -->
+
+            <div class="solution-grid">
+
+
+                <div class="solution-card">
+
+                    <i class="fa-solid fa-stethoscope"></i>
+
+                    <h3>
+                        Symptoms
+                    </h3>
+
+                    <p>
+
+                        Check leaves for spots,
+                        discoloration, wilting,
+                        holes or unusual growth.
+
+                    </p>
+
+                </div>
+
+
+
+                <div class="solution-card">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    <h3>
+                        Prevention
+                    </h3>
+
+                    <p>
+
+                        Maintain field hygiene,
+                        proper irrigation and
+                        regular crop monitoring.
+
+                    </p>
+
+                </div>
+
+
+
+                <div class="solution-card">
+
+                    <i class="fa-solid fa-seedling"></i>
+
+                    <h3>
+                        Crop Care
+                    </h3>
+
+                    <p>
+
+                        Provide suitable nutrients,
+                        sunlight and soil moisture
+                        according to the crop.
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        {% endif %}
+
+
+
+        <!-- ================= BUTTONS ================= -->
+
+        <div class="action-buttons">
+
+
+            <a
+                href="/recommendation"
+                class="green-btn">
+
+                <i class="fa-solid fa-seedling"></i>
+
+                AI Crop Recommendation
+
+            </a>
+
+
+
+            <a
+                href="/weather"
+                class="blue-btn">
+
+                <i class="fa-solid fa-cloud-sun"></i>
+
+                Weather
+
+            </a>
+
+
+
+            <a
+                href="/farmer"
+                class="gray-btn">
+
+                <i class="fa-solid fa-house"></i>
+
+                Dashboard
+
+            </a>
+
+
+        </div>
+
+
+
+        <!-- ================= FOOTER ================= -->
+
+        <footer>
+
+            <i class="fa-solid fa-leaf"></i>
+
+            KisanVision360
+
+            <span>•</span>
+
+            AI Powered Agriculture Platform
+
+            <span>•</span>
+
+            Made in India 🇮🇳
+
+        </footer>
+
+
+    </div>
 
 
 </div>
 
 
-{% endif %}
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+function previewImage(event) {
+
+    const file = event.target.files[0];
+
+    const preview =
+        document.getElementById("image-preview");
+
+    const container =
+        document.getElementById("preview-container");
 
 
+    if (file) {
 
-</div>
+        const reader = new FileReader();
+
+
+        reader.onload = function(e) {
+
+            preview.src = e.target.result;
+
+            container.style.display = "block";
+
+        };
+
+
+        reader.readAsDataURL(file);
+
+    }
+
+}
+
+
+function removeImage() {
+
+    const input =
+        document.getElementById("crop_image");
+
+    const preview =
+        document.getElementById("image-preview");
+
+    const container =
+        document.getElementById("preview-container");
+
+
+    input.value = "";
+
+    preview.src = "";
+
+    container.style.display = "none";
+
+}
+
+</script>
+
+
+{% include "components/chatbot.html" %}
+
+<script
+src="{{ url_for('static',
+filename='js/chatbot.js') }}">
+</script>
 
 
 </body>

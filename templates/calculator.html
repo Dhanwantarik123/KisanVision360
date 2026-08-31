@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>KisanVision360 | Farm Calculator</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/sidebar.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/calculator.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+{% include "components/sidebar.html" %}
+
+
+<main class="main-content">
+
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+        <div>
+
+            <h1>
+                <i class="fa-solid fa-calculator"></i>
+                Farm Calculator
+            </h1>
+
+            <p>
+                Calculate farming cost, income and profit
+            </p>
+
+        </div>
+
+        <div class="profile">
+
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='images/farmer.jpg'
+                ) }}"
+                alt="Farmer">
+
+            <div>
+
+                <h4>{{ name }}</h4>
+
+                <span>Farmer</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CALCULATOR -->
+
+    <section class="calculator-card">
+
+        <div class="calculator-title">
+
+            <i class="fa-solid fa-seedling"></i>
+
+            <div>
+
+                <h2>Farm Cost & Profit Calculator</h2>
+
+                <p>
+                    Enter your farming details
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form method="POST">
+
+
+            <div class="form-grid">
+
+
+                <!-- LAND -->
+
+                <div class="form-group">
+
+                    <label>
+                        <i class="fa-solid fa-landmark"></i>
+                        Land Area (Acre)
+                    </label>
+
+                    <input
+                        type="number"
+                        name="land"
+                        step="0.01"
+                        min="0"
+                        required
+                        placeholder="Example: 2">
+
+                </div>
+
+
+                <!-- SEED -->
+
+                <div class="form-group">
+
+                    <label>
+                        🌱 Seed Cost (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        name="seed"
+                        step="0.01"
+                        min="0"
+                        required
+                        placeholder="Example: 5000">
+
+                </div>
+
+
+                <!-- FERTILIZER -->
+
+                <div class="form-group">
+
+                    <label>
+                        🧪 Fertilizer Cost (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        name="fertilizer"
+                        step="0.01"
+                        min="0"
+                        required
+                        placeholder="Example: 4000">
+
+                </div>
+
+
+                <!-- LABOUR -->
+
+                <div class="form-group">
+
+                    <label>
+                        👷 Labour Cost (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        name="labour"
+                        step="0.01"
+                        min="0"
+                        required
+                        placeholder="Example: 6000">
+
+                </div>
+
+
+                <!-- IRRIGATION -->
+
+                <div class="form-group">
+
+                    <label>
+                        💧 Irrigation Cost (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        name="irrigation"
+                        step="0.01"
+                        min="0"
+                        required
+                        placeholder="Example: 2000">
+
+                </div>
+
+
+                <!-- PESTICIDE -->
+
+                <div class="form-group">
+
+                    <label>
+                        🐛 Pesticide Cost (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        name="pesticide"
+                        step="0.01"
+                        min="0"
+                        required
+                        placeholder="Example: 1500">
+
+                </div>
+
+
+                <!-- OTHER -->
+
+                <div class="form-group">
+
+                    <label>
+                        📦 Other Cost (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        name="other"
+                        step="0.01"
+                        min="0"
+                        required
+                        placeholder="Example: 1000">
+
+                </div>
+
+
+                <!-- YIELD -->
+
+                <div class="form-group">
+
+                    <label>
+                        🌾 Expected Yield / Acre (Quintal)
+                    </label>
+
+                    <input
+                        type="number"
+                        name="yield_per_acre"
+                        step="0.01"
+                        min="0"
+                        required
+                        placeholder="Example: 10">
+
+                </div>
+
+
+                <!-- SELLING PRICE -->
+
+                <div class="form-group full-width">
+
+                    <label>
+                        💰 Selling Price / Quintal (₹)
+                    </label>
+
+                    <input
+                        type="number"
+                        name="selling_price"
+                        step="0.01"
+                        min="0"
+                        required
+                        placeholder="Example: 5000">
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="calculate-btn">
+
+                <i class="fa-solid fa-calculator"></i>
+
+                Calculate Profit
+
+            </button>
+
+        </form>
+
+
+        {% if result %}
+
+            {% if result.error %}
+
+                <div class="error-box">
+
+                    ⚠️ {{ result.error }}
+
+                </div>
+
+            {% else %}
+
+            <!-- RESULT -->
+
+            <div class="result-section">
+
+                <h2>
+                    <i class="fa-solid fa-chart-line"></i>
+                    Calculation Result
+                </h2>
+
+
+                <div class="result-grid">
+
+
+                    <div class="result-card">
+
+                        <span>Total Expense</span>
+
+                        <strong>
+                            ₹ {{ "%.2f"|format(result.expense) }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="result-card">
+
+                        <span>Total Yield</span>
+
+                        <strong>
+                            {{ "%.2f"|format(result["yield"]) }}
+                            Quintal
+                        </strong>
+
+                    </div>
+
+
+                    <div class="result-card">
+
+                        <span>Total Income</span>
+
+                        <strong>
+                            ₹ {{ "%.2f"|format(result.income) }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="result-card profit">
+
+                        <span>
+                            {% if result.profit >= 0 %}
+                                Estimated Profit
+                            {% else %}
+                                Estimated Loss
+                            {% endif %}
+                        </span>
+
+                        <strong>
+                            ₹ {{ "%.2f"|format(result.profit) }}
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+                {% if result.profit >= 0 %}
+
+                <div class="success-message">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    Your estimated farm profit is
+                    ₹ {{ "%.2f"|format(result.profit) }}
+
+                </div>
+
+                {% else %}
+
+                <div class="loss-message">
+
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+
+                    Your estimated farming cost is higher
+                    than the expected income.
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+            {% endif %}
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- BACK -->
+
+    <div class="bottom-links">
+
+        <a href="{{ url_for('finance') }}">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Finance
+
+        </a>
+
+    </div>
+
+
+    <footer>
+
+        🌱 KisanVision360 • Smart Farming Finance
+
+    </footer>
+
+</main>
+
+</body>
+
+</html>

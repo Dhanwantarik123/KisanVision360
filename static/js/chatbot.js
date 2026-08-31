@@ -1,154 +1,349 @@
-// ================================
-// KisanVision360 AI Chatbot
-// ================================
+// =========================================================
+// KisanVision360 AI CHATBOT
+// =========================================================
 
-// Open / Close Chat
+
+// =========================================================
+// TOGGLE CHAT
+// =========================================================
+
 function toggleChat() {
 
-    const chat = document.getElementById("chatBox");
+    const chatBox = document.getElementById("chatBox");
 
-    if (chat.style.display === "flex") {
-
-        chat.style.display = "none";
-
-    } else {
-
-        chat.style.display = "flex";
-
-        document.getElementById("message").focus();
-
+    if (chatBox) {
+        chatBox.classList.toggle("active");
     }
 
 }
 
-// Quick Suggestion Buttons
-function quickQuestion(text) {
 
-    document.getElementById("message").value = text;
+// =========================================================
+// QUICK QUESTION
+// =========================================================
+
+function quickQuestion(question) {
+
+    const input = document.getElementById("message");
+
+    if (!input) {
+        return;
+    }
+
+    input.value = question;
 
     sendMessage();
 
 }
 
-// Send Message
-function sendMessage() {
 
-    const input = document.getElementById("message");
-    const box = document.getElementById("chat-box");
+// =========================================================
+// ADD USER MESSAGE
+// =========================================================
 
-    let message = input.value.trim();
+function addUserMessage(message) {
 
-    if (message === "") return;
+    const chatBody = document.getElementById("chat-box");
 
-    // User Message
-    box.innerHTML += `
-        <div class="user">
-            ${message}
+    if (!chatBody) {
+        return;
+    }
+
+    const div = document.createElement("div");
+
+    div.className = "user-message";
+
+    div.innerHTML = `
+        <div class="message-content">
+            ${escapeHTML(message)}
         </div>
     `;
 
-    input.value = "";
+    chatBody.appendChild(div);
 
-    // Scroll
-    box.scrollTop = box.scrollHeight;
-
-    // Typing Indicator
-    const typing = document.createElement("div");
-    typing.className = "bot";
-    typing.id = "typing";
-
-    typing.innerHTML = `
-        🤖 <i>Typing...</i>
-    `;
-
-    box.appendChild(typing);
-
-    box.scrollTop = box.scrollHeight;
-
-    fetch("/ask_chatbot", {
-
-        method: "POST",
-
-        headers: {
-            "Content-Type": "application/json"
-        },
-
-        body: JSON.stringify({
-            message: message
-        })
-
-    })
-
-    .then(response => response.json())
-
-    .then(data => {
-
-        document.getElementById("typing").remove();
-
-        box.innerHTML += `
-            <div class="bot">
-                ${data.reply}
-            </div>
-        `;
-
-        box.scrollTop = box.scrollHeight;
-
-    })
-
-    .catch(error => {
-
-        const typingBox = document.getElementById("typing");
-
-        if (typingBox) typingBox.remove();
-
-        box.innerHTML += `
-            <div class="bot">
-                ❌ Unable to connect to AI server.
-            </div>
-        `;
-
-        console.log(error);
-
-    });
+    chatBody.scrollTop = chatBody.scrollHeight;
 
 }
 
-// Press Enter
-document.addEventListener("DOMContentLoaded", () => {
+
+// =========================================================
+// ADD BOT MESSAGE
+// =========================================================
+
+function addBotMessage(message) {
+
+    const chatBody = document.getElementById("chat-box");
+
+    if (!chatBody) {
+        return;
+    }
+
+    const div = document.createElement("div");
+
+    div.className = "bot-reply";
+
+    div.innerHTML = `
+        <div class="message-avatar">
+            🤖
+        </div>
+
+        <div class="message-content">
+            <div class="bot">
+                ${formatBotMessage(message)}
+            </div>
+        </div>
+    `;
+
+    chatBody.appendChild(div);
+
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+}
+
+
+// =========================================================
+// SEND MESSAGE
+// =========================================================
+
+async function sendMessage() {
 
     const input = document.getElementById("message");
 
-    if (input) {
+    const chatBody = document.getElementById("chat-box");
 
-        input.addEventListener("keypress", function(e) {
+    const typingIndicator =
+        document.getElementById("typingIndicator");
 
-            if (e.key === "Enter") {
 
-                e.preventDefault();
+    if (!input || !chatBody) {
 
-                sendMessage();
+        console.error(
+            "❌ Chatbot HTML elements not found."
+        );
 
-            }
-
-        });
+        return;
 
     }
 
-});
 
-// Auto Welcome Popup (Optional)
-window.onload = function() {
+    const message = input.value.trim();
 
-    setTimeout(() => {
 
-        const btn = document.querySelector(".chatbot-button");
+    if (!message) {
+        return;
+    }
 
-        if(btn){
 
-            btn.classList.add("bounce");
+    // -----------------------------------------
+    // SHOW USER MESSAGE
+    // -----------------------------------------
+
+    addUserMessage(message);
+
+    input.value = "";
+
+
+    // -----------------------------------------
+    // SHOW TYPING
+    // -----------------------------------------
+
+    if (typingIndicator) {
+
+        typingIndicator.style.display = "block";
+
+    }
+
+
+    try {
+
+        // -----------------------------------------
+        // SEND TO FLASK
+        // -----------------------------------------
+
+        const response = await fetch(
+            "/ask_chatbot",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+
+                body: JSON.stringify({
+                    message: message
+                })
+            }
+        );
+
+
+        // -----------------------------------------
+        // CHECK HTTP STATUS
+        // -----------------------------------------
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Server returned HTTP " +
+                response.status
+            );
 
         }
 
-    },1500);
 
-};
+        const data = await response.json();
+
+
+        // -----------------------------------------
+        // HIDE TYPING
+        // -----------------------------------------
+
+        if (typingIndicator) {
+
+            typingIndicator.style.display = "none";
+
+        }
+
+
+        // -----------------------------------------
+        // BOT RESPONSE
+        // -----------------------------------------
+
+        if (data.reply) {
+
+            addBotMessage(data.reply);
+
+        }
+
+        else {
+
+            addBotMessage(
+                "🤖 Sorry, I could not generate an answer."
+            );
+
+        }
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "❌ CHATBOT ERROR:",
+            error
+        );
+
+
+        // Hide typing
+
+        if (typingIndicator) {
+
+            typingIndicator.style.display = "none";
+
+        }
+
+
+        addBotMessage(
+            "⚠️ Unable to connect to KisanVision360 AI. Please try again."
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// ENTER KEY
+// =========================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const input =
+            document.getElementById("message");
+
+
+        if (!input) {
+
+            console.error(
+                "❌ Chat input #message not found."
+            );
+
+            return;
+
+        }
+
+
+        input.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Enter") {
+
+                    event.preventDefault();
+
+                    sendMessage();
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+// =========================================================
+// FORMAT BOT MESSAGE
+// =========================================================
+
+function formatBotMessage(message) {
+
+    if (!message) {
+        return "";
+    }
+
+
+    let text = String(message);
+
+
+    // First escape HTML
+
+    text = escapeHTML(text);
+
+
+    // Convert **text** to bold
+
+    text = text.replace(
+        /\*\*(.*?)\*\*/g,
+        "<strong>$1</strong>"
+    );
+
+
+    // Convert line breaks
+
+    text = text.replace(
+        /\n/g,
+        "<br>"
+    );
+
+
+    return text;
+
+}
+
+
+// =========================================================
+// SECURITY
+// =========================================================
+
+function escapeHTML(text) {
+
+    const div = document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}

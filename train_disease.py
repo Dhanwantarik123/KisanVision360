@@ -1,151 +1,234 @@
 import os
 import tensorflow as tf
+from tensorflow.keras import layers, models
 
-DATASET_DIR = r"D:\KisanVision360\dataset"
+# =========================================================
+# DATASET PATH
+# =========================================================
 
-IMAGE_SIZE = (224, 224)
+DATASET_DIR = r"D:\KisanVision360\kaggle_data\datasets\seroshkarim\cotton-leaf-disease-dataset\versions\1\cotton"
 
+# =========================================================
+# MODEL OUTPUT PATH
+# =========================================================
+
+MODEL_PATH = r"D:\KisanVision360\ai_models\disease_model.keras"
+
+# =========================================================
+# SETTINGS
+# =========================================================
+
+IMG_SIZE = (224, 224)
 BATCH_SIZE = 32
+EPOCHS = 15
 
-EPOCHS = 10
+# =========================================================
+# LOAD TRAINING DATA
+# =========================================================
 
-
-# Load training data
-
-train_data = tf.keras.utils.image_dataset_from_directory(
+train_ds = tf.keras.utils.image_dataset_from_directory(
     DATASET_DIR,
     validation_split=0.2,
     subset="training",
-    seed=42,
-    image_size=IMAGE_SIZE,
+    seed=123,
+    image_size=IMG_SIZE,
     batch_size=BATCH_SIZE
 )
 
+# =========================================================
+# LOAD VALIDATION DATA
+# =========================================================
 
-# Load validation data
-
-val_data = tf.keras.utils.image_dataset_from_directory(
+val_ds = tf.keras.utils.image_dataset_from_directory(
     DATASET_DIR,
     validation_split=0.2,
     subset="validation",
-    seed=42,
-    image_size=IMAGE_SIZE,
+    seed=123,
+    image_size=IMG_SIZE,
     batch_size=BATCH_SIZE
 )
 
+# =========================================================
+# CLASS NAMES
+# =========================================================
 
-# Get class names
+class_names = train_ds.class_names
 
-class_names = train_data.class_names
-
-print()
-print("Classes:")
+print("\n========================================")
+print("DISEASE CLASSES")
+print("========================================")
 
 for i, name in enumerate(class_names):
-    print(i, name)
+    print(i, "=", name)
 
+print("Total Classes:", len(class_names))
 
-# Model
-
-model = tf.keras.Sequential([
-
-    tf.keras.layers.Input(
-        shape=(224, 224, 3)
-    ),
-
-    tf.keras.layers.Rescaling(
-        1.0 / 255
-    ),
-
-    tf.keras.layers.Conv2D(
-        32,
-        3,
-        activation="relu"
-    ),
-
-    tf.keras.layers.MaxPooling2D(),
-
-    tf.keras.layers.Conv2D(
-        64,
-        3,
-        activation="relu"
-    ),
-
-    tf.keras.layers.MaxPooling2D(),
-
-    tf.keras.layers.Conv2D(
-        128,
-        3,
-        activation="relu"
-    ),
-
-    tf.keras.layers.MaxPooling2D(),
-
-    tf.keras.layers.Flatten(),
-
-    tf.keras.layers.Dense(
-        128,
-        activation="relu"
-    ),
-
-    tf.keras.layers.Dropout(0.5),
-
-    tf.keras.layers.Dense(
-        len(class_names),
-        activation="softmax"
-    )
-
-])
-
-
-# Compile
-
-model.compile(
-    optimizer="adam",
-    loss="sparse_categorical_crossentropy",
-    metrics=["accuracy"]
-)
-
-
-# Train
-
-model.fit(
-    train_data,
-    validation_data=val_data,
-    epochs=EPOCHS
-)
-
-
-# Create model folder
+# =========================================================
+# SAVE CLASS NAMES
+# =========================================================
 
 os.makedirs(
     r"D:\KisanVision360\ai_models",
     exist_ok=True
 )
 
-
-# Save model
-
-model.save(
-    r"D:\KisanVision360\ai_models\disease_model.keras"
-)
-
-
-# Save classes
-
 with open(
     r"D:\KisanVision360\ai_models\disease_classes.txt",
-    "w"
+    "w",
+    encoding="utf-8"
 ) as f:
 
     for name in class_names:
         f.write(name + "\n")
 
+# =========================================================
+# PERFORMANCE
+# =========================================================
 
-print()
-print("================================")
+AUTOTUNE = tf.data.AUTOTUNE
+
+train_ds = train_ds.prefetch(
+    AUTOTUNE
+)
+
+val_ds = val_ds.prefetch(
+    AUTOTUNE
+)
+
+# =========================================================
+# CNN MODEL
+# =========================================================
+
+model = models.Sequential([
+
+    layers.Input(
+        shape=(224, 224, 3)
+    ),
+
+    # Image normalization
+    layers.Rescaling(
+        1.0 / 255
+    ),
+
+    # CNN Layer 1
+    layers.Conv2D(
+        32,
+        (3, 3),
+        activation="relu"
+    ),
+
+    layers.MaxPooling2D(
+        (2, 2)
+    ),
+
+    # CNN Layer 2
+    layers.Conv2D(
+        64,
+        (3, 3),
+        activation="relu"
+    ),
+
+    layers.MaxPooling2D(
+        (2, 2)
+    ),
+
+    # CNN Layer 3
+    layers.Conv2D(
+        128,
+        (3, 3),
+        activation="relu"
+    ),
+
+    layers.MaxPooling2D(
+        (2, 2)
+    ),
+
+    # Flatten
+    layers.Flatten(),
+
+    # Dense
+    layers.Dense(
+        128,
+        activation="relu"
+    ),
+
+    layers.Dropout(
+        0.5
+    ),
+
+    # OUTPUT = 4 CLASSES
+    layers.Dense(
+        len(class_names),
+        activation="softmax"
+    )
+])
+
+# =========================================================
+# COMPILE
+# =========================================================
+
+model.compile(
+
+    optimizer="adam",
+
+    loss="sparse_categorical_crossentropy",
+
+    metrics=[
+        "accuracy"
+    ]
+)
+
+# =========================================================
+# MODEL SUMMARY
+# =========================================================
+
+print("\n========================================")
+print("MODEL SUMMARY")
+print("========================================")
+
+model.summary()
+
+# =========================================================
+# TRAIN
+# =========================================================
+
+print("\n========================================")
+print("TRAINING STARTED")
+print("========================================")
+
+history = model.fit(
+
+    train_ds,
+
+    validation_data=val_ds,
+
+    epochs=EPOCHS
+
+)
+
+# =========================================================
+# SAVE MODEL
+# =========================================================
+
+model.save(
+    MODEL_PATH
+)
+
+print("\n========================================")
 print("TRAINING COMPLETED")
-print("================================")
+print("========================================")
 
-print("Model saved:")
-print(r"D:\KisanVision360\ai_models\disease_model.keras")
+print(
+    "Model saved at:",
+    MODEL_PATH
+)
+
+print(
+    "Classes:",
+    len(class_names)
+)
+
+print(
+    "Class names:",
+    class_names
+)

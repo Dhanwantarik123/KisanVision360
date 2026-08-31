@@ -3,26 +3,151 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<title>KisanVision360 | Farmer Dashboard</title>
-
-
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/sidebar.css') }}">
+    <title>KisanVision360 | Farmer Dashboard</title>
 
 
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <!-- ================= SIDEBAR CSS ================= -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/sidebar.css') }}">
 
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <!-- ================= DASHBOARD CSS ================= -->
 
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/dashboard.css') }}">
+
+
+    <!-- ================= FONT AWESOME ================= -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+
+    <!-- ================= GOOGLE TRANSLATE CSS ================= -->
+
+    <style>
+
+        /* Hide Google Translate default widget */
+
+        #google_translate_element {
+            display: none;
+        }
+
+
+        /* Remove Google top translation bar */
+
+        .goog-te-banner-frame.skiptranslate {
+            display: none !important;
+        }
+
+
+        body {
+            top: 0 !important;
+        }
+
+
+        /* Hide Google logo */
+
+        .goog-logo-link {
+            display: none !important;
+        }
+
+
+        .goog-te-gadget {
+            font-size: 0 !important;
+        }
+
+
+        /* ================= LANGUAGE BUTTON ================= */
+
+        .language-box {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            background: #ffffff;
+
+            padding: 9px 13px;
+
+            border-radius: 10px;
+
+            border: 1px solid #e1e1e1;
+
+            box-shadow:
+                0 3px 10px
+                rgba(0, 0, 0, 0.08);
+
+        }
+
+
+        .language-box i {
+
+            color: #2e7d32;
+
+            font-size: 18px;
+
+        }
+
+
+        .language-box select {
+
+            border: none;
+
+            outline: none;
+
+            background: transparent;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            color: #333;
+
+            cursor: pointer;
+
+        }
+
+
+        .language-box select option {
+
+            color: #333;
+
+            background: #ffffff;
+
+        }
+
+
+        @media(max-width: 900px) {
+
+            .language-box {
+
+                padding: 7px 9px;
+
+            }
+
+            .language-box select {
+
+                font-size: 12px;
+
+            }
+
+        }
+
+    </style>
 
 </head>
+
 
 
 <body>
@@ -33,625 +158,1233 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
 
 
 
-<!-- SIDEBAR -->
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
 
-{% include 'components/sidebar.html' %}
-
-
-
-
-
-<!-- MAIN -->
-
-<div class="main-content">
+    {% include "components/sidebar.html" %}
 
 
 
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="main-content">
 
 
-<!-- TOPBAR -->
 
-<header class="topbar">
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
 
-
-<div>
-
-
-<h1>
-
-🌾 KisanVision360 Dashboard
-
-</h1>
+        <header class="topbar">
 
 
-<p>
+            <!-- ================= WELCOME ================= -->
 
-Welcome {{name}} 👋
+            <div class="welcome-section">
 
-<br>
+                <h1>
 
-AI Powered Smart Agriculture Platform
+                    🌾 KisanVision360 Dashboard
 
-</p>
+                </h1>
 
+
+                <p>
+
+                    Welcome {{ name }} 👋
+
+                    <br>
+
+                    AI Powered Smart Agriculture Platform
+
+                </p>
+
+            </div>
+
+
+
+            <!-- ================= TOP RIGHT ================= -->
+
+            <div class="top-right">
+
+
+
+                <!-- =================================================
+                     LANGUAGE SELECTOR
+                ================================================== -->
+
+                <div class="language-box">
+
+                    <i class="fa-solid fa-language"></i>
+
+                    <select
+                        id="languageSelect"
+                        onchange="changeLanguage(this.value)">
+
+                        <option value="en">
+                            English
+                        </option>
+
+                        <option value="hi">
+                            हिन्दी
+                        </option>
+
+                        <option value="mr">
+                            मराठी
+                        </option>
+
+                        <option value="kn">
+                            ಕನ್ನಡ
+                        </option>
+
+                        <option value="te">
+                            తెలుగు
+                        </option>
+
+                        <option value="ta">
+                            தமிழ்
+                        </option>
+
+                        <option value="ml">
+                            മലയാളം
+                        </option>
+
+                        <option value="gu">
+                            ગુજરાતી
+                        </option>
+
+                        <option value="pa">
+                            ਪੰਜਾਬੀ
+                        </option>
+
+                        <option value="bn">
+                            বাংলা
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     DATE & TIME
+                ================================================== -->
+
+                <div class="live-time">
+
+                    <i class="fa-solid fa-calendar-days"></i>
+
+                    <div>
+
+                        <h4 id="date"></h4>
+
+                        <p id="clock"></p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     NOTIFICATION
+                ================================================== -->
+
+                <a href="{{ url_for('notifications') }}"
+                   class="notification">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                    <span>3</span>
+
+                </a>
+
+
+
+                <!-- =================================================
+                     PROFILE
+                ================================================== -->
+
+                <div class="profile">
+
+                    <img
+                        src="{{ url_for(
+                            'static',
+                            filename='images/farmer.png'
+                        ) }}"
+                        alt="Farmer">
+
+
+                    <div>
+
+                        <h4>
+                            {{ name }}
+                        </h4>
+
+                        <small>
+                            Farmer
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =====================================================
+             WEATHER SUMMARY
+        ====================================================== -->
+
+        <section class="weather-summary">
+
+
+            <!-- ================= WEATHER MAIN ================= -->
+
+            <div class="weather-main">
+
+
+                <div>
+
+                    <span class="weather-location">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        {{ weather.city }},
+                        {{ weather.country }}
+
+                    </span>
+
+
+                    <h1>
+
+                        {{ weather.temperature }}°C
+
+                    </h1>
+
+
+                    <p>
+
+                        {{ weather.description }}
+
+                    </p>
+
+                </div>
+
+
+
+                <img
+                    src="https://openweathermap.org/img/wn/{{ weather.icon }}@4x.png"
+                    alt="Weather">
+
+            </div>
+
+
+
+            <!-- ================= WEATHER GRID ================= -->
+
+            <div class="weather-grid">
+
+
+
+                <!-- FEELS LIKE -->
+
+                <div class="weather-card">
+
+                    <div class="weather-icon">
+
+                        <i class="fa-solid fa-temperature-half"></i>
+
+                    </div>
+
+
+                    <h3>
+
+                        Feels Like
+
+                    </h3>
+
+
+                    <p>
+
+                        {{ weather.feels_like }} °C
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- HUMIDITY -->
+
+                <div class="weather-card">
+
+                    <div class="weather-icon">
+
+                        <i class="fa-solid fa-droplet"></i>
+
+                    </div>
+
+
+                    <h3>
+
+                        Humidity
+
+                    </h3>
+
+
+                    <p>
+
+                        {{ weather.humidity }} %
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- WIND -->
+
+                <div class="weather-card">
+
+                    <div class="weather-icon">
+
+                        <i class="fa-solid fa-wind"></i>
+
+                    </div>
+
+
+                    <h3>
+
+                        Wind Speed
+
+                    </h3>
+
+
+                    <p>
+
+                        {{ weather.wind }} m/s
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- CLOUD -->
+
+                <div class="weather-card">
+
+                    <div class="weather-icon">
+
+                        <i class="fa-solid fa-cloud"></i>
+
+                    </div>
+
+
+                    <h3>
+
+                        Cloud Cover
+
+                    </h3>
+
+
+                    <p>
+
+                        {{ weather.clouds }} %
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             HERO SECTION
+        ====================================================== -->
+
+        <section class="hero">
+
+
+
+            <!-- ================= HERO TEXT ================= -->
+
+            <div class="hero-text">
+
+
+                <span class="hero-label">
+
+                    🌱 AI Smart Farming
+
+                </span>
+
+
+                <h1>
+
+                    Grow Better With Artificial Intelligence
+
+                </h1>
+
+
+                <p>
+
+                    Monitor crops, weather, irrigation,
+                    disease detection and market prices
+                    from one smart platform.
+
+                </p>
+
+
+
+                <div class="hero-buttons">
+
+
+
+                    <!-- CROP RECOMMENDATION -->
+
+                    <a href="{{ url_for('recommendation') }}"
+                       class="primary-btn">
+
+                        <i class="fa-solid fa-seedling"></i>
+
+                        Crop Recommendation
+
+                    </a>
+
+
+
+                    <!-- WEATHER -->
+
+                    <a href="{{ url_for('weather') }}"
+                       class="secondary-btn">
+
+                        <i class="fa-solid fa-cloud-sun"></i>
+
+                        Live Weather
+
+                    </a>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= HERO IMAGE ================= -->
+
+            <div class="hero-image">
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename='images/farm-banner.png'
+                    ) }}"
+                    alt="Smart Farming">
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================================
+             SMART AGRICULTURE SERVICES
+        ====================================================== -->
+
+        <section class="features-section">
+
+
+
+            <div class="section-heading">
+
+
+                <div>
+
+                    <h2>
+
+                        Smart Agriculture Services
+
+                    </h2>
+
+
+                    <p>
+
+                        Everything you need to manage your farm
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="features">
+
+
+
+                <!-- =================================================
+                     AI CROP ADVISORY
+                ================================================== -->
+
+                <a href="{{ url_for('recommendation') }}"
+                   class="feature-link">
+
+
+                    <div class="card">
+
+
+                        <div class="feature-icon">
+
+                            🌱
+
+                        </div>
+
+
+                        <h3>
+
+                            AI Crop Advisory
+
+                        </h3>
+
+
+                        <p>
+
+                            Smart crop and fertilizer
+                            recommendations.
+
+                        </p>
+
+
+                        <span>
+
+                            Explore
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </span>
+
+
+                    </div>
+
+
+                </a>
+
+
+
+                <!-- =================================================
+                     SMART IRRIGATION
+                ================================================== -->
+
+                <a href="{{ url_for('irrigation') }}"
+                   class="feature-link">
+
+
+                    <div class="card">
+
+
+                        <div class="feature-icon">
+
+                            💧
+
+                        </div>
+
+
+                        <h3>
+
+                            Smart Irrigation
+
+                        </h3>
+
+
+                        <p>
+
+                            AI-based water management
+                            for better crops.
+
+                        </p>
+
+
+                        <span>
+
+                            Explore
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </span>
+
+
+                    </div>
+
+
+                </a>
+
+
+
+                <!-- =================================================
+                     DISEASE DETECTION
+                ================================================== -->
+
+                <a href="{{ url_for('pest') }}"
+                   class="feature-link">
+
+
+                    <div class="card">
+
+
+                        <div class="feature-icon">
+
+                            🐛
+
+                        </div>
+
+
+                        <h3>
+
+                            Disease Detection
+
+                        </h3>
+
+
+                        <p>
+
+                            Identify crop diseases
+                            using AI.
+
+                        </p>
+
+
+                        <span>
+
+                            Detect Disease
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </span>
+
+
+                    </div>
+
+
+                </a>
+
+
+
+                <!-- =================================================
+                     MARKET PRICE
+                ================================================== -->
+
+                <a href="{{ url_for('market') }}"
+                   class="feature-link">
+
+
+                    <div class="card">
+
+
+                        <div class="feature-icon">
+
+                            📈
+
+                        </div>
+
+
+                        <h3>
+
+                            Market Price
+
+                        </h3>
+
+
+                        <p>
+
+                            Check current agricultural
+                            mandi prices.
+
+                        </p>
+
+
+                        <span>
+
+                            View Prices
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </span>
+
+
+                    </div>
+
+
+                </a>
+
+
+
+                <!-- =================================================
+                     GOVERNMENT SCHEMES
+                ================================================== -->
+
+                <a href="{{ url_for('government') }}"
+                   class="feature-link">
+
+
+                    <div class="card">
+
+
+                        <div class="feature-icon">
+
+                            🏛️
+
+                        </div>
+
+
+                        <h3>
+
+                            Government Schemes
+
+                        </h3>
+
+
+                        <p>
+
+                            Explore farmer subsidies
+                            and government schemes.
+
+                        </p>
+
+
+                        <span>
+
+                            View Schemes
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </span>
+
+
+                    </div>
+
+
+                </a>
+
+
+
+                <!-- =================================================
+                     MARKETPLACE
+                ================================================== -->
+
+                <a href="{{ url_for('marketplace') }}"
+                   class="feature-link">
+
+
+                    <div class="card">
+
+
+                        <div class="feature-icon">
+
+                            🛒
+
+                        </div>
+
+
+                        <h3>
+
+                            Marketplace
+
+                        </h3>
+
+
+                        <p>
+
+                            Buy and sell agricultural
+                            products.
+
+                        </p>
+
+
+                        <span>
+
+                            Open Marketplace
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </span>
+
+
+                    </div>
+
+
+                </a>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             QUICK ACCESS
+        ====================================================== -->
+
+        <section class="quick-access">
+
+
+
+            <!-- ================= FARM FINANCE ================= -->
+
+            <div class="quick-card">
+
+
+                <div class="quick-icon">
+
+                    💰
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+
+                        Farm Finance
+
+                    </h3>
+
+
+                    <p>
+
+                        Track income, expenses and profit.
+
+                    </p>
+
+                </div>
+
+
+                <a href="{{ url_for('finance') }}">
+
+                    Open
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+
+            </div>
+
+
+
+            <!-- ================= HELP ================= -->
+
+            <div class="quick-card">
+
+
+                <div class="quick-icon">
+
+                    ❓
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+
+                        Help & Support
+
+                    </h3>
+
+
+                    <p>
+
+                        Get assistance with KisanVision360.
+
+                    </p>
+
+                </div>
+
+
+                <a href="{{ url_for('help') }}">
+
+                    Help
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================================
+             FOOTER
+        ====================================================== -->
+
+        <footer>
+
+            <i class="fa-solid fa-leaf"></i>
+
+            © 2026 KisanVision360
+
+            <span>|</span>
+
+            AI Powered Smart Agriculture Platform
+
+        </footer>
+
+
+
+    </main>
 
 </div>
 
 
 
+<!-- =========================================================
+     GOOGLE TRANSLATE HIDDEN ELEMENT
+========================================================== -->
 
+<div id="google_translate_element"></div>
 
-<div class="top-right">
 
 
-
-
-
-<!-- DATE -->
-
-<div class="live-time">
-
-<i class="fa-solid fa-calendar"></i>
-
-
-<div>
-
-<h4 id="date"></h4>
-
-<p id="clock"></p>
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-<!-- NOTIFICATION -->
-
-
-<div class="notification">
-
-
-<i class="fa-solid fa-bell"></i>
-
-
-<span>
-
-3
-
-</span>
-
-
-</div>
-
-
-
-
-
-
-<!-- PROFILE -->
-
-
-<div class="profile">
-
-
-<img src="{{url_for('static',
-filename='images/farmer.png')}}">
-
-
-
-<div>
-
-
-<h4>
-
-{{name}}
-
-</h4>
-
-
-<small>
-
-Farmer
-
-</small>
-
-
-</div>
-
-
-</div>
-
-
-
-</div>
-
-
-</header>
-
-
-
-
-
-
-
-
-
-<!-- WEATHER -->
-
-<section class="weather-summary">
-
-
-
-<div class="weather-main">
-
-
-<h2>
-
-📍 {{weather.city}}, {{weather.country}}
-
-</h2>
-
-
-<h1>
-
-{{weather.temperature}}°C
-
-</h1>
-
-
-<p>
-
-{{weather.description}}
-
-</p>
-
-
-<img src="https://openweathermap.org/img/wn/{{weather.icon}}@4x.png">
-
-
-</div>
-
-
-
-
-
-<div class="weather-grid">
-
-
-<div class="weather-card">
-
-<i class="fa-solid fa-temperature-half"></i>
-
-<h3>
-
-Feels Like
-
-</h3>
-
-
-<p>
-
-{{weather.feels_like}} °C
-
-</p>
-
-</div>
-
-
-
-
-<div class="weather-card">
-
-<i class="fa-solid fa-droplet"></i>
-
-
-<h3>
-
-Humidity
-
-</h3>
-
-
-<p>
-
-{{weather.humidity}} %
-
-</p>
-
-</div>
-
-
-
-
-
-<div class="weather-card">
-
-
-<i class="fa-solid fa-wind"></i>
-
-
-<h3>
-
-Wind
-
-</h3>
-
-
-<p>
-
-{{weather.wind}} m/s
-
-</p>
-
-</div>
-
-
-
-
-
-<div class="weather-card">
-
-
-<i class="fa-solid fa-cloud"></i>
-
-
-<h3>
-
-Cloud
-
-</h3>
-
-
-<p>
-
-{{weather.clouds}} %
-
-</p>
-
-
-</div>
-
-
-</div>
-
-
-
-</section>
-
-
-
-
-
-
-
-
-
-<!-- HERO -->
-
-
-<section class="hero">
-
-
-<div class="hero-text">
-
-
-<span>
-
-🌱 AI Smart Farming
-
-</span>
-
-
-<h1>
-
-Grow Better With Artificial Intelligence
-
-</h1>
-
-
-
-<p>
-
-Monitor crops, weather, irrigation,
-disease detection and market prices
-from one smart platform.
-
-</p>
-
-
-
-
-<div>
-
-
-<a href="/recommendation">
-
-🌱 Crop Recommendation
-
-</a>
-
-
-
-<a href="/weather">
-
-🌦 Live Weather
-
-</a>
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-<div class="hero-image">
-
-
-<img src="{{url_for('static',
-filename='images/farm-banner.png')}}">
-
-
-</div>
-
-
-
-</section>
-
-
-
-
-
-
-
-
-<!-- FEATURES -->
-
-
-<section class="features">
-
-
-
-<a href="/recommendation">
-
-<div class="card">
-
-🌱
-
-<h3>
-
-AI Crop Advisory
-
-</h3>
-
-<p>
-
-Smart crop and fertilizer recommendation
-
-</p>
-
-</div>
-
-</a>
-
-
-
-
-
-<a href="/irrigation">
-
-<div class="card">
-
-💧
-
-<h3>
-
-Smart Irrigation
-
-</h3>
-
-<p>
-
-AI based water management
-
-</p>
-
-</div>
-
-</a>
-
-
-
-
-
-
-
-<a href="/pest">
-
-<div class="card">
-
-🐛
-
-<h3>
-
-Disease Detection
-
-</h3>
-
-<p>
-
-Identify crop diseases using AI
-
-</p>
-
-</div>
-
-</a>
-
-
-
-
-
-
-
-<a href="/market">
-
-<div class="card">
-
-📈
-
-<h3>
-
-Market Price
-
-</h3>
-
-<p>
-
-Live mandi prices
-
-</p>
-
-</div>
-
-</a>
-
-
-
-
-
-
-
-<a href="/schemes">
-
-<div class="card">
-
-🏛
-
-<h3>
-
-Government Schemes
-
-</h3>
-
-<p>
-
-Farmer subsidy information
-
-</p>
-
-</div>
-
-</a>
-
-
-
-
-
-
-
-<a href="/marketplace">
-
-<div class="card">
-
-🛒
-
-<h3>
-
-Marketplace
-
-</h3>
-
-<p>
-
-Buy and sell agriculture products
-
-</p>
-
-</div>
-
-</a>
-
-
-
-
-
-</section>
-
-
-
-
-
-
-
-<footer>
-
-© 2026 KisanVision360 |
-AI Powered Agriculture
-
-</footer>
-
-
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
+<!-- =========================================================
+     GOOGLE TRANSLATE JAVASCRIPT
+========================================================== -->
 
 <script>
 
 
-function updateDateTime(){
+/* =========================================================
+   INITIALIZE GOOGLE TRANSLATE
+========================================================= */
 
+function googleTranslateElementInit() {
 
-let now=new Date();
+    new google.translate.TranslateElement({
 
+        pageLanguage: "en",
 
-document.getElementById("date").innerHTML =
-now.toLocaleDateString(
-"en-IN",
-{
-weekday:"long",
-year:"numeric",
-month:"long",
-day:"numeric"
+        includedLanguages:
+            "en,hi,mr,kn,te,ta,ml,gu,pa,bn",
+
+        autoDisplay: false
+
+    }, "google_translate_element");
+
 }
+
+
+
+/* =========================================================
+   CHANGE LANGUAGE
+========================================================= */
+
+function changeLanguage(language) {
+
+
+    /* Save language */
+
+    localStorage.setItem(
+        "kisanvision360_language",
+        language
+    );
+
+
+    /* English */
+
+    if (language === "en") {
+
+        setTimeout(function() {
+
+            const select =
+                document.querySelector(
+                    ".goog-te-combo"
+                );
+
+
+            if (select) {
+
+                select.value = "en";
+
+                select.dispatchEvent(
+                    new Event("change")
+                );
+
+            }
+
+        }, 300);
+
+        return;
+
+    }
+
+
+    /* Google Translate */
+
+    let attempts = 0;
+
+
+    const timer =
+        setInterval(function() {
+
+
+            const select =
+                document.querySelector(
+                    ".goog-te-combo"
+                );
+
+
+            attempts++;
+
+
+            if (select) {
+
+                select.value =
+                    language;
+
+
+                select.dispatchEvent(
+                    new Event("change")
+                );
+
+
+                clearInterval(timer);
+
+            }
+
+
+            if (attempts >= 20) {
+
+                clearInterval(timer);
+
+            }
+
+
+        }, 500);
+
+}
+
+
+
+/* =========================================================
+   APPLY SAVED LANGUAGE
+========================================================= */
+
+function applySavedLanguage() {
+
+
+    const language =
+        localStorage.getItem(
+            "kisanvision360_language"
+        );
+
+
+    if (!language) {
+
+        return;
+
+    }
+
+
+    const languageSelect =
+        document.getElementById(
+            "languageSelect"
+        );
+
+
+    if (languageSelect) {
+
+        languageSelect.value =
+            language;
+
+    }
+
+
+    if (language === "en") {
+
+        return;
+
+    }
+
+
+    let attempts = 0;
+
+
+    const timer =
+        setInterval(function() {
+
+
+            const select =
+                document.querySelector(
+                    ".goog-te-combo"
+                );
+
+
+            attempts++;
+
+
+            if (select) {
+
+
+                select.value =
+                    language;
+
+
+                select.dispatchEvent(
+                    new Event("change")
+                );
+
+
+                clearInterval(timer);
+
+            }
+
+
+            if (attempts >= 20) {
+
+                clearInterval(timer);
+
+            }
+
+
+        }, 500);
+
+}
+
+
+
+/* =========================================================
+   DATE & TIME
+========================================================= */
+
+function updateDateTime() {
+
+
+    const now =
+        new Date();
+
+
+    document.getElementById(
+        "date"
+    ).textContent =
+
+        now.toLocaleDateString(
+            "en-IN",
+            {
+
+                weekday: "long",
+
+                year: "numeric",
+
+                month: "long",
+
+                day: "numeric"
+
+            }
+        );
+
+
+    document.getElementById(
+        "clock"
+    ).textContent =
+
+        now.toLocaleTimeString(
+            "en-IN"
+        );
+
+}
+
+
+
+/* =========================================================
+   PAGE LOAD
+========================================================= */
+
+window.addEventListener(
+    "load",
+    function() {
+
+
+        /* Update clock */
+
+        updateDateTime();
+
+
+        /* Load saved language */
+
+        setTimeout(
+            applySavedLanguage,
+            1500
+        );
+
+
+    }
 );
 
 
 
-document.getElementById("clock").innerHTML =
-now.toLocaleTimeString("en-IN");
+/* =========================================================
+   CLOCK UPDATE
+========================================================= */
 
-
-}
-
-
-setInterval(updateDateTime,1000);
-
-updateDateTime();
-
+setInterval(
+    updateDateTime,
+    1000
+);
 
 
 </script>
 
 
 
+<!-- =========================================================
+     GOOGLE TRANSLATE SCRIPT
+========================================================== -->
+
+<script
+src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+</script>
+
+
+
+<!-- =========================================================
+     CHATBOT JS
+========================================================== -->
+
+<script
+src="{{ url_for('static',
+filename='js/chatbot.js') }}">
+</script>
+
+
+
+<!-- =========================================================
+     CHATBOT
+========================================================== -->
+
+{% include 'components/chatbot.html' %}
+
+
 </body>
 
-</html>
+</html> 

@@ -5,253 +5,776 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-<title>KisanVision360 | Admin Dashboard</title>
+<title>
+KisanVision360 | Admin Dashboard
+</title>
+
+
+<!-- SIDEBAR -->
 
 <link rel="stylesheet"
-href="{{ url_for('static', filename='css/dashboard.css') }}">
+      href="{{ url_for('static', filename='css/sidebar.css') }}">
+
+
+<!-- DASHBOARD -->
 
 <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+      href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+
+<!-- FONT AWESOME -->
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
+
 <body>
+
 
 <div class="dashboard-container">
 
-    <!-- Sidebar -->
 
-    <aside class="sidebar">
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
 
-        <div class="logo">
+{% include "components/sidebar.html" %}
 
-            <img src="{{ url_for('static', filename='images/logo.png') }}">
 
-            <h2>KisanVision360</h2>
 
-        </div>
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
 
-        <ul>
+<div class="main-content">
 
-            <li class="active">
-                <a href="/admin">
-                    <i class="fas fa-home"></i>
-                    Dashboard
-                </a>
-            </li>
 
-            <li>
-                <a href="/weather">
-                    <i class="fas fa-cloud-sun"></i>
-                    Weather
-                </a>
-            </li>
 
-            <li>
-                <a href="/marketplace">
-                    <i class="fas fa-store"></i>
-                    Marketplace
-                </a>
-            </li>
+<!-- =====================================================
+     TOPBAR
+===================================================== -->
 
-            <li>
-                <a href="/notifications">
-                    <i class="fas fa-bell"></i>
-                    Notifications
-                </a>
-            </li>
+<header class="topbar">
 
-            <li>
-                <a href="/profile">
-                    <i class="fas fa-user"></i>
-                    Profile
-                </a>
-            </li>
 
-            <li>
-                <a href="/settings">
-                    <i class="fas fa-cog"></i>
-                    Settings
-                </a>
-            </li>
+    <div class="title-section">
 
-            <li>
-                <a href="/logout">
-                    <i class="fas fa-right-from-bracket"></i>
-                    Logout
-                </a>
-            </li>
 
-        </ul>
+        <div class="title-icon">
 
-    </aside>
-
-    <!-- Main Content -->
-
-    <main class="main-content">
-
-        <div class="topbar">
-
-            <h1>👨‍💼 Admin Dashboard</h1>
-
-            <div class="profile">
-
-                <img src="{{ url_for('static', filename='images/farmer.jpg') }}">
-
-                <span>{{ name }}</span>
-
-            </div>
+            <i class="fa-solid fa-user-shield"></i>
 
         </div>
 
-        <!-- Statistics -->
 
-        <div class="cards">
+        <div>
 
-            <div class="card">
+            <h1>
+                Admin Dashboard
+            </h1>
 
-                <i class="fas fa-users"></i>
-
-                <h2>Users</h2>
-
-                <h3>1,284</h3>
-
-            </div>
-
-            <div class="card">
-
-                <i class="fas fa-seedling"></i>
-
-                <h2>Farmers</h2>
-
-                <h3>856</h3>
-
-            </div>
-
-            <div class="card">
-
-                <i class="fas fa-cart-shopping"></i>
-
-                <h2>Orders</h2>
-
-                <h3>245</h3>
-
-            </div>
-
-            <div class="card">
-
-                <i class="fas fa-indian-rupee-sign"></i>
-
-                <h2>Today's Trading</h2>
-
-                <h3>₹4.8 Lakh</h3>
-
-            </div>
+            <p>
+                Welcome Admin {{ name }} 👋
+                <br>
+                Manage and monitor KisanVision360
+            </p>
 
         </div>
 
-        <!-- Quick Access -->
 
-        <h2>Quick Management</h2>
+    </div>
 
-        <div class="menu-grid">
 
-            <a href="/weather" class="menu-card">
 
-                <i class="fas fa-cloud-sun"></i>
+    <div class="top-right">
 
-                <h3>Weather</h3>
 
-            </a>
+        <!-- NOTIFICATION -->
 
-            <a href="/marketplace" class="menu-card">
+        <div class="notification">
 
-                <i class="fas fa-store"></i>
+            <i class="fa-solid fa-bell"></i>
 
-                <h3>Marketplace</h3>
-
-            </a>
-
-            <a href="/notifications" class="menu-card">
-
-                <i class="fas fa-bell"></i>
-
-                <h3>Notifications</h3>
-
-            </a>
-
-            <a href="/profile" class="menu-card">
-
-                <i class="fas fa-user"></i>
-
-                <h3>Profile</h3>
-
-            </a>
-
-            <a href="/settings" class="menu-card">
-
-                <i class="fas fa-cog"></i>
-
-                <h3>Settings</h3>
-
-            </a>
-
-            <a href="/logout" class="menu-card">
-
-                <i class="fas fa-right-from-bracket"></i>
-
-                <h3>Logout</h3>
-
-            </a>
+            <span>
+                3
+            </span>
 
         </div>
-	<h2>Welcome Admin {{ name }}</h2>
 
-<h3>📍 {{ weather.city }}, {{ weather.country }}</h3>
 
-<p>🌡 Temperature : {{ weather.temperature }}°C</p>
 
-<p>☁ Condition : {{ weather.description }}</p>
+        <!-- PROFILE -->
 
-<p>💧 Humidity : {{ weather.humidity }}%</p>
+        <div class="profile">
 
-<p>🌬 Wind Speed : {{ weather.wind }} m/s</p>
 
-<p>🌧 Rainfall : {{ weather.rainfall }} mm</p>
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='images/farmer.jpg'
+                ) }}"
+                alt="Admin">
 
-<hr>
 
-<h3>🌾 Live Crop Prices</h3>
+            <div>
 
-<table>
+                <h4>
+                    {{ name }}
+                </h4>
 
-<tr>
-<th>Crop</th>
-<th>Market</th>
-<th>Price</th>
-</tr>
+                <small>
+                    Administrator
+                </small>
 
-{% for crop in prices %}
+            </div>
 
-<tr>
 
-<td>{{ crop.commodity }}</td>
+        </div>
 
-<td>{{ crop.market }}</td>
 
-<td>₹ {{ crop.modal_price }}</td>
+    </div>
 
-</tr>
 
-{% endfor %}
+</header>
 
-</table>
 
-    </main>
+
+<!-- =====================================================
+     ADMIN WELCOME BANNER
+===================================================== -->
+
+<section class="hero">
+
+
+    <div class="hero-left">
+
+
+        <div class="weather-image">
+
+            <i class="fa-solid fa-user-shield"
+               style="font-size:70px;">
+            </i>
+
+        </div>
+
+
+        <div>
+
+            <h2>
+                👨‍💼 Welcome Admin
+            </h2>
+
+
+            <h1>
+                KisanVision360
+            </h1>
+
+
+            <p>
+                Monitor farmers, marketplace activity,
+                weather, crop prices and platform activity.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="hero-right">
+
+
+        <div class="mini-card">
+
+            <i class="fa-solid fa-users"></i>
+
+            <h3>
+                Total Users
+            </h3>
+
+            <h2>
+                1,284
+            </h2>
+
+        </div>
+
+
+        <div class="mini-card">
+
+            <i class="fa-solid fa-seedling"></i>
+
+            <h3>
+                Farmers
+            </h3>
+
+            <h2>
+                856
+            </h2>
+
+        </div>
+
+
+        <div class="mini-card">
+
+            <i class="fa-solid fa-cart-shopping"></i>
+
+            <h3>
+                Orders
+            </h3>
+
+            <h2>
+                245
+            </h2>
+
+        </div>
+
+
+        <div class="mini-card">
+
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+
+            <h3>
+                Trading
+            </h3>
+
+            <h2>
+                ₹4.8L
+            </h2>
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     STATISTICS
+===================================================== -->
+
+<section class="dashboard-grid">
+
+
+    <!-- USERS -->
+
+    <div class="dashboard-card">
+
+        <i class="fa-solid fa-users"></i>
+
+        <h3>
+            Total Users
+        </h3>
+
+        <h1>
+            1,284
+        </h1>
+
+        <p>
+            Registered platform users
+        </p>
+
+    </div>
+
+
+
+    <!-- FARMERS -->
+
+    <div class="dashboard-card">
+
+        <i class="fa-solid fa-tractor"></i>
+
+        <h3>
+            Farmers
+        </h3>
+
+        <h1>
+            856
+        </h1>
+
+        <p>
+            Active farmer accounts
+        </p>
+
+    </div>
+
+
+
+    <!-- ORDERS -->
+
+    <div class="dashboard-card">
+
+        <i class="fa-solid fa-cart-shopping"></i>
+
+        <h3>
+            Orders
+        </h3>
+
+        <h1>
+            245
+        </h1>
+
+        <p>
+            Marketplace orders
+        </p>
+
+    </div>
+
+
+
+    <!-- TRADING -->
+
+    <div class="dashboard-card">
+
+        <i class="fa-solid fa-indian-rupee-sign"></i>
+
+        <h3>
+            Today's Trading
+        </h3>
+
+        <h1>
+            ₹4.8 Lakh
+        </h1>
+
+        <p>
+            Today's marketplace activity
+        </p>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     QUICK MANAGEMENT
+===================================================== -->
+
+<section class="section">
+
+
+    <h2>
+        ⚙️ Quick Management
+    </h2>
+
+
+    <div class="quick-buttons">
+
+
+        <a href="/weather">
+
+            <button>
+
+                <i class="fa-solid fa-cloud-sun"></i>
+
+                Weather
+
+            </button>
+
+        </a>
+
+
+
+        <a href="/marketplace">
+
+            <button>
+
+                <i class="fa-solid fa-store"></i>
+
+                Marketplace
+
+            </button>
+
+        </a>
+
+
+
+        <a href="/notifications">
+
+            <button>
+
+                <i class="fa-solid fa-bell"></i>
+
+                Notifications
+
+            </button>
+
+        </a>
+
+
+
+        <a href="/profile">
+
+            <button>
+
+                <i class="fa-solid fa-user"></i>
+
+                Profile
+
+            </button>
+
+        </a>
+
+
+
+        <a href="/settings">
+
+            <button>
+
+                <i class="fa-solid fa-gear"></i>
+
+                Settings
+
+            </button>
+
+        </a>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     LIVE WEATHER
+===================================================== -->
+
+<section class="section">
+
+
+    <h2>
+        🌦 Live Weather
+    </h2>
+
+
+    <div class="dashboard-grid">
+
+
+        <div class="dashboard-card">
+
+            <i class="fa-solid fa-location-dot"></i>
+
+            <h3>
+                Location
+            </h3>
+
+            <h2>
+                {{ weather.city }}
+            </h2>
+
+            <p>
+                {{ weather.country }}
+            </p>
+
+        </div>
+
+
+
+        <div class="dashboard-card">
+
+            <i class="fa-solid fa-temperature-half"></i>
+
+            <h3>
+                Temperature
+            </h3>
+
+            <h1>
+                {{ weather.temperature }}°C
+            </h1>
+
+            <p>
+                {{ weather.description }}
+            </p>
+
+        </div>
+
+
+
+        <div class="dashboard-card">
+
+            <i class="fa-solid fa-droplet"></i>
+
+            <h3>
+                Humidity
+            </h3>
+
+            <h1>
+                {{ weather.humidity }}%
+            </h1>
+
+            <p>
+                Current humidity
+            </p>
+
+        </div>
+
+
+
+        <div class="dashboard-card">
+
+            <i class="fa-solid fa-wind"></i>
+
+            <h3>
+                Wind Speed
+            </h3>
+
+            <h1>
+                {{ weather.wind }} m/s
+            </h1>
+
+            <p>
+                Current wind speed
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     CROP PRICES
+===================================================== -->
+
+<section class="section">
+
+
+    <h2>
+        🌾 Live Crop Prices
+    </h2>
+
+
+    <div class="table-card">
+
+
+        <div class="table-wrapper">
+
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Crop
+                        </th>
+
+                        <th>
+                            Market
+                        </th>
+
+                        <th>
+                            Price
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                {% for crop in prices %}
+
+
+                <tr>
+
+
+                    <td>
+
+                        <strong>
+
+                            <i class="fa-solid fa-seedling"></i>
+
+                            {{ crop.commodity }}
+
+                        </strong>
+
+                    </td>
+
+
+                    <td>
+
+                        {{ crop.market }}
+
+                    </td>
+
+
+                    <td>
+
+                        <strong>
+
+                            ₹ {{ crop.modal_price }}
+
+                        </strong>
+
+                    </td>
+
+
+                </tr>
+
+
+                {% else %}
+
+
+                <tr>
+
+                    <td colspan="3">
+
+                        No crop prices available.
+
+                    </td>
+
+                </tr>
+
+
+                {% endfor %}
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     ADMIN ACTIONS
+===================================================== -->
+
+<section class="section">
+
+
+    <h2>
+        🛠 Admin Actions
+    </h2>
+
+
+    <div class="quick-buttons">
+
+
+        <a href="/profile">
+
+            <button>
+
+                <i class="fa-solid fa-user-gear"></i>
+
+                Manage Profile
+
+            </button>
+
+        </a>
+
+
+        <a href="/notifications">
+
+            <button>
+
+                <i class="fa-solid fa-bell"></i>
+
+                Manage Alerts
+
+            </button>
+
+        </a>
+
+
+        <a href="/marketplace">
+
+            <button>
+
+                <i class="fa-solid fa-shop"></i>
+
+                Marketplace
+
+            </button>
+
+        </a>
+
+
+        <a href="/logout">
+
+            <button>
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                Logout
+
+            </button>
+
+        </a>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <i class="fa-solid fa-leaf"></i>
+
+    <strong>
+        KisanVision360
+    </strong>
+
+    <span>
+        •
+    </span>
+
+    Admin Dashboard
+
+    <span>
+        •
+    </span>
+
+    AI Powered Smart Agriculture Platform
+
+    <span>
+        •
+    </span>
+
+    © 2026
+
+</footer>
+
 
 </div>
+
+</div>
+
 
 </body>
 

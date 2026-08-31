@@ -1,18 +1,34 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 
 <head>
 
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
 <title>
-KisanVision360 Alerts
+KisanVision360 | Smart Farming Alerts
 </title>
 
 
-<link rel="stylesheet"
-href="{{url_for('static',
-filename='css/alerts.css')}}">
+<!-- SIDEBAR -->
 
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/sidebar.css') }}">
+
+
+<!-- ALERTS CSS -->
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/alerts.css') }}">
+
+
+<!-- FONT AWESOME -->
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
@@ -20,60 +36,595 @@ filename='css/alerts.css')}}">
 <body>
 
 
-<div class="container">
+<div class="dashboard-container">
 
 
-<h1>
-🔔 Smart Farming Alerts
-</h1>
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+{% include "components/sidebar.html" %}
 
 
 
-<div class="alert warning">
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
 
-⚠ Heavy rainfall expected.
-Protect harvested crops.
+<div class="main-content">
+
+
+
+<!-- =====================================================
+     TOPBAR
+===================================================== -->
+
+<header class="topbar">
+
+
+    <div class="title-section">
+
+
+        <div class="title-icon">
+
+            <i class="fa-solid fa-bell"></i>
+
+        </div>
+
+
+        <div>
+
+            <h1>
+                Smart Farming Alerts
+            </h1>
+
+            <p>
+                Important updates about your farm
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="profile">
+
+
+        <img
+            src="{{ url_for(
+                'static',
+                filename='images/farmer.jpg'
+            ) }}"
+            alt="Farmer">
+
+
+        <div>
+
+            <h4>
+                {{ name|default('Farmer') }}
+            </h4>
+
+            <small>
+                Farmer
+            </small>
+
+        </div>
+
+
+    </div>
+
+
+</header>
+
+
+
+<!-- =====================================================
+     ALERT SUMMARY
+===================================================== -->
+
+<section class="alert-summary">
+
+
+    <div class="summary-card">
+
+        <div class="summary-icon warning-icon">
+
+            <i class="fa-solid fa-cloud-rain"></i>
+
+        </div>
+
+        <div>
+
+            <h3>
+                Weather
+            </h3>
+
+            <strong>
+                1 Alert
+            </strong>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="summary-card">
+
+        <div class="summary-icon success-icon">
+
+            <i class="fa-solid fa-seedling"></i>
+
+        </div>
+
+        <div>
+
+            <h3>
+                Crop Health
+            </h3>
+
+            <strong>
+                Normal
+            </strong>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="summary-card">
+
+        <div class="summary-icon info-icon">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+        </div>
+
+        <div>
+
+            <h3>
+                Market
+            </h3>
+
+            <strong>
+                Updated
+            </strong>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="summary-card">
+
+        <div class="summary-icon danger-icon">
+
+            <i class="fa-solid fa-bug"></i>
+
+        </div>
+
+        <div>
+
+            <h3>
+                Pest Risk
+            </h3>
+
+            <strong>
+                1 Alert
+            </strong>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     ALERT HEADER
+===================================================== -->
+
+<section class="alerts-section">
+
+
+    <div class="section-header">
+
+
+        <div>
+
+            <span>
+                FARM MONITORING
+            </span>
+
+            <h2>
+                Recent Alerts
+            </h2>
+
+            <p>
+                Stay updated with important farming information.
+            </p>
+
+        </div>
+
+
+        <div class="alert-count">
+
+            <i class="fa-solid fa-bell"></i>
+
+            4 Alerts
+
+        </div>
+
+
+    </div>
+
+
+
+<!-- =====================================================
+     ALERT LIST
+===================================================== -->
+
+<div class="alert-list">
+
+
+
+    <!-- WEATHER -->
+
+    <div class="alert-card warning">
+
+
+        <div class="alert-icon">
+
+            <i class="fa-solid fa-cloud-showers-heavy"></i>
+
+        </div>
+
+
+        <div class="alert-content">
+
+
+            <div class="alert-title">
+
+                <h3>
+                    Heavy Rainfall Expected
+                </h3>
+
+                <span>
+                    Weather
+                </span>
+
+            </div>
+
+
+            <p>
+                Heavy rainfall is expected.
+                Protect harvested crops and avoid
+                unnecessary field operations.
+            </p>
+
+
+            <small>
+
+                <i class="fa-regular fa-clock"></i>
+
+                Today
+
+            </small>
+
+
+        </div>
+
+
+        <div class="alert-status">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+
+
+    </div>
+
+
+
+    <!-- CROP HEALTH -->
+
+    <div class="alert-card success">
+
+
+        <div class="alert-icon">
+
+            <i class="fa-solid fa-seedling"></i>
+
+        </div>
+
+
+        <div class="alert-content">
+
+
+            <div class="alert-title">
+
+                <h3>
+                    Crop Health Is Normal
+                </h3>
+
+                <span>
+                    Crop Health
+                </span>
+
+            </div>
+
+
+            <p>
+                Your latest crop health information
+                indicates normal crop conditions.
+            </p>
+
+
+            <small>
+
+                <i class="fa-regular fa-clock"></i>
+
+                Today
+
+            </small>
+
+
+        </div>
+
+
+        <div class="alert-status">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- MARKET -->
+
+    <div class="alert-card info">
+
+
+        <div class="alert-icon">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+        </div>
+
+
+        <div class="alert-content">
+
+
+            <div class="alert-title">
+
+                <h3>
+                    Wheat Market Price Increased
+                </h3>
+
+                <span>
+                    Market
+                </span>
+
+            </div>
+
+
+            <p>
+                Wheat market prices have increased today.
+                Check current mandi prices before selling.
+            </p>
+
+
+            <small>
+
+                <i class="fa-regular fa-clock"></i>
+
+                Today
+
+            </small>
+
+
+        </div>
+
+
+        <div class="alert-status">
+
+            <i class="fa-solid fa-arrow-trend-up"></i>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- PEST -->
+
+    <div class="alert-card danger">
+
+
+        <div class="alert-icon">
+
+            <i class="fa-solid fa-bug"></i>
+
+        </div>
+
+
+        <div class="alert-content">
+
+
+            <div class="alert-title">
+
+                <h3>
+                    Pest Risk Detected
+                </h3>
+
+                <span>
+                    Disease & Pest
+                </span>
+
+            </div>
+
+
+            <p>
+                Increased pest risk has been detected.
+                Check crop leaves and use AI Disease
+                Detection if symptoms appear.
+            </p>
+
+
+            <small>
+
+                <i class="fa-regular fa-clock"></i>
+
+                Today
+
+            </small>
+
+
+        </div>
+
+
+        <div class="alert-status">
+
+            <i class="fa-solid fa-circle-exclamation"></i>
+
+        </div>
+
+
+    </div>
+
 
 </div>
 
+</section>
 
 
-<div class="alert success">
 
-🌱 Crop health condition is normal.
+<!-- =====================================================
+     QUICK ACTIONS
+===================================================== -->
+
+<section class="quick-actions">
+
+
+    <h2>
+        Quick Actions
+    </h2>
+
+
+    <div class="action-grid">
+
+
+        <a href="/weather"
+           class="action-card">
+
+            <i class="fa-solid fa-cloud-sun"></i>
+
+            <div>
+
+                <h3>
+                    Check Weather
+                </h3>
+
+                <p>
+                    View live weather information
+                </p>
+
+            </div>
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+        </a>
+
+
+
+        <a href="/pest"
+           class="action-card">
+
+            <i class="fa-solid fa-microscope"></i>
+
+            <div>
+
+                <h3>
+                    Disease Detection
+                </h3>
+
+                <p>
+                    Check your crop leaf
+                </p>
+
+            </div>
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+        </a>
+
+
+
+        <a href="/market"
+           class="action-card">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            <div>
+
+                <h3>
+                    Market Prices
+                </h3>
+
+                <p>
+                    Check latest crop prices
+                </p>
+
+            </div>
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+        </a>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <i class="fa-solid fa-leaf"></i>
+
+    <strong>
+        KisanVision360
+    </strong>
+
+    <span>
+        •
+    </span>
+
+    Smart Farming Alerts
+
+    <span>
+        •
+    </span>
+
+    © 2026
+
+</footer>
+
 
 </div>
-
-
-
-
-<div class="alert info">
-
-📈 Wheat market price increased today.
-
-</div>
-
-
-
-<div class="alert danger">
-
-🐛 Pest risk detected.
-Check crop leaves.
-
-</div>
-
-
-
-
-<a href="/farmer">
-
-<button>
-⬅ Dashboard
-</button>
-
-</a>
-
-
 
 </div>
 

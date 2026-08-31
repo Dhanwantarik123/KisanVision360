@@ -5,23 +5,22 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-
-<title>KisanVision360 | Smart Farming Dashboard</title>
-
-
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/sidebar.css') }}">
-
-
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/dashboard.css') }}">
+<title>
+KisanVision360 | Smart Farming Dashboard
+</title>
 
 
 <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+      href="{{ url_for('static', filename='css/sidebar.css') }}">
 
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
@@ -38,700 +37,809 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 
 
-
-
 <!-- ================= MAIN CONTENT ================= -->
 
-
-<div class="main-content">
-
+<main class="main-content">
 
 
-<!-- TOP BAR -->
 
+<!-- ================= TOPBAR ================= -->
 
 <header class="topbar">
 
 
-<div>
+    <div class="welcome-section">
 
+        <div class="dashboard-title">
 
-<h1>
+            <div class="dashboard-icon">
 
-<i class="fa-solid fa-seedling"></i>
+                <i class="fa-solid fa-seedling"></i>
 
-Smart Farming Dashboard
+            </div>
 
-</h1>
 
+            <div>
 
-<p>
+                <h1>
+                    Smart Farming Dashboard
+                </h1>
 
-Welcome {{username}} 👋
+                <p>
+                    Welcome {{ username }} 👋
+                </p>
 
-<br>
+                <span>
+                    AI Powered Agriculture Platform
+                </span>
 
-AI Powered Agriculture Platform
+            </div>
 
-</p>
+        </div>
 
+    </div>
 
-</div>
 
 
+    <div class="top-right">
 
 
+        <!-- SEARCH -->
 
-<div class="top-right">
+        <div class="search-box">
 
+            <i class="fa-solid fa-magnifying-glass"></i>
 
+            <input
+                type="text"
+                id="dashboardSearch"
+                placeholder="Search services...">
 
-<div class="search-box">
+        </div>
 
 
-<i class="fa fa-search"></i>
 
+        <!-- NOTIFICATION -->
 
-<input type="text" placeholder="Search...">
+        <div class="notification">
 
+            <i class="fa-solid fa-bell"></i>
 
-</div>
+            <span>
+                3
+            </span>
 
+        </div>
 
 
 
+        <!-- PROFILE -->
 
-<div class="notification">
+        <div class="profile">
 
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='images/farmer.jpg'
+                ) }}"
+                alt="Farmer">
 
-<i class="fa fa-bell"></i>
 
+            <div>
 
-<span>
+                <h4>
+                    {{ username }}
+                </h4>
 
-3
+                <small>
+                    Farmer
+                </small>
 
-</span>
+            </div>
 
+        </div>
 
-</div>
 
-
-
-
-
-<div class="profile">
-
-
-<img src="{{url_for('static',
-filename='images/farmer.jpg')}}">
-
-
-<div>
-
-
-<h4>
-
-{{username}}
-
-</h4>
-
-
-<small>
-
-Farmer
-
-</small>
-
-
-</div>
-
-
-</div>
-
-
-
-</div>
-
+    </div>
 
 </header>
 
 
 
-
-
-
-
-
 <!-- ================= WEATHER HERO ================= -->
-
 
 <section class="hero">
 
 
-<div class="hero-left">
+    <!-- MAIN WEATHER -->
 
+    <div class="hero-left">
 
 
-<div class="weather-image">
+        <div class="weather-image">
 
+            <img
+                src="https://openweathermap.org/img/wn/{{ weather.icon }}@4x.png"
+                alt="Weather">
 
-<img src="https://openweathermap.org/img/wn/{{weather.icon}}@4x.png">
+        </div>
 
 
-</div>
+        <div>
 
+            <span class="weather-label">
 
+                <i class="fa-solid fa-location-dot"></i>
 
-<div>
+                Current Weather
 
+            </span>
 
-<h2>
 
-📍 {{weather.city}}
+            <h2>
+                {{ weather.city }}
+            </h2>
 
-</h2>
 
+            <h1>
+                {{ weather.temperature }}°C
+            </h1>
 
-<h1>
 
-{{weather.temperature}}°C
+            <p>
+                {{ weather.description }}
+            </p>
 
-</h1>
+        </div>
 
 
-<p>
+    </div>
 
-{{weather.description}}
 
-</p>
 
+    <!-- WEATHER DETAILS -->
 
-</div>
+    <div class="hero-right">
 
 
-</div>
+        <div class="mini-card">
 
+            <i class="fa-solid fa-temperature-half"></i>
 
+            <span>
+                Feels Like
+            </span>
 
+            <h2>
+                {{ weather.feels_like }}°C
+            </h2>
 
+        </div>
 
 
-<div class="hero-right">
 
+        <div class="mini-card">
 
+            <i class="fa-solid fa-droplet"></i>
 
-<div class="mini-card">
+            <span>
+                Humidity
+            </span>
 
+            <h2>
+                {{ weather.humidity }}%
+            </h2>
 
-<i class="fa-solid fa-temperature-half"></i>
+        </div>
 
 
-<h3>
 
-Feels Like
+        <div class="mini-card">
 
-</h3>
+            <i class="fa-solid fa-wind"></i>
 
+            <span>
+                Wind
+            </span>
 
-<h2>
+            <h2>
+                {{ weather.wind }} m/s
+            </h2>
 
-{{weather.feels_like}}°C
+        </div>
 
-</h2>
 
 
-</div>
+        <div class="mini-card">
 
+            <i class="fa-solid fa-cloud"></i>
 
+            <span>
+                Cloud
+            </span>
 
+            <h2>
+                {{ weather.clouds }}%
+            </h2>
 
+        </div>
 
 
-<div class="mini-card">
-
-
-<i class="fa-solid fa-droplet"></i>
-
-
-<h3>
-
-Humidity
-
-</h3>
-
-
-<h2>
-
-{{weather.humidity}}%
-
-</h2>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="mini-card">
-
-
-<i class="fa-solid fa-wind"></i>
-
-
-<h3>
-
-Wind
-
-</h3>
-
-
-<h2>
-
-{{weather.wind}} m/s
-
-</h2>
-
-
-</div>
-
-
-
-
-
-
-<div class="mini-card">
-
-
-<i class="fa-solid fa-cloud"></i>
-
-
-<h3>
-
-Cloud
-
-</h3>
-
-
-<h2>
-
-{{weather.clouds}}%
-
-</h2>
-
-
-</div>
-
-
-
-</div>
+    </div>
 
 
 </section>
-
-
-
-
-
-
-
 
 
 
 <!-- ================= FARM ANALYTICS ================= -->
 
+<section class="analytics-section">
 
-<section class="dashboard-grid">
 
+    <div class="section-heading">
 
+        <div>
 
+            <span>
+                FARM OVERVIEW
+            </span>
 
+            <h2>
+                Farm Analytics
+            </h2>
 
-<div class="dashboard-card">
+        </div>
 
+    </div>
 
-<i class="fa-solid fa-seedling"></i>
 
 
-<h3>
+    <div class="dashboard-grid">
 
-Farm Health
 
-</h3>
+        <!-- FARM HEALTH -->
 
+        <div class="dashboard-card health-card">
 
-<h1>
 
-{{farm.health}}%
+            <div class="card-header">
 
-</h1>
+                <div class="card-icon">
 
+                    <i class="fa-solid fa-seedling"></i>
 
+                </div>
 
-<div class="progress">
+                <span>
+                    FARM HEALTH
+                </span>
 
+            </div>
 
-<div class="progress-bar"
-style="width:{{farm.health}}%">
 
-</div>
+            <h1>
+                {{ farm.health }}%
+            </h1>
 
 
-</div>
+            <div class="progress">
 
+                <div
+                    class="progress-bar"
+                    style="width:{{ farm.health }}%">
+                </div>
 
+            </div>
 
-<p>
 
-{{farm.status}}
+            <p>
+                <i class="fa-solid fa-circle-check"></i>
 
-</p>
+                {{ farm.status }}
 
+            </p>
 
-</div>
 
+        </div>
 
 
 
+        <!-- IRRIGATION -->
 
+        <div class="dashboard-card">
 
 
+            <div class="card-header">
 
-<div class="dashboard-card">
+                <div class="card-icon">
 
+                    <i class="fa-solid fa-water"></i>
 
-<i class="fa-solid fa-water"></i>
+                </div>
 
+                <span>
+                    IRRIGATION
+                </span>
 
-<h3>
+            </div>
 
-Irrigation
 
-</h3>
+            <h1>
+                {{ irrigation.status }}
+            </h1>
 
 
-<h1>
+            <p>
 
-{{irrigation.status}}
+                <i class="fa-regular fa-clock"></i>
 
-</h1>
+                Next Watering:
 
+                <strong>
+                    {{ irrigation.time }}
+                </strong>
 
-<p>
+            </p>
 
-Next Watering :
 
-{{irrigation.time}}
+            <a
+                href="{{ url_for('irrigation') }}"
+                class="card-link">
 
-</p>
+                Manage Irrigation
 
+                <i class="fa-solid fa-arrow-right"></i>
 
-</div>
+            </a>
 
 
+        </div>
 
 
 
+        <!-- MARKET -->
 
+        <div class="dashboard-card">
 
 
-<div class="dashboard-card">
+            <div class="card-header">
 
+                <div class="card-icon">
 
-<i class="fa-solid fa-chart-line"></i>
+                    <i class="fa-solid fa-chart-line"></i>
 
+                </div>
 
-<h3>
+                <span>
+                    MARKET PRICE
+                </span>
 
-Market Price
+            </div>
 
-</h3>
 
+            <h1>
+                {{ market.status }}
+            </h1>
 
-<h1>
 
-{{market.status}}
+            <p>
 
-</h1>
+                <i class="fa-solid fa-arrow-trend-up"></i>
 
+                Latest Crop Trend
 
-<p>
+            </p>
 
-Latest Crop Trend
 
-</p>
+            <a
+                href="{{ url_for('market') }}"
+                class="card-link">
 
+                View Market
 
-</div>
+                <i class="fa-solid fa-arrow-right"></i>
 
+            </a>
 
 
+        </div>
 
 
 
+        <!-- DISEASE -->
 
+        <div class="dashboard-card">
 
-<div class="dashboard-card">
 
+            <div class="card-header">
 
-<i class="fa-solid fa-bug"></i>
+                <div class="card-icon">
 
+                    <i class="fa-solid fa-bug"></i>
 
-<h3>
+                </div>
 
-Disease Alert
+                <span>
+                    DISEASE ALERT
+                </span>
 
-</h3>
+            </div>
 
 
-<h1>
+            <h1>
+                {{ disease.count }}
+            </h1>
 
-{{disease.count}}
 
-</h1>
+            <p>
 
+                <i class="fa-solid fa-triangle-exclamation"></i>
 
-<p>
+                Detected Problems
 
-Detected Problems
+            </p>
 
-</p>
 
+            <a
+                href="{{ url_for('disease') }}"
+                class="card-link">
 
-</div>
+                Check Disease
 
+                <i class="fa-solid fa-arrow-right"></i>
 
+            </a>
 
 
+        </div>
+
+
+    </div>
 
 </section>
 
 
 
-
-
-
-
-
-
-
-<!-- ================= AI SERVICES ================= -->
-
+<!-- ================= SMART SERVICES ================= -->
 
 <section class="section">
 
 
-<h2>
+    <div class="section-heading">
 
-🚜 Smart Agriculture Services
 
-</h2>
+        <div>
 
+            <span>
+                AI AGRICULTURE
+            </span>
 
+            <h2>
+                Smart Agriculture Services
+            </h2>
 
+            <p>
+                Access all important farming tools from one place.
+            </p>
 
-<div class="quick-buttons">
+        </div>
 
 
+    </div>
 
-<a href="/recommendation">
 
 
-<button>
+    <div class="quick-buttons">
 
 
-<i class="fa-solid fa-seedling"></i>
+        <!-- CROP -->
 
-Crop Recommendation
+        <a
+            href="{{ url_for('recommendation') }}"
+            class="service-card">
 
 
-</button>
+            <div class="service-icon">
 
+                <i class="fa-solid fa-seedling"></i>
 
-</a>
+            </div>
 
 
+            <div>
 
+                <h3>
+                    Crop Recommendation
+                </h3>
 
+                <p>
+                    Get AI-based crop suggestions
+                </p>
 
-<a href="/irrigation">
+            </div>
 
 
-<button>
+            <i class="fa-solid fa-arrow-right"></i>
 
 
-<i class="fa-solid fa-water"></i>
+        </a>
 
-Smart Irrigation
 
 
-</button>
+        <!-- IRRIGATION -->
 
+        <a
+            href="{{ url_for('irrigation') }}"
+            class="service-card">
 
-</a>
 
+            <div class="service-icon">
 
+                <i class="fa-solid fa-water"></i>
 
+            </div>
 
 
+            <div>
 
-<a href="/pest">
+                <h3>
+                    Smart Irrigation
+                </h3>
 
+                <p>
+                    Manage crop water requirements
+                </p>
 
-<button>
+            </div>
 
 
-<i class="fa-solid fa-bug"></i>
+            <i class="fa-solid fa-arrow-right"></i>
 
-Disease Prediction
 
+        </a>
 
-</button>
 
 
-</a>
+        <!-- DISEASE -->
 
+        <a
+            href="{{ url_for('disease') }}"
+            class="service-card">
 
 
+            <div class="service-icon">
 
+                <i class="fa-solid fa-microscope"></i>
 
+            </div>
 
 
-<a href="/marketplace">
+            <div>
 
+                <h3>
+                    Disease Detection
+                </h3>
 
-<button>
+                <p>
+                    Detect crop diseases using AI
+                </p>
 
+            </div>
 
-<i class="fa-solid fa-store"></i>
 
-Marketplace
+            <i class="fa-solid fa-arrow-right"></i>
 
 
-</button>
+        </a>
 
 
-</a>
 
+        <!-- MARKETPLACE -->
 
+        <a
+            href="{{ url_for('marketplace') }}"
+            class="service-card">
 
 
-</div>
+            <div class="service-icon">
 
+                <i class="fa-solid fa-store"></i>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    Marketplace
+                </h3>
+
+                <p>
+                    Buy and sell farm products
+                </p>
+
+            </div>
+
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+
+        </a>
+
+
+    </div>
 
 </section>
-
-
-
-
-
-
 
 
 
 <!-- ================= WEATHER FORECAST ================= -->
 
-
 <section class="section">
 
 
-<h2>
-
-🌤 Weather Forecast
-
-</h2>
+    <div class="section-heading">
 
 
+        <div>
 
-<div class="forecast">
+            <span>
+                WEATHER
+            </span>
 
+            <h2>
+                Weather Forecast
+            </h2>
 
+            <p>
+                Check upcoming weather conditions for your farm.
+            </p>
 
-{% for day in forecast %}
-
-
-<div class="forecast-card">
-
-
-<h4>
-
-{{day.day}}
-
-</h4>
-
+        </div>
 
 
-<img src="https://openweathermap.org/img/wn/{{day.icon}}@2x.png">
+        <a
+            href="{{ url_for('weather') }}"
+            class="view-link">
+
+            View Weather
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+        </a>
 
 
-
-<h3>
-
-{{day.temp}}°C
-
-</h3>
+    </div>
 
 
 
-</div>
+    <div class="forecast">
 
 
+        {% for day in forecast %}
 
-{% endfor %}
+
+        <div class="forecast-card">
 
 
-</div>
+            <h4>
+                {{ day.day }}
+            </h4>
 
+
+            <img
+                src="https://openweathermap.org/img/wn/{{ day.icon }}@2x.png"
+                alt="Weather">
+
+
+            <h3>
+                {{ day.temp }}°C
+            </h3>
+
+
+        </div>
+
+
+        {% endfor %}
+
+
+    </div>
 
 
 </section>
 
 
 
+<!-- ================= QUICK LINKS ================= -->
+
+<section class="quick-links">
+
+
+    <a href="{{ url_for('schemes') }}">
+
+        <i class="fa-solid fa-landmark"></i>
+
+        <span>
+            Government Schemes
+        </span>
+
+        <i class="fa-solid fa-arrow-right"></i>
+
+    </a>
+
+
+    <a href="{{ url_for('dealers') }}">
+
+        <i class="fa-solid fa-tractor"></i>
+
+        <span>
+            Nearby Dealers
+        </span>
+
+        <i class="fa-solid fa-arrow-right"></i>
+
+    </a>
+
+
+    <a href="{{ url_for('finance') }}">
+
+        <i class="fa-solid fa-coins"></i>
+
+        <span>
+            Farm Finance
+        </span>
+
+        <i class="fa-solid fa-arrow-right"></i>
+
+    </a>
+
+
+</section>
 
 
 
-
-
+<!-- ================= FOOTER ================= -->
 
 <footer>
 
+    <i class="fa-solid fa-leaf"></i>
 
-© 2026 KisanVision360 |
-AI Powered Smart Agriculture Platform
+    <strong>
+        KisanVision360
+    </strong>
 
+    <span>
+        •
+    </span>
+
+    AI Powered Smart Agriculture Platform
+
+    <span>
+        •
+    </span>
+
+    © 2026
 
 </footer>
 
 
-
-
-</div>
-
+</main>
 
 </div>
 
 
 
-
+<!-- CHATBOT -->
 
 {% include 'components/chatbot.html' %}
 
 
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 
-<script src="{{url_for('static',
-filename='js/dashboard.js')}}"></script>
-
-
-<script src="{{url_for('static',
-filename='js/chatbot.js')}}"></script>
-
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
 
 
 </body>
-
 
 </html>

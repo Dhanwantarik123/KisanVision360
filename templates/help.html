@@ -1,100 +1,63 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 
 <head>
 
-<title>
-KisanVision360 Help
-</title>
+    <meta charset="UTF-8">
 
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet"
-href="{{url_for('static',
-filename='css/help.css')}}">
+    <title>KisanVision360 | Help & Support</title>
 
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/help.css') }}">
 
 </head>
 
-
 <body>
 
+    <div class="container">
 
-<div class="container">
+        <h1>❓ Help & Support</h1>
 
+        <div class="help-card">
 
-<h1>
-❓ Help & Support
-</h1>
+            <h2>👨‍🌾 Farmer Support</h2>
 
+            <p>
+                Get assistance with crops, weather,
+                disease detection and farming queries.
+            </p>
 
+        </div>
 
-<div class="help-card">
+        <div class="help-card">
 
+            <h2>🤖 AI Chatbot Support</h2>
 
-<h2>
-👨‍🌾 Farmer Support
-</h2>
+            <p>
+                Ask questions about farming, crops,
+                machines and agricultural practices.
+            </p>
 
+        </div>
 
-<p>
-Get assistance for crop, weather and farming queries.
-</p>
+        <div class="help-card">
 
+            <h2>📞 Contact Support</h2>
 
-</div>
+            <p>
+                Email: support@kisanvision360.com
+            </p>
 
+        </div>
 
+        <a href="{{ url_for('farmer') }}" class="back-button">
+            ⬅ Back to Dashboard
+        </a>
 
-
-<div class="help-card">
-
-
-<h2>
-🤖 AI Chatbot Support
-</h2>
-
-
-<p>
-Ask questions about farming, crops and machines.
-</p>
-
-
-</div>
-
-
-
-
-<div class="help-card">
-
-
-<h2>
-📞 Contact
-</h2>
-
-
-<p>
-Email: support@kisanvision360.com
-</p>
-
-
-</div>
-
-
-
-
-<a href="/farmer">
-
-<button>
-⬅ Back Dashboard
-</button>
-
-</a>
-
-
-
-</div>
-
+    </div>
 
 </body>
 

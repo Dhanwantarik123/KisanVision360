@@ -1,14 +1,32 @@
+/* =====================================================
+   KisanVision360
+   FARMER NOTIFICATIONS
+   Premium Agriculture UI
+===================================================== */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-
 body {
-    font-family: Arial, sans-serif;
-    background: #f5f7f6;
+    font-family: "Segoe UI", Arial, sans-serif;
+
+    background:
+        linear-gradient(
+            rgba(10, 70, 35, 0.78),
+            rgba(27, 72, 46, 0.78)
+        ),
+        url("/static/images/background.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+
     color: #164b35;
+
+    min-height: 100vh;
 }
 
 
@@ -22,87 +40,154 @@ body {
 }
 
 
-
 /* =====================================================
    SIDEBAR
 ===================================================== */
 
 .sidebar {
     width: 250px;
-    background: #08783f;
+
+    background:
+        linear-gradient(
+            180deg,
+            #08783f,
+            #065f32
+        );
+
     color: white;
+
     padding: 20px 12px;
+
     position: fixed;
+
     left: 0;
     top: 0;
     bottom: 0;
+
+    overflow-y: auto;
+
+    z-index: 1000;
+
+    box-shadow:
+        5px 0 20px rgba(0,0,0,0.18);
 }
 
+
+/* Logo */
 
 .logo {
     width: 80px;
     height: 80px;
+
     display: block;
+
     margin: auto;
+
     object-fit: contain;
+
+    transition: 0.3s;
+}
+
+.logo:hover {
+    transform: scale(1.08) rotate(3deg);
 }
 
 
 .sidebar h2 {
     text-align: center;
+
     margin-top: 10px;
+
     font-size: 20px;
 }
 
 
 .subtitle {
     text-align: center;
+
     font-size: 11px;
+
     opacity: 0.8;
+
     margin-bottom: 30px;
 }
 
 
 .menu-title {
     font-size: 10px;
+
     margin: 15px 8px;
+
     opacity: 0.7;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
 }
 
 
 .sidebar a {
     display: flex;
+
     align-items: center;
+
     gap: 12px;
+
     padding: 12px;
+
     margin: 5px 0;
+
     color: white;
+
     text-decoration: none;
-    border-radius: 8px;
+
+    border-radius: 10px;
+
     font-size: 13px;
+
+    transition: 0.3s;
+}
+
+
+.sidebar a i {
+    width: 20px;
+
+    text-align: center;
 }
 
 
 .sidebar a:hover,
 .sidebar a.active {
     background: white;
+
     color: #08783f;
+
+    transform: translateX(4px);
+
+    box-shadow:
+        0 6px 15px rgba(0,0,0,0.15);
 }
 
 
 .sidebar-badge {
     margin-left: auto;
-    background: red;
+
+    background: #ef4444;
+
     color: white;
+
     width: 20px;
     height: 20px;
+
     border-radius: 50%;
+
     display: flex;
+
     align-items: center;
     justify-content: center;
+
     font-size: 10px;
 }
-
 
 
 /* =====================================================
@@ -110,11 +195,15 @@ body {
 ===================================================== */
 
 .main-content {
-    margin-left: 250px;
-    width: calc(100% - 250px);
-    padding: 20px;
-}
 
+    margin-left: 250px;
+
+    width: calc(100% - 250px);
+
+    padding: 25px;
+
+    min-height: 100vh;
+}
 
 
 /* =====================================================
@@ -122,105 +211,246 @@ body {
 ===================================================== */
 
 .topbar {
-    background: white;
-    border-radius: 18px;
-    padding: 22px 28px;
+
+    background:
+        rgba(255,255,255,0.95);
+
+    border-radius: 20px;
+
+    padding: 20px 25px;
+
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
-    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
-    margin-bottom: 20px;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,0.12);
+
+    margin-bottom: 25px;
+
+    border-left: 5px solid #08783f;
 }
 
 
-.page-title h1 {
+.topbar h1 {
+
     color: #08783f;
+
+    font-size: 27px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.topbar h1 i {
     font-size: 25px;
 }
 
 
-.page-title p {
+.topbar p {
+
     color: #777;
+
     font-size: 13px;
-    margin-top: 5px;
+
+    margin-top: 6px;
 }
 
 
 .top-right {
+
     display: flex;
+
     align-items: center;
-    gap: 25px;
+
+    gap: 18px;
 }
 
 
-
 /* =====================================================
-   NOTIFICATION BUTTON
+   PROFILE
 ===================================================== */
 
-.notification-button {
-    position: relative;
-    color: #08783f;
-    font-size: 22px;
-    text-decoration: none;
-    cursor: pointer;
-}
+.profile {
 
-
-.notification-button:hover {
-    transform: scale(1.1);
-}
-
-
-.notification-badge {
-    position: absolute;
-    top: -9px;
-    right: -10px;
-    background: red;
-    color: white;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    font-size: 10px;
     display: flex;
+
     align-items: center;
-    justify-content: center;
-    font-weight: bold;
+
+    gap: 10px;
+
+    background: #f1f8f4;
+
+    padding: 8px 14px;
+
+    border-radius: 16px;
+
+    color: #14532d;
 }
 
 
-.user-info {
-    display: flex;
-    flex-direction: column;
+.profile img {
+
+    width: 48px;
+
+    height: 48px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    border: 3px solid #198754;
 }
 
 
-.user-info strong {
-    font-size: 13px;
+.profile h4 {
+    color: #14532d;
+
+    font-size: 14px;
 }
 
 
-.user-info small {
-    font-size: 10px;
+.profile span {
     color: #777;
-}
 
+    font-size: 11px;
+}
 
 
 /* =====================================================
-   WEATHER
+   NOTIFICATION SUMMARY
+===================================================== */
+
+.notification-summary {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 18px;
+
+    margin-bottom: 25px;
+}
+
+
+.summary-card {
+
+    background:
+        rgba(255,255,255,0.96);
+
+    border-radius: 18px;
+
+    padding: 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    box-shadow:
+        0 6px 20px rgba(0,0,0,0.10);
+
+    transition: 0.3s;
+}
+
+
+.summary-card:hover {
+
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 12px 30px rgba(0,0,0,0.15);
+}
+
+
+.summary-icon {
+
+    width: 55px;
+    height: 55px;
+
+    border-radius: 15px;
+
+    background: #e8f5e9;
+
+    color: #08783f;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 24px;
+}
+
+
+.summary-card h2 {
+
+    font-size: 22px;
+
+    color: #14532d;
+}
+
+
+.summary-card p {
+
+    font-size: 12px;
+
+    color: #777;
+
+    margin-top: 4px;
+}
+
+
+/* Special Summary Icons */
+
+.weather-icon {
+
+    background: #e3f2fd;
+
+    color: #1688c9;
+}
+
+
+.ai-icon {
+
+    background: #f3e5f5;
+
+    color: #8e44ad;
+}
+
+
+.market-icon {
+
+    background: #fff3e0;
+
+    color: #f57c00;
+}
+
+
+/* =====================================================
+   WEATHER BANNER
 ===================================================== */
 
 .weather-banner {
-    background: linear-gradient(
-        120deg,
-        #08783f,
-        #13945a
-    );
+
+    background:
+        linear-gradient(
+            120deg,
+            #08783f,
+            #13945a
+        );
 
     color: white;
 
-    border-radius: 20px;
+    border-radius: 22px;
 
     padding: 25px;
 
@@ -230,92 +460,174 @@ body {
 
     justify-content: space-between;
 
-    gap: 20px;
+    gap: 25px;
 
-    box-shadow: 0 5px 18px rgba(0,0,0,0.15);
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.20);
 
     margin-bottom: 20px;
 }
 
 
 .weather-location {
+
     display: flex;
+
     align-items: center;
+
     gap: 12px;
 }
 
 
 .location-icon {
-    font-size: 25px;
+
+    width: 50px;
+    height: 50px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,0.18);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
 }
 
 
 .weather-location h2 {
-    font-size: 20px;
+
+    font-size: 21px;
 }
 
 
 .weather-location p {
+
     font-size: 12px;
+
     opacity: 0.8;
+
+    margin-top: 3px;
+}
+
+
+.weather-main {
+
+    text-align: center;
 }
 
 
 .temperature {
-    font-size: 42px;
+
+    font-size: 45px;
+
     font-weight: bold;
 }
 
 
 .condition {
+
     font-size: 13px;
+
     text-transform: capitalize;
+
+    margin-top: 3px;
 }
 
 
 .weather-details {
+
     display: flex;
+
     gap: 10px;
+
+    flex-wrap: wrap;
 }
 
 
 .weather-box {
+
     background: white;
+
     color: #12663e;
+
     width: 105px;
+
     min-height: 90px;
-    border-radius: 12px;
+
+    border-radius: 14px;
+
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
+
     justify-content: center;
+
     gap: 5px;
+
+    box-shadow:
+        0 5px 12px rgba(0,0,0,0.12);
 }
 
 
 .weather-box i {
+
     font-size: 20px;
+
+    color: #198754;
 }
 
 
 .weather-box span {
+
     font-size: 10px;
+
+    color: #777;
 }
 
 
 .weather-box strong {
+
     font-size: 13px;
 }
 
 
+/* =====================================================
+   WEATHER ERROR
+===================================================== */
+
 .weather-error {
+
     background: #fff3cd;
+
     color: #856404;
-    padding: 15px;
-    border-radius: 12px;
+
+    padding: 18px;
+
+    border-radius: 14px;
+
     margin-bottom: 20px;
+
+    box-shadow:
+        0 5px 15px rgba(0,0,0,0.08);
 }
 
+
+.weather-error a {
+
+    color: #08783f;
+
+    font-weight: bold;
+
+    margin-left: 10px;
+
+    text-decoration: none;
+}
 
 
 /* =====================================================
@@ -323,142 +635,371 @@ body {
 ===================================================== */
 
 .live-status {
-    background: white;
-    border-radius: 12px;
+
+    background:
+        rgba(255,255,255,0.95);
+
+    border-radius: 14px;
+
     padding: 14px 18px;
-    margin-bottom: 20px;
+
+    margin-bottom: 25px;
+
     display: flex;
+
     align-items: center;
+
     gap: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,0.08);
+
     font-size: 13px;
 }
 
 
+.live-status strong {
+
+    color: #16a34a;
+
+    font-size: 12px;
+}
+
+
 .live-status span:last-child {
+
     color: #777;
 }
 
 
 .live-dot {
+
     width: 10px;
     height: 10px;
+
     background: #16a34a;
+
     border-radius: 50%;
+
+    box-shadow:
+        0 0 0 5px rgba(22,163,74,0.12);
+
+    animation: livePulse 1.5s infinite;
 }
 
 
+@keyframes livePulse {
+
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
 
 /* =====================================================
-   NOTIFICATIONS
+   NOTIFICATION SECTION
+===================================================== */
+
+.notification-section {
+
+    background:
+        rgba(255,255,255,0.93);
+
+    padding: 25px;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,0.10);
+
+    margin-bottom: 25px;
+}
+
+
+.section-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+
+.section-header h2 {
+
+    color: #14532d;
+
+    font-size: 22px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.section-header h2 i {
+
+    color: #08783f;
+}
+
+
+.section-header p {
+
+    color: #777;
+
+    font-size: 12px;
+
+    margin-top: 5px;
+}
+
+
+.notification-count {
+
+    background: #e8f5e9;
+
+    color: #08783f;
+
+    padding: 8px 14px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+
+    font-weight: bold;
+}
+
+
+/* =====================================================
+   NOTIFICATION LIST
 ===================================================== */
 
 .notification-list {
+
     display: flex;
+
     flex-direction: column;
+
     gap: 15px;
 }
 
 
 .notification-card {
+
     background: white;
-    border-radius: 15px;
+
+    border-radius: 16px;
+
     padding: 20px;
+
     display: flex;
+
     gap: 18px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,0.07);
+
     border-left: 5px solid #08783f;
+
+    transition: 0.3s;
 }
 
 
+.notification-card:hover {
+
+    transform: translateX(5px);
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,0.12);
+}
+
+
+/* Notification Types */
+
 .notification-card.warning {
+
     border-left-color: #e53935;
 }
 
 
 .notification-card.ai {
+
     border-left-color: #8e44ad;
 }
 
 
 .notification-card.weather {
+
     border-left-color: #1688c9;
 }
 
 
+.notification-card.market {
+
+    border-left-color: #f57c00;
+}
+
+
+.notification-card.success {
+
+    border-left-color: #16a34a;
+}
+
+
+.notification-card.general {
+
+    border-left-color: #08783f;
+}
+
+
+/* =====================================================
+   NOTIFICATION ICON
+===================================================== */
+
 .notification-icon {
-    min-width: 48px;
-    height: 48px;
+
+    min-width: 50px;
+
+    width: 50px;
+
+    height: 50px;
+
     border-radius: 50%;
+
     background: #e8f5ee;
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     color: #08783f;
+
     font-size: 20px;
 }
 
 
 .warning .notification-icon {
+
     background: #ffebee;
+
     color: #e53935;
 }
 
 
 .ai .notification-icon {
+
     background: #f3e5f5;
+
     color: #8e44ad;
 }
 
 
 .weather .notification-icon {
+
     background: #e3f2fd;
+
     color: #1688c9;
 }
 
 
+.market .notification-icon {
+
+    background: #fff3e0;
+
+    color: #f57c00;
+}
+
+
+.success .notification-icon {
+
+    background: #e8f5e9;
+
+    color: #16a34a;
+}
+
+
+/* =====================================================
+   NOTIFICATION CONTENT
+===================================================== */
+
 .notification-content {
+
     flex: 1;
 }
 
 
 .notification-title-row {
+
     display: flex;
+
     align-items: center;
+
     gap: 10px;
+
+    flex-wrap: wrap;
 }
 
 
 .notification-content h3 {
+
     font-size: 16px;
+
+    color: #14532d;
 }
 
 
 .notification-content p {
+
     margin-top: 8px;
+
     color: #555;
+
     font-size: 13px;
-    line-height: 1.5;
+
+    line-height: 1.6;
 }
 
 
 .notification-content small {
+
     display: block;
+
     margin-top: 10px;
+
     color: #999;
+
     font-size: 11px;
 }
 
 
 .live-label {
+
     background: #e8f5e9;
+
     color: #16834f;
+
     font-size: 8px;
+
     font-weight: bold;
+
     padding: 4px 7px;
+
     border-radius: 10px;
 }
-
 
 
 /* =====================================================
@@ -466,53 +1007,199 @@ body {
 ===================================================== */
 
 .no-notifications {
+
     background: white;
-    padding: 60px;
+
+    padding: 65px 30px;
+
     text-align: center;
+
     border-radius: 15px;
 }
 
 
+.empty-icon {
+
+    width: 80px;
+    height: 80px;
+
+    margin: auto;
+
+    border-radius: 50%;
+
+    background: #e8f5e9;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+
 .no-notifications i {
-    font-size: 50px;
+
+    font-size: 42px;
+
     color: #16834f;
 }
 
 
 .no-notifications h2 {
-    margin-top: 15px;
+
+    margin-top: 18px;
+
+    color: #14532d;
 }
 
 
 .no-notifications p {
+
     color: #777;
+
     margin-top: 8px;
 }
 
 
+.no-notifications a {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 20px;
+
+    background: #08783f;
+
+    color: white;
+
+    padding: 12px 18px;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    transition: 0.3s;
+}
+
+
+.no-notifications a:hover {
+
+    background: #065e31;
+
+    transform: translateY(-2px);
+}
+
 
 /* =====================================================
-   BACK BUTTON
+   QUICK ACTIONS
 ===================================================== */
 
-.back-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 25px;
-    background: #08783f;
-    color: white;
-    padding: 12px 18px;
-    border-radius: 8px;
+.quick-actions {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 15px;
+
+    margin-bottom: 25px;
+}
+
+
+.quick-actions a {
+
+    background:
+        rgba(255,255,255,0.95);
+
+    color: #14532d;
+
+    padding: 18px;
+
+    border-radius: 15px;
+
     text-decoration: none;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
     font-size: 13px;
+
+    font-weight: 600;
+
+    box-shadow:
+        0 5px 15px rgba(0,0,0,0.08);
+
+    transition: 0.3s;
 }
 
 
-.back-button:hover {
-    background: #065e31;
+.quick-actions a i {
+
+    color: #08783f;
+
+    font-size: 18px;
 }
 
+
+.quick-actions a:hover {
+
+    background: #08783f;
+
+    color: white;
+
+    transform: translateY(-4px);
+}
+
+
+.quick-actions a:hover i {
+
+    color: white;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer {
+
+    color: white;
+
+    text-align: center;
+
+    padding: 30px 10px;
+
+    font-size: 13px;
+
+    text-shadow:
+        0 2px 5px rgba(0,0,0,0.3);
+}
+
+
+footer i {
+
+    color: #a7f3d0;
+
+    margin-right: 5px;
+}
+
+
+footer span {
+
+    margin: 0 8px;
+
+    opacity: 0.7;
+}
 
 
 /* =====================================================
@@ -520,6 +1207,7 @@ body {
 ===================================================== */
 
 .chatbot-button {
+
     position: fixed;
 
     right: 25px;
@@ -549,14 +1237,18 @@ body {
     z-index: 9999;
 
     box-shadow:
-        0 5px 15px rgba(0,0,0,0.3);
+        0 5px 20px rgba(0,0,0,0.3);
+
+    transition: 0.3s;
 }
 
 
 .chatbot-button:hover {
-    transform: scale(1.08);
-}
 
+    transform: scale(1.08);
+
+    background: #065e31;
+}
 
 
 /* =====================================================
@@ -564,6 +1256,7 @@ body {
 ===================================================== */
 
 .chatbot-box {
+
     position: fixed;
 
     right: 25px;
@@ -576,10 +1269,10 @@ body {
 
     background: white;
 
-    border-radius: 15px;
+    border-radius: 18px;
 
     box-shadow:
-        0 5px 25px rgba(0,0,0,0.3);
+        0 10px 35px rgba(0,0,0,0.3);
 
     display: none;
 
@@ -592,6 +1285,7 @@ body {
 
 
 .chat-header {
+
     background: #08783f;
 
     color: white;
@@ -607,11 +1301,13 @@ body {
 
 
 .chat-header i {
+
     cursor: pointer;
 }
 
 
 .chat-body {
+
     flex: 1;
 
     padding: 15px;
@@ -621,6 +1317,7 @@ body {
 
 
 .bot-message {
+
     background: #e8f5e9;
 
     padding: 12px;
@@ -634,6 +1331,7 @@ body {
 
 
 .user-message {
+
     background: #08783f;
 
     color: white;
@@ -651,6 +1349,7 @@ body {
 
 
 .chat-input {
+
     display: flex;
 
     padding: 10px;
@@ -660,6 +1359,7 @@ body {
 
 
 .chat-input input {
+
     flex: 1;
 
     padding: 10px;
@@ -673,6 +1373,7 @@ body {
 
 
 .chat-input button {
+
     margin-left: 8px;
 
     width: 45px;
@@ -689,15 +1390,15 @@ body {
 }
 
 
-
 /* =====================================================
-   MOBILE
+   TABLET
 ===================================================== */
 
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
 
     .sidebar {
-        width: 75px;
+
+        width: 80px;
     }
 
 
@@ -705,35 +1406,48 @@ body {
     .sidebar .subtitle,
     .menu-title,
     .sidebar a span {
+
         display: none;
     }
 
 
     .sidebar a {
+
         justify-content: center;
     }
 
 
     .sidebar a i {
+
         font-size: 18px;
     }
 
 
     .logo {
-        width: 50px;
-        height: 50px;
+
+        width: 55px;
+
+        height: 55px;
     }
 
 
     .main-content {
-        margin-left: 75px;
 
-        width:
-            calc(100% - 75px);
+        margin-left: 80px;
+
+        width: calc(100% - 80px);
+    }
+
+
+    .notification-summary {
+
+        grid-template-columns:
+            repeat(2, 1fr);
     }
 
 
     .weather-banner {
+
         flex-direction: column;
 
         align-items: flex-start;
@@ -741,68 +1455,202 @@ body {
 
 
     .weather-details {
-        width: 100%;
 
-        flex-wrap: wrap;
+        width: 100%;
+    }
+
+
+    .quick-actions {
+
+        grid-template-columns:
+            repeat(2, 1fr);
     }
 
 }
 
 
+/* =====================================================
+   MOBILE
+===================================================== */
+
 @media (max-width: 600px) {
 
     .main-content {
+
+        margin-left: 0;
+
+        width: 100%;
+
         padding: 10px;
     }
 
 
+    .sidebar {
+
+        width: 65px;
+    }
+
+
+    .logo {
+
+        width: 45px;
+
+        height: 45px;
+    }
+
+
     .topbar {
+
         padding: 15px;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 15px;
     }
 
 
-    .page-title h1 {
-        font-size: 18px;
+    .topbar h1 {
+
+        font-size: 20px;
     }
 
 
-    .user-info {
-        display: none;
+    .top-right {
+
+        width: 100%;
+
+        justify-content: space-between;
+    }
+
+
+    .profile {
+
+        padding: 5px;
+    }
+
+
+    .profile img {
+
+        width: 40px;
+
+        height: 40px;
+    }
+
+
+    .notification-summary {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .weather-banner {
+
+        padding: 20px;
     }
 
 
     .weather-details {
+
         display: grid;
 
         grid-template-columns:
             1fr 1fr;
+
+        width: 100%;
     }
 
 
     .weather-box {
+
         width: 100%;
     }
 
 
     .temperature {
+
         font-size: 35px;
     }
 
 
+    .notification-section {
+
+        padding: 15px;
+    }
+
+
+    .section-header {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 10px;
+    }
+
+
+    .notification-card {
+
+        padding: 15px;
+
+        gap: 12px;
+    }
+
+
+    .notification-icon {
+
+        min-width: 42px;
+
+        width: 42px;
+
+        height: 42px;
+
+        font-size: 17px;
+    }
+
+
+    .notification-content h3 {
+
+        font-size: 14px;
+    }
+
+
+    .notification-content p {
+
+        font-size: 12px;
+    }
+
+
+    .quick-actions {
+
+        grid-template-columns: 1fr;
+    }
+
+
     .chatbot-box {
+
         right: 10px;
 
         bottom: 85px;
 
-        width:
-            calc(100% - 20px);
+        width: calc(100% - 20px);
     }
 
 
     .chatbot-button {
+
         right: 15px;
 
         bottom: 15px;
+    }
+
+
+    footer {
+
+        font-size: 11px;
+
+        line-height: 1.8;
     }
 
 }

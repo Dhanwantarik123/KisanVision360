@@ -1,238 +1,882 @@
+/* =====================================================
+   KISANVISION360 - ADD / SELL PRODUCT
+===================================================== */
+
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f4f8f3;
-    color: #263238;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f8f4;
+    color: #263326;
 }
 
+/* =====================================================
+   MAIN LAYOUT
+===================================================== */
+
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
 
 .main-content {
-    padding: 25px;
+    flex: 1;
+    min-width: 0;
+    padding: 0 30px 30px;
 }
 
+/* =====================================================
+   TOPBAR
+===================================================== */
 
 .topbar {
-    background: white;
-    padding: 22px 28px;
-    border-radius: 18px;
-    margin-bottom: 25px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    min-height: 90px;
+    margin: 0 -30px 25px;
+    padding: 18px 25px;
+    background: #ffffff;
+    border-bottom: 1px solid #e2ebe2;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
+.title-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
 
-.topbar h1 {
-    margin: 0;
+.title-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: #e8f5e9;
+    color: #2e7d32;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+}
+
+.title-section h1 {
     color: #1b5e20;
+    font-size: 24px;
+    margin-bottom: 5px;
 }
 
-
-.topbar p {
-    margin: 8px 0 0;
-    color: #78909c;
+.title-section p {
+    color: #777;
+    font-size: 13px;
 }
 
+/* =====================================================
+   PROFILE
+===================================================== */
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile img {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #81c784;
+}
+
+.profile h4 {
+    color: #333;
+    font-size: 14px;
+}
+
+.profile small {
+    color: #777;
+    font-size: 12px;
+}
+
+/* =====================================================
+   PAGE INTRO
+===================================================== */
+
+.page-intro {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    background: linear-gradient(135deg, #e8f5e9, #f6fbf6);
+    border: 1px solid #c8e6c9;
+    border-radius: 18px;
+
+    padding: 25px;
+    margin-bottom: 22px;
+}
+
+.intro-icon {
+    min-width: 58px;
+    height: 58px;
+
+    background: #2e7d32;
+    color: white;
+
+    border-radius: 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 24px;
+}
+
+.page-intro span {
+    color: #43a047;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.page-intro h2 {
+    color: #1b5e20;
+    font-size: 23px;
+    margin: 5px 0;
+}
+
+.page-intro p {
+    color: #667066;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* =====================================================
+   ERROR MESSAGE
+===================================================== */
+
+.error-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+
+    background: #fff4f4;
+    border: 1px solid #ffcdd2;
+    color: #b71c1c;
+
+    padding: 15px 18px;
+    border-radius: 12px;
+
+    margin-bottom: 20px;
+}
+
+.error-message > i {
+    font-size: 20px;
+    margin-top: 2px;
+}
+
+.error-message strong {
+    font-size: 14px;
+}
+
+.error-message p {
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* =====================================================
+   SELL LAYOUT
+===================================================== */
+
+.sell-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 22px;
+    align-items: start;
+}
+
+/* =====================================================
+   SELL CARD
+===================================================== */
 
 .sell-card {
-    max-width: 850px;
-    margin: auto;
-    background: white;
-    padding: 35px;
-    border-radius: 22px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    background: #ffffff;
+    border: 1px solid #e1e9e1;
+    border-radius: 18px;
+    padding: 28px;
+
+    box-shadow: 0 5px 20px rgba(27, 94, 32, 0.06);
 }
 
+/* =====================================================
+   FORM TITLE
+===================================================== */
 
 .form-title {
     display: flex;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 30px;
+    gap: 13px;
+
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+
+    border-bottom: 1px solid #edf1ed;
 }
 
-
-.title-icon {
-    width: 55px;
-    height: 55px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #e8f5e9;
-    color: #2e7d32;
-    border-radius: 15px;
-    font-size: 25px;
+.form-title .title-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
 }
-
 
 .form-title h2 {
-    margin: 0;
+    color: #1b5e20;
+    font-size: 20px;
 }
-
 
 .form-title p {
-    margin: 5px 0;
-    color: #78909c;
+    color: #777;
+    font-size: 12px;
+    margin-top: 4px;
 }
 
+/* =====================================================
+   FORM SECTION
+===================================================== */
+
+.form-section {
+    margin-bottom: 28px;
+}
+
+.form-section > h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    color: #2e7d32;
+    font-size: 16px;
+
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+
+    border-bottom: 1px solid #edf2ed;
+}
+
+.form-section > h3 i {
+    color: #43a047;
+}
+
+/* =====================================================
+   FORM GROUP
+===================================================== */
 
 .form-group {
-    margin-bottom: 22px;
+    margin-bottom: 18px;
 }
-
 
 .form-group label {
     display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: #37474f;
-}
 
+    color: #374137;
+    font-size: 13px;
+    font-weight: 600;
+
+    margin-bottom: 8px;
+}
 
 .form-group label i {
-    color: #2e7d32;
-    margin-right: 7px;
+    color: #43a047;
+    margin-right: 5px;
 }
 
+/* =====================================================
+   INPUTS
+===================================================== */
 
 .form-group input,
 .form-group select,
 .form-group textarea {
     width: 100%;
-    padding: 13px 15px;
-    border: 1px solid #cfd8dc;
+
+    border: 1px solid #d6e0d6;
     border-radius: 10px;
-    font-size: 15px;
+
+    background: #ffffff;
+    color: #333;
+
+    font-family: inherit;
+    font-size: 13px;
+
     outline: none;
-    background: #fafafa;
+
+    transition: 0.3s;
 }
 
+.form-group input,
+.form-group select {
+    height: 45px;
+    padding: 0 13px;
+}
+
+.form-group textarea {
+    padding: 13px;
+    resize: vertical;
+    min-height: 120px;
+}
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
     border-color: #43a047;
-    background: white;
-    box-shadow: 0 0 0 3px rgba(67,160,71,0.1);
+    box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.1);
 }
 
-
-.form-group textarea {
-    resize: vertical;
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #a0a8a0;
 }
-
 
 .form-group small {
     display: block;
-    margin-top: 7px;
-    color: #78909c;
+    color: #8a948a;
+    font-size: 11px;
+    margin-top: 6px;
 }
 
+/* =====================================================
+   TWO COLUMN
+===================================================== */
 
 .two-column {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 15px;
 }
 
+/* =====================================================
+   PRICE INPUT
+===================================================== */
 
-.error-message {
-    background: #ffebee;
-    color: #c62828;
-    padding: 14px;
+.price-input {
+    display: flex;
+    align-items: stretch;
+}
+
+.price-input span {
+    width: 45px;
+
+    background: #e8f5e9;
+    color: #2e7d32;
+
+    border: 1px solid #d6e0d6;
+    border-right: none;
+
+    border-radius: 10px 0 0 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.price-input input {
+    border-radius: 0 10px 10px 0;
+}
+
+/* =====================================================
+   IMAGE UPLOAD
+===================================================== */
+
+.image-upload {
+    min-height: 190px;
+
+    border: 2px dashed #a5cda7;
+    border-radius: 15px;
+
+    background: #f8fcf8;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    padding: 25px;
+
+    transition: 0.3s;
+}
+
+.image-upload:hover {
+    background: #eef8ef;
+    border-color: #43a047;
+}
+
+.image-upload input {
+    display: none;
+}
+
+.upload-icon {
+    width: 58px;
+    height: 58px;
+
+    border-radius: 50%;
+
+    background: #e8f5e9;
+    color: #43a047;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 25px;
+
+    margin-bottom: 12px;
+}
+
+.image-upload h4 {
+    color: #2e7d32;
+    font-size: 15px;
+    margin-bottom: 6px;
+}
+
+.image-upload p {
+    color: #777;
+    font-size: 12px;
+    margin-bottom: 7px;
+}
+
+.image-upload > span {
+    color: #9aa49a;
+    font-size: 10px;
+}
+
+/* =====================================================
+   IMAGE PREVIEW
+===================================================== */
+
+.image-preview {
+    align-items: center;
+    gap: 15px;
+
+    margin-top: 15px;
+
+    padding: 12px;
+
+    background: #f7faf7;
+    border: 1px solid #dfe8df;
+
+    border-radius: 12px;
+}
+
+.image-preview img {
+    width: 75px;
+    height: 75px;
+
+    object-fit: cover;
+
     border-radius: 10px;
-    margin-bottom: 20px;
+    border: 1px solid #d5dfd5;
 }
 
+.image-preview strong {
+    color: #2e7d32;
+    font-size: 13px;
+}
+
+.image-preview p {
+    color: #777;
+    font-size: 11px;
+    margin-top: 5px;
+
+    word-break: break-all;
+}
+
+/* =====================================================
+   FORM BUTTONS
+===================================================== */
 
 .form-buttons {
     display: flex;
     justify-content: flex-end;
-    gap: 15px;
-    margin-top: 30px;
+    gap: 12px;
+
+    padding-top: 20px;
+    border-top: 1px solid #edf1ed;
 }
 
+.form-buttons a,
+.form-buttons button {
+    min-height: 44px;
 
-.cancel-btn,
-.sell-submit {
-    padding: 13px 22px;
-    border-radius: 10px;
-    font-size: 15px;
+    padding: 0 20px;
+
+    border-radius: 9px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    font-family: inherit;
+    font-size: 13px;
     font-weight: bold;
-    text-decoration: none;
-    cursor: pointer;
-}
 
+    cursor: pointer;
+    text-decoration: none;
+
+    transition: 0.3s;
+}
 
 .cancel-btn {
-    background: #eceff1;
-    color: #455a64;
+    background: #f1f5f1;
+    color: #536153;
+    border: 1px solid #dce4dc;
 }
-
-
-.sell-submit {
-    border: none;
-    background: #2e7d32;
-    color: white;
-}
-
 
 .cancel-btn:hover {
-    background: #cfd8dc;
+    background: #e6ece6;
 }
 
+.sell-submit {
+    background: #2e7d32;
+    color: white;
+    border: none;
+}
 
 .sell-submit:hover {
     background: #1b5e20;
+    transform: translateY(-1px);
 }
 
+/* =====================================================
+   SELLING TIPS
+===================================================== */
+
+.selling-tips {
+    background: #ffffff;
+    border: 1px solid #e1e9e1;
+    border-radius: 18px;
+
+    padding: 22px;
+
+    box-shadow: 0 5px 20px rgba(27, 94, 32, 0.06);
+
+    position: sticky;
+    top: 20px;
+}
+
+.tips-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding-bottom: 18px;
+    margin-bottom: 8px;
+
+    border-bottom: 1px solid #edf1ed;
+}
+
+.tips-icon {
+    width: 45px;
+    height: 45px;
+
+    border-radius: 12px;
+
+    background: #fff3e0;
+    color: #fb8c00;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 20px;
+}
+
+.tips-header h2 {
+    color: #1b5e20;
+    font-size: 18px;
+}
+
+.tips-header p {
+    color: #888;
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+/* =====================================================
+   TIP
+===================================================== */
+
+.tip {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+
+    padding: 15px 0;
+
+    border-bottom: 1px solid #f0f3f0;
+}
+
+.tip > i {
+    min-width: 34px;
+    height: 34px;
+
+    border-radius: 9px;
+
+    background: #e8f5e9;
+    color: #43a047;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 14px;
+}
+
+.tip h3 {
+    color: #374137;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.tip p {
+    color: #7b857b;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* =====================================================
+   MARKETPLACE LINK
+===================================================== */
+
+.marketplace-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-top: 18px;
+
+    padding: 14px;
+
+    background: #e8f5e9;
+    border-radius: 12px;
+}
+
+.marketplace-link > i {
+    color: #2e7d32;
+    font-size: 18px;
+}
+
+.marketplace-link strong {
+    color: #1b5e20;
+    font-size: 12px;
+}
+
+.marketplace-link p {
+    color: #718071;
+    font-size: 10px;
+    margin-top: 3px;
+}
+
+.marketplace-link a {
+    margin-left: auto;
+
+    width: 32px;
+    height: 32px;
+
+    border-radius: 8px;
+
+    background: #2e7d32;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none;
+
+    transition: 0.3s;
+}
+
+.marketplace-link a:hover {
+    background: #1b5e20;
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
 
 footer {
     text-align: center;
-    margin: 30px;
-    color: #78909c;
-}
 
+    padding: 22px 10px;
+
+    border-top: 1px solid #e1e8e1;
+
+    color: #7b877b;
+
+    font-size: 12px;
+}
 
 footer i {
     color: #43a047;
+    margin-right: 5px;
 }
 
+footer strong {
+    color: #2e7d32;
+}
 
 footer span {
-    margin: 0 8px;
+    margin: 0 5px;
 }
 
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 1050px) {
+
+    .main-content {
+        padding: 0 20px 25px;
+    }
+
+    .topbar {
+        margin-left: -20px;
+        margin-right: -20px;
+    }
+
+    .sell-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .selling-tips {
+        position: static;
+    }
+
+    .tip {
+        display: inline-flex;
+        width: 49%;
+        vertical-align: top;
+        padding-right: 15px;
+    }
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
 
 @media (max-width: 700px) {
 
     .main-content {
+        padding: 0 15px 20px;
+    }
+
+    .topbar {
+        margin-left: -15px;
+        margin-right: -15px;
         padding: 15px;
     }
 
+    .title-section h1 {
+        font-size: 18px;
+    }
+
+    .title-section p {
+        display: none;
+    }
+
+    .profile div {
+        display: none;
+    }
+
+    .page-intro {
+        padding: 20px;
+        align-items: flex-start;
+    }
+
+    .page-intro h2 {
+        font-size: 20px;
+    }
 
     .sell-card {
         padding: 20px;
     }
-
 
     .two-column {
         grid-template-columns: 1fr;
         gap: 0;
     }
 
-
     .form-buttons {
-        flex-direction: column;
+        flex-direction: column-reverse;
     }
 
-
-    .cancel-btn,
-    .sell-submit {
-        text-align: center;
+    .form-buttons a,
+    .form-buttons button {
         width: 100%;
     }
 
+    .tip {
+        width: 100%;
+    }
+}
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 450px) {
+
+    .title-icon {
+        width: 43px;
+        height: 43px;
+        font-size: 18px;
+    }
+
+    .title-section h1 {
+        font-size: 16px;
+    }
+
+    .page-intro {
+        flex-direction: column;
+    }
+
+    .intro-icon {
+        min-width: 50px;
+        width: 50px;
+        height: 50px;
+    }
+
+    .sell-card {
+        padding: 16px;
+        border-radius: 14px;
+    }
+
+    .form-title h2 {
+        font-size: 17px;
+    }
+
+    .form-section > h3 {
+        font-size: 14px;
+    }
+
+    .image-upload {
+        min-height: 170px;
+        padding: 18px;
+    }
+
+    .selling-tips {
+        padding: 17px;
+    }
 }

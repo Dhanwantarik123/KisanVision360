@@ -1,0 +1,563 @@
+/* =====================================================
+   KISANVISION360 - CONSUMER REQUEST
+===================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f4f8f3;
+    color: #26382a;
+}
+
+/* =====================================================
+   MAIN CONTENT
+===================================================== */
+
+.main-content {
+    min-height: 100vh;
+    padding: 25px 35px;
+}
+
+/* =====================================================
+   TOPBAR
+===================================================== */
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    background: #ffffff;
+    padding: 20px 25px;
+    border-radius: 18px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+.title-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.title-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 15px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23px;
+}
+
+.title-section h1 {
+    font-size: 25px;
+    color: #1b5e20;
+    margin-bottom: 4px;
+}
+
+.title-section p {
+    color: #667568;
+    font-size: 14px;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.profile img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #c8e6c9;
+}
+
+.profile h4 {
+    color: #1b5e20;
+    font-size: 15px;
+}
+
+.profile small {
+    color: #718071;
+}
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.request-hero {
+    background: linear-gradient(135deg, #1b5e20, #43a047);
+    color: white;
+    border-radius: 22px;
+    padding: 35px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(27, 94, 32, 0.18);
+}
+
+.hero-content {
+    max-width: 750px;
+}
+
+.hero-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 8px 14px;
+    border-radius: 30px;
+    margin-bottom: 15px;
+}
+
+.hero-content h2 {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.hero-content p {
+    line-height: 1.7;
+    font-size: 15px;
+    opacity: 0.92;
+    max-width: 680px;
+}
+
+.hero-features {
+    display: flex;
+    gap: 25px;
+    margin-top: 22px;
+    flex-wrap: wrap;
+}
+
+.hero-features div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.hero-features i {
+    font-size: 17px;
+}
+
+.hero-icon {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 70px;
+    margin-right: 30px;
+}
+
+/* =====================================================
+   REQUEST SECTION
+===================================================== */
+
+.request-section {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+    gap: 25px;
+    align-items: start;
+}
+
+/* =====================================================
+   FORM CARD
+===================================================== */
+
+.form-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.06);
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-bottom: 22px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #e6eee6;
+}
+
+.section-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+}
+
+.section-heading h2 {
+    color: #1b5e20;
+    font-size: 21px;
+    margin-bottom: 4px;
+}
+
+.section-heading p {
+    color: #748174;
+    font-size: 13px;
+}
+
+/* =====================================================
+   FORM
+===================================================== */
+
+.form-group {
+    margin-bottom: 22px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: #344637;
+    margin-bottom: 9px;
+}
+
+.form-group label i {
+    color: #43a047;
+    margin-right: 6px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    border: 1px solid #d7e2d7;
+    border-radius: 11px;
+    padding: 13px 15px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fbfdfb;
+    color: #26382a;
+    outline: none;
+    transition: 0.25s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #43a047;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.10);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 125px;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #9aa59b;
+}
+
+/* =====================================================
+   INPUT WITH UNIT
+===================================================== */
+
+.input-with-unit {
+    position: relative;
+}
+
+.input-with-unit input {
+    padding-right: 60px;
+}
+
+.input-with-unit span {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #2e7d32;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+/* =====================================================
+   INFORMATION NOTE
+===================================================== */
+
+.form-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #f1f8f1;
+    border-left: 4px solid #43a047;
+    padding: 13px 15px;
+    border-radius: 9px;
+    color: #55705a;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+.form-note i {
+    color: #2e7d32;
+    margin-top: 2px;
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding-top: 5px;
+}
+
+.cancel-btn,
+.submit-btn {
+    border: none;
+    border-radius: 11px;
+    padding: 13px 22px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: 0.25s;
+}
+
+.cancel-btn {
+    color: #546457;
+    background: #edf1ed;
+}
+
+.cancel-btn:hover {
+    background: #dfe7df;
+}
+
+.submit-btn {
+    color: white;
+    background: linear-gradient(135deg, #2e7d32, #43a047);
+    box-shadow: 0 5px 15px rgba(46, 125, 50, 0.20);
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(46, 125, 50, 0.28);
+}
+
+/* =====================================================
+   INFORMATION CARD
+===================================================== */
+
+.info-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.06);
+    position: sticky;
+    top: 20px;
+}
+
+.info-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 15px;
+    background: #fff3e0;
+    color: #fb8c00;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.info-card h2 {
+    color: #1b5e20;
+    font-size: 22px;
+    margin-bottom: 25px;
+}
+
+/* =====================================================
+   STEPS
+===================================================== */
+
+.step {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 23px;
+}
+
+.step > span {
+    min-width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 13px;
+}
+
+.step h3 {
+    font-size: 15px;
+    color: #344637;
+    margin-bottom: 5px;
+}
+
+.step p {
+    color: #758077;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* =====================================================
+   CHAT BUTTON
+===================================================== */
+
+.chat-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    text-decoration: none;
+    background: #1b5e20;
+    color: white;
+    padding: 13px 18px;
+    border-radius: 11px;
+    font-weight: 700;
+    font-size: 14px;
+    transition: 0.25s;
+    margin-top: 8px;
+}
+
+.chat-btn:hover {
+    background: #2e7d32;
+    transform: translateY(-2px);
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer {
+    margin-top: 35px;
+    padding: 20px;
+    text-align: center;
+    color: #718071;
+    font-size: 13px;
+}
+
+footer i {
+    color: #43a047;
+    margin-right: 5px;
+}
+
+footer strong {
+    color: #2e7d32;
+}
+
+footer span {
+    margin: 0 8px;
+    color: #a5afa6;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 1000px) {
+
+    .request-section {
+        grid-template-columns: 1fr;
+    }
+
+    .info-card {
+        position: static;
+    }
+
+    .hero-icon {
+        margin-right: 0;
+    }
+}
+
+@media (max-width: 700px) {
+
+    .main-content {
+        padding: 15px;
+    }
+
+    .topbar {
+        padding: 15px;
+    }
+
+    .profile {
+        display: none;
+    }
+
+    .title-section h1 {
+        font-size: 20px;
+    }
+
+    .request-hero {
+        padding: 25px;
+    }
+
+    .hero-content h2 {
+        font-size: 25px;
+    }
+
+    .hero-icon {
+        display: none;
+    }
+
+    .hero-features {
+        gap: 12px;
+        flex-direction: column;
+    }
+
+    .form-card {
+        padding: 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+    }
+
+    .cancel-btn,
+    .submit-btn {
+        width: 100%;
+    }
+}

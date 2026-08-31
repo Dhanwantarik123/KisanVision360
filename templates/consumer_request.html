@@ -1,57 +1,593 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-<title>Consumer Request</title>
+<title>
+KisanVision360 | Consumer Requirement
+</title>
+
+
+<!-- SIDEBAR -->
 
 <link rel="stylesheet"
-href="{{ url_for('static', filename='css/style.css') }}">
+      href="{{ url_for('static', filename='css/sidebar.css') }}">
+
+
+<!-- PAGE CSS -->
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/consumer-request.css') }}">
+
+
+<!-- FONT AWESOME -->
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
+
 <body>
 
-<div class="container">
 
-<h1>📝 Consumer Requirement</h1>
+<div class="dashboard-container">
 
-<form>
 
-<input type="text" placeholder="Crop Name">
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
 
-<br><br>
+{% include "components/sidebar.html" %}
 
-<input type="number" placeholder="Quantity (Kg)">
 
-<br><br>
 
-<input type="number" placeholder="Budget (₹)">
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
 
-<br><br>
+<div class="main-content">
 
-<input type="text" placeholder="Delivery Location">
 
-<br><br>
 
-<textarea placeholder="Additional Requirement"
-rows="5"
-style="width:90%;padding:10px;"></textarea>
+<!-- =====================================================
+     TOPBAR
+===================================================== -->
 
-<br><br>
+<header class="topbar">
 
-<a href="/chat">
-<button type="button">
-Send Request
-</button>
-</a>
 
-</form>
+    <div class="title-section">
+
+
+        <div class="title-icon">
+
+            <i class="fa-solid fa-bullhorn"></i>
+
+        </div>
+
+
+        <div>
+
+            <h1>
+                Consumer Requirement
+            </h1>
+
+            <p>
+                Post your crop requirement for farmers
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="profile">
+
+        <img
+            src="{{ url_for(
+                'static',
+                filename='images/farmer.jpg'
+            ) }}"
+            alt="Profile">
+
+
+        <div>
+
+            <h4>
+                {{ name }}
+            </h4>
+
+            <small>
+                Consumer
+            </small>
+
+        </div>
+
+    </div>
+
+
+</header>
+
+
+
+<!-- =====================================================
+     PAGE HERO
+===================================================== -->
+
+<section class="request-hero">
+
+
+    <div class="hero-content">
+
+
+        <span class="hero-label">
+
+            <i class="fa-solid fa-leaf"></i>
+
+            FARMER CONNECT
+
+        </span>
+
+
+        <h2>
+            Tell Farmers What You Need
+        </h2>
+
+
+        <p>
+            Post your crop requirement with quantity,
+            budget and delivery location. Farmers can
+            respond to your requirement.
+        </p>
+
+
+        <div class="hero-features">
+
+
+            <div>
+
+                <i class="fa-solid fa-seedling"></i>
+
+                <span>
+                    Fresh Crops
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <i class="fa-solid fa-handshake"></i>
+
+                <span>
+                    Direct Connection
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <i class="fa-solid fa-location-dot"></i>
+
+                <span>
+                    Local Delivery
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <div class="hero-icon">
+
+        <i class="fa-solid fa-tractor"></i>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     REQUIREMENT FORM
+===================================================== -->
+
+<section class="request-section">
+
+
+    <div class="form-card">
+
+
+        <div class="section-heading">
+
+
+            <div class="section-icon">
+
+                <i class="fa-solid fa-file-circle-plus"></i>
+
+            </div>
+
+
+            <div>
+
+                <h2>
+                    Create Crop Requirement
+                </h2>
+
+                <p>
+                    Enter the details of the crop you want to purchase.
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- FORM -->
+
+        <form
+            method="POST"
+            action="{{ url_for('consumer_request') }}">
+
+
+
+            <!-- CROP -->
+
+            <div class="form-group">
+
+                <label for="crop">
+
+                    <i class="fa-solid fa-wheat-awn"></i>
+
+                    Crop Name
+
+                </label>
+
+
+                <input
+                    type="text"
+                    id="crop"
+                    name="crop"
+                    placeholder="Example: Wheat, Rice, Soybean"
+                    required>
+
+            </div>
+
+
+
+            <!-- QUANTITY -->
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label for="quantity">
+
+                        <i class="fa-solid fa-weight-hanging"></i>
+
+                        Quantity
+
+                    </label>
+
+
+                    <div class="input-with-unit">
+
+                        <input
+                            type="number"
+                            id="quantity"
+                            name="quantity"
+                            min="1"
+                            step="0.01"
+                            placeholder="Enter quantity"
+                            required>
+
+                        <span>
+                            Kg
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- BUDGET -->
+
+                <div class="form-group">
+
+                    <label for="budget">
+
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                        Budget
+
+                    </label>
+
+
+                    <div class="input-with-unit">
+
+                        <input
+                            type="number"
+                            id="budget"
+                            name="budget"
+                            min="0"
+                            step="0.01"
+                            placeholder="Enter budget"
+                            required>
+
+                        <span>
+                            ₹
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- LOCATION -->
+
+            <div class="form-group">
+
+                <label for="location">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    Delivery Location
+
+                </label>
+
+
+                <input
+                    type="text"
+                    id="location"
+                    name="location"
+                    placeholder="Example: Nagpur, Maharashtra"
+                    required>
+
+            </div>
+
+
+
+            <!-- ADDITIONAL REQUIREMENT -->
+
+            <div class="form-group">
+
+                <label for="requirement">
+
+                    <i class="fa-solid fa-message"></i>
+
+                    Additional Requirement
+
+                </label>
+
+
+                <textarea
+                    id="requirement"
+                    name="requirement"
+                    rows="5"
+                    placeholder="Describe quality, variety, delivery date or any other requirement..."></textarea>
+
+            </div>
+
+
+
+            <!-- TERMS -->
+
+            <div class="form-note">
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                <span>
+                    Your requirement will be shared with
+                    relevant farmers on KisanVision360.
+                </span>
+
+            </div>
+
+
+
+            <!-- BUTTONS -->
+
+            <div class="form-buttons">
+
+
+                <a
+                    href="{{ url_for('consumer') }}"
+                    class="cancel-btn">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Back
+
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="submit-btn">
+
+                    <i class="fa-solid fa-paper-plane"></i>
+
+                    Send Requirement
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+
+
+    <!-- =================================================
+         RIGHT INFORMATION CARD
+    ================================================= -->
+
+    <div class="info-card">
+
+
+        <div class="info-icon">
+
+            <i class="fa-solid fa-lightbulb"></i>
+
+        </div>
+
+
+        <h2>
+            How It Works
+        </h2>
+
+
+        <div class="step">
+
+
+            <span>
+                01
+            </span>
+
+
+            <div>
+
+                <h3>
+                    Post Requirement
+                </h3>
+
+                <p>
+                    Enter the crop, quantity and budget you need.
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="step">
+
+
+            <span>
+                02
+            </span>
+
+
+            <div>
+
+                <h3>
+                    Farmers Respond
+                </h3>
+
+                <p>
+                    Farmers can view your requirement and contact you.
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="step">
+
+
+            <span>
+                03
+            </span>
+
+
+            <div>
+
+                <h3>
+                    Connect & Purchase
+                </h3>
+
+                <p>
+                    Chat with farmers and complete your purchase.
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+        <a
+            href="{{ url_for('chat') }}"
+            class="chat-btn">
+
+            <i class="fa-solid fa-comments"></i>
+
+            Chat with Farmer
+
+        </a>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <i class="fa-solid fa-leaf"></i>
+
+    <strong>
+        KisanVision360
+    </strong>
+
+    <span>
+        •
+    </span>
+
+    Smart Agriculture Marketplace
+
+    <span>
+        •
+    </span>
+
+    © 2026
+
+</footer>
+
 
 </div>
 
+</div>
+
+
+
 </body>
+
 </html>

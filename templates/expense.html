@@ -3,125 +3,421 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<title>KisanVision360 | Expenses</title>
+    <title>KisanVision360 | Farm Expenses</title>
 
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/sidebar.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/sidebar.css') }}">
 
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/expense.css') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/expense.css') }}">
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
+
 <body>
+
+
+<!-- SIDEBAR -->
 
 {% include "components/sidebar.html" %}
 
-<div class="main-content">
 
-<div class="topbar">
+<!-- MAIN CONTENT -->
 
-<div>
+<main class="main-content">
 
-<h2>💸 Farm Expenses</h2>
 
-<p>Track all farming expenses</p>
+    <!-- TOPBAR -->
 
-</div>
+    <header class="topbar">
 
-<div class="profile">
+        <div class="title-section">
 
-<img src="{{ url_for('static', filename='images/farmer.jpg') }}">
+            <div class="title-icon">
 
-<div>
+                <i class="fa-solid fa-money-bill-transfer"></i>
 
-<h4>{{ name }}</h4>
+            </div>
 
-<p>Farmer</p>
+            <div>
 
-</div>
+                <h1>
+                    Farm Expenses
+                </h1>
 
-</div>
+                <p>
+                    Track and manage all your farming expenses
+                </p>
 
-</div>
+            </div>
 
-<div class="form-card">
+        </div>
 
-<h2>Add Expense</h2>
 
-<form method="POST">
+        <!-- PROFILE -->
 
-<label>Description</label>
+        <div class="profile">
 
-<input
-type="text"
-name="description"
-placeholder="e.g. Fertilizer Purchase"
-required>
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='images/farmer.jpg'
+                ) }}"
+                alt="Farmer">
 
-<label>Amount (₹)</label>
+            <div>
 
-<input
-type="number"
-name="amount"
-step="0.01"
-required>
+                <h4>
+                    {{ name }}
+                </h4>
 
-<button type="submit">
+                <span>
+                    <i class="fa-solid fa-circle"></i>
+                    Farmer
+                </span>
 
-<i class="fa-solid fa-plus"></i>
+            </div>
 
-Add Expense
+        </div>
 
-</button>
+    </header>
 
-</form>
 
-</div>
+    <!-- PAGE INTRO -->
 
-<div class="table-card">
+    <section class="expense-banner">
 
-<h2>Expense History</h2>
+        <div class="banner-icon">
 
-<table>
+            <i class="fa-solid fa-receipt"></i>
 
-<tr>
+        </div>
 
-<th>Date</th>
+        <div>
 
-<th>Description</th>
+            <h2>
+                Manage Farm Expenses
+            </h2>
 
-<th>Amount</th>
+            <p>
+                Record seeds, fertilizer, labour,
+                equipment and other farming costs.
+            </p>
 
-</tr>
+        </div>
 
-{% for row in expense_list %}
+    </section>
 
-<tr>
 
-<td>{{ row[0] }}</td>
+    <!-- EXPENSE FORM -->
 
-<td>{{ row[1] }}</td>
+    <section class="form-card">
 
-<td>₹ {{ row[2] }}</td>
+        <div class="form-header">
 
-</tr>
+            <div class="form-icon">
 
-{% endfor %}
+                <i class="fa-solid fa-plus"></i>
 
-</table>
+            </div>
 
-</div>
+            <div>
 
-</div>
+                <h2>
+                    Add New Expense
+                </h2>
+
+                <p>
+                    Enter your farming expense details below.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form method="POST">
+
+
+            <!-- DESCRIPTION -->
+
+            <div class="form-group">
+
+                <label for="description">
+
+                    <i class="fa-solid fa-file-lines"></i>
+
+                    Description
+
+                </label>
+
+                <input
+                    type="text"
+                    id="description"
+                    name="description"
+                    placeholder="e.g. Fertilizer Purchase"
+                    required>
+
+            </div>
+
+
+            <!-- AMOUNT -->
+
+            <div class="form-group">
+
+                <label for="amount">
+
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                    Amount
+
+                </label>
+
+                <div class="amount-input">
+
+                    <span>₹</span>
+
+                    <input
+                        type="number"
+                        id="amount"
+                        name="amount"
+                        placeholder="Enter amount"
+                        step="0.01"
+                        min="0"
+                        required>
+
+                </div>
+
+            </div>
+
+
+            <!-- SUBMIT -->
+
+            <button
+                type="submit"
+                class="expense-btn">
+
+                <i class="fa-solid fa-plus"></i>
+
+                Add Expense
+
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- EXPENSE HISTORY -->
+
+    <section class="history-section">
+
+
+        <div class="section-header">
+
+            <div>
+
+                <h2>
+
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+
+                    Expense History
+
+                </h2>
+
+                <p>
+                    Your recently recorded farming expenses
+                </p>
+
+            </div>
+
+
+            <span class="expense-count">
+
+                {{ expense_list|length }}
+
+                {{ "Expense" if expense_list|length == 1
+                   else "Expenses" }}
+
+            </span>
+
+        </div>
+
+
+        <div class="table-card">
+
+
+            {% if expense_list %}
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Description
+                            </th>
+
+                            <th>
+                                Amount
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    {% for row in expense_list %}
+
+                        <tr>
+
+                            <!-- DATE -->
+
+                            <td>
+
+                                <span class="date">
+
+                                    <i class="fa-regular fa-calendar"></i>
+
+                                    {{ row[0] }}
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- DESCRIPTION -->
+
+                            <td>
+
+                                <div class="description-cell">
+
+                                    <div class="expense-small-icon">
+
+                                        <i class="fa-solid fa-arrow-down"></i>
+
+                                    </div>
+
+                                    <span>
+                                        {{ row[1] }}
+                                    </span>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- AMOUNT -->
+
+                            <td>
+
+                                <strong class="expense-amount">
+
+                                    ₹ {{ "%.2f"|format(row[2]|float) }}
+
+                                </strong>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            {% else %}
+
+
+            <!-- EMPTY STATE -->
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+
+                    <i class="fa-solid fa-receipt"></i>
+
+                </div>
+
+                <h3>
+                    No Expenses Recorded
+                </h3>
+
+                <p>
+                    Start by adding your first farm expense.
+                </p>
+
+                <a href="#description">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Add First Expense
+
+                </a>
+
+            </div>
+
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- BACK TO FINANCE -->
+
+    <div class="back-section">
+
+        <a href="{{ url_for('finance') }}">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Finance Dashboard
+
+        </a>
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <footer class="expense-footer">
+
+        <i class="fa-solid fa-leaf"></i>
+
+        KisanVision360 Smart Farming Finance
+
+        <span>•</span>
+
+        Track your farm expenses better
+
+    </footer>
+
+
+</main>
+
 
 </body>
 

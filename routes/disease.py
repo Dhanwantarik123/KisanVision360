@@ -1,158 +1,109 @@
+# =========================================================
+# DISEASE DETAILS
+# =========================================================
+
 def disease_details(disease):
 
     diseases = {
 
+        # =================================================
+        # BACTERIAL BLIGHT
+        # =================================================
 
-    "Mosaic Virus":{
+        "bacterial_blight": {
 
-        "status":"Disease Detected",
+            "status": "Disease Detected",
 
-        "symptoms":
-        "Yellow mosaic patterns, leaf curling, reduced plant growth",
+            "symptoms":
+            "Water-soaked spots, brown lesions, leaf drying and yellowing may appear on cotton leaves.",
 
-        "treatment":
-        "Remove infected plants. Control virus vectors like whiteflies. Use healthy seeds.",
+            "treatment":
+            "Remove severely infected plant parts and follow recommended crop-specific bacterial disease management practices.",
 
-        "prevention":
-        "Use resistant varieties, maintain field hygiene and control insects."
-
-    },
-
-
-
-    "powdery_mildew":{
-
-        "status":"Disease Detected",
-
-        "symptoms":
-        "White powder-like patches on leaves and stems",
-
-        "treatment":
-        "Apply sulfur-based fungicide and improve air circulation.",
-
-        "prevention":
-        "Avoid excess moisture and maintain proper plant spacing."
-
-    },
+            "prevention":
+            "Use healthy seeds, maintain field sanitation, avoid unnecessary leaf wetness and monitor the crop regularly."
+        },
 
 
+        # =================================================
+        # CURL VIRUS
+        # =================================================
 
-    "septoria":{
+        "curl_virus": {
 
-        "status":"Disease Detected",
+            "status": "Disease Detected",
 
-        "symptoms":
-        "Brown spots with yellow borders on leaves",
+            "symptoms":
+            "Leaves may curl, become distorted and show yellowing. Plant growth may also be reduced.",
 
-        "treatment":
-        "Remove infected leaves and apply recommended fungicide.",
+            "treatment":
+            "Remove severely infected plants and control insect vectors such as whiteflies according to agricultural recommendations.",
 
-        "prevention":
-        "Practice crop rotation and avoid overhead irrigation."
-
-    },
-
-
-
-    "bacterial_blight":{
-
-        "status":"Disease Detected",
-
-        "symptoms":
-        "Water-soaked spots and leaf drying",
-
-        "treatment":
-        "Use copper-based bactericide and remove infected parts.",
-
-        "prevention":
-        "Use disease-free seeds and maintain field cleanliness."
-
-    },
+            "prevention":
+            "Use healthy planting material, monitor whiteflies and maintain good field hygiene."
+        },
 
 
+        # =================================================
+        # FUSARIUM WILT
+        # =================================================
 
-    "brown_spot":{
+        "fussarium_wilt": {
 
-        "status":"Disease Detected",
+            "status": "Disease Detected",
 
-        "symptoms":
-        "Brown circular spots on leaves",
+            "symptoms":
+            "Leaves may turn yellow, wilt and dry. The plant may show reduced growth and vascular discoloration.",
 
-        "treatment":
-        "Apply suitable fungicide and improve nutrition.",
+            "treatment":
+            "Remove severely affected plants and follow crop-specific wilt management practices recommended by agricultural experts.",
 
-        "prevention":
-        "Balanced fertilizer use and proper irrigation."
-
-    },
-
-
-
-    "Yellow Mosaic":{
-
-        "status":"Disease Detected",
-
-        "symptoms":
-        "Yellow patches and distorted leaves",
-
-        "treatment":
-        "Control whiteflies and remove affected plants.",
-
-        "prevention":
-        "Use resistant seeds and insect control methods."
-
-    },
+            "prevention":
+            "Use healthy and disease-free planting material, practice crop rotation and maintain proper field sanitation."
+        },
 
 
+        # =================================================
+        # HEALTHY
+        # =================================================
 
-    "Southern blight":{
+        "healthy": {
 
-        "status":"Disease Detected",
+            "status": "No Disease",
 
-        "symptoms":
-        "Stem rot and yellowing leaves",
+            "symptoms":
+            "The cotton leaf appears healthy without major visible disease symptoms.",
 
-        "treatment":
-        "Apply fungicide and remove infected plant debris.",
+            "treatment":
+            "No disease treatment is required. Continue normal crop care.",
 
-        "prevention":
-        "Crop rotation and proper soil management."
-
-    },
-
-
-    "Healthy":{
-
-        "status":"No Disease",
-
-        "symptoms":
-        "Plant appears healthy",
-
-        "treatment":
-        "No treatment required",
-
-        "prevention":
-        "Continue regular monitoring."
+            "prevention":
+            "Continue regular monitoring, proper irrigation, balanced nutrition and good field management."
+        }
 
     }
 
 
-    }
-
-
+    # =====================================================
+    # RETURN INFORMATION
+    # =====================================================
 
     return diseases.get(
+
         disease,
+
         {
 
-        "status":"Unknown Disease",
+            "status": "Unknown Disease",
 
-        "symptoms":"Unable to identify symptoms",
+            "symptoms":
+            "Disease symptoms information is not available.",
 
-        "treatment":"Consult agriculture expert",
+            "treatment":
+            "Please consult an agricultural expert for proper diagnosis and treatment.",
 
-        "prevention":"Maintain proper crop management"
-
+            "prevention":
+            "Monitor the crop regularly and maintain good field hygiene."
         }
 
     )
