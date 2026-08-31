@@ -13,9 +13,13 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # D:\KisanVision360\dataset\plants\plant
 DATASET_DIR = os.path.join(
     BASE_DIR,
-    "dataset",
-    "plants",
-    "plant"
+    "kaggle_data",
+    "datasets",
+    "seroshkarim",
+    "cotton-leaf-disease-dataset",
+    "versions",
+    "1",
+    "cotton"
 )
 
 MODEL_DIR = os.path.join(
