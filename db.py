@@ -38,11 +38,11 @@ def get_db():
     return conn
 
 
-def add_mobile_column(conn):
+def add_missing_user_columns(conn):
 
     cursor = conn.cursor()
 
-    # Check users table
+    # Check existing users columns
     cursor.execute(
         "PRAGMA table_info(users)"
     )
@@ -52,7 +52,16 @@ def add_mobile_column(conn):
         for row in cursor.fetchall()
     ]
 
-    # Add mobile only if missing
+    # Add fullname if missing
+    if "fullname" not in columns:
+
+        cursor.execute(
+            "ALTER TABLE users ADD COLUMN fullname TEXT"
+        )
+
+        print("DATABASE: fullname column added")
+
+    # Add mobile if missing
     if "mobile" not in columns:
 
         cursor.execute(
@@ -92,10 +101,10 @@ def init_db():
             )
 
         # =========================================
-        # ADD MOBILE COLUMN IF MISSING
+        # FIX USERS TABLE
         # =========================================
 
-        add_mobile_column(conn)
+        add_missing_user_columns(conn)
 
         # =========================================
         # TRANSACTIONS TABLE
