@@ -1,7 +1,5 @@
-from flask import Blueprint, render_template, session, redirect, url_for, jsonify
-import sqlite3
-import os
-from datetime import datetime
+from flask import Blueprint, render_template, session, redirect, url_for
+from db import get_db
 
 
 notification_bp = Blueprint(
@@ -11,71 +9,42 @@ notification_bp = Blueprint(
 
 
 # =========================================================
-# DATABASE PATH
-# =========================================================
-
-BASE_DIR = os.path.dirname(
-    os.path.dirname(os.path.abspath(__file__))
-)
-
-DB_PATH = os.path.join(
-    BASE_DIR,
-    "instance",
-    "kisanvision360.db"
-)
-
-
-# =========================================================
-# DATABASE CONNECTION
-# =========================================================
-
-def get_db():
-
-    os.makedirs(
-        os.path.dirname(DB_PATH),
-        exist_ok=True
-    )
-
-    conn = sqlite3.connect(DB_PATH)
-
-    conn.row_factory = sqlite3.Row
-
-    return conn
-
-
-# =========================================================
-# CREATE TABLE
+# CREATE / UPDATE NOTIFICATION TABLE
 # =========================================================
 
 def init_notification_table():
 
     conn = get_db()
 
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS notifications (
+    try:
 
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS notifications (
 
-            farmer_id INTEGER,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-            crop_id INTEGER,
+                farmer_id INTEGER,
 
-            title TEXT NOT NULL,
+                crop_id INTEGER,
 
-            message TEXT NOT NULL,
+                title TEXT NOT NULL,
 
-            notification_type TEXT DEFAULT 'general',
+                message TEXT NOT NULL,
 
-            is_read INTEGER DEFAULT 0,
+                notification_type TEXT DEFAULT 'general',
 
-            created_at TEXT DEFAULT CURRENT_TIMESTAMP
+                is_read INTEGER DEFAULT 0,
 
-        )
-    """)
+                created_at TEXT DEFAULT CURRENT_TIMESTAMP
 
-    conn.commit()
+            )
+        """)
 
-    conn.close()
+        conn.commit()
+
+    finally:
+
+        conn.close()
 
 
 # =========================================================
@@ -94,36 +63,38 @@ def create_notification(
 
     conn = get_db()
 
-    conn.execute(
-        """
-        INSERT INTO notifications
-        (
-            farmer_id,
-            crop_id,
-            title,
-            message,
-            notification_type
+    try:
+
+        conn.execute(
+            """
+            INSERT INTO notifications
+            (
+                farmer_id,
+                crop_id,
+                title,
+                message,
+                notification_type
+            )
+            VALUES (?, ?, ?, ?, ?)
+            """,
+            (
+                farmer_id,
+                crop_id,
+                title,
+                message,
+                notification_type
+            )
         )
 
-        VALUES (?, ?, ?, ?, ?)
-        """,
+        conn.commit()
 
-        (
-            farmer_id,
-            crop_id,
-            title,
-            message,
-            notification_type
-        )
-    )
+    finally:
 
-    conn.commit()
-
-    conn.close()
+        conn.close()
 
 
 # =========================================================
-# NOTIFICATION PAGE
+# NOTIFICATIONS PAGE
 # =========================================================
 
 @notification_bp.route("/notifications")
@@ -138,57 +109,86 @@ def notifications():
 
     conn = get_db()
 
-    if farmer_id:
+    try:
 
-        data = conn.execute(
-            """
-            SELECT *
-            FROM notifications
+        # -------------------------------------------------
+        # GET NOTIFICATIONS
+        # -------------------------------------------------
 
-            WHERE farmer_id = ?
+        if farmer_id:
 
-            ORDER BY id DESC
-            """,
-            (farmer_id,)
-        ).fetchall()
+            data = conn.execute(
+                """
+                SELECT
+                    id,
+                    farmer_id,
+                    crop_id,
+                    title,
+                    message,
+                    notification_type,
+                    is_read,
+                    created_at
+                FROM notifications
+                WHERE farmer_id = ?
+                ORDER BY id DESC
+                """,
+                (farmer_id,)
+            ).fetchall()
 
-    else:
+        else:
 
-        data = conn.execute(
-            """
-            SELECT *
-            FROM notifications
+            data = conn.execute(
+                """
+                SELECT
+                    id,
+                    farmer_id,
+                    crop_id,
+                    title,
+                    message,
+                    notification_type,
+                    is_read,
+                    created_at
+                FROM notifications
+                ORDER BY id DESC
+                """
+            ).fetchall()
 
-            ORDER BY id DESC
-            """
-        ).fetchall()
 
-    # Count unread
-    if farmer_id:
+        # -------------------------------------------------
+        # UNREAD COUNT
+        # -------------------------------------------------
 
-        unread_count = conn.execute(
-            """
-            SELECT COUNT(*)
-            FROM notifications
+        if farmer_id:
 
-            WHERE farmer_id = ?
-            AND is_read = 0
-            """,
-            (farmer_id,)
-        ).fetchone()[0]
+            unread_count = conn.execute(
+                """
+                SELECT COUNT(*)
+                FROM notifications
+                WHERE farmer_id = ?
+                AND is_read = 0
+                """,
+                (farmer_id,)
+            ).fetchone()[0]
 
-    else:
+        else:
 
-        unread_count = conn.execute(
-            """
-            SELECT COUNT(*)
-            FROM notifications
+            unread_count = conn.execute(
+                """
+                SELECT COUNT(*)
+                FROM notifications
+                WHERE is_read = 0
+                """
+            ).fetchone()[0]
 
-            WHERE is_read = 0
-            """
-        ).fetchone()[0]
 
-    conn.close()
+    finally:
+
+        conn.close()
+
+
+    # -----------------------------------------------------
+    # SEND DATA TO HTML
+    # -----------------------------------------------------
 
     return render_template(
         "notifications.html",
@@ -221,33 +221,40 @@ def mark_all_read():
     if not farmer_id:
 
         return redirect(
-            url_for("notifications.notifications")
+            url_for(
+                "notifications.notifications"
+            )
         )
 
     conn = get_db()
 
-    conn.execute(
-        """
-        UPDATE notifications
+    try:
 
-        SET is_read = 1
+        conn.execute(
+            """
+            UPDATE notifications
+            SET is_read = 1
+            WHERE farmer_id = ?
+            """,
+            (farmer_id,)
+        )
 
-        WHERE farmer_id = ?
-        """,
-        (farmer_id,)
-    )
+        conn.commit()
 
-    conn.commit()
+    finally:
 
-    conn.close()
+        conn.close()
+
 
     return redirect(
-        url_for("notifications.notifications")
+        url_for(
+            "notifications.notifications"
+        )
     )
 
 
 # =========================================================
-# MARK ONE NOTIFICATION READ
+# MARK ONE AS READ
 # =========================================================
 
 @notification_bp.route(
@@ -260,35 +267,47 @@ def mark_one_read(notification_id):
         or session.get("farmer_id")
     )
 
+    if not farmer_id:
+
+        return redirect(
+            url_for(
+                "notifications.notifications"
+            )
+        )
+
     conn = get_db()
 
-    conn.execute(
-        """
-        UPDATE notifications
+    try:
 
-        SET is_read = 1
-
-        WHERE id = ?
-
-        AND farmer_id = ?
-        """,
-        (
-            notification_id,
-            farmer_id
+        conn.execute(
+            """
+            UPDATE notifications
+            SET is_read = 1
+            WHERE id = ?
+            AND farmer_id = ?
+            """,
+            (
+                notification_id,
+                farmer_id
+            )
         )
-    )
 
-    conn.commit()
+        conn.commit()
 
-    conn.close()
+    finally:
+
+        conn.close()
+
 
     return redirect(
-        url_for("notifications.notifications")
+        url_for(
+            "notifications.notifications"
+        )
     )
 
 
 # =========================================================
-# DELETE ONE NOTIFICATION
+# DELETE NOTIFICATION
 # =========================================================
 
 @notification_bp.route(
@@ -301,33 +320,46 @@ def delete_notification(notification_id):
         or session.get("farmer_id")
     )
 
+    if not farmer_id:
+
+        return redirect(
+            url_for(
+                "notifications.notifications"
+            )
+        )
+
     conn = get_db()
 
-    conn.execute(
-        """
-        DELETE FROM notifications
+    try:
 
-        WHERE id = ?
-
-        AND farmer_id = ?
-        """,
-        (
-            notification_id,
-            farmer_id
+        conn.execute(
+            """
+            DELETE FROM notifications
+            WHERE id = ?
+            AND farmer_id = ?
+            """,
+            (
+                notification_id,
+                farmer_id
+            )
         )
-    )
 
-    conn.commit()
+        conn.commit()
 
-    conn.close()
+    finally:
+
+        conn.close()
+
 
     return redirect(
-        url_for("notifications.notifications")
+        url_for(
+            "notifications.notifications"
+        )
     )
 
 
 # =========================================================
-# TEST NOTIFICATION FROM FLASK
+# TEST NOTIFICATION
 # =========================================================
 
 @notification_bp.route(
@@ -343,6 +375,7 @@ def test_notification():
     if farmer_id:
 
         create_notification(
+
             farmer_id=farmer_id,
 
             title="🌾 KisanVision360",
@@ -353,8 +386,11 @@ def test_notification():
             ),
 
             notification_type="success"
+
         )
 
     return redirect(
-        url_for("notifications.notifications")
+        url_for(
+            "notifications.notifications"
+        )
     )
