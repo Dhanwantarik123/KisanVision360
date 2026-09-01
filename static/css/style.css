@@ -1537,3 +1537,216 @@ background:#1e1e1e;
 color:white;
 
 }
+/* =========================================================
+   KISANVISION360 - SIGN UP PAGE
+   ========================================================= */
+
+.signup-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+
+    background: url("../images/farm1.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* Signup container */
+.signup-page .container {
+    width: 420px;
+    max-width: 100%;
+
+    padding: 35px;
+
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 22px;
+
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+
+    text-align: center;
+}
+
+/* Logo */
+.signup-page .logo {
+    width: 100px;
+    height: 100px;
+
+    object-fit: contain;
+
+    background: white;
+    padding: 8px;
+
+    border-radius: 50%;
+
+    margin-bottom: 12px;
+
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+/* Heading */
+.signup-page h1 {
+    color: white;
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.signup-page h2 {
+    color: white;
+    font-size: 21px;
+    margin-bottom: 22px;
+}
+
+/* Error message */
+.signup-page .error {
+    background: #ffebee;
+    color: #c62828;
+
+    padding: 11px 14px;
+    margin-bottom: 15px;
+
+    border-radius: 9px;
+
+    font-weight: bold;
+}
+
+/* Input wrapper */
+.signup-page .input-box {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+
+    margin: 14px 0;
+}
+
+/* Input and select */
+.signup-page .input-box input,
+.signup-page .input-box select {
+    width: 100%;
+
+    padding: 14px 45px;
+
+    border: none;
+    outline: none;
+
+    border-radius: 11px;
+
+    font-size: 16px;
+
+    background: white;
+    color: #333;
+
+    box-sizing: border-box;
+}
+
+/* Left icon */
+.signup-page .input-box i:first-child {
+    position: absolute;
+
+    left: 15px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #2E7D32;
+
+    font-size: 18px;
+
+    z-index: 2;
+}
+
+/* Password eye */
+.signup-page .toggle-password {
+    position: absolute;
+
+    right: 15px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #666;
+
+    cursor: pointer;
+
+    margin: 0 !important;
+
+    z-index: 3;
+}
+
+/* Create account button */
+.signup-page button {
+    width: 100%;
+
+    padding: 14px;
+
+    margin-top: 5px;
+
+    border: none;
+    border-radius: 11px;
+
+    background: #2E7D32;
+    color: white;
+
+    font-size: 17px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.signup-page button:hover {
+    background: #1B5E20;
+    transform: translateY(-2px);
+}
+
+/* Login text */
+.signup-page .login-text {
+    color: white;
+    margin-top: 18px;
+    font-size: 15px;
+}
+
+.signup-page .login-text a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.signup-page .login-text a:hover {
+    text-decoration: underline;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+
+    .signup-page {
+        padding: 15px;
+    }
+
+    .signup-page .container {
+        padding: 25px 20px;
+    }
+
+    .signup-page h1 {
+        font-size: 27px;
+    }
+
+    .signup-page h2 {
+        font-size: 19px;
+    }
+
+    .signup-page .logo {
+        width: 85px;
+        height: 85px;
+    }
+}
