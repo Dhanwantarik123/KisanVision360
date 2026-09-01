@@ -1957,15 +1957,17 @@ def signup():
                 """
                 INSERT INTO users
                 (
+                    name,
                     fullname,
                     mobile,
                     email,
                     password,
                     role
                 )
-                VALUES (?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?)
                 """,
                 (
+                    fullname,
                     fullname,
                     mobile,
                     email,
