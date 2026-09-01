@@ -5,24 +5,32 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width,
+        initial-scale=1.0,
+        maximum-scale=1.0,
+        user-scalable=no">
 
     <title>KisanVision360 | Notifications</title>
 
 
-    <!-- SIDEBAR CSS -->
+    <!-- SIDEBAR -->
 
     <link rel="stylesheet"
-          href="{{ url_for('static',
-          filename='css/sidebar.css') }}">
+          href="{{ url_for(
+              'static',
+              filename='css/sidebar.css'
+          ) }}">
 
 
-    <!-- NOTIFICATIONS CSS -->
+    <!-- NOTIFICATION CSS -->
 
     <link rel="stylesheet"
-          href="{{ url_for('static',
-          filename='css/notifications.css') }}">
+          href="{{ url_for(
+              'static',
+              filename='css/notifications.css'
+          ) }}">
 
 
     <!-- FONT AWESOME -->
@@ -39,29 +47,28 @@
 <div class="dashboard-container">
 
 
-    <!-- =================================================
+    <!-- =========================================
          SIDEBAR
-    ================================================== -->
+    ========================================== -->
 
     {% include "components/sidebar.html" %}
 
 
 
-    <!-- =================================================
-         MAIN CONTENT
-    ================================================== -->
+    <!-- =========================================
+         MAIN
+    ========================================== -->
 
-    <div class="main-content">
-
-
-        <!-- =================================================
-             TOP BAR
-        ================================================== -->
-
-        <div class="topbar">
+    <main class="main-content">
 
 
-            <div>
+        <!-- =========================================
+             TOPBAR
+        ========================================== -->
+
+        <header class="topbar">
+
+            <div class="page-title">
 
                 <h1>
 
@@ -71,22 +78,16 @@
 
                 </h1>
 
-
                 <p>
-
-                    Live farming alerts and
-                    smart recommendations
-
+                    Live farming alerts and smart updates
                 </p>
 
             </div>
 
 
-
-            <!-- USER -->
+            <!-- PROFILE -->
 
             <div class="profile">
-
 
                 <img
                     src="{{ url_for(
@@ -95,13 +96,11 @@
                     ) }}"
                     alt="Farmer">
 
-
                 <div>
 
                     <h4>
                         {{ name }}
                     </h4>
-
 
                     <span>
                         Farmer
@@ -109,27 +108,22 @@
 
                 </div>
 
-
             </div>
 
-
-        </div>
-
+        </header>
 
 
-        <!-- =================================================
-             NOTIFICATION SUMMARY
-        ================================================== -->
 
-        <div class="notification-summary">
+        <!-- =========================================
+             NOTIFICATION CONTROL
+        ========================================== -->
 
-
-            <!-- TOTAL -->
-
-            <div class="summary-card">
+        <section class="notification-control-card">
 
 
-                <div class="summary-icon">
+            <div class="control-left">
+
+                <div class="control-icon">
 
                     <i class="fa-solid fa-bell"></i>
 
@@ -139,31 +133,118 @@
                 <div>
 
                     <h2>
-                        {{ notification_count|default(0) }}
+                        Notification Settings
                     </h2>
 
                     <p>
-                        Active Alerts
+                        Receive weather and farming alerts
                     </p>
 
                 </div>
 
+            </div>
+
+
+            <div class="control-right">
+
+
+                <label class="switch">
+
+                    <input
+                        type="checkbox"
+                        id="notificationToggle"
+                        checked>
+
+                    <span class="slider"></span>
+
+                </label>
+
+
+                <strong id="notificationStatus">
+                    ON
+                </strong>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             TEST NOTIFICATION
+        ========================================== -->
+
+        <section class="test-box">
+
+            <div>
+
+                <h3>
+
+                    <i class="fa-solid fa-vial"></i>
+
+                    Test Notification
+
+                </h3>
+
+                <p>
+                    Check if notifications are working.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                onclick="testNotification()">
+
+                <i class="fa-solid fa-bell"></i>
+
+                Test
+
+            </button>
+
+        </section>
+
+
+
+        <!-- =========================================
+             SUMMARY
+        ========================================== -->
+
+        <section class="summary-grid">
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                </div>
+
+                <div>
+
+                    <h2>
+                        {{ notification_count|default(0) }}
+                    </h2>
+
+                    <p>
+                        Unread Alerts
+                    </p>
+
+                </div>
 
             </div>
 
 
 
-            <!-- WEATHER -->
-
             <div class="summary-card">
 
-
-                <div class="summary-icon weather-icon">
+                <div class="summary-icon weather">
 
                     <i class="fa-solid fa-cloud-sun"></i>
 
                 </div>
-
 
                 <div>
 
@@ -172,27 +253,22 @@
                     </h2>
 
                     <p>
-                        Live Weather Alerts
+                        Weather Alerts
                     </p>
 
                 </div>
-
 
             </div>
 
 
 
-            <!-- AI -->
-
             <div class="summary-card">
 
-
-                <div class="summary-icon ai-icon">
+                <div class="summary-icon ai">
 
                     <i class="fa-solid fa-robot"></i>
 
                 </div>
-
 
                 <div>
 
@@ -201,27 +277,22 @@
                     </h2>
 
                     <p>
-                        Smart Recommendations
+                        AI Recommendations
                     </p>
 
                 </div>
-
 
             </div>
 
 
 
-            <!-- MARKET -->
-
             <div class="summary-card">
 
-
-                <div class="summary-icon market-icon">
+                <div class="summary-icon market">
 
                     <i class="fa-solid fa-chart-line"></i>
 
                 </div>
-
 
                 <div>
 
@@ -235,28 +306,22 @@
 
                 </div>
 
-
             </div>
 
-
-        </div>
-
+        </section>
 
 
-        <!-- =================================================
-             LIVE WEATHER
-        ================================================== -->
+
+        <!-- =========================================
+             WEATHER
+        ========================================== -->
 
         {% if weather %}
 
+        <section class="weather-banner">
 
-        <div class="weather-banner">
-
-
-            <!-- LOCATION -->
 
             <div class="weather-location">
-
 
                 <div class="location-icon">
 
@@ -264,15 +329,11 @@
 
                 </div>
 
-
                 <div>
 
                     <h2>
-
                         {{ weather.city }}
-
                     </h2>
-
 
                     <p>
                         Live Weather
@@ -280,191 +341,112 @@
 
                 </div>
 
-
             </div>
 
 
+            <div class="weather-temperature">
 
-            <!-- TEMPERATURE -->
-
-            <div class="weather-main">
-
-
-                <div class="temperature">
-
+                <strong>
                     {{ weather.temperature }}°C
+                </strong>
 
-                </div>
-
-
-                <div class="condition">
-
+                <span>
                     {{ weather.description }}
-
-                </div>
-
+                </span>
 
             </div>
 
-
-
-            <!-- WEATHER DETAILS -->
 
             <div class="weather-details">
 
 
-                <div class="weather-box">
-
+                <div>
 
                     <i class="fa-solid fa-temperature-half"></i>
 
-
-                    <span>
-                        Feels Like
-                    </span>
-
+                    <span>Feels Like</span>
 
                     <strong>
-
                         {{ weather.feels_like }}°C
-
                     </strong>
-
 
                 </div>
 
 
-
-                <div class="weather-box">
-
+                <div>
 
                     <i class="fa-solid fa-droplet"></i>
 
-
-                    <span>
-                        Humidity
-                    </span>
-
+                    <span>Humidity</span>
 
                     <strong>
-
                         {{ weather.humidity }}%
-
                     </strong>
-
 
                 </div>
 
 
-
-                <div class="weather-box">
-
+                <div>
 
                     <i class="fa-solid fa-wind"></i>
 
-
-                    <span>
-                        Wind
-                    </span>
-
+                    <span>Wind</span>
 
                     <strong>
-
                         {{ weather.wind }} m/s
-
                     </strong>
-
 
                 </div>
 
 
-
-                <div class="weather-box">
-
+                <div>
 
                     <i class="fa-solid fa-cloud"></i>
 
-
-                    <span>
-                        Cloud
-                    </span>
-
+                    <span>Cloud</span>
 
                     <strong>
-
-                        {{ weather.clouds|default(weather.cloud)|default(0) }}%
-
+                        {{ weather.clouds|default(0) }}%
                     </strong>
-
 
                 </div>
 
-
             </div>
 
-
-        </div>
-
-
-        {% else %}
-
-
-        <div class="weather-error">
-
-
-            <i class="fa-solid fa-cloud-exclamation"></i>
-
-
-            Live weather information is currently unavailable.
-
-
-            <a href="/weather">
-
-                Check Weather
-
-            </a>
-
-
-        </div>
-
+        </section>
 
         {% endif %}
 
 
 
-        <!-- =================================================
+        <!-- =========================================
              LIVE STATUS
-        ================================================== -->
+        ========================================== -->
 
         <div class="live-status">
 
-
             <span class="live-dot"></span>
-
 
             <strong>
                 LIVE
             </strong>
 
-
             <span>
-                Weather-based farming notifications
+                Smart farming notification system
             </span>
-
 
         </div>
 
 
 
-        <!-- =================================================
-             NOTIFICATION SECTION
-        ================================================== -->
+        <!-- =========================================
+             ALERT HEADER
+        ========================================== -->
 
-        <div class="notification-section">
+        <section class="notification-section">
 
 
             <div class="section-header">
-
 
                 <div>
 
@@ -476,34 +458,34 @@
 
                     </h2>
 
-
                     <p>
-
                         Important updates for your farm
-
                     </p>
 
                 </div>
 
 
-                <span class="notification-count">
+                <a
+                    href="{{ url_for(
+                        'notifications.mark_all_read'
+                    ) }}"
+                    class="read-all">
 
-                    {{ notification_count|default(0) }}
-                    Alerts
+                    <i class="fa-solid fa-check-double"></i>
 
-                </span>
+                    Mark All Read
 
+                </a>
 
             </div>
 
 
 
-            <!-- =================================================
+            <!-- =========================================
                  NOTIFICATION LIST
-            ================================================== -->
+            ========================================== -->
 
             {% if notifications %}
-
 
             <div class="notification-list">
 
@@ -511,8 +493,12 @@
                 {% for item in notifications %}
 
 
-                <div class="notification-card
-                    {{ item.type|default('general') }}">
+                <article
+                    class="notification-card
+                    {% if not item.is_read %}
+                    unread
+                    {% endif %}
+                    {{ item.notification_type|default('general') }}">
 
 
                     <!-- ICON -->
@@ -520,29 +506,64 @@
                     <div class="notification-icon">
 
 
-                        {% if item.type == "warning" %}
-
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-
-
-                        {% elif item.type == "ai" %}
-
-                            <i class="fa-solid fa-robot"></i>
-
-
-                        {% elif item.type == "weather" %}
+                        {% if item.notification_type == "weather" %}
 
                             <i class="fa-solid fa-cloud-sun"></i>
 
 
-                        {% elif item.type == "market" %}
+                        {% elif item.notification_type == "ai" %}
+
+                            <i class="fa-solid fa-robot"></i>
+
+
+                        {% elif item.notification_type == "irrigation" %}
+
+                            <i class="fa-solid fa-droplet"></i>
+
+
+                        {% elif item.notification_type == "disease" %}
+
+                            <i class="fa-solid fa-bug"></i>
+
+
+                        {% elif item.notification_type == "market" %}
+
+                            <i class="fa-solid fa-chart-line"></i>
+
+
+                        {% elif item.notification_type == "order" %}
+
+                            <i class="fa-solid fa-cart-shopping"></i>
+
+
+                        {% elif item.notification_type == "tools" %}
+
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+
+
+                        {% elif item.notification_type == "report" %}
+
+                            <i class="fa-solid fa-file-lines"></i>
+
+
+                        {% elif item.notification_type == "finance" %}
 
                             <i class="fa-solid fa-indian-rupee-sign"></i>
 
 
-                        {% elif item.type == "success" %}
+                        {% elif item.notification_type == "government" %}
+
+                            <i class="fa-solid fa-building-columns"></i>
+
+
+                        {% elif item.notification_type == "success" %}
 
                             <i class="fa-solid fa-circle-check"></i>
+
+
+                        {% elif item.notification_type == "warning" %}
+
+                            <i class="fa-solid fa-triangle-exclamation"></i>
 
 
                         {% else %}
@@ -550,7 +571,6 @@
                             <i class="fa-solid fa-bell"></i>
 
                         {% endif %}
-
 
                     </div>
 
@@ -561,49 +581,76 @@
                     <div class="notification-content">
 
 
-                        <div class="notification-title-row">
-
+                        <div class="notification-title">
 
                             <h3>
-
                                 {{ item.title }}
-
                             </h3>
 
 
-                            <span class="live-label">
+                            {% if not item.is_read %}
 
-                                LIVE
-
+                            <span class="new-badge">
+                                NEW
                             </span>
 
+                            {% endif %}
 
                         </div>
 
 
                         <p>
-
                             {{ item.message }}
-
                         </p>
 
 
                         <small>
 
-
                             <i class="fa-regular fa-clock"></i>
 
-
-                            {{ item.time|default("Just now") }}
-
+                            {{ item.created_at }}
 
                         </small>
-
 
                     </div>
 
 
-                </div>
+
+                    <!-- ACTIONS -->
+
+                    <div class="notification-actions">
+
+
+                        {% if not item.is_read %}
+
+                        <a
+                            href="{{ url_for(
+                                'notifications.mark_one_read',
+                                notification_id=item.id
+                            ) }}"
+                            title="Mark as read">
+
+                            <i class="fa-solid fa-check"></i>
+
+                        </a>
+
+                        {% endif %}
+
+
+                        <a
+                            href="{{ url_for(
+                                'notifications.delete_notification',
+                                notification_id=item.id
+                            ) }}"
+                            title="Delete">
+
+                            <i class="fa-solid fa-trash"></i>
+
+                        </a>
+
+                    </div>
+
+                </article>
 
 
                 {% endfor %}
@@ -615,35 +662,25 @@
             {% else %}
 
 
-            <!-- =================================================
-                 NO NOTIFICATIONS
-            ================================================== -->
+            <!-- EMPTY -->
 
-            <div class="no-notifications">
+            <div class="empty-notifications">
 
-
-                <div class="empty-icon">
+                <div>
 
                     <i class="fa-solid fa-circle-check"></i>
 
                 </div>
 
-
                 <h2>
-
                     No New Notifications
-
                 </h2>
 
-
                 <p>
-
                     Everything looks normal for your farm.
-
                 </p>
 
-
-                <a href="/farmer">
+                <a href="{{ url_for('farmer') }}">
 
                     <i class="fa-solid fa-house"></i>
 
@@ -651,70 +688,126 @@
 
                 </a>
 
-
             </div>
 
 
             {% endif %}
 
-
-        </div>
-
-
-
-        <!-- =================================================
-             QUICK ACTIONS
-        ================================================== -->
-
-        <div class="quick-actions">
-
-
-            <a href="/weather">
-
-                <i class="fa-solid fa-cloud-sun"></i>
-
-                Weather
-
-            </a>
-
-
-            <a href="/recommendation">
-
-                <i class="fa-solid fa-seedling"></i>
-
-                AI Recommendation
-
-            </a>
-
-
-            <a href="/marketplace">
-
-                <i class="fa-solid fa-store"></i>
-
-                Marketplace
-
-            </a>
-
-
-            <a href="/schemes">
-
-                <i class="fa-solid fa-building-columns"></i>
-
-                Government Schemes
-
-            </a>
-
-
-        </div>
+        </section>
 
 
 
-        <!-- =================================================
+        <!-- =========================================
+             ALL MODULES
+        ========================================== -->
+
+        <section class="modules-section">
+
+            <h2>
+                <i class="fa-solid fa-layer-group"></i>
+                Smart Farming Alerts
+            </h2>
+
+            <p>
+                Notifications from all KisanVision360 modules
+            </p>
+
+
+            <div class="module-grid">
+
+
+                <a href="{{ url_for('weather') }}">
+
+                    <i class="fa-solid fa-cloud-sun"></i>
+
+                    <span>Weather</span>
+
+                </a>
+
+
+                <a href="{{ url_for('recommendation') }}">
+
+                    <i class="fa-solid fa-seedling"></i>
+
+                    <span>AI Recommendation</span>
+
+                </a>
+
+
+                <a href="{{ url_for('irrigation') }}">
+
+                    <i class="fa-solid fa-droplet"></i>
+
+                    <span>Irrigation</span>
+
+                </a>
+
+
+                <a href="{{ url_for('pest') }}">
+
+                    <i class="fa-solid fa-bug"></i>
+
+                    <span>Disease Detection</span>
+
+                </a>
+
+
+                <a href="{{ url_for('marketplace') }}">
+
+                    <i class="fa-solid fa-store"></i>
+
+                    <span>Marketplace</span>
+
+                </a>
+
+
+                <a href="{{ url_for('orders') }}">
+
+                    <i class="fa-solid fa-cart-shopping"></i>
+
+                    <span>Orders</span>
+
+                </a>
+
+
+                <a href="{{ url_for('finance') }}">
+
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                    <span>Finance</span>
+
+                </a>
+
+
+                <a href="{{ url_for('government') }}">
+
+                    <i class="fa-solid fa-building-columns"></i>
+
+                    <span>Government Schemes</span>
+
+                </a>
+
+
+                <a href="{{ url_for('reports') }}">
+
+                    <i class="fa-solid fa-file-lines"></i>
+
+                    <span>Reports</span>
+
+                </a>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
              FOOTER
-        ================================================== -->
+        ========================================== -->
 
         <footer>
-
 
             <i class="fa-solid fa-leaf"></i>
 
@@ -728,25 +821,300 @@
 
             Made in India 🇮🇳
 
-
         </footer>
 
 
-    </div>
-
+    </main>
 
 </div>
 
 
 
-<!-- =================================================
-     CHATBOT
-================================================== -->
+<!-- =========================================
+     JAVASCRIPT
+========================================== -->
+
+<script>
+
+
+/* =========================================
+   LOAD SETTING
+========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function()
+    {
+
+        const toggle =
+            document.getElementById(
+                "notificationToggle"
+            );
+
+        const status =
+            document.getElementById(
+                "notificationStatus"
+            );
+
+
+        const saved =
+            localStorage.getItem(
+                "kisanvision360_notification"
+            );
+
+
+        if (saved === "OFF") {
+
+            toggle.checked = false;
+
+            status.innerText = "OFF";
+
+        }
+        else {
+
+            toggle.checked = true;
+
+            status.innerText = "ON";
+
+        }
+
+
+        toggle.addEventListener(
+            "change",
+            toggleNotification
+        );
+
+    }
+);
+
+
+
+/* =========================================
+   TOGGLE
+========================================= */
+
+function toggleNotification()
+{
+
+    const toggle =
+        document.getElementById(
+            "notificationToggle"
+        );
+
+    const status =
+        document.getElementById(
+            "notificationStatus"
+        );
+
+
+    if (toggle.checked) {
+
+        localStorage.setItem(
+            "kisanvision360_notification",
+            "ON"
+        );
+
+        status.innerText = "ON";
+
+        requestPermission();
+
+    }
+    else {
+
+        localStorage.setItem(
+            "kisanvision360_notification",
+            "OFF"
+        );
+
+        status.innerText = "OFF";
+
+    }
+
+}
+
+
+
+/* =========================================
+   REQUEST PERMISSION
+========================================= */
+
+function requestPermission()
+{
+
+    if (!("Notification" in window)) {
+
+        return;
+
+    }
+
+
+    if (
+        Notification.permission ===
+        "default"
+    ) {
+
+        Notification.requestPermission();
+
+    }
+
+}
+
+
+
+/* =========================================
+   TEST NOTIFICATION
+========================================= */
+
+function testNotification()
+{
+
+    const toggle =
+        document.getElementById(
+            "notificationToggle"
+        );
+
+
+    if (!toggle.checked) {
+
+        alert(
+            "Please turn ON notifications first."
+        );
+
+        return;
+
+    }
+
+
+    /*
+       Browser notification
+    */
+
+    if (
+        "Notification" in window &&
+        Notification.permission === "granted"
+    ) {
+
+        new Notification(
+            "🌾 KisanVision360",
+            {
+                body:
+                    "Weather and farming alerts are working.",
+
+                icon:
+                    "{{ url_for(
+                        'static',
+                        filename='images/farmer.png'
+                    ) }}"
+            }
+        );
+
+    }
+    else {
+
+        /*
+           Works inside mobile WebView also
+           as an in-page message.
+        */
+
+        showAppNotification();
+
+    }
+
+
+    /*
+       Also create database notification
+    */
+
+    fetch(
+        "{{ url_for(
+            'notifications.test_notification'
+        ) }}"
+    )
+    .then(
+        function()
+        {
+            setTimeout(
+                function()
+                {
+                    location.reload();
+                },
+                500
+            );
+        }
+    );
+
+}
+
+
+
+/* =========================================
+   MOBILE / APK FALLBACK
+========================================= */
+
+function showAppNotification()
+{
+
+    const box =
+        document.createElement("div");
+
+
+    box.className =
+        "app-notification";
+
+
+    box.innerHTML = `
+
+        <div class="app-notification-icon">
+            🌾
+        </div>
+
+        <div>
+            <strong>
+                KisanVision360
+            </strong>
+
+            <p>
+                Weather and farming alerts are enabled.
+            </p>
+        </div>
+
+    `;
+
+
+    document.body.appendChild(box);
+
+
+    setTimeout(
+        function()
+        {
+
+            box.classList.add(
+                "hide"
+            );
+
+            setTimeout(
+                function()
+                {
+                    box.remove();
+                },
+                400
+            );
+
+        },
+        4000
+    );
+
+}
+
+</script>
+
+
+<!-- CHATBOT -->
 
 {% include "components/chatbot.html" %}
 
-
-<script src="{{ url_for(
+<script
+src="{{ url_for(
     'static',
     filename='js/chatbot.js'
 ) }}">

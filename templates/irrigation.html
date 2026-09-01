@@ -24,22 +24,19 @@
 
 <body>
 
-
 <div class="dashboard-container">
 
-
-    <!-- ================= SIDEBAR ================= -->
+    <!-- SIDEBAR -->
 
     {% include 'components/sidebar.html' %}
 
 
-
-    <!-- ================= MAIN CONTENT ================= -->
+    <!-- MAIN -->
 
     <div class="main-content">
 
 
-        <!-- ================= TOPBAR ================= -->
+        <!-- TOPBAR -->
 
         <header class="topbar">
 
@@ -65,7 +62,6 @@
                     ) }}"
                     alt="Farmer">
 
-
                 <div>
 
                     <h3>
@@ -84,7 +80,38 @@
 
 
 
-        <!-- ================= WEATHER ================= -->
+        <!-- QUICK ACTIONS -->
+
+        <section class="quick-actions">
+
+            <a href="/crop-details">
+
+                <i class="fa-solid fa-seedling"></i>
+
+                <div>
+                    <strong>Crop Details</strong>
+                    <span>Manage crop duration</span>
+                </div>
+
+            </a>
+
+
+            <a href="/notifications">
+
+                <i class="fa-solid fa-bell"></i>
+
+                <div>
+                    <strong>Notifications</strong>
+                    <span>Weather & crop alerts</span>
+                </div>
+
+            </a>
+
+        </section>
+
+
+
+        <!-- WEATHER -->
 
         {% if weather %}
 
@@ -101,7 +128,7 @@
                     </h3>
 
                     <p>
-                        Current Weather
+                        Live Weather
                     </p>
 
                 </div>
@@ -176,10 +203,9 @@
 
 
 
-        <!-- ================= HERO ================= -->
+        <!-- HERO -->
 
         <section class="hero">
-
 
             <div class="hero-left">
 
@@ -200,18 +226,20 @@
                 <p>
 
                     KisanVision360 analyzes crop type,
-                    soil condition and rainfall to provide
-                    a smart irrigation recommendation.
+                    soil condition, rainfall and weather
+                    conditions to provide smart irrigation
+                    guidance.
 
                 </p>
 
 
-                <a href="#irrigation-form"
-                   class="hero-button">
+                <a
+                    href="#irrigation-form"
+                    class="hero-button">
 
                     <i class="fa-solid fa-droplet"></i>
 
-                    Start Irrigation Analysis
+                    Start Analysis
 
                 </a>
 
@@ -233,7 +261,7 @@
 
 
 
-        <!-- ================= STATISTICS ================= -->
+        <!-- STATISTICS -->
 
         <section class="stats">
 
@@ -258,15 +286,19 @@
                 <i class="fa-solid fa-cloud-rain"></i>
 
                 <h2>
+
                     {% if weather and weather.rain %}
                         {{ weather.rain }}
                     {% else %}
-                        43
-                    {% endif %}%
+                        0
+                    {% endif %}
+
+                    mm
+
                 </h2>
 
                 <p>
-                    Rain Condition
+                    Recent Rainfall
                 </p>
 
             </div>
@@ -274,14 +306,20 @@
 
             <div class="card">
 
-                <i class="fa-solid fa-seedling"></i>
+                <i class="fa-solid fa-temperature-half"></i>
 
                 <h2>
-                    Healthy
+
+                    {% if weather %}
+                        {{ weather.temperature }}°C
+                    {% else %}
+                        --
+                    {% endif %}
+
                 </h2>
 
                 <p>
-                    Soil Status
+                    Temperature
                 </p>
 
             </div>
@@ -305,13 +343,14 @@
 
 
 
-        <!-- ================= MAIN GRID ================= -->
+        <!-- MAIN GRID -->
 
-        <div class="content-grid"
-             id="irrigation-form">
+        <div
+            class="content-grid"
+            id="irrigation-form">
 
 
-            <!-- ================= FORM ================= -->
+            <!-- FORM -->
 
             <div class="form-card">
 
@@ -377,23 +416,19 @@
                             name="soil"
                             required>
 
+                            <option value="normal"
+                                {% if request.form.get('soil', 'normal') == 'normal' %}
+                                selected
+                                {% endif %}>
+                                Normal
+                            </option>
+
+
                             <option value="wet"
                                 {% if request.form.get('soil') == 'wet' %}
                                 selected
                                 {% endif %}>
-
                                 Wet
-
-                            </option>
-
-
-                            <option value="normal"
-                                {% if request.form.get('soil') == 'normal' %}
-                                selected
-                                {% endif %}>
-
-                                Normal
-
                             </option>
 
 
@@ -401,9 +436,7 @@
                                 {% if request.form.get('soil') == 'dry' %}
                                 selected
                                 {% endif %}>
-
                                 Dry
-
                             </option>
 
                         </select>
@@ -412,7 +445,7 @@
 
 
 
-                    <!-- RAINFALL -->
+                    <!-- RAIN -->
 
                     <label for="rainfall">
 
@@ -458,7 +491,7 @@
 
 
 
-            <!-- ================= AI PANEL ================= -->
+            <!-- AI RECOMMENDATION -->
 
             <div class="ai-card">
 
@@ -486,8 +519,6 @@
                 {% if result %}
 
 
-                <!-- RESULT -->
-
                 <div class="ai-result">
 
 
@@ -495,15 +526,15 @@
 
                         {% if result.status == "Irrigation Required" %}
 
-                        <i class="fa-solid fa-droplet"></i>
+                            <i class="fa-solid fa-droplet"></i>
 
                         {% elif result.status == "Irrigation Not Required" %}
 
-                        <i class="fa-solid fa-cloud-rain"></i>
+                            <i class="fa-solid fa-cloud-rain"></i>
 
                         {% else %}
 
-                        <i class="fa-solid fa-circle-info"></i>
+                            <i class="fa-solid fa-circle-info"></i>
 
                         {% endif %}
 
@@ -526,18 +557,15 @@
                 {% else %}
 
 
-                <!-- DEFAULT RECOMMENDATION -->
-
+                <!-- DEFAULT -->
 
                 <div class="recommend">
-
 
                     <div class="recommend-icon">
 
                         <i class="fa-solid fa-clock"></i>
 
                     </div>
-
 
                     <div>
 
@@ -557,13 +585,11 @@
 
                 <div class="recommend">
 
-
                     <div class="recommend-icon">
 
                         <i class="fa-solid fa-hourglass-half"></i>
 
                     </div>
-
 
                     <div>
 
@@ -572,7 +598,7 @@
                         </strong>
 
                         <p>
-                            25 Minutes
+                            20–25 Minutes
                         </p>
 
                     </div>
@@ -583,13 +609,11 @@
 
                 <div class="recommend">
 
-
                     <div class="recommend-icon">
 
                         <i class="fa-solid fa-water"></i>
 
                     </div>
-
 
                     <div>
 
@@ -598,7 +622,7 @@
                         </strong>
 
                         <p>
-                            Moderate
+                            Based on soil & rainfall
                         </p>
 
                     </div>
@@ -609,13 +633,11 @@
 
                 <div class="recommend">
 
-
                     <div class="recommend-icon">
 
                         <i class="fa-solid fa-seedling"></i>
 
                     </div>
-
 
                     <div>
 
@@ -641,7 +663,7 @@
 
 
 
-        <!-- ================= RESULT ================= -->
+        <!-- RESULT -->
 
         {% if result %}
 
@@ -659,7 +681,7 @@
                     </h2>
 
                     <p>
-                        AI analysis based on your input
+                        AI analysis based on current conditions
                     </p>
 
                 </div>
@@ -699,13 +721,144 @@
             </div>
 
 
+            <!-- EXTRA ADVICE -->
+
+            <div class="smart-advice">
+
+                <i class="fa-solid fa-lightbulb"></i>
+
+                <div>
+
+                    <strong>
+                        Smart Advice
+                    </strong>
+
+                    <p>
+
+                        {% if result.status == "Irrigation Required" %}
+
+                            Irrigate preferably during early
+                            morning or evening to reduce
+                            evaporation.
+
+                        {% elif result.status == "Irrigation Not Required" %}
+
+                            Save water today. Monitor soil
+                            moisture before the next irrigation.
+
+                        {% else %}
+
+                            Continue monitoring rainfall and
+                            soil moisture before irrigation.
+
+                        {% endif %}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
         </section>
 
         {% endif %}
 
 
 
-        <!-- ================= TIPS ================= -->
+        <!-- AUTOMATIC MONITORING -->
+
+        <section class="monitor-card">
+
+
+            <div class="monitor-header">
+
+                <i class="fa-solid fa-bell"></i>
+
+                <div>
+
+                    <h2>
+                        Automatic Farm Monitoring
+                    </h2>
+
+                    <p>
+                        KisanVision360 keeps your crop
+                        conditions under observation.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="monitor-grid">
+
+
+                <div>
+
+                    <i class="fa-solid fa-cloud-sun"></i>
+
+                    <strong>
+                        Weather Monitoring
+                    </strong>
+
+                    <p>
+                        Weather conditions are checked
+                        for irrigation planning.
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <i class="fa-solid fa-droplet"></i>
+
+                    <strong>
+                        Water Alerts
+                    </strong>
+
+                    <p>
+                        Receive suggestions when irrigation
+                        may be required.
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <i class="fa-solid fa-calendar-days"></i>
+
+                    <strong>
+                        Crop Schedule
+                    </strong>
+
+                    <p>
+                        Track crop duration and harvest
+                        schedule.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="/notifications"
+                class="notification-button">
+
+                <i class="fa-solid fa-bell"></i>
+
+                View Notifications
+
+            </a>
+
+        </section>
+
+
+
+        <!-- TIPS -->
 
         <section class="tips-card">
 
@@ -742,7 +895,7 @@
 
                     <p>
                         Morning irrigation reduces evaporation
-                        and helps plants absorb water efficiently.
+                        and improves water absorption.
                     </p>
 
                 </div>
@@ -758,7 +911,7 @@
 
                     <p>
                         Avoid unnecessary irrigation when
-                        sufficient rainfall is expected.
+                        sufficient rainfall occurs.
                     </p>
 
                 </div>
@@ -789,11 +942,12 @@
                     </h3>
 
                     <p>
-                        Check soil moisture regularly before
-                        watering crops.
+                        Check soil moisture before watering
+                        the crop.
                     </p>
 
                 </div>
+
 
             </div>
 
@@ -801,9 +955,36 @@
 
 
 
-        <!-- ================= DASHBOARD BUTTON ================= -->
+        <!-- BUTTONS -->
 
         <div class="dashboard-button">
+
+
+            <a href="/crop-details">
+
+                <button>
+
+                    <i class="fa-solid fa-seedling"></i>
+
+                    Crop Details
+
+                </button>
+
+            </a>
+
+
+            <a href="/notifications">
+
+                <button>
+
+                    <i class="fa-solid fa-bell"></i>
+
+                    Notifications
+
+                </button>
+
+            </a>
+
 
             <a href="/farmer">
 
@@ -826,7 +1007,7 @@
 
 
 
-<!-- ================= CHATBOT ================= -->
+<!-- CHATBOT -->
 
 {% include 'components/chatbot.html' %}
 

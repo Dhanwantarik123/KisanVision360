@@ -1,5 +1,6 @@
 /* =========================================================
    KISANVISION360 MARKETPLACE
+   RESPONSIVE: DESKTOP + TABLET + MOBILE APK
 ========================================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
@@ -16,8 +17,20 @@ html {
 }
 
 body {
-    background: #f4f7f4;
+    min-height: 100vh;
     color: #263238;
+
+    /* AGRICULTURE BACKGROUND */
+    background:
+        linear-gradient(
+            rgba(244, 250, 244, 0.92),
+            rgba(244, 250, 244, 0.96)
+        ),
+        url("../images/farming-bg.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
 
 
@@ -39,14 +52,23 @@ body {
 
 .topbar {
     min-height: 82px;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     gap: 20px;
-    background: #ffffff;
+
+    background: rgba(255,255,255,0.96);
+
     border-bottom: 1px solid #e0e0e0;
+
     padding: 15px 20px;
     margin-bottom: 20px;
+
+    border-radius: 0 0 14px 14px;
+
+    box-shadow: 0 3px 15px rgba(0,0,0,.06);
 }
 
 .page-title {
@@ -58,24 +80,27 @@ body {
 .title-icon {
     width: 50px;
     height: 50px;
+
     border-radius: 12px;
+
     background: #e8f5e9;
     color: #2e7d32;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     font-size: 22px;
 }
 
 .page-title h1 {
-    margin: 0;
     font-size: 24px;
     color: #1b5e20;
     font-weight: 700;
 }
 
 .page-title p {
-    margin: 5px 0 0;
+    margin-top: 5px;
     color: #78909c;
     font-size: 13px;
 }
@@ -94,11 +119,15 @@ body {
 .top-search {
     width: 240px;
     height: 42px;
+
     border: 1px solid #d7ded8;
     border-radius: 10px;
+
     background: #fafafa;
+
     display: flex;
     align-items: center;
+
     padding: 0 12px;
     gap: 8px;
 }
@@ -123,28 +152,40 @@ body {
 .notification {
     width: 42px;
     height: 42px;
+
     border-radius: 10px;
+
     background: #f1f8e9;
     color: #2e7d32;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     position: relative;
+
     text-decoration: none;
     font-size: 18px;
 }
 
 .notification span {
     position: absolute;
+
     top: -5px;
     right: -5px;
+
     min-width: 19px;
     height: 19px;
+
     padding: 0 5px;
+
     border-radius: 20px;
+
     background: #e53935;
     color: white;
+
     font-size: 10px;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -164,13 +205,15 @@ body {
 .profile img {
     width: 42px;
     height: 42px;
+
     border-radius: 50%;
+
     object-fit: cover;
+
     border: 2px solid #c8e6c9;
 }
 
 .profile h4 {
-    margin: 0;
     font-size: 14px;
     color: #263238;
 }
@@ -188,21 +231,30 @@ body {
 .weather-banner {
     display: flex;
     align-items: center;
+
     gap: 28px;
     flex-wrap: wrap;
+
     padding: 14px 18px;
     margin-bottom: 20px;
-    background: #ffffff;
+
+    background: rgba(255,255,255,.95);
+
     border-left: 5px solid #43a047;
+
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+    box-shadow: 0 2px 8px rgba(0,0,0,.05);
+
     font-size: 13px;
 }
 
 .weather-location {
     color: #1b5e20;
+
     display: flex;
     align-items: center;
+
     gap: 7px;
 }
 
@@ -213,42 +265,57 @@ body {
 
 .marketplace-banner {
     min-height: 145px;
+
     padding: 28px 32px;
+
     border-radius: 16px;
-    background: linear-gradient(
-        135deg,
-        #1b5e20,
-        #43a047
-    );
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(27,94,32,.96),
+            rgba(67,160,71,.94)
+        );
+
     color: white;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     margin-bottom: 22px;
-    box-shadow: 0 6px 18px rgba(46, 125, 50, 0.18);
+
+    box-shadow:
+        0 6px 18px rgba(46,125,50,.18);
 }
 
 .marketplace-banner h2 {
-    margin: 0 0 8px;
+    margin-bottom: 8px;
+
     font-size: 23px;
     font-weight: 700;
 }
 
 .marketplace-banner p {
-    margin: 0;
     font-size: 14px;
-    opacity: 0.92;
+
+    opacity: .92;
+
     line-height: 1.6;
 }
 
 .banner-icon {
     width: 82px;
     height: 82px;
+
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.15);
+
+    background: rgba(255,255,255,.15);
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     font-size: 38px;
 }
 
@@ -259,20 +326,30 @@ body {
 
 .action-buttons {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
     gap: 18px;
+
     margin-bottom: 25px;
 }
 
 .action-btn {
     min-height: 85px;
+
     padding: 17px 20px;
+
     border-radius: 12px;
+
     text-decoration: none;
+
     display: flex;
     align-items: center;
+
     gap: 16px;
-    transition: 0.25s ease;
+
+    transition: .25s ease;
 }
 
 .action-btn:hover {
@@ -282,11 +359,15 @@ body {
 .action-btn > i {
     width: 48px;
     height: 48px;
+
     flex-shrink: 0;
+
     border-radius: 12px;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     font-size: 21px;
 }
 
@@ -297,8 +378,11 @@ body {
 
 .action-btn small {
     display: block;
+
     margin-top: 5px;
+
     color: #607d8b;
+
     font-size: 11px;
 }
 
@@ -351,23 +435,30 @@ body {
 
 .market-card,
 .product-section {
-    background: #ffffff;
+    background: rgba(255,255,255,.96);
+
     border-radius: 14px;
+
     padding: 22px;
+
     margin-bottom: 25px;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+
+    box-shadow:
+        0 3px 12px rgba(0,0,0,.06);
 }
 
 .section-header {
     display: flex;
+
     align-items: center;
     justify-content: space-between;
+
     gap: 20px;
+
     margin-bottom: 18px;
 }
 
 .section-header h2 {
-    margin: 0;
     color: #1b5e20;
     font-size: 20px;
 }
@@ -377,8 +468,10 @@ body {
 }
 
 .section-header p {
-    margin: 6px 0 0;
+    margin-top: 6px;
+
     color: #78909c;
+
     font-size: 12px;
 }
 
@@ -390,12 +483,19 @@ body {
 .crop-search {
     width: 220px;
     height: 40px;
+
     border: 1px solid #d7ded8;
+
     border-radius: 9px;
+
     display: flex;
     align-items: center;
+
     gap: 8px;
+
     padding: 0 11px;
+
+    background: white;
 }
 
 .crop-search i {
@@ -404,14 +504,16 @@ body {
 
 .crop-search input {
     width: 100%;
+
     border: none;
     outline: none;
+
     font-size: 12px;
 }
 
 
 /* =========================================================
-   MANDI TABLE
+   TABLE
 ========================================================= */
 
 .table-wrapper {
@@ -421,94 +523,36 @@ body {
 
 #priceTable {
     width: 100%;
+
     border-collapse: collapse;
+
     min-width: 650px;
 }
 
 #priceTable th {
     background: #f1f8e9;
+
     color: #33691e;
+
     padding: 14px;
+
     text-align: left;
+
     font-size: 12px;
+
     border-bottom: 2px solid #c8e6c9;
 }
 
 #priceTable td {
     padding: 14px;
-    border-bottom: 1px solid #eeeeee;
-    font-size: 12px;
-}
 
-#priceTable tbody tr {
-    transition: 0.2s;
+    border-bottom: 1px solid #eeeeee;
+
+    font-size: 12px;
 }
 
 #priceTable tbody tr:hover {
     background: #fafdf9;
-}
-
-.crop-name {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 600;
-}
-
-.crop-icon {
-    width: 35px;
-    height: 35px;
-    flex-shrink: 0;
-    border-radius: 8px;
-    background: #fff8e1;
-    color: #f9a825;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.price {
-    color: #2e7d32;
-    font-size: 15px;
-}
-
-.date {
-    color: #607d8b;
-}
-
-.date i {
-    margin-right: 5px;
-}
-
-.no-data {
-    text-align: center;
-    padding: 35px !important;
-    color: #78909c;
-}
-
-.no-data i {
-    display: block;
-    font-size: 30px;
-    margin-bottom: 8px;
-    color: #90a4ae;
-}
-
-.no-data p {
-    margin: 5px 0;
-}
-
-
-/* =========================================================
-   PRODUCT SECTION
-========================================================= */
-
-.product-count {
-    background: #e8f5e9;
-    color: #2e7d32;
-    padding: 8px 13px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
 }
 
 
@@ -518,21 +562,30 @@ body {
 
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
     gap: 20px;
 }
 
 .product-card {
-    background: #ffffff;
+    background: white;
+
     border: 1px solid #e0e0e0;
+
     border-radius: 13px;
+
     overflow: hidden;
-    transition: 0.25s ease;
+
+    transition: .25s ease;
 }
 
 .product-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.10);
+
+    box-shadow:
+        0 7px 20px rgba(0,0,0,.10);
 }
 
 
@@ -542,44 +595,34 @@ body {
 
 .product-image {
     height: 190px;
+
     background: #f1f8e9;
+
     position: relative;
+
     overflow: hidden;
 }
 
 .product-image img {
     width: 100%;
     height: 100%;
+
     object-fit: cover;
+
     display: block;
 }
 
 .no-image {
     width: 100%;
     height: 100%;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     color: #66bb6a;
+
     font-size: 48px;
-}
-
-.available-badge {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: #ffffff;
-    color: #2e7d32;
-    padding: 6px 9px;
-    border-radius: 20px;
-    font-size: 10px;
-    font-weight: 600;
-    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.12);
-}
-
-.available-badge i {
-    font-size: 7px;
-    margin-right: 4px;
 }
 
 
@@ -593,28 +636,32 @@ body {
 
 .category {
     display: inline-block;
+
     padding: 5px 9px;
+
     background: #f1f8e9;
+
     color: #558b2f;
+
     border-radius: 5px;
+
     font-size: 10px;
+
     font-weight: 600;
 }
 
 .product-content h3 {
     margin: 10px 0 7px;
+
     font-size: 18px;
+
     color: #263238;
 }
 
 .farmer-info {
-    margin: 0;
     color: #78909c;
-    font-size: 11px;
-}
 
-.farmer-info i {
-    margin-right: 5px;
+    font-size: 11px;
 }
 
 
@@ -624,8 +671,11 @@ body {
 
 .product-price {
     margin-top: 17px;
+
     padding: 13px;
+
     background: #f8fbf8;
+
     border-radius: 10px;
 }
 
@@ -635,14 +685,18 @@ body {
 }
 
 .product-price h2 {
-    margin: 3px 0 0;
+    margin-top: 3px;
+
     color: #2e7d32;
+
     font-size: 21px;
 }
 
 .product-price p {
-    margin: 5px 0 0;
+    margin-top: 5px;
+
     color: #78909c;
+
     font-size: 11px;
 }
 
@@ -657,9 +711,13 @@ body {
 
 .order-form label {
     display: block;
+
     margin-bottom: 7px;
+
     color: #455a64;
+
     font-size: 11px;
+
     font-weight: 600;
 }
 
@@ -671,159 +729,95 @@ body {
 .quantity-row input {
     width: 75px;
     height: 40px;
-    padding: 8px;
-    border: 1px solid #d7ded8;
-    border-radius: 8px;
-    outline: none;
-    text-align: center;
-    font-size: 13px;
-}
 
-.quantity-row input:focus {
-    border-color: #43a047;
-    box-shadow: 0 0 0 2px rgba(67, 160, 71, 0.1);
+    padding: 8px;
+
+    border: 1px solid #d7ded8;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    text-align: center;
 }
 
 .buy-btn {
     flex: 1;
+
     border: none;
+
     border-radius: 8px;
+
     background: #2e7d32;
+
     color: white;
+
     padding: 10px;
+
     cursor: pointer;
-    font-size: 12px;
+
     font-weight: 600;
-    transition: 0.2s;
 }
 
 .buy-btn:hover {
     background: #1b5e20;
-    transform: translateY(-1px);
-}
-
-.buy-btn i {
-    margin-right: 5px;
 }
 
 
 /* =========================================================
-   CONTACT BUTTON
+   CONTACT
 ========================================================= */
 
 .contact-btn {
     width: 100%;
+
     margin-top: 10px;
+
     border: 1px solid #c8e6c9;
+
     border-radius: 8px;
+
     background: #e8f5e9;
+
     color: #2e7d32;
-    padding: 10px 14px;
+
+    padding: 10px;
+
     cursor: pointer;
-    font-size: 12px;
+
     font-weight: 600;
-    transition: 0.2s;
-}
-
-.contact-btn:hover {
-    background: #c8e6c9;
-}
-
-.contact-btn i {
-    margin-right: 5px;
 }
 
 
 /* =========================================================
-   EMPTY PRODUCTS
+   EMPTY
 ========================================================= */
 
 .empty-products {
     grid-column: 1 / -1;
+
     text-align: center;
+
     padding: 55px 20px;
 }
 
 .empty-icon {
     width: 75px;
     height: 75px;
+
     margin: auto;
+
     border-radius: 50%;
+
     background: #f1f8e9;
+
     color: #66bb6a;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     font-size: 30px;
-}
-
-.empty-products h2 {
-    margin: 15px 0 8px;
-    color: #455a64;
-    font-size: 20px;
-}
-
-.empty-products p {
-    color: #90a4ae;
-    font-size: 13px;
-    margin-bottom: 15px;
-}
-
-.empty-products a {
-    text-decoration: none;
-}
-
-.empty-products button {
-    border: none;
-    padding: 11px 17px;
-    border-radius: 8px;
-    background: #2e7d32;
-    color: white;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-.empty-products button:hover {
-    background: #1b5e20;
-}
-
-.empty-products button i {
-    margin-right: 5px;
-}
-
-
-/* =========================================================
-   DASHBOARD BUTTON
-========================================================= */
-
-.dashboard-button {
-    text-align: center;
-    margin: 25px 0;
-}
-
-.dashboard-button a {
-    text-decoration: none;
-}
-
-.dashboard-button button {
-    border: none;
-    border-radius: 9px;
-    background: #1b5e20;
-    color: white;
-    padding: 12px 20px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: 0.2s;
-}
-
-.dashboard-button button:hover {
-    background: #2e7d32;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 18px rgba(46, 125, 50, 0.2);
-}
-
-.dashboard-button i {
-    margin-right: 7px;
 }
 
 
@@ -833,74 +827,88 @@ body {
 
 footer {
     text-align: center;
+
     padding: 18px;
+
     color: #78909c;
+
     font-size: 12px;
 }
 
 footer i {
     color: #43a047;
-    margin-right: 5px;
-}
 
-footer span {
-    margin: 0 6px;
+    margin-right: 5px;
 }
 
 
 /* =========================================================
-   CHATBOT SUPPORT
+   CHATBOT
 ========================================================= */
 
 .chatbot-button {
     position: fixed;
+
     right: 28px;
     bottom: 28px;
+
     width: 62px;
     height: 62px;
+
     border-radius: 50%;
+
     background: #2e7d32;
+
     color: white;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 25px;
-    cursor: pointer;
-    z-index: 999;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-}
 
-.chatbot-button:hover {
-    transform: scale(1.08);
-    background: #1b5e20;
+    font-size: 25px;
+
+    z-index: 999;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,.2);
 }
 
 .chatbot-box {
     position: fixed;
+
     right: 28px;
     bottom: 105px;
+
     width: 360px;
+
     background: white;
+
     border-radius: 18px;
+
     overflow: hidden;
+
     display: none;
+
     z-index: 999;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.2);
 }
 
 
 /* =========================================================
    TABLET
+   769px - 1200px
 ========================================================= */
 
 @media (max-width: 1200px) {
 
     .product-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .action-buttons {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .top-search {
@@ -910,19 +918,24 @@ footer span {
 
 
 /* =========================================================
-   SIDEBAR TABLET
+   TABLET / SMALL LAPTOP
+   769px - 992px
 ========================================================= */
 
 @media (max-width: 992px) {
 
     .main-content {
         margin-left: 80px;
+
         width: calc(100% - 80px);
-        padding: 0 20px 25px;
+
+        padding:
+            0 18px 25px;
     }
 
     .topbar {
         flex-direction: column;
+
         align-items: flex-start;
     }
 
@@ -939,46 +952,108 @@ footer span {
     }
 
     .product-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .marketplace-banner {
+        padding: 25px;
     }
 }
 
 
 /* =========================================================
    MOBILE
+   Android APK / Mobile Browser
 ========================================================= */
 
 @media (max-width: 768px) {
 
-    .main-content {
-        margin-left: 0;
-        width: 100%;
-        padding: 0 12px 25px;
+    body {
+        background:
+            linear-gradient(
+                rgba(244,250,244,.96),
+                rgba(244,250,244,.98)
+            ),
+            url("../images/farming-bg.jpg");
+
+        background-size: cover;
+
+        background-attachment: scroll;
     }
 
+
+    /* MAIN */
+
+    .main-content {
+        margin-left: 0;
+
+        width: 100%;
+
+        padding:
+            0 12px 25px;
+    }
+
+
+    /* TOPBAR */
+
     .topbar {
-        padding: 15px;
+        padding: 14px;
+
+        margin-bottom: 15px;
+
+        border-radius: 0 0 12px 12px;
+    }
+
+    .page-title {
+        width: 100%;
     }
 
     .page-title h1 {
-        font-size: 21px;
+        font-size: 20px;
     }
 
+    .page-title p {
+        font-size: 11px;
+    }
+
+
+    /* TOP RIGHT */
+
     .top-right {
-        flex-wrap: wrap;
+        width: 100%;
+
+        display: grid;
+
+        grid-template-columns:
+            1fr auto auto;
+
+        gap: 9px;
     }
 
     .top-search {
         width: 100%;
-        flex: none;
     }
+
+
+    /* PROFILE */
 
     .profile {
-        margin-left: auto;
+        margin-left: 0;
     }
 
+    .profile div {
+        display: none;
+    }
+
+
+    /* BANNER */
+
     .marketplace-banner {
-        padding: 22px;
+        min-height: 125px;
+
+        padding: 20px;
+
+        border-radius: 14px;
     }
 
     .marketplace-banner h2 {
@@ -986,94 +1061,194 @@ footer span {
     }
 
     .marketplace-banner p {
-        font-size: 12px;
-    }
-
-    .banner-icon {
-        width: 65px;
-        height: 65px;
-        font-size: 28px;
-    }
-
-    .weather-banner {
-        gap: 15px;
-    }
-
-    .section-header {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .crop-search {
-        width: 100%;
-    }
-
-    .product-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .chatbot-box {
-        width: 94%;
-        right: 3%;
-    }
-}
-
-
-/* =========================================================
-   SMALL MOBILE
-========================================================= */
-
-@media (max-width: 480px) {
-
-    .main-content {
-        padding: 0 8px 20px;
-    }
-
-    .page-title h1 {
-        font-size: 18px;
-    }
-
-    .page-title p {
-        font-size: 10px;
-    }
-
-    .title-icon {
-        width: 42px;
-        height: 42px;
-        font-size: 18px;
-    }
-
-    .profile div {
-        display: none;
-    }
-
-    .weather-banner {
-        padding: 12px;
-        gap: 10px;
         font-size: 11px;
     }
 
-    .marketplace-banner {
-        min-height: 125px;
-        padding: 20px;
+    .banner-icon {
+        width: 60px;
+        height: 60px;
+
+        font-size: 25px;
     }
 
-    .banner-icon {
-        display: none;
+
+    /* ACTION */
+
+    .action-buttons {
+        grid-template-columns: 1fr;
+
+        gap: 12px;
     }
+
+    .action-btn {
+        min-height: 72px;
+
+        padding: 13px;
+    }
+
+
+    /* PRODUCT */
+
+    .product-grid {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+    .product-image {
+        height: 200px;
+    }
+
+
+    /* SECTION */
 
     .market-card,
     .product-section {
         padding: 15px;
+
+        border-radius: 12px;
+    }
+
+    .section-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 12px;
     }
 
     .section-header h2 {
         font-size: 17px;
     }
 
-    .product-image {
-        height: 210px;
+    .crop-search {
+        width: 100%;
     }
+
+
+    /* TABLE */
+
+    .table-wrapper {
+        overflow-x: auto;
+
+        -webkit-overflow-scrolling: touch;
+    }
+
+
+    /* CHATBOT */
+
+    .chatbot-box {
+        width: 94%;
+
+        left: 3%;
+        right: 3%;
+
+        bottom: 90px;
+    }
+
+    .chatbot-button {
+        right: 18px;
+        bottom: 18px;
+
+        width: 56px;
+        height: 56px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   480px
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .main-content {
+        padding:
+            0 8px 20px;
+    }
+
+
+    .page-title h1 {
+        font-size: 17px;
+    }
+
+    .page-title p {
+        font-size: 9px;
+    }
+
+    .title-icon {
+        width: 40px;
+        height: 40px;
+
+        font-size: 17px;
+    }
+
+
+    .top-right {
+        grid-template-columns:
+            1fr auto;
+    }
+
+    .top-search {
+        grid-column: 1 / -1;
+
+        width: 100%;
+    }
+
+
+    .notification {
+        width: 40px;
+        height: 40px;
+    }
+
+
+    .marketplace-banner {
+        min-height: 115px;
+
+        padding: 17px;
+    }
+
+    .marketplace-banner h2 {
+        font-size: 17px;
+    }
+
+    .marketplace-banner p {
+        font-size: 10px;
+    }
+
+    .banner-icon {
+        display: none;
+    }
+
+
+    .action-btn {
+        gap: 10px;
+
+        padding: 12px;
+    }
+
+    .action-btn > i {
+        width: 42px;
+        height: 42px;
+
+        font-size: 18px;
+    }
+
+
+    .product-image {
+        height: 190px;
+    }
+
+
+    .product-content {
+        padding: 14px;
+    }
+
+    .product-content h3 {
+        font-size: 16px;
+    }
+
 
     .quantity-row {
         flex-direction: column;
@@ -1087,8 +1262,43 @@ footer span {
         width: 100%;
     }
 
-    .chatbot-button {
-        right: 18px;
-        bottom: 18px;
+
+    footer {
+        font-size: 9px;
+
+        line-height: 1.8;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .main-content {
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+
+    .topbar {
+        padding: 11px;
+    }
+
+    .page-title h1 {
+        font-size: 15px;
+    }
+
+    .marketplace-banner {
+        padding: 14px;
+    }
+
+    .action-btn strong {
+        font-size: 13px;
+    }
+
+    .action-btn small {
+        font-size: 9px;
     }
 }

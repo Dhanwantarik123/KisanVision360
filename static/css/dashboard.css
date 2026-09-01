@@ -1,25 +1,36 @@
 /* =========================================================
    KISANVISION360 FARMER DASHBOARD
-   Premium Green Agriculture Dashboard
+   dashboard.css
+   Sidebar styling is handled by sidebar.css
+========================================================= */
+
+
+/* =========================================================
+   GLOBAL
 ========================================================= */
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Segoe UI", Arial, sans-serif;
 }
 
-html,
-body {
+html {
+    width: 100%;
     min-height: 100%;
+    scroll-behavior: smooth;
 }
 
 body {
+    width: 100%;
+    min-height: 100vh;
+
+    font-family: "Segoe UI", Arial, sans-serif;
+
     background:
         linear-gradient(
-            rgba(240, 247, 242, 0.92),
-            rgba(240, 247, 242, 0.92)
+            rgba(240, 247, 242, 0.94),
+            rgba(240, 247, 242, 0.94)
         ),
         url("../images/background.jpg");
 
@@ -28,6 +39,12 @@ body {
     background-attachment: fixed;
 
     color: #14532d;
+
+    overflow-x: hidden;
+}
+
+a {
+    -webkit-tap-highlight-color: transparent;
 }
 
 
@@ -36,19 +53,32 @@ body {
 ========================================================= */
 
 .dashboard-container {
+    width: 100%;
     min-height: 100vh;
-    display: flex;
 }
 
 
 /* =========================================================
    MAIN CONTENT
+   IMPORTANT:
+   Sidebar width is controlled by sidebar.css.
 ========================================================= */
 
 .main-content {
+    min-height: 100vh;
+
     margin-left: 250px;
+
     width: calc(100% - 250px);
-    padding: 14px 16px 30px;
+
+    padding:
+        clamp(12px, 1.5vw, 22px)
+        clamp(12px, 1.8vw, 25px)
+        30px;
+
+    transition:
+        margin-left 0.25s ease,
+        width 0.25s ease;
 }
 
 
@@ -58,43 +88,57 @@ body {
 
 .topbar {
     width: 100%;
+    min-height: 70px;
 
-    min-height: 64px;
-
-    background: rgba(255, 255, 255, 0.97);
+    background: rgba(255, 255, 255, 0.98);
 
     border-radius: 16px;
 
-    padding: 10px 16px;
+    padding: 12px 16px;
 
     display: flex;
-    justify-content: space-between;
+
     align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
 
     box-shadow:
-        0 3px 15px rgba(0, 0, 0, 0.10);
+        0 4px 16px rgba(0, 0, 0, 0.09);
 
-    margin-bottom: 14px;
+    margin-bottom: 15px;
 }
 
 
-/* LEFT TITLE */
+/* =========================================================
+   WELCOME
+========================================================= */
 
-.topbar > div:first-child h1 {
+.welcome-section {
+    min-width: 0;
+    flex: 1;
+}
+
+.welcome-section h1 {
     color: #14532d;
-    font-size: 19px;
+
+    font-size:
+        clamp(17px, 1.5vw, 23px);
+
     font-weight: 700;
-    margin-bottom: 3px;
+
+    line-height: 1.3;
+
+    margin-bottom: 4px;
 }
 
-.topbar > div:first-child h1 i {
-    color: #08783f;
-    margin-right: 5px;
-}
-
-.topbar > div:first-child p {
+.welcome-section p {
     color: #777;
-    font-size: 10px;
+
+    font-size:
+        clamp(9px, 0.75vw, 11px);
+
+    line-height: 1.45;
 }
 
 
@@ -104,72 +148,113 @@ body {
 
 .top-right {
     display: flex;
+
     align-items: center;
-    gap: 12px;
+    justify-content: flex-end;
+
+    gap:
+        clamp(7px, 0.8vw, 12px);
+
+    flex-wrap: wrap;
+
+    min-width: 0;
 }
 
 
 /* =========================================================
-   WEATHER LINK
+   LANGUAGE BOX
 ========================================================= */
 
-.weather-link-btn {
-    border: none;
-    background: #08783f;
-    color: white;
-
-    padding: 8px 12px;
-
-    border-radius: 8px;
-
-    font-size: 10px;
-
-    cursor: pointer;
-
-    transition: 0.2s;
-}
-
-.weather-link-btn:hover {
-    background: #065f32;
-    transform: translateY(-1px);
-}
-
-
-/* =========================================================
-   SEARCH
-========================================================= */
-
-.search-box {
+.language-box {
     display: flex;
+
     align-items: center;
 
-    background: #f4f7f5;
+    gap: 7px;
 
-    border: 1px solid #e0e5e2;
+    background: #ffffff;
 
-    border-radius: 8px;
+    padding: 8px 11px;
 
-    padding: 7px 10px;
+    border-radius: 10px;
 
-    width: 150px;
+    border: 1px solid #e1e1e1;
+
+    box-shadow:
+        0 3px 10px rgba(0, 0, 0, 0.07);
+
+    white-space: nowrap;
 }
 
-.search-box i {
+.language-box i {
     color: #08783f;
-    font-size: 11px;
+
+    font-size: 17px;
 }
 
-.search-box input {
-    width: 100%;
-
+.language-box select {
     border: none;
+
     outline: none;
 
     background: transparent;
 
-    margin-left: 7px;
+    color: #333;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    max-width: 110px;
+}
+
+.language-box select option {
+    color: #333;
+
+    background: #fff;
+}
+
+
+/* =========================================================
+   LIVE TIME
+========================================================= */
+
+.live-time {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 6px 9px;
+
+    background: #f7faf8;
+
+    border-radius: 9px;
+
+    white-space: nowrap;
+}
+
+.live-time > i {
+    color: #08783f;
+
+    font-size: 15px;
+}
+
+.live-time h4 {
+    color: #14532d;
 
     font-size: 10px;
+
+    font-weight: 700;
+}
+
+.live-time p {
+    color: #777;
+
+    font-size: 9px;
 }
 
 
@@ -180,24 +265,35 @@ body {
 .notification {
     position: relative;
 
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
 
-    border-radius: 50%;
-
-    background: #f4f7f5;
-
-    color: #08783f;
+    flex-shrink: 0;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
-    cursor: pointer;
+    border-radius: 50%;
+
+    background: #f2f7f3;
+
+    color: #08783f;
+
+    text-decoration: none;
+
+    transition: 0.2s;
+}
+
+.notification:hover {
+    background: #e2f3e7;
+
+    transform: translateY(-2px);
 }
 
 .notification i {
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .notification span {
@@ -206,21 +302,25 @@ body {
     top: -4px;
     right: -4px;
 
-    width: 15px;
-    height: 15px;
+    min-width: 16px;
+    height: 16px;
 
-    background: #e53935;
-
-    color: white;
-
-    border-radius: 50%;
+    padding: 0 4px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
+    background: #e53935;
+
+    color: #fff;
+
+    border-radius: 50%;
+
     font-size: 8px;
-    font-weight: bold;
+
+    font-weight: 700;
 }
 
 
@@ -230,20 +330,25 @@ body {
 
 .profile {
     display: flex;
+
     align-items: center;
 
     gap: 7px;
 
     padding: 4px 8px;
 
-    background: #ffffff;
+    background: #fff;
 
     border-radius: 10px;
+
+    min-width: 0;
 }
 
 .profile img {
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
+
+    flex-shrink: 0;
 
     border-radius: 50%;
 
@@ -254,12 +359,24 @@ body {
 
 .profile h4 {
     color: #14532d;
-    font-size: 10px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    max-width: 105px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
 }
 
 .profile small {
     color: #777;
-    font-size: 8px;
+
+    font-size: 9px;
 }
 
 
@@ -270,7 +387,17 @@ body {
 .weather-summary {
     width: 100%;
 
-    min-height: 170px;
+    min-height: 165px;
+
+    padding:
+        clamp(15px, 1.6vw, 21px);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
 
     background:
         linear-gradient(
@@ -279,24 +406,16 @@ body {
             #116f43
         );
 
-    border-radius: 16px;
-
-    padding: 14px 18px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 20px;
-
     color: white;
 
-    box-shadow:
-        0 5px 18px rgba(0, 0, 0, 0.16);
+    border-radius: 16px;
 
-    margin-bottom: 14px;
+    box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.15);
+
+    margin-bottom: 15px;
+
+    overflow: hidden;
 }
 
 
@@ -307,41 +426,61 @@ body {
 .weather-main {
     flex: 1;
 
-    text-align: left;
+    min-width: 0;
 
-    padding-left: 0;
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
 }
 
-.weather-main h2 {
-    font-size: 10px;
+.weather-location {
+    display: block;
+
+    font-size:
+        clamp(10px, 0.85vw, 13px);
+
     font-weight: 500;
 
     margin-bottom: 5px;
 }
 
+.weather-location i {
+    margin-right: 4px;
+}
+
 .weather-main h1 {
-    font-size: 32px;
+    font-size:
+        clamp(30px, 3vw, 44px);
+
+    line-height: 1;
 
     font-weight: 700;
 
-    margin: 4px 0;
+    margin: 7px 0;
 }
 
 .weather-main p {
-    font-size: 9px;
+    font-size:
+        clamp(9px, 0.75vw, 12px);
 
     text-transform: capitalize;
 
     opacity: 0.9;
-
-    margin-bottom: 6px;
 }
 
 .weather-main img {
-    width: 48px;
-    height: 48px;
+    width:
+        clamp(60px, 6vw, 90px);
+
+    height:
+        clamp(60px, 6vw, 90px);
 
     object-fit: contain;
+
+    flex-shrink: 0;
 }
 
 
@@ -350,67 +489,76 @@ body {
 ========================================================= */
 
 .weather-grid {
-    width: 350px;
+    width: clamp(290px, 35%, 410px);
 
     display: grid;
 
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns:
+        repeat(2, minmax(110px, 1fr));
 
     gap: 9px;
+
+    flex-shrink: 0;
 }
 
 
-/* WEATHER MINI CARD */
+/* =========================================================
+   WEATHER CARD
+========================================================= */
 
 .weather-card {
-    background: white;
+    min-height: 68px;
+
+    padding: 9px;
+
+    background: #ffffff;
 
     color: #14532d;
 
-    min-height: 66px;
-
-    padding: 8px;
-
     border-radius: 11px;
-
-    text-align: center;
 
     display: flex;
 
     flex-direction: column;
 
+    align-items: center;
     justify-content: center;
 
-    align-items: center;
-
-    transition: 0.25s;
+    text-align: center;
 
     box-shadow:
         0 3px 8px rgba(0, 0, 0, 0.08);
+
+    transition: 0.25s;
 }
 
 .weather-card:hover {
     transform: translateY(-3px);
+
+    box-shadow:
+        0 6px 13px rgba(0, 0, 0, 0.13);
+}
+
+.weather-icon {
+    margin-bottom: 3px;
 }
 
 .weather-card i {
     color: #08783f;
 
-    font-size: 13px;
-
-    margin-bottom: 3px;
+    font-size: 15px;
 }
 
 .weather-card h3 {
-    font-size: 8px;
-
-    margin-bottom: 3px;
+    font-size: 9px;
 
     font-weight: 600;
+
+    margin-bottom: 3px;
 }
 
-.weather-card h2 {
-    font-size: 10px;
+.weather-card p {
+    font-size: 11px;
 
     font-weight: 700;
 }
@@ -421,26 +569,28 @@ body {
 ========================================================= */
 
 .hero {
-    background: white;
+    width: 100%;
 
-    border-radius: 16px;
+    min-height: 135px;
 
-    padding: 18px;
-
-    min-height: 125px;
+    padding:
+        clamp(15px, 2vw, 23px);
 
     display: flex;
 
+    align-items: center;
     justify-content: space-between;
 
-    align-items: center;
+    gap: 25px;
 
-    gap: 20px;
+    background: #ffffff;
+
+    border-radius: 16px;
 
     box-shadow:
-        0 4px 14px rgba(0, 0, 0, 0.10);
+        0 4px 14px rgba(0, 0, 0, 0.09);
 
-    margin-bottom: 14px;
+    margin-bottom: 15px;
 }
 
 
@@ -450,20 +600,22 @@ body {
 
 .hero-text {
     flex: 1;
+
+    min-width: 0;
 }
 
-.hero-text span {
+.hero-label {
     display: inline-block;
 
     background: #d1fae5;
 
     color: #047857;
 
-    padding: 5px 10px;
+    padding: 5px 11px;
 
     border-radius: 20px;
 
-    font-size: 8px;
+    font-size: 10px;
 
     font-weight: 700;
 
@@ -473,19 +625,23 @@ body {
 .hero-text h1 {
     color: #14532d;
 
-    font-size: 20px;
+    font-size:
+        clamp(19px, 1.8vw, 26px);
+
+    line-height: 1.25;
 
     margin-bottom: 7px;
 }
 
 .hero-text p {
+    max-width: 650px;
+
     color: #777;
 
-    font-size: 9px;
+    font-size:
+        clamp(9px, 0.8vw, 12px);
 
     line-height: 1.5;
-
-    max-width: 600px;
 }
 
 
@@ -493,32 +649,59 @@ body {
    HERO BUTTONS
 ========================================================= */
 
-.hero-text a {
-    display: inline-block;
+.hero-buttons {
+    display: flex;
 
-    margin-top: 10px;
+    flex-wrap: wrap;
 
-    margin-right: 5px;
+    gap: 7px;
 
-    padding: 7px 11px;
+    margin-top: 11px;
+}
 
-    background: #08783f;
+.hero-buttons a {
+    display: inline-flex;
 
-    color: white;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    padding: 8px 13px;
 
     border-radius: 20px;
 
     text-decoration: none;
 
-    font-size: 8px;
+    font-size: 10px;
 
     font-weight: 600;
 
     transition: 0.2s;
+
+    white-space: nowrap;
 }
 
-.hero-text a:hover {
+.primary-btn {
+    background: #08783f;
+
+    color: #fff;
+}
+
+.primary-btn:hover {
     background: #065f32;
+
+    transform: translateY(-2px);
+}
+
+.secondary-btn {
+    background: #e8f5e9;
+
+    color: #08783f;
+}
+
+.secondary-btn:hover {
+    background: #d5ead8;
 
     transform: translateY(-2px);
 }
@@ -529,7 +712,7 @@ body {
 ========================================================= */
 
 .hero-image {
-    width: 210px;
+    width: clamp(180px, 22vw, 290px);
 
     flex-shrink: 0;
 }
@@ -537,7 +720,10 @@ body {
 .hero-image img {
     width: 100%;
 
-    height: 105px;
+    height:
+        clamp(105px, 10vw, 150px);
+
+    display: block;
 
     object-fit: cover;
 
@@ -546,39 +732,72 @@ body {
 
 
 /* =========================================================
-   FEATURES TITLE
+   FEATURES SECTION
 ========================================================= */
 
-.features-title {
-    margin-bottom: 7px;
+.features-section {
+    width: 100%;
 }
 
-.features-title h2 {
+.section-heading {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 9px;
+}
+
+.section-heading h2 {
     color: #14532d;
 
-    font-size: 13px;
+    font-size:
+        clamp(14px, 1.1vw, 18px);
+
+    margin-bottom: 2px;
 }
 
-.features-title p {
+.section-heading p {
     color: #777;
 
-    font-size: 8px;
+    font-size:
+        clamp(8px, 0.7vw, 10px);
 }
 
 
 /* =========================================================
-   FEATURES
+   FEATURES GRID
 ========================================================= */
 
 .features {
+    width: 100%;
+
     display: grid;
 
     grid-template-columns:
-        repeat(3, 1fr);
+        repeat(3, minmax(0, 1fr));
 
-    gap: 10px;
+    gap:
+        clamp(9px, 1vw, 14px);
 
-    margin-bottom: 12px;
+    margin-bottom: 13px;
+}
+
+
+/* =========================================================
+   FEATURE LINK
+========================================================= */
+
+.feature-link {
+    display: block;
+
+    width: 100%;
+
+    text-decoration: none;
+
+    color: inherit;
 }
 
 
@@ -587,30 +806,34 @@ body {
 ========================================================= */
 
 .card {
-    background: rgba(255, 255, 255, 0.98);
+    width: 100%;
 
-    min-height: 75px;
+    min-height: 145px;
 
-    padding: 12px;
-
-    border-radius: 12px;
-
-    text-align: center;
-
-    color: #14532d;
-
-    box-shadow:
-        0 3px 12px rgba(0, 0, 0, 0.08);
-
-    transition: all 0.25s ease;
+    padding:
+        clamp(12px, 1.4vw, 18px);
 
     display: flex;
 
     flex-direction: column;
 
+    align-items: center;
     justify-content: center;
 
-    align-items: center;
+    text-align: center;
+
+    background: rgba(255, 255, 255, 0.98);
+
+    color: #14532d;
+
+    border-radius: 13px;
+
+    box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.08);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
 }
 
 .card:hover {
@@ -620,201 +843,198 @@ body {
         0 7px 18px rgba(0, 0, 0, 0.14);
 }
 
-.card i {
-    color: #08783f;
-
-    font-size: 13px;
-
-    margin-bottom: 5px;
-}
-
-.card h3 {
-    color: #14532d;
-
-    font-size: 9px;
-
-    margin-bottom: 4px;
-}
-
-.card p {
-    color: #777;
-
-    font-size: 7px;
-
-    line-height: 1.4;
-
-    max-width: 230px;
-
-    margin-bottom: 3px;
-}
-
-.card a {
-    color: #08783f;
-
-    text-decoration: none;
-
-    font-size: 7px;
-
-    font-weight: 600;
-}
-
-.card a:hover {
-    text-decoration: underline;
-}
-
 
 /* =========================================================
-   FINANCE + HELP SECTION
+   FEATURE ICON
 ========================================================= */
 
-.finance-help-section {
-    display: grid;
+.feature-icon {
+    width: clamp(36px, 3vw, 46px);
 
-    grid-template-columns:
-        repeat(2, 1fr);
-
-    gap: 10px;
-
-    margin-top: 10px;
-}
-
-
-/* =========================================================
-   FINANCE / HELP CARD
-========================================================= */
-
-.finance-help-card {
-    position: relative;
-
-    background: white;
-
-    padding: 12px;
-
-    border-radius: 12px;
-
-    color: #14532d;
-
-    box-shadow:
-        0 3px 12px rgba(0, 0, 0, 0.08);
-
-    transition: 0.25s;
-
-    overflow: hidden;
-}
-
-.finance-help-card::before {
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 3px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #08783f,
-            #43a047
-        );
-}
-
-.finance-help-card:hover {
-    transform: translateY(-3px);
-
-    box-shadow:
-        0 7px 18px rgba(0, 0, 0, 0.13);
-}
-
-
-/* ICON */
-
-.finance-help-icon {
-    width: 32px;
-    height: 32px;
-
-    border-radius: 9px;
-
-    background: #e8f5e9;
-
-    color: #08783f;
+    height: clamp(36px, 3vw, 46px);
 
     display: flex;
 
     align-items: center;
     justify-content: center;
 
-    font-size: 14px;
+    background: #e8f5e9;
+
+    border-radius: 11px;
+
+    font-size:
+        clamp(18px, 1.8vw, 25px);
+
+    margin-bottom: 8px;
+}
+
+.card h3 {
+    color: #14532d;
+
+    font-size:
+        clamp(10px, 0.9vw, 13px);
+
+    line-height: 1.3;
+
+    margin-bottom: 5px;
+}
+
+.card p {
+    max-width: 260px;
+
+    color: #777;
+
+    font-size:
+        clamp(8px, 0.7vw, 10px);
+
+    line-height: 1.45;
 
     margin-bottom: 7px;
 }
 
-.finance-help-card h3 {
-    color: #14532d;
-
-    font-size: 10px;
-
-    margin-bottom: 3px;
-}
-
-.finance-help-card p {
-    color: #777;
-
-    font-size: 7px;
-
-    line-height: 1.4;
-
-    margin-bottom: 6px;
-}
-
-.finance-help-card a {
+.card > span {
     display: inline-flex;
 
     align-items: center;
 
     gap: 4px;
 
+    color: #08783f;
+
+    font-size:
+        clamp(8px, 0.7vw, 10px);
+
+    font-weight: 700;
+}
+
+.card > span i {
+    font-size: 8px;
+
+    transition: 0.2s;
+}
+
+.card:hover > span i {
+    transform: translateX(3px);
+}
+
+
+/* =========================================================
+   QUICK ACCESS
+========================================================= */
+
+.quick-access {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap:
+        clamp(9px, 1vw, 14px);
+
+    margin-top: 10px;
+}
+
+.quick-card {
+    width: 100%;
+
+    min-width: 0;
+
+    padding:
+        clamp(12px, 1.4vw, 17px);
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    background: #ffffff;
+
+    color: #14532d;
+
+    border-radius: 13px;
+
+    box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.08);
+
+    transition: 0.25s;
+}
+
+.quick-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 7px 18px rgba(0, 0, 0, 0.13);
+}
+
+.quick-icon {
+    width: 45px;
+    height: 45px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #e8f5e9;
+
+    border-radius: 10px;
+
+    font-size: 22px;
+}
+
+.quick-card > div:nth-child(2) {
+    min-width: 0;
+
+    flex: 1;
+}
+
+.quick-card h3 {
+    color: #14532d;
+
+    font-size: 12px;
+
+    margin-bottom: 3px;
+}
+
+.quick-card p {
+    color: #777;
+
+    font-size: 9px;
+
+    line-height: 1.4;
+}
+
+.quick-card > a {
+    flex-shrink: 0;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 4px;
+
+    padding: 7px 10px;
+
     background: #08783f;
 
     color: white;
-
-    padding: 5px 8px;
 
     border-radius: 7px;
 
     text-decoration: none;
 
-    font-size: 7px;
+    font-size: 9px;
 
     font-weight: 600;
 }
 
-.finance-help-card a:hover {
+.quick-card > a:hover {
     background: #065f32;
-}
-
-
-/* =========================================================
-   FINANCE ICON
-========================================================= */
-
-.finance-card .finance-help-icon {
-    background: #fff3e0;
-
-    color: #f57c00;
-}
-
-
-/* =========================================================
-   HELP ICON
-========================================================= */
-
-.help-card .finance-help-icon {
-    background: #e3f2fd;
-
-    color: #1976d2;
 }
 
 
@@ -823,15 +1043,20 @@ body {
 ========================================================= */
 
 footer {
-    color: white;
+    width: 100%;
+
+    padding: 16px 10px;
+
+    margin-top: 12px;
 
     text-align: center;
 
-    font-size: 9px;
+    color: #ffffff;
 
-    padding: 15px 10px;
+    font-size:
+        clamp(8px, 0.7vw, 10px);
 
-    margin-top: 10px;
+    line-height: 1.5;
 }
 
 footer i {
@@ -848,316 +1073,16 @@ footer span {
 
 
 /* =========================================================
-   SIDEBAR COMPATIBILITY
-========================================================= */
-
-.sidebar {
-    width: 250px;
-
-    position: fixed;
-
-    top: 0;
-    left: 0;
-    bottom: 0;
-
-    background:
-        linear-gradient(
-            180deg,
-            #08783f,
-            #096b3b
-        );
-
-    color: white;
-
-    z-index: 1000;
-}
-
-
-/* =========================================================
-   SIDEBAR LOGO
-========================================================= */
-
-.sidebar .logo {
-    width: 65px;
-    height: 65px;
-
-    object-fit: contain;
-
-    display: block;
-
-    margin: 5px auto 7px;
-}
-
-
-/* =========================================================
-   SIDEBAR TEXT
-========================================================= */
-
-.sidebar h2 {
-    text-align: center;
-
-    font-size: 13px;
-
-    color: white;
-}
-
-.sidebar .subtitle {
-    text-align: center;
-
-    font-size: 7px;
-
-    opacity: 0.8;
-
-    margin-bottom: 18px;
-}
-
-
-/* =========================================================
-   SIDEBAR MENU
-========================================================= */
-
-.menu-title {
-    color: #b8e4c8;
-
-    font-size: 7px;
-
-    margin: 10px 8px 6px;
-
-    text-transform: uppercase;
-}
-
-.sidebar a {
-    display: flex;
-
-    align-items: center;
-
-    gap: 9px;
-
-    padding: 7px 9px;
-
-    margin: 2px 0;
-
-    border-radius: 7px;
-
-    color: white;
-
-    text-decoration: none;
-
-    font-size: 8px;
-
-    transition: 0.2s;
-}
-
-.sidebar a i {
-    width: 12px;
-
-    text-align: center;
-
-    font-size: 9px;
-}
-
-.sidebar a:hover,
-.sidebar a.active {
-    background: white;
-
-    color: #08783f;
-}
-
-
-/* =========================================================
-   SIDEBAR BADGE
-========================================================= */
-
-.sidebar-badge {
-    margin-left: auto;
-
-    width: 15px;
-    height: 15px;
-
-    background: #e53935;
-
-    color: white;
-
-    border-radius: 50%;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    font-size: 7px;
-}
-
-
-/* =========================================================
-   CHATBOT BUTTON
-========================================================= */
-
-.chatbot-button {
-    position: fixed;
-
-    right: 20px;
-    bottom: 20px;
-
-    width: 48px;
-    height: 48px;
-
-    background: #08783f;
-
-    color: white;
-
-    border-radius: 50%;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    font-size: 20px;
-
-    cursor: pointer;
-
-    z-index: 9999;
-
-    box-shadow:
-        0 5px 15px rgba(0, 0, 0, 0.25);
-
-    transition: 0.2s;
-}
-
-.chatbot-button:hover {
-    transform: scale(1.08);
-}
-
-
-/* =========================================================
-   CHATBOT BOX
-========================================================= */
-
-.chatbot-box {
-    position: fixed;
-
-    right: 20px;
-    bottom: 80px;
-
-    width: 320px;
-    height: 400px;
-
-    background: white;
-
-    border-radius: 15px;
-
-    display: none;
-
-    flex-direction: column;
-
-    overflow: hidden;
-
-    z-index: 10000;
-
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.25);
-}
-
-.chat-header {
-    background: #08783f;
-
-    color: white;
-
-    padding: 12px;
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-}
-
-.chat-body {
-    flex: 1;
-
-    padding: 12px;
-
-    overflow-y: auto;
-}
-
-.chat-input {
-    display: flex;
-
-    padding: 8px;
-
-    border-top: 1px solid #ddd;
-}
-
-.chat-input input {
-    flex: 1;
-
-    border: 1px solid #ddd;
-
-    border-radius: 7px;
-
-    padding: 8px;
-
-    outline: none;
-
-    font-size: 11px;
-}
-
-.chat-input button {
-    width: 40px;
-
-    margin-left: 5px;
-
-    border: none;
-
-    border-radius: 7px;
-
-    background: #08783f;
-
-    color: white;
-}
-
-
-/* =========================================================
-   RESPONSIVE - TABLET
+   TABLET
+   Sidebar itself remains controlled by sidebar.css
 ========================================================= */
 
 @media (max-width: 1100px) {
 
-    .sidebar {
-        width: 75px;
-    }
-
-    .sidebar h2,
-    .sidebar .subtitle,
-    .sidebar .menu-title,
-    .sidebar a span {
-        display: none;
-    }
-
-    .sidebar a {
-        justify-content: center;
-
-        padding: 10px;
-    }
-
-    .sidebar a i {
-        font-size: 14px;
-    }
-
-    .sidebar .logo {
-        width: 48px;
-        height: 48px;
-    }
-
     .main-content {
-        margin-left: 75px;
+        margin-left: 72px;
 
-        width: calc(100% - 75px);
-    }
-
-    .features {
-        grid-template-columns: repeat(2, 1fr);
+        width: calc(100% - 72px);
     }
 
     .weather-summary {
@@ -1166,8 +1091,45 @@ footer span {
         align-items: stretch;
     }
 
+    .weather-main {
+        width: 100%;
+    }
+
     .weather-grid {
         width: 100%;
+
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+    }
+
+    .features {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+/* =========================================================
+   SMALL TABLET
+========================================================= */
+
+@media (max-width: 850px) {
+
+    .topbar {
+        align-items: flex-start;
+    }
+
+    .top-right {
+        justify-content: flex-end;
+    }
+
+    .live-time {
+        display: none;
+    }
+
+    .weather-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
     }
 
     .hero {
@@ -1181,84 +1143,284 @@ footer span {
     }
 
     .hero-image img {
-        height: 160px;
+        height: 170px;
     }
 }
 
 
 /* =========================================================
-   RESPONSIVE - MOBILE
+   MOBILE
 ========================================================= */
 
 @media (max-width: 700px) {
 
     .main-content {
-        margin-left: 75px;
+        margin-left: 72px;
 
-        width: calc(100% - 75px);
+        width: calc(100% - 72px);
 
         padding: 8px;
     }
 
+
+    /* TOPBAR */
+
     .topbar {
         flex-direction: column;
 
-        align-items: flex-start;
+        align-items: stretch;
 
         gap: 10px;
+
+        padding: 11px;
+    }
+
+    .welcome-section {
+        width: 100%;
     }
 
     .top-right {
         width: 100%;
 
+        justify-content: flex-start;
+
         flex-wrap: wrap;
     }
 
-    .search-box {
-        width: 100%;
+    .language-box {
+        flex: 1;
     }
 
-    .weather-grid {
-        grid-template-columns: 1fr 1fr;
+
+    /* WEATHER */
+
+    .weather-summary {
+        padding: 13px;
+
+        gap: 13px;
     }
 
-    .features {
-        grid-template-columns: 1fr;
-    }
+    .weather-main {
+        flex-direction: row;
 
-    .finance-help-section {
-        grid-template-columns: 1fr;
-    }
-
-    .hero-text h1 {
-        font-size: 18px;
+        align-items: center;
     }
 
     .weather-main h1 {
         font-size: 30px;
     }
+
+    .weather-grid {
+        width: 100%;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    /* HERO */
+
+    .hero {
+        padding: 14px;
+
+        gap: 14px;
+    }
+
+    .hero-text h1 {
+        font-size: 19px;
+    }
+
+    .hero-image {
+        width: 100%;
+    }
+
+    .hero-image img {
+        height: 150px;
+    }
+
+
+    /* FEATURES */
+
+    .features {
+        grid-template-columns: 1fr;
+
+        gap: 9px;
+    }
+
+    .card {
+        min-height: 135px;
+    }
+
+
+    /* QUICK ACCESS */
+
+    .quick-access {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-card {
+        min-height: 75px;
+    }
+
+
+    /* FOOTER */
+
+    footer {
+        padding-bottom: 80px;
+    }
 }
 
 
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
 @media (max-width: 450px) {
 
-    .weather-grid {
-        grid-template-columns: 1fr;
+    .main-content {
+        padding: 6px;
+    }
+
+    .topbar {
+        border-radius: 12px;
     }
 
     .top-right {
         gap: 6px;
     }
 
+    .language-box {
+        width: 100%;
+    }
+
     .profile {
         display: none;
+    }
+
+    .notification {
+        width: 30px;
+        height: 30px;
+    }
+
+    .weather-summary {
+        padding: 11px;
+    }
+
+    .weather-main h1 {
+        font-size: 27px;
+    }
+
+    .weather-main img {
+        width: 58px;
+        height: 58px;
+    }
+
+    .weather-grid {
+        grid-template-columns: 1fr 1fr;
+
+        gap: 7px;
+    }
+
+    .weather-card {
+        min-height: 62px;
+
+        padding: 7px;
     }
 
     .hero {
         padding: 12px;
     }
 
-    .weather-summary {
-        padding: 12px;
+    .hero-text h1 {
+        font-size: 17px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+    }
+
+    .hero-buttons a {
+        width: 100%;
+    }
+
+    .hero-image img {
+        height: 125px;
+    }
+
+    .card {
+        min-height: 130px;
+    }
+
+    .quick-card > a {
+        padding: 6px 8px;
+    }
+}
+
+
+/* =========================================================
+   EXTRA SMALL
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .main-content {
+        margin-left: 58px;
+
+        width: calc(100% - 58px);
+
+        padding: 5px;
+    }
+
+    .weather-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-card {
+        flex-wrap: wrap;
+    }
+
+    .quick-card > div:nth-child(2) {
+        flex: 1 1 calc(100% - 60px);
+    }
+
+    .quick-card > a {
+        margin-left: auto;
+    }
+}
+
+
+/* =========================================================
+   LARGE SCREEN
+========================================================= */
+
+@media (min-width: 1400px) {
+
+    .main-content {
+        padding-left: 25px;
+
+        padding-right: 25px;
+    }
+
+    .features {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+
+        transition: none !important;
+
+        animation: none !important;
     }
 }

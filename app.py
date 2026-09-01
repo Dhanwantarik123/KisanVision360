@@ -27,7 +27,8 @@ from utils.crop_price import get_crop_prices
 from utils.mandi_price import get_market_price
 from utils.schemes import get_schemes
 from db import get_db
-
+from routes.crop import crop_bp
+from routes.notifications import notification_bp
 # =========================================================
 # APP
 # =========================================================
@@ -43,7 +44,8 @@ serializer = URLSafeTimedSerializer(
     app.secret_key
 )
 
-
+app.register_blueprint(crop_bp)
+app.register_blueprint(notification_bp)
 # =========================================================
 # DATABASE
 # =========================================================
@@ -2664,8 +2666,101 @@ def recommendation():
         weather=get_weather_data(),
         recommendation=recommendation_data
     )
+def irrigation_db():
+
+    db_path = os.path.join(
+        app.root_path,
+        "instance",
+        "kisanvision360.db"
+    )
+
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
+
+    return conn
 
 
+def create_irrigation_tables():
+
+    conn = irrigation_db()
+
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS notifications (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            farmer_id INTEGER,
+            crop_id INTEGER,
+            title TEXT NOT NULL,
+            message TEXT NOT NULL,
+            notification_type TEXT,
+            is_read INTEGER DEFAULT 0,
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
+    conn.commit()
+    conn.close()
+
+# =========================================================
+# IRRIGATION DATABASE
+# =========================================================
+
+def irrigation_db():
+
+    db_path = os.path.join(
+        app.root_path,
+        "instance",
+        "kisanvision360.db"
+    )
+
+    os.makedirs(
+        os.path.dirname(db_path),
+        exist_ok=True
+    )
+
+    conn = sqlite3.connect(db_path)
+
+    conn.row_factory = sqlite3.Row
+
+    return conn
+
+
+# =========================================================
+# CREATE IRRIGATION TABLES
+# =========================================================
+
+def create_irrigation_tables():
+
+    conn = irrigation_db()
+
+    # =====================================================
+    # NOTIFICATIONS TABLE
+    # =====================================================
+
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS notifications (
+
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+            farmer_id INTEGER,
+
+            crop_id INTEGER,
+
+            title TEXT NOT NULL,
+
+            message TEXT NOT NULL,
+
+            notification_type TEXT,
+
+            is_read INTEGER DEFAULT 0,
+
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP
+
+        )
+    """)
+
+    conn.commit()
+
+    conn.close()
 # =========================================================
 # IRRIGATION
 # =========================================================
@@ -2682,7 +2777,16 @@ def irrigation():
             url_for("login")
         )
 
+    # Create tables automatically
+    create_irrigation_tables()
+
     result = None
+
+    weather = get_weather_data()
+
+    # =====================================================
+    # POST
+    # =====================================================
 
     if request.method == "POST":
 
@@ -2709,44 +2813,140 @@ def irrigation():
 
             rainfall = 0
 
+        # =================================================
+        # IRRIGATION DECISION
+        # =================================================
+
         if rainfall >= 20:
 
             result = {
-                "status": "Irrigation Not Required",
-                "reason": f"Recent rainfall is {rainfall} mm."
+
+                "status":
+                    "Irrigation Not Required",
+
+                "reason":
+                    f"Recent rainfall is {rainfall} mm. "
+                    "Avoid irrigation."
             }
 
         elif soil == "wet":
 
             result = {
-                "status": "Irrigation Not Required",
-                "reason": f"The soil is wet. Avoid irrigation for {crop}."
+
+                "status":
+                    "Irrigation Not Required",
+
+                "reason":
+                    f"The soil is wet. "
+                    f"Avoid irrigation for {crop}."
             }
 
         elif soil == "dry":
 
             result = {
-                "status": "Irrigation Required",
-                "reason": f"The soil is dry. Irrigate {crop}."
+
+                "status":
+                    "Irrigation Required",
+
+                "reason":
+                    f"The soil is dry. "
+                    f"Irrigate {crop}."
             }
 
         else:
 
             result = {
-                "status": "Light Irrigation Recommended",
-                "reason": f"Use moderate irrigation for {crop}."
+
+                "status":
+                    "Light Irrigation Recommended",
+
+                "reason":
+                    f"Use moderate irrigation for {crop}."
             }
+
+        # =================================================
+        # SAVE IRRIGATION NOTIFICATION
+        # =================================================
+
+        farmer_id = session.get(
+            "user_id"
+        )
+
+        conn = irrigation_db()
+
+        # Only create notification if important
+        if result["status"] == "Irrigation Required":
+
+            conn.execute(
+                """
+                INSERT INTO notifications
+                (
+                    farmer_id,
+                    title,
+                    message,
+                    notification_type
+                )
+
+                VALUES (?, ?, ?, ?)
+                """,
+
+                (
+                    farmer_id,
+
+                    "💧 Irrigation Required",
+
+                    result["reason"],
+
+                    "irrigation"
+                )
+            )
+
+        elif result["status"] == "Irrigation Not Required":
+
+            conn.execute(
+                """
+                INSERT INTO notifications
+                (
+                    farmer_id,
+                    title,
+                    message,
+                    notification_type
+                )
+
+                VALUES (?, ?, ?, ?)
+                """,
+
+                (
+                    farmer_id,
+
+                    "🌧️ Irrigation Not Required",
+
+                    result["reason"],
+
+                    "weather"
+                )
+            )
+
+        conn.commit()
+
+        conn.close()
+
+    # =====================================================
+    # PAGE
+    # =====================================================
 
     return render_template(
         "irrigation.html",
+
         name=session.get(
             "name",
             "Farmer"
         ),
-        weather=get_weather_data(),
+
+        weather=weather,
+
         result=result
     )
-
 
 @app.route(
     "/pest",
