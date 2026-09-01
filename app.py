@@ -26,7 +26,7 @@ from flask_mail import Mail, Message
 from utils.crop_price import get_crop_prices
 from utils.mandi_price import get_market_price
 from utils.schemes import get_schemes
-from db import get_db
+from db import get_db , init_db
 from routes.crop import crop_bp
 from routes.notifications import notification_bp
 # =========================================================
@@ -34,7 +34,12 @@ from routes.notifications import notification_bp
 # =========================================================
 
 app = Flask(__name__)
-
+# Initialize database when Flask starts
+try:
+    init_db()
+    print("APP DATABASE INITIALIZED")
+except Exception as e:
+    print("APP DATABASE ERROR:", repr(e))
 app.secret_key = os.getenv(
     "SECRET_KEY",
     "kisanvision360_secret_key"
