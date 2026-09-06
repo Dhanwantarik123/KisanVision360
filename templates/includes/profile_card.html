@@ -1,89 +1,774 @@
-<div class="card">
+﻿{% extends "base.html" %}
+<!-- =========================================================
+     KISANVISION360+ SMART PROFILE
+========================================================= -->
 
-    <i class="fa-solid fa-user fa-2x"></i>
+<style>
 
-    <h2>Profile Information</h2>
+    .kv-profile-card {
+        width: 100%;
+        max-width: 850px;
+        margin: 20px auto;
+        background: #ffffff;
+        border-radius: 22px;
+        padding: 28px;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.10);
+        border: 1px solid #e5eee6;
+    }
 
-    <p><b>Name :</b> {{ user.fullname }}</p>
+    .kv-profile-header {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding-bottom: 22px;
+        border-bottom: 1px solid #edf2ee;
+    }
 
-    <p><b>Mobile :</b> {{ user.mobile }}</p>
+    .kv-profile-avatar {
+        width: 72px;
+        height: 72px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #1b5e20, #43a047);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        flex-shrink: 0;
+    }
 
-    <p><b>Email :</b> {{ user.email }}</p>
+    .kv-profile-title h2 {
+        margin: 0 0 5px;
+        color: #14532d;
+        font-size: 25px;
+    }
 
-    <p><b>Role :</b> {{ user.role }}</p>
+    .kv-profile-title p {
+        margin: 0;
+        color: #758078;
+        font-size: 13px;
+    }
 
-    <button onclick="editProfile()">
-        Edit Profile
+    .kv-role {
+        display: inline-block;
+        margin-top: 8px;
+        padding: 5px 11px;
+        border-radius: 20px;
+        background: #e8f5e9;
+        color: #2e7d32;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .kv-profile-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+        margin-top: 24px;
+    }
+
+    .kv-info-box {
+        padding: 16px;
+        background: #f8fbf8;
+        border: 1px solid #e5ece6;
+        border-radius: 15px;
+    }
+
+    .kv-info-label {
+        display: block;
+        color: #7a847d;
+        font-size: 11px;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+    }
+
+    .kv-info-value {
+        display: block;
+        color: #26352b;
+        font-size: 14px;
+        font-weight: 700;
+        word-break: break-word;
+    }
+
+    .kv-info-icon {
+        margin-right: 6px;
+        color: #43a047;
+    }
+
+    .kv-section-title {
+        margin-top: 25px;
+        margin-bottom: 12px;
+        color: #24572c;
+        font-size: 16px;
+        font-weight: 800;
+    }
+
+    .kv-profile-progress {
+        margin-top: 22px;
+        padding: 16px;
+        border-radius: 15px;
+        background: #f1f8e9;
+        border: 1px solid #dcebd5;
+    }
+
+    .kv-progress-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 9px;
+        font-size: 12px;
+    }
+
+    .kv-progress-top strong {
+        color: #33691e;
+    }
+
+    .kv-progress-top span {
+        color: #558b2f;
+        font-weight: 700;
+    }
+
+    .kv-progress-bar {
+        width: 100%;
+        height: 8px;
+        background: #dce8dc;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .kv-progress-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #1b5e20, #66bb6a);
+        border-radius: 20px;
+        transition: width .5s ease;
+    }
+
+    .kv-edit-btn {
+        width: 100%;
+        margin-top: 22px;
+        padding: 13px 20px;
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #1b5e20, #43a047);
+        color: white;
+        font-size: 14px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: .25s;
+    }
+
+    .kv-edit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(27, 94, 32, .20);
+    }
+
+
+    /* =====================================================
+       MODAL
+    ===================================================== */
+
+    .kv-modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        inset: 0;
+        background: rgba(0, 0, 0, .55);
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    .kv-modal-content {
+        width: 100%;
+        max-width: 620px;
+        margin: 40px auto;
+        background: white;
+        border-radius: 22px;
+        padding: 28px;
+        position: relative;
+        box-shadow: 0 20px 60px rgba(0,0,0,.25);
+    }
+
+    .kv-modal-content h2 {
+        margin-bottom: 6px;
+        color: #14532d;
+    }
+
+    .kv-modal-subtitle {
+        color: #7a847d;
+        font-size: 13px;
+        margin-bottom: 22px;
+    }
+
+    .kv-close {
+        position: absolute;
+        right: 20px;
+        top: 15px;
+        font-size: 29px;
+        color: #777;
+        cursor: pointer;
+        line-height: 1;
+    }
+
+    .kv-close:hover {
+        color: #d32f2f;
+    }
+
+    .kv-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .kv-form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .kv-form-group.full {
+        grid-column: 1 / -1;
+    }
+
+    .kv-form-group label {
+        margin-bottom: 6px;
+        color: #37433b;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .kv-form-group input,
+    .kv-form-group select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #dce5de;
+        border-radius: 10px;
+        outline: none;
+        font-size: 13px;
+        background: #fbfdfb;
+    }
+
+    .kv-form-group input:focus,
+    .kv-form-group select:focus {
+        border-color: #43a047;
+        box-shadow: 0 0 0 3px rgba(67,160,71,.10);
+    }
+
+    .kv-save-btn {
+        width: 100%;
+        margin-top: 20px;
+        padding: 13px;
+        border: none;
+        border-radius: 11px;
+        background: #1b5e20;
+        color: white;
+        font-size: 14px;
+        font-weight: 800;
+        cursor: pointer;
+    }
+
+    .kv-save-btn:hover {
+        background: #2e7d32;
+    }
+
+    .kv-location-note {
+        margin-top: 15px;
+        padding: 12px;
+        border-radius: 10px;
+        background: #fff8e1;
+        color: #795548;
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+
+    /* =====================================================
+       MOBILE
+    ===================================================== */
+
+    @media (max-width: 650px) {
+
+        .kv-profile-card {
+            padding: 20px;
+        }
+
+        .kv-profile-header {
+            align-items: flex-start;
+        }
+
+        .kv-profile-avatar {
+            width: 60px;
+            height: 60px;
+            font-size: 25px;
+        }
+
+        .kv-profile-title h2 {
+            font-size: 21px;
+        }
+
+        .kv-profile-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .kv-form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .kv-form-group.full {
+            grid-column: auto;
+        }
+
+        .kv-modal-content {
+            margin: 15px auto;
+            padding: 22px 18px;
+        }
+    }
+
+</style>
+
+
+<!-- =========================================================
+     PROFILE CARD
+========================================================= -->
+
+<div class="kv-profile-card">
+
+
+    <!-- PROFILE HEADER -->
+
+    <div class="kv-profile-header">
+
+        <div class="kv-profile-avatar">
+
+            ðŸ‘¨â€ðŸŒ¾
+
+        </div>
+
+        <div class="kv-profile-title">
+
+            <h2>
+                {{ user.fullname|default('Farmer', true) }}
+            </h2>
+
+            <p>
+                KisanVision360+ Smart Farmer Profile
+            </p>
+
+            <span class="kv-role">
+
+                {{ user.role|default('Farmer', true) }}
+
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         BASIC INFORMATION
+    ====================================================== -->
+
+    <div class="kv-section-title">
+
+        ðŸ‘¤ Personal Information
+
+    </div>
+
+
+    <div class="kv-profile-grid">
+
+
+        <div class="kv-info-box">
+
+            <span class="kv-info-label">
+                <span class="kv-info-icon">ðŸ‘¤</span>
+                Full Name
+            </span>
+
+            <span class="kv-info-value">
+                {{ user.fullname|default('Not provided', true) }}
+            </span>
+
+        </div>
+
+
+        <div class="kv-info-box">
+
+            <span class="kv-info-label">
+                <span class="kv-info-icon">ðŸ“±</span>
+                Mobile
+            </span>
+
+            <span class="kv-info-value">
+                {{ user.mobile|default('Not provided', true) }}
+            </span>
+
+        </div>
+
+
+        <div class="kv-info-box">
+
+            <span class="kv-info-label">
+                <span class="kv-info-icon">âœ‰ï¸</span>
+                Email
+            </span>
+
+            <span class="kv-info-value">
+                {{ user.email|default('Not provided', true) }}
+            </span>
+
+        </div>
+
+
+        <div class="kv-info-box">
+
+            <span class="kv-info-label">
+                <span class="kv-info-icon">ðŸŒ</span>
+                Language
+            </span>
+
+            <span class="kv-info-value">
+
+                {{ session.get('language', 'English') }}
+
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         LOCATION
+    ====================================================== -->
+
+    <div class="kv-section-title">
+
+        ðŸ“ Farm Location
+
+    </div>
+
+
+    <div class="kv-profile-grid">
+
+
+        <div class="kv-info-box">
+
+            <span class="kv-info-label">
+                Village
+            </span>
+
+            <span class="kv-info-value">
+
+                {{ user.village|default('Not provided', true) }}
+
+            </span>
+
+        </div>
+
+
+        <div class="kv-info-box">
+
+            <span class="kv-info-label">
+                District
+            </span>
+
+            <span class="kv-info-value">
+
+                {{ user.district|default('Not provided', true) }}
+
+            </span>
+
+        </div>
+
+
+        <div class="kv-info-box">
+
+            <span class="kv-info-label">
+                State
+            </span>
+
+            <span class="kv-info-value">
+
+                {{ user.state|default('Not provided', true) }}
+
+            </span>
+
+        </div>
+
+
+        <div class="kv-info-box">
+
+            <span class="kv-info-label">
+                Location Status
+            </span>
+
+            <span class="kv-info-value">
+
+                {% if user.village or user.district or user.state %}
+                    âœ… Available
+                {% else %}
+                    âš ï¸ Add Location
+                {% endif %}
+
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         PROFILE COMPLETION
+    ====================================================== -->
+
+    <div class="kv-profile-progress">
+
+        <div class="kv-progress-top">
+
+            <strong>
+                ðŸŒ± Profile Completion
+            </strong>
+
+            <span id="profilePercent">
+                0%
+            </span>
+
+        </div>
+
+        <div class="kv-progress-bar">
+
+            <div
+                class="kv-progress-fill"
+                id="profileProgress">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SMART PERSONALIZATION
+    ====================================================== -->
+
+    <div class="kv-section-title">
+
+        ðŸ¤– AI Personalization
+
+    </div>
+
+
+    <div class="kv-info-box">
+
+        <span class="kv-info-label">
+            KisanVision360+ Smart Recommendation
+        </span>
+
+        <span class="kv-info-value"
+              style="font-weight:500; line-height:1.6;">
+
+            Complete your profile to improve
+            AI crop recommendations, weather alerts,
+            irrigation suggestions, government scheme
+            matching and market insights.
+
+        </span>
+
+    </div>
+
+
+    <!-- EDIT BUTTON -->
+
+    <button
+        class="kv-edit-btn"
+        onclick="editProfile()">
+
+        âœï¸ Edit Profile
+
     </button>
+
 
 </div>
 
-<!-- Edit Profile Modal -->
 
-<div id="profileModal" class="modal">
 
-    <div class="modal-content">
+<!-- =========================================================
+     EDIT PROFILE MODAL
+========================================================= -->
 
-        <span class="close" onclick="closeProfile()">&times;</span>
+<div
+    id="profileModal"
+    class="kv-modal">
 
-        <h2>Edit Profile</h2>
 
-        <form action="/update-profile" method="POST">
+    <div class="kv-modal-content">
 
-            <label>Full Name</label>
 
-            <input
-                type="text"
-                name="fullname"
-                value="{{ user.fullname }}"
-                required
-            >
+        <span
+            class="kv-close"
+            onclick="closeProfile()">
 
-            <label>Mobile</label>
+            &times;
 
-            <input
-                type="text"
-                name="mobile"
-                value="{{ user.mobile }}"
-                required
-            >
+        </span>
 
-            <label>Email</label>
 
-            <input
-                type="email"
-                name="email"
-                value="{{ user.email }}"
-                required
-            >
+        <h2>
+            âœï¸ Edit Profile
+        </h2>
 
-            <label>Village</label>
 
-            <input
-                type="text"
-                name="village"
-                value="{{ user.village }}"
-            >
+        <p class="kv-modal-subtitle">
 
-            <label>District</label>
+            Update your information to improve
+            KisanVision360+ personalization.
 
-            <input
-                type="text"
-                name="district"
-                value="{{ user.district }}"
-            >
+        </p>
 
-            <label>State</label>
 
-            <input
-                type="text"
-                name="state"
-                value="{{ user.state }}"
-            >
+        <form
+            action="/update-profile"
+            method="POST"
+            id="profileForm">
 
-            <button type="submit">
-                Save Changes
+
+            <div class="kv-form-grid">
+
+
+                <!-- NAME -->
+
+                <div class="kv-form-group full">
+
+                    <label>
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="fullname"
+                        value="{{ user.fullname|default('', true) }}"
+                        placeholder="Enter your full name"
+                        required>
+
+                </div>
+
+
+                <!-- MOBILE -->
+
+                <div class="kv-form-group">
+
+                    <label>
+                        Mobile Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        name="mobile"
+                        value="{{ user.mobile|default('', true) }}"
+                        placeholder="Enter mobile number"
+                        pattern="[0-9]{10}"
+                        maxlength="10"
+                        required>
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="kv-form-group">
+
+                    <label>
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        value="{{ user.email|default('', true) }}"
+                        placeholder="Enter email"
+                        required>
+
+                </div>
+
+
+                <!-- VILLAGE -->
+
+                <div class="kv-form-group">
+
+                    <label>
+                        Village
+                    </label>
+
+                    <input
+                        type="text"
+                        name="village"
+                        value="{{ user.village|default('', true) }}"
+                        placeholder="Enter village">
+
+                </div>
+
+
+                <!-- DISTRICT -->
+
+                <div class="kv-form-group">
+
+                    <label>
+                        District
+                    </label>
+
+                    <input
+                        type="text"
+                        name="district"
+                        value="{{ user.district|default('', true) }}"
+                        placeholder="Enter district">
+
+                </div>
+
+
+                <!-- STATE -->
+
+                <div class="kv-form-group full">
+
+                    <label>
+                        State
+                    </label>
+
+                    <input
+                        type="text"
+                        name="state"
+                        value="{{ user.state|default('', true) }}"
+                        placeholder="Enter state">
+
+                </div>
+
+
+            </div>
+
+
+            <div class="kv-location-note">
+
+                ðŸ’¡ <b>Why location matters:</b>
+                KisanVision360+ can use your location
+                for weather information, crop suitability,
+                irrigation planning, market insights and
+                government scheme recommendations.
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="kv-save-btn">
+
+                ðŸ’¾ Save Changes
+
             </button>
+
 
         </form>
 
@@ -91,30 +776,207 @@
 
 </div>
 
+
+
 <script>
 
-function editProfile(){
+/* =========================================================
+   KISANVISION360+ PROFILE JAVASCRIPT
+========================================================= */
 
-    document.getElementById("profileModal").style.display="block";
+
+/* =========================================================
+   OPEN MODAL
+========================================================= */
+
+function editProfile() {
+
+    const modal =
+        document.getElementById(
+            "profileModal"
+        );
+
+    modal.style.display =
+        "block";
 
 }
 
-function closeProfile(){
 
-    document.getElementById("profileModal").style.display="none";
+/* =========================================================
+   CLOSE MODAL
+========================================================= */
+
+function closeProfile() {
+
+    const modal =
+        document.getElementById(
+            "profileModal"
+        );
+
+    modal.style.display =
+        "none";
 
 }
 
-window.onclick=function(event){
 
-    let modal=document.getElementById("profileModal");
+/* =========================================================
+   CLOSE WHEN CLICKING OUTSIDE
+========================================================= */
 
-    if(event.target==modal){
+window.addEventListener(
+    "click",
+    function(event) {
 
-        modal.style.display="none";
+        const modal =
+            document.getElementById(
+                "profileModal"
+            );
+
+        if (
+            event.target === modal
+        ) {
+
+            closeProfile();
+
+        }
 
     }
+);
+
+
+/* =========================================================
+   ESCAPE KEY
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeProfile();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   PROFILE COMPLETION
+========================================================= */
+
+function calculateProfileCompletion() {
+
+    const fields = [
+
+        "{{ user.fullname|default('', true) }}",
+
+        "{{ user.mobile|default('', true) }}",
+
+        "{{ user.email|default('', true) }}",
+
+        "{{ user.village|default('', true) }}",
+
+        "{{ user.district|default('', true) }}",
+
+        "{{ user.state|default('', true) }}"
+
+    ];
+
+
+    let completed = 0;
+
+
+    fields.forEach(
+        function(value) {
+
+            if (
+                value &&
+                value.trim() !== ""
+            ) {
+
+                completed++;
+
+            }
+
+        }
+    );
+
+
+    const percentage =
+        Math.round(
+            (completed / fields.length) * 100
+        );
+
+
+    const progress =
+        document.getElementById(
+            "profileProgress"
+        );
+
+    const percent =
+        document.getElementById(
+            "profilePercent"
+        );
+
+
+    progress.style.width =
+        percentage + "%";
+
+    percent.innerText =
+        percentage + "%";
 
 }
+
+
+/* =========================================================
+   FORM VALIDATION
+========================================================= */
+
+document.getElementById(
+    "profileForm"
+).addEventListener(
+    "submit",
+    function(event) {
+
+        const mobile =
+            document.querySelector(
+                'input[name="mobile"]'
+            ).value.trim();
+
+
+        if (
+            !/^[0-9]{10}$/.test(mobile)
+        ) {
+
+            event.preventDefault();
+
+            alert(
+                "Please enter a valid 10-digit mobile number."
+            );
+
+            return;
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        calculateProfileCompletion();
+
+    }
+);
 
 </script>

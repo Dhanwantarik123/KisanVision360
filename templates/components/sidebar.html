@@ -1,163 +1,1059 @@
-<div class="sidebar">
+﻿
+<!-- =========================================================
+     KISANVISION360+ SIDEBAR
+     ONE MOBILE BUTTON
+========================================================= -->
 
-    <!-- ================= LOGO ================= -->
+{% set role = session.get('role', '')|lower|trim %}
+{% set current_endpoint = request.endpoint or '' %}
+{% set user_name = session.get('name', 'User') %}
 
-    <div class="logo">
+<!-- =========================================================
+     SINGLE MOBILE MENU BUTTON
+========================================================= -->
 
-        <img
-            src="{{ url_for('static', filename='images/logo.png') }}"
-            alt="KisanVision360">
+<button
+    type="button"
+    class="kv-mobile-menu-btn"
+    id="kvMobileMenuBtn"
+    aria-label="Open menu"
+    aria-expanded="false"
+>
+    <i class="fas fa-bars"></i>
+</button>
 
-        <h2>KisanVision360</h2>
 
-        <p>AI Smart Farming</p>
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside
+    class="kv-sidebar"
+    id="kvSidebar"
+    aria-label="Main navigation"
+>
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="kv-sidebar-header">
+
+        <a
+            href="{% if role == 'farmer' %}
+                        {{ url_for('farmer.farmer') }}
+                  {% elif role == 'consumer' %}
+                        {{ url_for('consumer.consumer') }}
+                  {% elif role == 'admin' %}
+                        {{ url_for('admin.admin') }}
+                  {% else %}
+                        {{ url_for('auth.login') }}
+                  {% endif %}"
+            class="kv-brand"
+        >
+
+            <div class="kv-brand-logo">
+                <i class="fas fa-seedling"></i>
+            </div>
+
+            <div class="kv-brand-text">
+
+                <strong>
+                    KisanVision360
+                </strong>
+
+                <span>
+                    Smart Farming
+                </span>
+
+            </div>
+
+        </a>
 
     </div>
 
 
-    <!-- ================= MENU ================= -->
+    <!-- =====================================================
+         USER PROFILE
+    ====================================================== -->
 
-    <nav class="sidebar-menu">
+    {% if session.get('user_id') %}
 
-        <ul>
+    <div class="kv-user-card">
 
-            <!-- DASHBOARD -->
-            <li class="{% if request.path == '/farmer' %}active{% endif %}">
-                <a href="{{ url_for('farmer') }}">
-                    <i class="fa-solid fa-house"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
+        <div class="kv-user-avatar">
 
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='images/farmer.jpg'
+                ) }}"
+                alt="Profile"
+                onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+            >
 
-            <!-- WEATHER -->
-            <li class="{% if request.path == '/weather' %}active{% endif %}">
-                <a href="{{ url_for('weather') }}">
-                    <i class="fa-solid fa-cloud-sun"></i>
-                    <span>Weather</span>
-                </a>
-            </li>
+            <div class="kv-avatar-fallback">
+                <i class="fas fa-user"></i>
+            </div>
 
-
-            <!-- AI RECOMMENDATION -->
-            <li class="{% if request.path == '/recommendation' %}active{% endif %}">
-                <a href="{{ url_for('recommendation') }}">
-                    <i class="fa-solid fa-seedling"></i>
-                    <span>AI Recommendation</span>
-                </a>
-            </li>
+        </div>
 
 
-            <!-- IRRIGATION -->
-            <li class="{% if request.path == '/irrigation' %}active{% endif %}">
-                <a href="{{ url_for('irrigation') }}">
-                    <i class="fa-solid fa-droplet"></i>
-                    <span>Irrigation</span>
-                </a>
-            </li>
+        <div class="kv-user-info">
 
+            <strong>
+                {{ user_name }}
+            </strong>
 
-            <!-- DISEASE DETECTION -->
-            <li class="{% if request.path == '/disease' %}active{% endif %}">
-                <a href="{{ url_for('disease') }}">
-                    <i class="fa-solid fa-bug"></i>
-                    <span>Disease Detection</span>
-                </a>
-            </li>
-
-
-            <!-- MARKETPLACE -->
-            <li class="{% if request.path == '/marketplace' %}active{% endif %}">
-                <a href="{{ url_for('marketplace') }}">
-                    <i class="fa-solid fa-store"></i>
-                    <span>Marketplace</span>
-                </a>
-            </li>
-
-
-           
-
-
-            <!-- ORDERS -->
-            <li class="{% if request.path == '/orders' %}active{% endif %}">
-                <a href="{{ url_for('orders') }}">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span>Orders</span>
-                </a>
-            </li>
- <!-- FARM TOOLS -->
-            <li class="{% if request.path == '/farm-tools' %}active{% endif %}">
-                <a href="{{ url_for('tools') }}">
-                    <i class="fa-solid fa-screwdriver-wrench"></i>
-                    <span>Farm Tools</span>
-                </a>
-            </li>
-
-            <!-- REPORTS -->
-            <li class="{% if request.path == '/reports' %}active{% endif %}">
-                <a href="{{ url_for('reports') }}">
-                    <i class="fa-solid fa-chart-line"></i>
-                    <span>Reports</span>
-                </a>
-            </li>
-
-
-            <!-- FINANCE -->
-            <li class="{% if request.path == '/finance' %}active{% endif %}">
-                <a href="{{ url_for('finance') }}">
-                    <i class="fa-solid fa-indian-rupee-sign"></i>
-                    <span>Finance</span>
-                </a>
-            </li>
-
-
-            <!-- GOVERNMENT SCHEMES -->
-            <li class="{% if request.path == '/schemes' %}active{% endif %}">
-                <a href="{{ url_for('schemes') }}">
-                    <i class="fas fa-landmark"></i>
-                    <span>Government Schemes</span>
-                </a>
-            </li>
-
-
-            <!-- SETTINGS -->
-            <li class="{% if request.path == '/settings' %}active{% endif %}">
-                <a href="{{ url_for('settings') }}">
-                    <i class="fa-solid fa-gear"></i>
-                    <span>Settings</span>
-                </a>
-            </li>
-
-
-            <!-- LOGOUT -->
-            <li>
-                <a href="{{ url_for('logout') }}">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <span>Logout</span>
-                </a>
-            </li>
-
-        </ul>
-
-    </nav>
-
-
-    <!-- ================= USER ================= -->
-
-    <div class="sidebar-profile">
-
-        <img
-            src="{{ url_for('static', filename='images/farmer.jpg') }}"
-            alt="Farmer">
-
-        <div>
-
-            <h4>{{ name|default('Farmer') }}</h4>
-
-            <p>Farmer</p>
+            <span>
+                {{ role|title }}
+            </span>
 
         </div>
 
     </div>
 
-</div>
+    {% endif %}
+
+
+    <!-- =====================================================
+         SIDEBAR BODY
+    ====================================================== -->
+
+    <div class="kv-sidebar-body">
+
+
+        <!-- =================================================
+             FARMER MENU
+        ================================================== -->
+
+        {% if role == 'farmer' %}
+
+        <div class="kv-menu-section">
+
+            <div class="kv-menu-title">
+                <span>FARMER</span>
+            </div>
+
+
+            <!-- Dashboard -->
+
+            <a
+                href="{{ url_for('farmer.farmer') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'farmer.farmer' %}active{% endif %}"
+            >
+
+                <i class="fas fa-house"></i>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <!-- Farm Profile -->
+
+            <a
+                href="{{ url_for('profile.profile') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'profile.profile' %}active{% endif %}"
+            >
+
+                <i class="fas fa-user"></i>
+
+                <span>
+                    Farm Profile
+                </span>
+
+            </a>
+
+
+            <!-- Weather -->
+
+            <a
+                href="{{ url_for('weather.weather') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'weather.weather' %}active{% endif %}"
+            >
+
+                <i class="fas fa-cloud-sun"></i>
+
+                <span>
+                    Weather
+                </span>
+
+            </a>
+
+
+            <!-- Crop Advisor -->
+
+            <a
+                href="{{ url_for('recommendation.recommendation') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'recommendation.recommendation' %}active{% endif %}"
+            >
+
+                <i class="fas fa-seedling"></i>
+
+                <span>
+                    AI Crop Advisor
+                </span>
+
+            </a>
+
+
+            <!-- Cultivation -->
+
+            <a
+                href="{{ url_for('crop.crop_details') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'crop.crop_details' %}active{% endif %}"
+            >
+
+                <i class="fas fa-wheat-awn"></i>
+
+                <span>
+                    Cultivation Plan
+                </span>
+
+            </a>
+
+
+            <!-- Disease -->
+
+            <a
+                href="{{ url_for('disease.disease') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'disease.disease' %}active{% endif %}"
+            >
+
+                <i class="fas fa-virus"></i>
+
+                <span>
+                    Disease Detection
+                </span>
+
+            </a>
+
+
+            <!-- Irrigation -->
+
+            <a
+                href="{{ url_for('irrigation.irrigation') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'irrigation.irrigation' %}active{% endif %}"
+            >
+
+                <i class="fas fa-droplet"></i>
+
+                <span>
+                    Smart Irrigation
+                </span>
+
+            </a>
+
+
+            <!-- Market -->
+
+            <a
+                href="{{ url_for('market.market') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'market.market' %}active{% endif %}"
+            >
+
+                <i class="fas fa-chart-line"></i>
+
+                <span>
+                    Mandi Prices
+                </span>
+
+            </a>
+
+
+            <!-- Marketplace -->
+
+            <a
+                href="{{ url_for('marketplace.farmer_marketplace') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'marketplace.farmer_marketplace' %}active{% endif %}"
+            >
+
+                <i class="fas fa-store"></i>
+
+                <span>
+                    Marketplace
+                </span>
+
+            </a>
+
+
+            <!-- Products -->
+
+            <a
+                href="{{ url_for('marketplace.farmer_products') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'marketplace.farmer_products' %}active{% endif %}"
+            >
+
+                <i class="fas fa-box"></i>
+
+                <span>
+                    My Products
+                </span>
+
+            </a>
+
+
+            <!-- Orders -->
+
+            <a
+                href="{{ url_for('marketplace.farmer_orders') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'marketplace.farmer_orders' %}active{% endif %}"
+            >
+
+                <i class="fas fa-shopping-bag"></i>
+
+                <span>
+                    Orders
+                </span>
+
+            </a>
+
+
+            <!-- Tools -->
+
+            <a
+                href="{{ url_for('tools.tools') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'tools.tools' %}active{% endif %}"
+            >
+
+                <i class="fas fa-toolbox"></i>
+
+                <span>
+                    Farmer Tools
+                </span>
+
+            </a>
+
+
+            <!-- Finance -->
+
+            <a
+                href="{{ url_for('finance.finance') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'finance.finance' %}active{% endif %}"
+            >
+
+                <i class="fas fa-indian-rupee-sign"></i>
+
+                <span>
+                    Farm Finance
+                </span>
+
+            </a>
+
+
+            <!-- Government -->
+
+            <a
+                href="{{ url_for('government.government') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'government.government' %}active{% endif %}"
+            >
+
+                <i class="fas fa-building-columns"></i>
+
+                <span>
+                    Government Schemes
+                </span>
+
+            </a>
+
+
+            <!-- Reports -->
+
+            <a
+                href="{{ url_for('reports.reports') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'reports.reports' %}active{% endif %}"
+            >
+
+                <i class="fas fa-chart-pie"></i>
+
+                <span>
+                    Reports
+                </span>
+
+            </a>
+
+
+            <!-- Notifications -->
+
+            <a
+                href="{{ url_for('notifications.notifications') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'notifications.notifications' %}active{% endif %}"
+            >
+
+                <i class="fas fa-bell"></i>
+
+                <span>
+                    Notifications
+                </span>
+
+                <span
+                    class="kv-notification-badge"
+                    id="sidebarNotificationBadge"
+                >
+                    0
+                </span>
+
+            </a>
+
+
+            <!-- AI Chatbot -->
+
+            <a
+                href="{{ url_for('chatbot.chatbot') }}"
+                class="kv-menu-item kv-ai-item
+                {% if current_endpoint == 'chatbot.chatbot' %}active{% endif %}"
+            >
+
+                <i class="fas fa-robot"></i>
+
+                <span>
+                    KisanVision360+ AI
+                </span>
+
+                <span class="kv-ai-badge">
+                    AI
+                </span>
+
+            </a>
+
+        </div>
+
+        {% endif %}
+
+
+
+        <!-- =================================================
+             CONSUMER MENU
+        ================================================== -->
+
+        {% if role == 'consumer' %}
+
+        <div class="kv-menu-section">
+
+            <div class="kv-menu-title">
+                <span>CONSUMER</span>
+            </div>
+
+
+            <a
+                href="{{ url_for('consumer.consumer') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'consumer.consumer' %}active{% endif %}"
+            >
+
+                <i class="fas fa-house"></i>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('marketplace.consumer_marketplace') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'marketplace.consumer_marketplace' %}active{% endif %}"
+            >
+
+                <i class="fas fa-store"></i>
+
+                <span>
+                    Marketplace
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('marketplace.wishlist') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'marketplace.wishlist' %}active{% endif %}"
+            >
+
+                <i class="fas fa-heart"></i>
+
+                <span>
+                    Wishlist
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('marketplace.cart') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'marketplace.cart' %}active{% endif %}"
+            >
+
+                <i class="fas fa-cart-shopping"></i>
+
+                <span>
+                    Cart
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('marketplace.consumer_orders') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'marketplace.consumer_orders' %}active{% endif %}"
+            >
+
+                <i class="fas fa-box"></i>
+
+                <span>
+                    My Orders
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('marketplace.consumer_reports') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'marketplace.consumer_reports' %}active{% endif %}"
+            >
+
+                <i class="fas fa-file-lines"></i>
+
+                <span>
+                    Reports
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('chatbot.chatbot') }}"
+                class="kv-menu-item kv-ai-item
+                {% if current_endpoint == 'chatbot.chatbot' %}active{% endif %}"
+            >
+
+                <i class="fas fa-robot"></i>
+
+                <span>
+                    KisanVision360+ AI
+                </span>
+
+                <span class="kv-ai-badge">
+                    AI
+                </span>
+
+            </a>
+
+        </div>
+
+        {% endif %}
+
+
+
+        <!-- =================================================
+             ADMIN MENU
+        ================================================== -->
+
+        {% if role == 'admin' %}
+
+        <div class="kv-menu-section">
+
+            <div class="kv-menu-title">
+                <span>ADMIN</span>
+            </div>
+
+
+            <a
+                href="{{ url_for('admin.admin') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'admin.admin' %}active{% endif %}"
+            >
+
+                <i class="fas fa-gauge-high"></i>
+
+                <span>
+                    Admin Dashboard
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('admin.admin_notifications') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'admin.admin_notifications' %}active{% endif %}"
+            >
+
+                <i class="fas fa-bell"></i>
+
+                <span>
+                    Notifications
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('reports.reports') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'reports.reports' %}active{% endif %}"
+            >
+
+                <i class="fas fa-chart-pie"></i>
+
+                <span>
+                    Reports
+                </span>
+
+            </a>
+
+        </div>
+
+        {% endif %}
+
+
+
+        <!-- =================================================
+             ACCOUNT
+        ================================================== -->
+
+        {% if session.get('user_id') %}
+
+        <div class="kv-menu-section">
+
+            <div class="kv-menu-title">
+                <span>ACCOUNT</span>
+            </div>
+
+
+            <a
+                href="{{ url_for('settings.settings') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'settings.settings' %}active{% endif %}"
+            >
+
+                <i class="fas fa-gear"></i>
+
+                <span>
+                    Settings
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('help.help_page') }}"
+                class="kv-menu-item
+                {% if current_endpoint == 'help.help_page' %}active{% endif %}"
+            >
+
+                <i class="fas fa-circle-question"></i>
+
+                <span>
+                    Help & Support
+                </span>
+
+            </a>
+
+        </div>
+
+        {% endif %}
+
+
+
+    </div>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <div class="kv-sidebar-footer">
+
+        {% if session.get('user_id') %}
+
+        <a
+            href="{{ url_for('auth.logout') }}"
+            class="kv-logout-btn"
+            onclick="return confirm('Are you sure you want to logout?');"
+        >
+
+            <i class="fas fa-right-from-bracket"></i>
+
+            <span>
+                Logout
+            </span>
+
+        </a>
+
+        {% else %}
+
+        <a
+            href="{{ url_for('auth.login') }}"
+            class="kv-login-btn"
+        >
+
+            <i class="fas fa-right-to-bracket"></i>
+
+            <span>
+                Login
+            </span>
+
+        </a>
+
+        {% endif %}
+
+
+        <div class="kv-sidebar-status">
+
+            <span class="kv-status-dot"></span>
+
+            <span>
+                KisanVision360+ Online
+            </span>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<!-- =========================================================
+     SIDEBAR OVERLAY
+========================================================= -->
+
+<div
+    class="kv-sidebar-overlay"
+    id="kvSidebarOverlay"
+    aria-hidden="true"
+></div>
+
+
+<!-- =========================================================
+     SIDEBAR JAVASCRIPT
+========================================================= -->
+
+<script>
+
+(function () {
+
+    "use strict";
+
+
+    const sidebar =
+        document.getElementById(
+            "kvSidebar"
+        );
+
+    const overlay =
+        document.getElementById(
+            "kvSidebarOverlay"
+        );
+
+    const menuButton =
+        document.getElementById(
+            "kvMobileMenuBtn"
+        );
+
+
+    if (
+        !sidebar ||
+        !menuButton
+    ) {
+        return;
+    }
+
+
+    /* =====================================================
+       OPEN SIDEBAR
+    ===================================================== */
+
+    function openSidebar() {
+
+        sidebar.classList.add(
+            "open"
+        );
+
+
+        if (overlay) {
+
+            overlay.classList.add(
+                "active"
+            );
+
+            overlay.setAttribute(
+                "aria-hidden",
+                "false"
+            );
+
+        }
+
+
+        document.body.classList.add(
+            "sidebar-open"
+        );
+
+
+        menuButton.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+
+        menuButton.setAttribute(
+            "aria-label",
+            "Close menu"
+        );
+
+
+        menuButton.innerHTML =
+            '<i class="fas fa-xmark"></i>';
+
+    }
+
+
+    /* =====================================================
+       CLOSE SIDEBAR
+    ===================================================== */
+
+    function closeSidebar() {
+
+        sidebar.classList.remove(
+            "open"
+        );
+
+
+        if (overlay) {
+
+            overlay.classList.remove(
+                "active"
+            );
+
+            overlay.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+
+        }
+
+
+        document.body.classList.remove(
+            "sidebar-open"
+        );
+
+
+        menuButton.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+
+        menuButton.setAttribute(
+            "aria-label",
+            "Open menu"
+        );
+
+
+        menuButton.innerHTML =
+            '<i class="fas fa-bars"></i>';
+
+    }
+
+
+    /* =====================================================
+       TOGGLE
+    ===================================================== */
+
+    menuButton.addEventListener(
+        "click",
+        function () {
+
+            if (
+                sidebar.classList.contains(
+                    "open"
+                )
+            ) {
+
+                closeSidebar();
+
+            } else {
+
+                openSidebar();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       OVERLAY CLOSE
+    ===================================================== */
+
+    if (overlay) {
+
+        overlay.addEventListener(
+            "click",
+            closeSidebar
+        );
+
+    }
+
+
+    /* =====================================================
+       CLOSE AFTER MENU CLICK
+    ===================================================== */
+
+    sidebar
+        .querySelectorAll(
+            "a"
+        )
+        .forEach(
+            function (link) {
+
+                link.addEventListener(
+                    "click",
+                    function () {
+
+                        if (
+                            window.innerWidth <= 900
+                        ) {
+
+                            closeSidebar();
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+    /* =====================================================
+       ESC KEY
+    ===================================================== */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Escape" &&
+                sidebar.classList.contains("open")
+            ) {
+
+                closeSidebar();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       RESIZE
+    ===================================================== */
+
+    window.addEventListener(
+        "resize",
+        function () {
+
+            if (
+                window.innerWidth > 900
+            ) {
+
+                closeSidebar();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       NOTIFICATION COUNT
+    ===================================================== */
+
+    const badge =
+        document.getElementById(
+            "sidebarNotificationBadge"
+        );
+
+
+    function updateNotificationBadge() {
+
+        if (!badge) {
+            return;
+        }
+
+
+        const saved =
+            localStorage.getItem(
+                "kisanvision360_unread_notifications"
+            );
+
+
+        const count =
+            parseInt(
+                saved || "0",
+                10
+            );
+
+
+        if (
+            Number.isNaN(count) ||
+            count <= 0
+        ) {
+
+            badge.style.display =
+                "none";
+
+        } else {
+
+            badge.textContent =
+                count > 99
+                    ? "99+"
+                    : count;
+
+            badge.style.display =
+                "inline-flex";
+
+        }
+
+    }
+
+
+    updateNotificationBadge();
+
+
+    window.addEventListener(
+        "storage",
+        updateNotificationBadge
+    );
+
+
+})();
+
+</script>
+

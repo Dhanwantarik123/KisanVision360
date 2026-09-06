@@ -1,88 +1,1164 @@
-body{
+/* =========================================================
+   KISANVISION360+
+   SMART MACHINE COMPARISON
+========================================================= */
 
-background:#f1f8e9;
-font-family:Arial;
+:root {
+    --kv-primary: #1B5E20;
+    --kv-primary-dark: #124516;
+    --kv-green: #43A047;
+    --kv-green-light: #E8F5E9;
+    --kv-orange: #FB8C00;
+    --kv-orange-light: #FFF3E0;
+    --kv-blue: #1976D2;
+    --kv-blue-light: #E3F2FD;
+    --kv-red: #D32F2F;
 
+    --kv-bg: #F4F8F4;
+    --kv-card: #FFFFFF;
+    --kv-text: #18301B;
+    --kv-muted: #718073;
+    --kv-border: #DCE7DD;
+
+    --kv-shadow: 0 10px 30px rgba(27, 94, 32, .08);
 }
 
+/* =========================================================
+   PAGE
+========================================================= */
 
+.compare-page {
+    min-height: 100vh;
+    padding: 22px;
 
-.container{
+    background:
+        radial-gradient(
+            circle at 5% 5%,
+            rgba(67, 160, 71, .07),
+            transparent 25%
+        ),
+        var(--kv-bg);
 
-margin:50px auto;
-
-width:80%;
-
-background:white;
-
-padding:30px;
-
-border-radius:20px;
-
-box-shadow:0 10px 25px #ccc;
-
+    color: var(--kv-text);
 }
 
-
-
-h1{
-
-text-align:center;
-
-color:#166534;
-
+.compare-container {
+    width: min(1180px, 100%);
+    margin: 0 auto;
 }
 
+/* =========================================================
+   HERO
+========================================================= */
 
+.compare-hero {
+    position: relative;
+    overflow: hidden;
 
-table{
+    padding: 28px;
+    margin-bottom: 20px;
 
-width:100%;
+    border-radius: 22px;
 
-border-collapse:collapse;
+    background:
+        radial-gradient(
+            circle at 90% 15%,
+            rgba(255,255,255,.14),
+            transparent 28%
+        ),
+        linear-gradient(
+            135deg,
+            var(--kv-primary-dark),
+            var(--kv-green)
+        );
 
-margin-top:30px;
-
+    color: #fff;
+    box-shadow: var(--kv-shadow);
 }
 
+.compare-hero::after {
+    content: "";
 
+    position: absolute;
 
-th{
+    width: 210px;
+    height: 210px;
 
-background:#198754;
+    right: -80px;
+    bottom: -120px;
 
-color:white;
+    border-radius: 50%;
 
-padding:15px;
-
+    background: rgba(255,255,255,.08);
 }
 
-
-
-td{
-
-padding:15px;
-
-border:1px solid #ddd;
-
-text-align:center;
-
+.compare-hero-content {
+    position: relative;
+    z-index: 2;
 }
 
+.compare-hero h1 {
+    margin: 0 0 7px;
 
+    font-size: clamp(24px, 4vw, 34px);
+    font-weight: 900;
+}
 
-button{
+.compare-hero p {
+    max-width: 720px;
 
-background:#198754;
+    margin: 0;
 
-color:white;
+    color: rgba(255,255,255,.84);
 
-padding:12px 25px;
+    font-size: 12px;
+    line-height: 1.6;
+}
 
-border:none;
+/* =========================================================
+   INTELLIGENCE STRIP
+========================================================= */
 
-border-radius:20px;
+.compare-intelligence {
+    display: grid;
 
-margin-top:20px;
+    grid-template-columns: repeat(4, 1fr);
 
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+.compare-intelligence-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 9px 11px;
+
+    border-radius: 10px;
+
+    background: rgba(255,255,255,.11);
+
+    color: #fff;
+}
+
+.compare-intelligence-item i {
+    font-size: 13px;
+}
+
+.compare-intelligence-item strong {
+    display: block;
+
+    font-size: 8px;
+}
+
+.compare-intelligence-item span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: rgba(255,255,255,.68);
+
+    font-size: 7px;
+}
+
+/* =========================================================
+   SECTION CARD
+========================================================= */
+
+.compare-card {
+    background: var(--kv-card);
+
+    border: 1px solid var(--kv-border);
+    border-radius: 19px;
+
+    box-shadow: var(--kv-shadow);
+}
+
+.compare-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    padding: 18px 20px;
+
+    border-bottom: 1px solid var(--kv-border);
+}
+
+.compare-card-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.compare-card-icon {
+    width: 40px;
+    height: 40px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 11px;
+
+    background: var(--kv-green-light);
+    color: var(--kv-primary);
+
+    font-size: 15px;
+}
+
+.compare-card-title h2 {
+    margin: 0;
+
+    color: var(--kv-primary);
+
+    font-size: 15px;
+    font-weight: 850;
+}
+
+.compare-card-title p {
+    margin: 3px 0 0;
+
+    color: var(--kv-muted);
+
+    font-size: 8px;
+}
+
+/* =========================================================
+   MACHINE GRID
+========================================================= */
+
+.machine-comparison-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+
+    padding: 20px;
+}
+
+/* =========================================================
+   MACHINE CARD
+========================================================= */
+
+.machine-card {
+    position: relative;
+    overflow: hidden;
+
+    border: 1px solid var(--kv-border);
+    border-radius: 17px;
+
+    background: #FBFDFB;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        border-color .2s ease;
+}
+
+.machine-card:hover {
+    transform: translateY(-3px);
+
+    border-color: #B9CCBA;
+
+    box-shadow:
+        0 12px 28px rgba(27,94,32,.10);
+}
+
+.machine-card.recommended {
+    border-color: var(--kv-green);
+
+    box-shadow:
+        0 0 0 2px rgba(67,160,71,.08);
+}
+
+/* =========================================================
+   RECOMMENDED BADGE
+========================================================= */
+
+.machine-recommended-badge {
+    position: absolute;
+
+    top: 12px;
+    right: 12px;
+
+    z-index: 5;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    padding: 6px 8px;
+
+    border-radius: 8px;
+
+    background: var(--kv-orange);
+    color: #fff;
+
+    font-size: 7px;
+    font-weight: 850;
+}
+
+/* =========================================================
+   MACHINE IMAGE
+========================================================= */
+
+.machine-image {
+    position: relative;
+
+    height: 190px;
+
+    display: grid;
+    place-items: center;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            #EDF6EE,
+            #DDEDDD
+        );
+}
+
+.machine-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    transition: transform .3s ease;
+}
+
+.machine-card:hover .machine-image img {
+    transform: scale(1.03);
+}
+
+.machine-image-placeholder {
+    display: grid;
+    place-items: center;
+
+    width: 75px;
+    height: 75px;
+
+    border-radius: 20px;
+
+    background: rgba(255,255,255,.75);
+    color: var(--kv-primary);
+
+    font-size: 30px;
+}
+
+/* =========================================================
+   MACHINE BODY
+========================================================= */
+
+.machine-body {
+    padding: 17px;
+}
+
+.machine-brand {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 4px 7px;
+
+    margin-bottom: 7px;
+
+    border-radius: 6px;
+
+    background: var(--kv-green-light);
+    color: var(--kv-primary);
+
+    font-size: 7px;
+    font-weight: 850;
+}
+
+.machine-body h3 {
+    margin: 0;
+
+    color: var(--kv-text);
+
+    font-size: 16px;
+    font-weight: 900;
+}
+
+.machine-description {
+    margin: 6px 0 13px;
+
+    color: var(--kv-muted);
+
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   MACHINE QUICK STATS
+========================================================= */
+
+.machine-quick-stats {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 7px;
+
+    margin-bottom: 14px;
+}
+
+.machine-stat {
+    padding: 9px 6px;
+
+    border: 1px solid var(--kv-border);
+    border-radius: 9px;
+
+    background: #fff;
+
+    text-align: center;
+}
+
+.machine-stat i {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: var(--kv-green);
+
+    font-size: 11px;
+}
+
+.machine-stat strong {
+    display: block;
+
+    color: var(--kv-text);
+
+    font-size: 9px;
+}
+
+.machine-stat span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: var(--kv-muted);
+
+    font-size: 7px;
+}
+
+/* =========================================================
+   COMPARE BUTTON
+========================================================= */
+
+.machine-compare-button {
+    width: 100%;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    padding: 10px 12px;
+
+    border: 1px solid var(--kv-primary);
+    border-radius: 10px;
+
+    background: var(--kv-primary);
+    color: #fff;
+
+    font-family: inherit;
+    font-size: 9px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+.machine-compare-button:hover {
+    background: var(--kv-primary-dark);
+
+    transform: translateY(-1px);
+}
+
+.machine-compare-button.secondary {
+    background: #fff;
+    color: var(--kv-primary);
+}
+
+.machine-compare-button.secondary:hover {
+    background: var(--kv-green-light);
+}
+
+/* =========================================================
+   COMPARISON TABLE
+========================================================= */
+
+.comparison-table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+
+    padding: 0 20px 20px;
+}
+
+.comparison-table-wrapper::-webkit-scrollbar {
+    height: 5px;
+}
+
+.comparison-table-wrapper::-webkit-scrollbar-thumb {
+    background: #BFD0C0;
+
+    border-radius: 20px;
+}
+
+.comparison-table {
+    width: 100%;
+
+    min-width: 680px;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+    overflow: hidden;
+
+    border: 1px solid var(--kv-border);
+    border-radius: 13px;
+
+    background: #fff;
+}
+
+.comparison-table th,
+.comparison-table td {
+    padding: 12px 13px;
+
+    border-right: 1px solid var(--kv-border);
+    border-bottom: 1px solid var(--kv-border);
+
+    text-align: center;
+
+    font-size: 9px;
+}
+
+.comparison-table th:last-child,
+.comparison-table td:last-child {
+    border-right: 0;
+}
+
+.comparison-table tr:last-child td {
+    border-bottom: 0;
+}
+
+.comparison-table th {
+    background: var(--kv-green-light);
+
+    color: var(--kv-primary);
+
+    font-size: 9px;
+    font-weight: 850;
+}
+
+.comparison-table td:first-child {
+    min-width: 130px;
+
+    background: #FAFCFA;
+
+    color: var(--kv-text);
+
+    font-weight: 800;
+
+    text-align: left;
+}
+
+.comparison-table td {
+    color: var(--kv-muted);
+}
+
+.comparison-table .better {
+    background: #F1FAF2;
+
+    color: var(--kv-primary);
+
+    font-weight: 850;
+}
+
+.comparison-table .neutral {
+    color: var(--kv-text);
+
+    font-weight: 700;
+}
+
+/* =========================================================
+   VALUE BADGES
+========================================================= */
+
+.compare-value {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+
+    padding: 4px 7px;
+
+    border-radius: 6px;
+
+    font-size: 8px;
+    font-weight: 800;
+}
+
+.compare-value.good {
+    background: var(--kv-green-light);
+    color: var(--kv-primary);
+}
+
+.compare-value.average {
+    background: var(--kv-orange-light);
+    color: #A85B00;
+}
+
+.compare-value.low {
+    background: #F3F4F3;
+    color: var(--kv-muted);
+}
+
+/* =========================================================
+   VERDICT
+========================================================= */
+
+.compare-verdict {
+    margin: 0 20px 20px;
+
+    padding: 18px;
+
+    border: 1px solid #CFE2D0;
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #F1FAF2,
+            #FAFDF9
+        );
+}
+
+.compare-verdict-header {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    margin-bottom: 10px;
+}
+
+.compare-verdict-icon {
+    width: 36px;
+    height: 36px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 10px;
+
+    background: var(--kv-primary);
+    color: #fff;
+
+    font-size: 13px;
+}
+
+.compare-verdict-header h3 {
+    margin: 0;
+
+    color: var(--kv-primary);
+
+    font-size: 12px;
+    font-weight: 850;
+}
+
+.compare-verdict-header span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: var(--kv-muted);
+
+    font-size: 7px;
+}
+
+.compare-verdict p {
+    margin: 0;
+
+    color: var(--kv-text);
+
+    font-size: 9px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   SCORE COMPARISON
+========================================================= */
+
+.machine-score-section {
+    padding: 20px;
+
+    border-top: 1px solid var(--kv-border);
+}
+
+.machine-score-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 16px;
+}
+
+.machine-score {
+    padding: 14px;
+
+    border: 1px solid var(--kv-border);
+    border-radius: 12px;
+
+    background: #FBFDFB;
+}
+
+.machine-score-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 9px;
+}
+
+.machine-score-top strong {
+    color: var(--kv-text);
+
+    font-size: 9px;
+}
+
+.machine-score-top span {
+    color: var(--kv-primary);
+
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.machine-score-bar {
+    height: 7px;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: #DDE8DE;
+}
+
+.machine-score-bar span {
+    display: block;
+
+    height: 100%;
+
+    width: var(--score, 0%);
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--kv-green),
+            var(--kv-primary)
+        );
+}
+
+/* =========================================================
+   BUY / DEALER ACTIONS
+========================================================= */
+
+.compare-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+
+    padding: 0 20px 20px;
+}
+
+.compare-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    padding: 10px 13px;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    transition: .2s ease;
+}
+
+.compare-action.primary {
+    background: var(--kv-primary);
+    color: #fff;
+}
+
+.compare-action.primary:hover {
+    background: var(--kv-primary-dark);
+
+    transform: translateY(-1px);
+}
+
+.compare-action.secondary {
+    border: 1px solid var(--kv-border);
+
+    background: #fff;
+    color: var(--kv-primary);
+}
+
+.compare-action.secondary:hover {
+    border-color: var(--kv-green);
+
+    background: var(--kv-green-light);
+}
+
+/* =========================================================
+   DECISION FACTORS
+========================================================= */
+
+.decision-factors {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 10px;
+
+    padding: 20px;
+}
+
+.decision-factor {
+    padding: 13px;
+
+    border: 1px solid var(--kv-border);
+    border-radius: 12px;
+
+    background: #FBFDFB;
+}
+
+.decision-factor i {
+    display: grid;
+    place-items: center;
+
+    width: 32px;
+    height: 32px;
+
+    margin-bottom: 8px;
+
+    border-radius: 9px;
+
+    background: var(--kv-green-light);
+    color: var(--kv-primary);
+
+    font-size: 12px;
+}
+
+.decision-factor h4 {
+    margin: 0 0 4px;
+
+    color: var(--kv-text);
+
+    font-size: 9px;
+}
+
+.decision-factor p {
+    margin: 0;
+
+    color: var(--kv-muted);
+
+    font-size: 7px;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.compare-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 300px;
+
+    padding: 30px;
+
+    text-align: center;
+}
+
+.compare-empty-icon {
+    width: 68px;
+    height: 68px;
+
+    display: grid;
+    place-items: center;
+
+    margin-bottom: 13px;
+
+    border-radius: 50%;
+
+    background: var(--kv-green-light);
+    color: var(--kv-primary);
+
+    font-size: 27px;
+}
+
+.compare-empty h3 {
+    margin: 0 0 6px;
+
+    color: var(--kv-primary);
+
+    font-size: 17px;
+}
+
+.compare-empty p {
+    max-width: 430px;
+
+    margin: 0;
+
+    color: var(--kv-muted);
+
+    font-size: 9px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   BACK LINK
+========================================================= */
+
+.compare-back {
+    display: flex;
+    justify-content: center;
+
+    margin-top: 18px;
+}
+
+.compare-back a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    color: var(--kv-primary);
+
+    text-decoration: none;
+
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.compare-back a:hover {
+    text-decoration: underline;
+}
+
+/* =========================================================
+   RTL
+========================================================= */
+
+html[dir="rtl"] .compare-page {
+    direction: rtl;
+}
+
+html[dir="rtl"] .comparison-table td:first-child {
+    text-align: right;
+}
+
+html[dir="rtl"] .machine-recommended-badge {
+    right: auto;
+    left: 12px;
+}
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+body.dark-mode .compare-page,
+html.dark .compare-page {
+    --kv-bg: #0F1711;
+    --kv-card: #172219;
+    --kv-text: #E8F5E9;
+    --kv-muted: #AAB8AC;
+    --kv-border: #2A3B2D;
+
+    background:
+        radial-gradient(
+            circle at 5% 5%,
+            rgba(67,160,71,.10),
+            transparent 25%
+        ),
+        #0F1711;
+}
+
+body.dark-mode .machine-card,
+body.dark-mode .machine-stat,
+body.dark-mode .machine-score,
+body.dark-mode .decision-factor,
+body.dark-mode .comparison-table,
+html.dark .machine-card,
+html.dark .machine-stat,
+html.dark .machine-score,
+html.dark .decision-factor,
+html.dark .comparison-table {
+    background: #111A13;
+}
+
+body.dark-mode .comparison-table th,
+html.dark .comparison-table th {
+    background: #1C3320;
+}
+
+body.dark-mode .comparison-table td:first-child,
+html.dark .comparison-table td:first-child {
+    background: #152118;
+}
+
+body.dark-mode .compare-action.secondary,
+html.dark .compare-action.secondary {
+    background: #111A13;
+    color: #E8F5E9;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .compare-intelligence {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .decision-factors {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    .compare-page {
+        padding: 12px;
+    }
+
+    .compare-hero {
+        padding: 20px;
+
+        border-radius: 17px;
+    }
+
+    .compare-hero h1 {
+        font-size: 23px;
+    }
+
+    .compare-hero p {
+        font-size: 10px;
+    }
+
+    .compare-intelligence {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .machine-comparison-grid {
+        grid-template-columns: 1fr;
+
+        padding: 14px;
+    }
+
+    .machine-score-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .decision-factors {
+        grid-template-columns: 1fr 1fr;
+
+        padding: 14px;
+    }
+
+    .comparison-table-wrapper {
+        padding: 0 14px 14px;
+    }
+
+    .compare-verdict {
+        margin: 0 14px 14px;
+    }
+
+    .compare-actions {
+        padding: 0 14px 14px;
+    }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+    .compare-page {
+        padding: 8px;
+    }
+
+    .compare-hero {
+        padding: 17px;
+    }
+
+    .compare-intelligence {
+        grid-template-columns: 1fr;
+    }
+
+    .decision-factors {
+        grid-template-columns: 1fr;
+    }
+
+    .machine-quick-stats {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .compare-actions {
+        flex-direction: column;
+    }
+
+    .compare-action {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+.machine-compare-button:focus-visible,
+.compare-action:focus-visible,
+.compare-back a:focus-visible {
+    outline: 3px solid rgba(67,160,71,.28);
+    outline-offset: 2px;
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .machine-card,
+    .machine-image img,
+    .machine-compare-button,
+    .compare-action {
+        transition: none;
+    }
 }

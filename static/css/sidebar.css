@@ -1,23 +1,41 @@
 /* =========================================================
-   KISANVISION360 - RESPONSIVE SIDEBAR
-   Vertical Menu | Desktop | Tablet | Mobile
+   KISANVISION360+
+   MODERN RESPONSIVE SIDEBAR
 ========================================================= */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", "Segoe UI", Arial, sans-serif;
+:root {
+    --kv-sidebar-width: 270px;
+    --kv-sidebar-mobile: 290px;
+
+    --kv-green-dark: #123d19;
+    --kv-green: #1b5e20;
+    --kv-green-light: #43a047;
+    --kv-orange: #ffb74d;
+
+    --kv-white: #ffffff;
+    --kv-text: rgba(255, 255, 255, 0.84);
+    --kv-muted: rgba(255, 255, 255, 0.55);
+
+    --kv-hover: rgba(255, 255, 255, 0.09);
+    --kv-active: rgba(255, 255, 255, 0.17);
+
+    --kv-border: rgba(255, 255, 255, 0.10);
+
+    --kv-sidebar-shadow: 8px 0 30px rgba(0, 0, 0, 0.15);
+
+    --kv-transition: 0.25s ease;
 }
 
 
 /* =========================================================
-   DASHBOARD
+   GLOBAL SIDEBAR BOX SIZING
 ========================================================= */
 
-.dashboard-container {
-    width: 100%;
-    min-height: 100vh;
+#kvSidebar,
+#kvSidebar *,
+#kvMenuButton,
+#kvSidebarOverlay {
+    box-sizing: border-box;
 }
 
 
@@ -25,223 +43,257 @@
    SIDEBAR
 ========================================================= */
 
-.sidebar {
+#kvSidebar.kv-sidebar {
+
     position: fixed;
 
     top: 0;
     left: 0;
+    bottom: 0;
 
-    width: clamp(220px, 18vw, 270px);
+    width: var(--kv-sidebar-width);
     height: 100vh;
+    height: 100dvh;
+
+    display: flex;
+    flex-direction: column;
 
     background:
         linear-gradient(
             180deg,
-            #0b6b3a,
-            #0f8d4e
+            #0f3515 0%,
+            #164d1b 28%,
+            #1b5e20 65%,
+            #164d1b 100%
         );
 
-    color: white;
-
-    overflow-y: auto;
-    overflow-x: hidden;
+    color: var(--kv-white);
 
     z-index: 1000;
 
+    overflow: hidden;
+
+    box-shadow: var(--kv-sidebar-shadow);
+
+    transform: translateX(0);
+
+    transition:
+        transform var(--kv-transition);
+
+    isolation: isolate;
+}
+
+
+/* =========================================================
+   RTL
+========================================================= */
+
+html[dir="rtl"] #kvSidebar.kv-sidebar {
+
+    left: auto;
+    right: 0;
+
     box-shadow:
-        5px 0 20px rgba(0, 0, 0, 0.15);
-
-    scrollbar-width: thin;
+        -8px 0 30px rgba(0, 0, 0, 0.15);
 }
 
 
 /* =========================================================
-   LOGO
+   HEADER
 ========================================================= */
 
-.logo {
-    width: 100%;
+#kvSidebar .kv-sidebar-header {
 
-    text-align: center;
-
-    padding:
-        clamp(14px, 2vw, 25px)
-        10px
-        clamp(12px, 1.5vw, 20px);
-
-    border-bottom:
-        1px solid rgba(255,255,255,0.15);
-}
-
-
-.logo img {
-    width: clamp(55px, 6vw, 90px);
-    height: clamp(55px, 6vw, 90px);
-
-    object-fit: contain;
-
-    margin-bottom: 8px;
-
-    transition: 0.4s;
-}
-
-
-.logo img:hover {
-    transform:
-        rotate(10deg)
-        scale(1.08);
-}
-
-
-.logo h2 {
-    font-size: clamp(16px, 1.5vw, 24px);
-
-    font-weight: 700;
-
-    white-space: nowrap;
-}
-
-
-.logo p {
-    font-size: clamp(9px, 0.8vw, 13px);
-
-    color: #d9f5df;
-
-    margin-top: 5px;
-}
-
-
-/* =========================================================
-   SIDEBAR MENU
-========================================================= */
-
-.sidebar-menu {
-    width: 100%;
-
-    margin-top: 12px;
-}
-
-
-/* Navigation title */
-
-.sidebar-menu::before {
-    content: "Navigation";
-
-    display: block;
-
-    color: #d7ffe3;
-
-    font-size: clamp(9px, 0.8vw, 12px);
-
-    letter-spacing: 1.5px;
-
-    text-transform: uppercase;
-
-    padding:
-        10px
-        clamp(14px, 1.5vw, 25px);
-}
-
-
-/* UL */
-
-.sidebar-menu ul {
-    width: 100%;
-
-    list-style: none;
-
-    padding:
-        0
-        clamp(8px, 1vw, 15px)
-        90px;
-}
-
-
-/* =========================================================
-   MENU ITEMS
-   IMPORTANT: ALWAYS VERTICAL
-========================================================= */
-
-.sidebar-menu li {
-    width: 100%;
-
-    display: block;
-
-    margin:
-        clamp(3px, 0.5vw, 8px)
-        0;
-}
-
-
-/* =========================================================
-   MENU LINK
-========================================================= */
-
-.sidebar-menu a {
-    position: relative;
+    height: 72px;
+    min-height: 72px;
 
     width: 100%;
 
     display: flex;
-
-    flex-direction: row;
-
     align-items: center;
 
-    gap: clamp(8px, 1vw, 15px);
+    padding: 0 18px;
 
-    padding:
-        clamp(9px, 1vw, 14px)
-        clamp(10px, 1.2vw, 18px);
+    border-bottom:
+        1px solid var(--kv-border);
 
-    border-radius:
-        clamp(8px, 0.8vw, 12px);
+    flex-shrink: 0;
+}
 
-    color: white;
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+#kvSidebar .kv-brand {
+
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    color: var(--kv-white);
 
     text-decoration: none;
 
-    font-size:
-        clamp(11px, 1vw, 16px);
+    font-size: 18px;
+    font-weight: 800;
 
-    white-space: nowrap;
+    min-width: 0;
+}
 
-    transition:
-        background 0.25s ease,
-        color 0.25s ease,
-        transform 0.25s ease,
-        box-shadow 0.25s ease;
+
+#kvSidebar .kv-brand:hover {
+    color: var(--kv-white);
+}
+
+
+/* =========================================================
+   BRAND LOGO
+========================================================= */
+
+#kvSidebar .kv-brand-logo {
+
+    width: 42px;
+    height: 42px;
+
+    min-width: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background:
+        rgba(255, 255, 255, 0.12);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
 
     overflow: hidden;
 }
 
 
-/* =========================================================
-   ICON
-========================================================= */
+#kvSidebar .kv-brand-logo img {
 
-.sidebar-menu a i {
-    width:
-        clamp(18px, 1.5vw, 24px);
+    width: 100%;
+    height: 100%;
 
-    min-width:
-        clamp(18px, 1.5vw, 24px);
+    object-fit: contain;
+}
 
-    font-size:
-        clamp(13px, 1.2vw, 18px);
 
-    text-align: center;
+#kvSidebar .kv-brand-logo i {
 
-    transition: 0.3s;
+    font-size: 19px;
+    color: white;
+}
+
+
+#kvSidebar .kv-brand-plus {
+    color: var(--kv-orange);
 }
 
 
 /* =========================================================
-   TEXT
+   USER CARD
 ========================================================= */
 
-.sidebar-menu a span {
-    display: block;
+#kvSidebar .kv-sidebar-user {
+
+    margin: 14px 14px 10px;
+
+    padding: 12px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    min-width: 0;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 14px;
+
+    flex-shrink: 0;
+
+    transition:
+        background var(--kv-transition);
+}
+
+
+#kvSidebar .kv-sidebar-user:hover {
+
+    background:
+        rgba(255, 255, 255, 0.12);
+}
+
+
+/* =========================================================
+   AVATAR
+========================================================= */
+
+#kvSidebar .kv-sidebar-avatar {
+
+    width: 42px;
+    height: 42px;
+
+    min-width: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #dceddf;
+
+    overflow: hidden;
+
+    border:
+        2px solid rgba(255, 255, 255, 0.25);
+}
+
+
+#kvSidebar .kv-sidebar-avatar img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* =========================================================
+   USER INFO
+========================================================= */
+
+#kvSidebar .kv-sidebar-user-info {
+
+    flex: 1;
+
+    min-width: 0;
+
+    overflow: hidden;
+}
+
+
+#kvSidebar .kv-sidebar-user-name {
+
+    color: white;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    white-space: nowrap;
 
     overflow: hidden;
 
@@ -249,199 +301,40 @@
 }
 
 
-/* =========================================================
-   HOVER
-========================================================= */
+#kvSidebar .kv-sidebar-user-role {
 
-.sidebar-menu a:hover {
-    background: white;
+    margin-top: 3px;
 
-    color: #0b6b3a;
+    color: var(--kv-muted);
 
-    transform:
-        translateX(4px);
+    font-size: 10px;
 
-    box-shadow:
-        0 8px 20px rgba(0,0,0,0.18);
-}
-
-
-.sidebar-menu a:hover i {
-    transform:
-        scale(1.15)
-        rotate(-8deg);
+    text-transform: capitalize;
 }
 
 
 /* =========================================================
-   ACTIVE MENU
+   NAVIGATION AREA
 ========================================================= */
 
-.sidebar-menu li.active a {
-    background: white;
+#kvSidebar .kv-sidebar-nav {
 
-    color: #0b6b3a;
+    flex: 1;
 
-    font-weight: 700;
+    min-height: 0;
 
-    box-shadow:
-        0 8px 22px rgba(0,0,0,0.15);
-}
+    width: 100%;
 
+    padding: 5px 11px 15px;
 
-/* Active left line */
+    overflow-y: auto;
+    overflow-x: hidden;
 
-.sidebar-menu li.active a::before {
-    content: "";
+    scrollbar-width: thin;
 
-    position: absolute;
-
-    left: 0;
-    top: 15%;
-
-    width: 4px;
-    height: 70%;
-
-    background: #16a34a;
-
-    border-radius:
-        0
-        8px
-        8px
-        0;
-}
-
-
-/* =========================================================
-   BADGE
-========================================================= */
-
-.badge,
-.sidebar-badge {
-    margin-left: auto;
-
-    min-width: 20px;
-    height: 20px;
-
-    padding: 2px 6px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    background: #ff4444;
-
-    color: white;
-
-    border-radius: 20px;
-
-    font-size:
-        clamp(8px, 0.7vw, 11px);
-
-    font-weight: 600;
-
-    flex-shrink: 0;
-}
-
-
-/* =========================================================
-   SIDEBAR PROFILE
-========================================================= */
-
-.sidebar-profile {
-    position: fixed;
-
-    left:
-        clamp(8px, 1vw, 15px);
-
-    bottom:
-        clamp(8px, 1.5vw, 20px);
-
-    width:
-        calc(
-            clamp(220px, 18vw, 270px)
-            -
-            clamp(16px, 2vw, 30px)
-        );
-
-    display: flex;
-
-    align-items: center;
-
-    gap:
-        clamp(7px, 0.8vw, 12px);
-
-    padding:
-        clamp(8px, 1vw, 12px);
-
-    border-radius:
-        clamp(10px, 1vw, 15px);
-
-    background:
-        rgba(255,255,255,0.12);
-
-    transition: 0.3s;
-}
-
-
-.sidebar-profile:hover {
-    background:
-        rgba(255,255,255,0.22);
-}
-
-
-.sidebar-profile img {
-    width:
-        clamp(35px, 3.5vw, 50px);
-
-    height:
-        clamp(35px, 3.5vw, 50px);
-
-    min-width:
-        clamp(35px, 3.5vw, 50px);
-
-    border-radius: 50%;
-
-    border:
-        2px solid white;
-
-    object-fit: cover;
-}
-
-
-.sidebar-profile h4 {
-    font-size:
-        clamp(10px, 1vw, 15px);
-}
-
-
-.sidebar-profile p {
-    font-size:
-        clamp(8px, 0.8vw, 12px);
-
-    color: #d9f5df;
-}
-
-
-/* =========================================================
-   MAIN CONTENT
-========================================================= */
-
-.main-content {
-    margin-left:
-        clamp(220px, 18vw, 270px);
-
-    width:
-        calc(
-            100% -
-            clamp(220px, 18vw, 270px)
-        );
-
-    min-height: 100vh;
-
-    padding:
-        clamp(10px, 1.5vw, 25px);
+    scrollbar-color:
+        rgba(255,255,255,0.25)
+        transparent;
 }
 
 
@@ -449,239 +342,511 @@
    SCROLLBAR
 ========================================================= */
 
-.sidebar::-webkit-scrollbar {
+#kvSidebar .kv-sidebar-nav::-webkit-scrollbar {
     width: 5px;
 }
 
 
-.sidebar::-webkit-scrollbar-thumb {
-    background: #4cd37a;
+#kvSidebar .kv-sidebar-nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+#kvSidebar .kv-sidebar-nav::-webkit-scrollbar-thumb {
+
+    background:
+        rgba(255,255,255,0.25);
 
     border-radius: 20px;
 }
 
 
-.sidebar::-webkit-scrollbar-track {
+/* =========================================================
+   SECTION TITLE
+========================================================= */
+
+#kvSidebar .kv-nav-title {
+
+    padding: 14px 9px 7px;
+
+    color: var(--kv-muted);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   NAVIGATION LINK
+========================================================= */
+
+#kvSidebar .kv-nav-link {
+
+    position: relative;
+
+    width: 100%;
+    min-width: 0;
+
+    min-height: 42px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 10px 12px;
+
+    margin: 2px 0;
+
+    border-radius: 11px;
+
+    color: var(--kv-text);
+
     background: transparent;
+
+    text-decoration: none;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background var(--kv-transition),
+        color var(--kv-transition),
+        transform var(--kv-transition);
 }
 
 
 /* =========================================================
-   LARGE TABLET
+   HOVER
 ========================================================= */
 
-@media (max-width: 1100px) {
+#kvSidebar .kv-nav-link:hover {
 
-    .sidebar {
-        width: 80px;
+    color: white;
+
+    background:
+        var(--kv-hover);
+
+    transform:
+        translateX(3px);
+}
+
+
+html[dir="rtl"] #kvSidebar .kv-nav-link:hover {
+
+    transform:
+        translateX(-3px);
+}
+
+
+/* =========================================================
+   ACTIVE
+========================================================= */
+
+#kvSidebar .kv-nav-link.active {
+
+    color: white;
+
+    background:
+        var(--kv-active);
+
+    box-shadow:
+        inset 3px 0 0 var(--kv-orange);
+
+    font-weight: 650;
+}
+
+
+html[dir="rtl"] #kvSidebar .kv-nav-link.active {
+
+    box-shadow:
+        inset -3px 0 0 var(--kv-orange);
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+#kvSidebar .kv-nav-icon {
+
+    width: 22px;
+    min-width: 22px;
+
+    height: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: rgba(255,255,255,0.75);
+
+    font-size: 14px;
+
+    text-align: center;
+
+    transition:
+        color var(--kv-transition),
+        transform var(--kv-transition);
+}
+
+
+#kvSidebar .kv-nav-link:hover .kv-nav-icon,
+#kvSidebar .kv-nav-link.active .kv-nav-icon {
+
+    color: var(--kv-orange);
+}
+
+
+#kvSidebar .kv-nav-link:hover .kv-nav-icon {
+
+    transform: scale(1.08);
+}
+
+
+/* =========================================================
+   TEXT
+========================================================= */
+
+#kvSidebar .kv-nav-text {
+
+    flex: 1;
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   BADGE
+========================================================= */
+
+#kvSidebar .kv-nav-badge {
+
+    min-width: 20px;
+    height: 20px;
+
+    padding: 0 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+
+    background: var(--kv-orange);
+
+    color: white;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+#kvSidebar .kv-sidebar-footer {
+
+    width: 100%;
+
+    padding: 11px;
+
+    border-top:
+        1px solid var(--kv-border);
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+#kvSidebar .kv-logout {
+
+    color: #ffdede;
+}
+
+
+#kvSidebar .kv-logout .kv-nav-icon {
+
+    color: #ffb4b4;
+}
+
+
+#kvSidebar .kv-logout:hover {
+
+    color: white;
+
+    background:
+        rgba(211, 47, 47, 0.20);
+}
+
+
+#kvSidebar .kv-logout:hover .kv-nav-icon {
+
+    color: #ffb4b4;
+}
+
+
+/* =========================================================
+   MOBILE MENU BUTTON
+========================================================= */
+
+#kvMenuButton.kv-menu-button {
+
+    position: fixed;
+
+    top: 14px;
+    left: 14px;
+
+    width: 44px;
+    height: 44px;
+
+    min-width: 44px;
+
+    padding: 0;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #dfe9e1;
+
+    border-radius: 12px;
+
+    background: white;
+
+    color: var(--kv-green);
+
+    cursor: pointer;
+
+    z-index: 1100;
+
+    box-shadow:
+        0 6px 20px rgba(0,0,0,0.13);
+
+    transition:
+        background var(--kv-transition),
+        color var(--kv-transition),
+        transform var(--kv-transition);
+}
+
+
+#kvMenuButton.kv-menu-button:hover {
+
+    background: var(--kv-green);
+
+    color: white;
+
+    transform:
+        translateY(-1px);
+}
+
+
+#kvMenuButton.kv-menu-button:active {
+
+    transform:
+        scale(0.95);
+}
+
+
+/* =========================================================
+   MENU ICON
+========================================================= */
+
+#kvMenuButton.kv-menu-button i {
+
+    font-size: 18px;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   RTL BUTTON
+========================================================= */
+
+html[dir="rtl"] #kvMenuButton.kv-menu-button {
+
+    left: auto;
+    right: 14px;
+}
+
+
+/* =========================================================
+   OVERLAY
+========================================================= */
+
+#kvSidebarOverlay.kv-sidebar-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: none;
+
+    background:
+        rgba(0, 0, 0, 0.48);
+
+    z-index: 999;
+
+    opacity: 0;
+
+    cursor: pointer;
+
+    transition:
+        opacity var(--kv-transition);
+}
+
+
+#kvSidebarOverlay.kv-sidebar-overlay.active {
+
+    display: block;
+
+    opacity: 1;
+}
+
+
+/* =========================================================
+   TABLET / MOBILE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    #kvMenuButton.kv-menu-button {
+
+        display: flex !important;
     }
 
-    .main-content {
-        margin-left: 80px;
 
-        width: calc(100% - 80px);
-    }
+    #kvSidebar.kv-sidebar {
 
-    /* Hide text */
+        width: var(--kv-sidebar-mobile);
 
-    .logo h2,
-    .logo p,
+        max-width:
+            calc(100vw - 15px);
 
-    .sidebar-menu::before,
-
-    .sidebar-menu a span,
-
-    .sidebar-profile div,
-
-    .badge {
-        display: none;
+        transform:
+            translateX(-110%);
     }
 
 
-    /* Logo */
+    #kvSidebar.kv-sidebar.open {
 
-    .logo {
-        padding: 15px 5px;
+        transform:
+            translateX(0);
     }
 
 
-    .logo img {
-        width: 50px;
-        height: 50px;
+    html[dir="rtl"] #kvSidebar.kv-sidebar {
+
+        transform:
+            translateX(110%);
     }
 
 
-    /* Keep menu vertical */
+    html[dir="rtl"] #kvSidebar.kv-sidebar.open {
 
-    .sidebar-menu ul {
-        padding:
-            0
-            8px
-            80px;
+        transform:
+            translateX(0);
     }
 
 
-    .sidebar-menu li {
-        margin: 5px 0;
+    .kv-main {
+
+        width: 100% !important;
+
+        margin-left: 0 !important;
+
+        margin-right: 0 !important;
     }
 
 
-    .sidebar-menu a {
-        justify-content: center;
+    .kv-topbar {
 
-        padding: 12px 5px;
-
-        gap: 0;
+        padding-left: 70px !important;
     }
 
 
-    .sidebar-menu a i {
-        width: 100%;
+    html[dir="rtl"] .kv-topbar {
 
-        font-size: 17px;
+        padding-left: 14px !important;
+
+        padding-right: 70px !important;
     }
 
 
-    /* Profile */
+    body.no-scroll {
 
-    .sidebar-profile {
-        position: fixed;
-
-        left: 15px;
-
-        width: 50px;
-
-        padding: 0;
-
-        background: transparent;
-
-        justify-content: center;
-    }
-
-
-    .sidebar-profile img {
-        width: 45px;
-        height: 45px;
+        overflow: hidden !important;
     }
 }
 
 
 /* =========================================================
-   TABLET / SMALL SCREEN
+   SMALL MOBILE
 ========================================================= */
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
 
-    .sidebar {
-        width: 70px;
+    #kvMenuButton.kv-menu-button {
+
+        top: 11px;
+        left: 11px;
+
+        width: 42px;
+        height: 42px;
+
+        min-width: 42px;
     }
 
 
-    .main-content {
-        margin-left: 70px;
+    html[dir="rtl"] #kvMenuButton.kv-menu-button {
 
-        width: calc(100% - 70px);
-
-        padding: 10px;
+        left: auto;
+        right: 11px;
     }
 
 
-    .sidebar-menu a {
-        padding: 11px 4px;
+    #kvSidebar.kv-sidebar {
+
+        width:
+            min(
+                var(--kv-sidebar-mobile),
+                calc(100vw - 12px)
+            );
     }
 
 
-    .sidebar-menu a i {
-        font-size: 16px;
+    .kv-topbar {
+
+        padding-left: 64px !important;
     }
 
 
-    .logo img {
-        width: 45px;
-        height: 45px;
-    }
+    html[dir="rtl"] .kv-topbar {
 
+        padding-left: 12px !important;
 
-    .sidebar-profile {
-        left: 10px;
-
-        width: 50px;
-    }
-
-
-    .sidebar-profile img {
-        width: 40px;
-        height: 40px;
-    }
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 480px) {
-
-    .sidebar {
-        width: 58px;
-    }
-
-
-    .main-content {
-        margin-left: 58px;
-
-        width: calc(100% - 58px);
-
-        padding: 7px;
-    }
-
-
-    .logo {
-        padding: 10px 3px;
-    }
-
-
-    .logo img {
-        width: 38px;
-        height: 38px;
-    }
-
-
-    .sidebar-menu ul {
-        padding:
-            0
-            5px
-            65px;
-    }
-
-
-    .sidebar-menu li {
-        margin: 3px 0;
-    }
-
-
-    .sidebar-menu a {
-        padding: 10px 3px;
-
-        border-radius: 8px;
-    }
-
-
-    .sidebar-menu a i {
-        font-size: 14px;
-    }
-
-
-    .sidebar-profile {
-        left: 7px;
-
-        width: 44px;
-    }
-
-
-    .sidebar-profile img {
-        width: 36px;
-        height: 36px;
+        padding-right: 64px !important;
     }
 }
 
@@ -690,47 +855,103 @@
    VERY SMALL MOBILE
 ========================================================= */
 
-@media (max-width: 360px) {
+@media (max-width: 420px) {
 
-    .sidebar {
-        width: 52px;
+    #kvMenuButton.kv-menu-button {
+
+        top: 9px;
+        left: 9px;
+
+        width: 40px;
+        height: 40px;
+
+        min-width: 40px;
     }
 
 
-    .main-content {
-        margin-left: 52px;
+    html[dir="rtl"] #kvMenuButton.kv-menu-button {
 
-        width: calc(100% - 52px);
-
-        padding: 5px;
+        left: auto;
+        right: 9px;
     }
 
 
-    .logo img {
-        width: 34px;
-        height: 34px;
+    .kv-topbar {
+
+        padding-left: 59px !important;
     }
 
 
-    .sidebar-menu a {
-        padding: 9px 2px;
+    html[dir="rtl"] .kv-topbar {
+
+        padding-left: 9px !important;
+
+        padding-right: 59px !important;
     }
+}
 
 
-    .sidebar-menu a i {
-        font-size: 13px;
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+#kvMenuButton.kv-menu-button:focus-visible {
+
+    outline:
+        3px solid rgba(67,160,71,0.35);
+
+    outline-offset: 2px;
+}
+
+
+#kvSidebar .kv-nav-link:focus-visible {
+
+    outline:
+        2px solid rgba(255,183,77,0.75);
+
+    outline-offset: -2px;
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    #kvSidebar.kv-sidebar,
+    #kvSidebar .kv-nav-link,
+    #kvSidebar .kv-nav-icon,
+    #kvMenuButton.kv-menu-button,
+    #kvSidebarOverlay.kv-sidebar-overlay {
+
+        transition: none !important;
     }
+}
 
 
-    .sidebar-profile {
-        left: 5px;
+/* =========================================================
+   PRINT
+========================================================= */
 
-        width: 42px;
+@media print {
+
+    #kvSidebar.kv-sidebar,
+    #kvMenuButton.kv-menu-button,
+    #kvSidebarOverlay.kv-sidebar-overlay {
+
+        display: none !important;
     }
+}
 
 
-    .sidebar-profile img {
-        width: 34px;
-        height: 34px;
-    }
+/* =========================================================
+   PUBLIC PAGES
+========================================================= */
+
+body.kv-public-page #kvSidebar.kv-sidebar,
+body.kv-public-page #kvSidebarOverlay.kv-sidebar-overlay,
+body.kv-public-page #kvMenuButton.kv-menu-button {
+
+    display: none !important;
 }

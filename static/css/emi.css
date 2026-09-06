@@ -1,459 +1,1440 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* =========================================================
+   KISANVISION360+
+   FARM EMI PLANNER
+   File: static/css/emi.css
+========================================================= */
+
+:root {
+    --emi-green: #1B5E20;
+    --emi-green-2: #2E7D32;
+    --emi-green-3: #43A047;
+    --emi-light: #E8F5E9;
+
+    --emi-orange: #FB8C00;
+    --emi-orange-light: #FFF3E0;
+
+    --emi-blue: #1976D2;
+    --emi-blue-light: #E3F2FD;
+
+    --emi-red: #D32F2F;
+    --emi-red-light: #FFEBEE;
+
+    --emi-purple: #7B1FA2;
+    --emi-purple-light: #F3E5F5;
+
+    --emi-text: #18351E;
+    --emi-muted: #68776D;
+
+    --emi-bg: #F4F8F4;
+    --emi-card: #FFFFFF;
+    --emi-border: #DCE7DE;
+
+    --emi-radius: 18px;
+    --emi-radius-sm: 12px;
+
+    --emi-shadow:
+        0 12px 35px rgba(27, 94, 32, 0.08);
+
+    --emi-shadow-hover:
+        0 18px 45px rgba(27, 94, 32, 0.14);
+
+    --emi-transition: 0.25s ease;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background: #f4f8f4;
-    color: #26332a;
-}
 
-.main-content {
-    margin-left: 250px;
-    padding: 25px 30px;
+/* =========================================================
+   PAGE
+========================================================= */
+
+.emi-page {
     min-height: 100vh;
+
+    padding: 25px;
+
+    color: var(--emi-text);
+
+    background:
+        radial-gradient(
+            circle at 8% 0%,
+            rgba(67, 160, 71, 0.08),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 92% 8%,
+            rgba(251, 140, 0, 0.07),
+            transparent 25%
+        ),
+        var(--emi-bg);
+}
+
+.emi-container {
+    width: 100%;
+    max-width: 1180px;
+
+    margin: 0 auto;
 }
 
 
-/* TOPBAR */
+/* =========================================================
+   HERO
+========================================================= */
 
-.topbar {
-    background: white;
-    border-radius: 18px;
-    padding: 20px 25px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-    box-shadow: 0 5px 20px rgba(0,0,0,.06);
+.emi-hero {
+    position: relative;
+    overflow: hidden;
+
+    margin-bottom: 24px;
+
+    padding: 30px;
+
+    border-radius: 24px;
+
+    color: #FFFFFF;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--emi-green),
+            var(--emi-green-2)
+        );
+
+    box-shadow:
+        0 18px 45px rgba(27, 94, 32, 0.19);
 }
 
-.title-section {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
+.emi-hero::before {
+    content: "";
 
-.title-icon {
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
-    background: #e8f5e9;
-    color: #2e7d32;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-}
+    position: absolute;
 
-.title-section h1 {
-    color: #1b5e20;
-    font-size: 27px;
-}
+    width: 230px;
+    height: 230px;
 
-.title-section p {
-    color: #758275;
-    font-size: 14px;
-    margin-top: 5px;
-}
+    right: -80px;
+    top: -120px;
 
-
-/* PROFILE */
-
-.profile {
-    display: flex;
-    align-items: center;
-    gap: 11px;
-}
-
-.profile img {
-    width: 52px;
-    height: 52px;
     border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #43a047;
+
+    background: rgba(255, 255, 255, 0.08);
 }
 
-.profile h4 {
-    font-size: 16px;
-    margin-bottom: 5px;
+.emi-hero::after {
+    content: "";
+
+    position: absolute;
+
+    width: 160px;
+    height: 160px;
+
+    right: 180px;
+    bottom: -120px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.05);
 }
 
-.profile span {
-    color: #657266;
-    font-size: 13px;
-}
+.emi-hero-content {
+    position: relative;
+    z-index: 2;
 
-.profile span i {
-    color: #43a047;
-    font-size: 8px;
-}
-
-
-/* BANNER */
-
-.emi-banner {
-    background: linear-gradient(
-        135deg,
-        #1b5e20,
-        #43a047
-    );
-    color: white;
-    border-radius: 18px;
-    padding: 25px 28px;
     display: flex;
     align-items: center;
-    gap: 18px;
-    margin-bottom: 25px;
-    box-shadow: 0 8px 25px rgba(46,125,50,.18);
-}
+    justify-content: space-between;
 
-.banner-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 16px;
-    background: rgba(255,255,255,.18);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 27px;
-}
-
-.emi-banner h2 {
-    font-size: 22px;
-    margin-bottom: 6px;
-}
-
-.emi-banner p {
-    font-size: 14px;
-    opacity: .9;
-}
-
-
-/* CALCULATOR */
-
-.calculator-section {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
     gap: 25px;
-    margin-bottom: 25px;
 }
 
-
-/* INPUT CARD */
-
-.calculator-card,
-.result-card {
-    background: white;
-    border-radius: 18px;
-    padding: 27px;
-    box-shadow: 0 5px 20px rgba(0,0,0,.06);
+.emi-hero-text {
+    max-width: 760px;
 }
 
-.card-heading {
-    display: flex;
+.emi-eyebrow {
+    display: inline-flex;
     align-items: center;
-    gap: 14px;
-    margin-bottom: 25px;
+    gap: 7px;
+
+    margin-bottom: 11px;
+
+    padding: 7px 12px;
+
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.13);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
 }
 
-.heading-icon {
-    width: 47px;
-    height: 47px;
-    border-radius: 12px;
-    background: #e8f5e9;
-    color: #2e7d32;
+.emi-hero h1 {
+    margin: 0 0 9px;
+
+    font-size: clamp(27px, 4vw, 40px);
+
+    line-height: 1.15;
+
+    font-weight: 900;
+}
+
+.emi-hero p {
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.88);
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+.emi-hero-icon {
+    width: 90px;
+    height: 90px;
+
+    flex-shrink: 0;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
+    border-radius: 24px;
+
+    background: rgba(255, 255, 255, 0.13);
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+
+    font-size: 38px;
+
+    backdrop-filter: blur(8px);
 }
 
-.card-heading h2 {
-    color: #1b5e20;
-    font-size: 20px;
+
+/* =========================================================
+   STATUS STRIP
+========================================================= */
+
+.emi-status-strip {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-bottom: 24px;
 }
 
-.card-heading p {
-    color: #7b877c;
-    font-size: 13px;
-    margin-top: 4px;
+.emi-status-item {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    min-height: 70px;
+
+    padding: 13px 15px;
+
+    border: 1px solid var(--emi-border);
+
+    border-radius: var(--emi-radius-sm);
+
+    background: var(--emi-card);
+
+    box-shadow:
+        0 6px 20px rgba(27, 94, 32, 0.05);
+}
+
+.emi-status-icon {
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: var(--emi-light);
+
+    color: var(--emi-green);
+
+    font-size: 17px;
+}
+
+.emi-status-item strong {
+    display: block;
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.emi-status-item span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--emi-muted);
+
+    font-size: 10px;
 }
 
 
-/* FORM */
+/* =========================================================
+   MAIN GRID
+========================================================= */
 
-.form-group {
+.emi-main-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 0.9fr)
+        minmax(0, 1.1fr);
+
+    gap: 24px;
+
+    align-items: start;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.emi-card {
+    padding: 24px;
+
+    border: 1px solid var(--emi-border);
+
+    border-radius: var(--emi-radius);
+
+    background: var(--emi-card);
+
+    box-shadow: var(--emi-shadow);
+
+    transition:
+        transform var(--emi-transition),
+        box-shadow var(--emi-transition);
+}
+
+.emi-card:hover {
+    transform: translateY(-2px);
+
+    box-shadow: var(--emi-shadow-hover);
+}
+
+.emi-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 15px;
+
     margin-bottom: 20px;
 }
 
-.form-group label {
-    display: block;
-    color: #435247;
-    font-size: 13px;
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-
-.form-group label i {
-    color: #43a047;
-    margin-right: 6px;
-}
-
-.input-box {
-    height: 48px;
+.emi-card-title {
     display: flex;
     align-items: center;
-    border: 1px solid #dce5dc;
-    border-radius: 10px;
-    background: #fafcfa;
-    overflow: hidden;
+
+    gap: 11px;
 }
 
-.input-box:focus-within {
-    border-color: #43a047;
-    box-shadow: 0 0 0 3px rgba(67,160,71,.10);
+.emi-card-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: var(--emi-light);
+
+    color: var(--emi-green);
+
+    font-size: 17px;
 }
 
-.input-box span {
-    padding: 0 14px;
-    color: #2e7d32;
-    font-weight: bold;
-    white-space: nowrap;
+.emi-card h2,
+.emi-card h3 {
+    margin: 0;
+
+    color: var(--emi-text);
 }
 
-.input-box input {
+.emi-card h2 {
+    font-size: 19px;
+    font-weight: 900;
+}
+
+.emi-card h3 {
+    font-size: 16px;
+}
+
+.emi-card-subtitle {
+    margin: 4px 0 0;
+
+    color: var(--emi-muted);
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.emi-form {
     width: 100%;
-    height: 100%;
-    border: none;
+}
+
+.emi-form-group {
+    margin-bottom: 17px;
+}
+
+.emi-form-group label {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    margin-bottom: 7px;
+
+    color: var(--emi-text);
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.emi-form-group label i {
+    color: var(--emi-green);
+
+    font-size: 11px;
+}
+
+.emi-input-wrapper {
+    position: relative;
+}
+
+.emi-input-prefix {
+    position: absolute;
+
+    left: 13px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: var(--emi-muted);
+
+    font-size: 12px;
+    font-weight: 800;
+
+    pointer-events: none;
+}
+
+.emi-form-group input,
+.emi-form-group select {
+    width: 100%;
+
+    min-height: 48px;
+
+    padding: 12px 13px;
+
+    border: 1px solid var(--emi-border);
+
+    border-radius: 11px;
+
     outline: none;
-    background: transparent;
-    padding: 0 14px;
-    font-size: 14px;
+
+    background: #FFFFFF;
+
+    color: var(--emi-text);
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    transition:
+        border-color var(--emi-transition),
+        box-shadow var(--emi-transition);
+}
+
+.emi-input-wrapper input {
+    padding-left: 35px;
+}
+
+.emi-form-group input:focus,
+.emi-form-group select:focus {
+    border-color: var(--emi-green-3);
+
+    box-shadow:
+        0 0 0 3px rgba(67, 160, 71, 0.10);
+}
+
+.emi-form-help {
+    display: block;
+
+    margin-top: 5px;
+
+    color: var(--emi-muted);
+
+    font-size: 9px;
+
+    line-height: 1.5;
 }
 
 
-/* CALCULATE */
+/* =========================================================
+   DOWN PAYMENT
+========================================================= */
 
-.calculate-btn {
+.emi-down-payment {
+    margin-top: 4px;
+
+    padding: 16px;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--emi-orange-light),
+            #FFFFFF
+        );
+
+    border: 1px solid #FFE0B2;
+}
+
+.emi-down-payment-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-bottom: 10px;
+}
+
+.emi-down-payment-header strong {
+    font-size: 11px;
+}
+
+.emi-down-payment-value {
+    color: #B85E00;
+
+    font-size: 13px;
+    font-weight: 900;
+}
+
+
+/* =========================================================
+   CALCULATE BUTTON
+========================================================= */
+
+.emi-calculate-btn {
     width: 100%;
-    height: 48px;
-    border: none;
-    border-radius: 10px;
-    background: #2e7d32;
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
+
+    min-height: 50px;
+
+    margin-top: 4px;
+
+    border: 0;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--emi-green),
+            var(--emi-green-3)
+        );
+
+    color: #FFFFFF;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 800;
+
     cursor: pointer;
-    transition: .25s;
+
+    box-shadow:
+        0 9px 24px rgba(27, 94, 32, 0.18);
+
+    transition:
+        transform var(--emi-transition),
+        box-shadow var(--emi-transition);
 }
 
-.calculate-btn:hover {
-    background: #1b5e20;
-    transform: translateY(-1px);
+.emi-calculate-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 13px 30px rgba(27, 94, 32, 0.24);
 }
 
-.calculate-btn i {
+.emi-calculate-btn i {
     margin-right: 7px;
 }
 
 
-/* RESULT */
+/* =========================================================
+   RESULTS
+========================================================= */
 
-.result-card {
+.emi-result-card {
+    padding: 24px;
+
+    border-radius: var(--emi-radius);
+
+    background:
+        linear-gradient(
+            145deg,
+            #F8FCF8,
+            #FFFFFF
+        );
+
+    border: 1px solid var(--emi-border);
+
+    box-shadow: var(--emi-shadow);
+}
+
+.emi-result-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 18px;
+}
+
+.emi-result-title {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+}
+
+.emi-result-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: var(--emi-light);
+
+    color: var(--emi-green);
+
+    font-size: 17px;
+}
+
+.emi-result-title h2 {
+    margin: 0;
+
+    font-size: 19px;
+    font-weight: 900;
+}
+
+.emi-result-title p {
+    margin: 3px 0 0;
+
+    color: var(--emi-muted);
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   MAIN EMI VALUE
+========================================================= */
+
+.emi-main-value {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 25px;
+
+    margin-bottom: 16px;
+
+    border-radius: 17px;
+
+    color: #FFFFFF;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--emi-green),
+            var(--emi-green-3)
+        );
+
+    text-align: center;
+
+    box-shadow:
+        0 12px 30px rgba(27, 94, 32, 0.18);
+}
+
+.emi-main-value::before {
+    content: "";
+
+    position: absolute;
+
+    width: 150px;
+    height: 150px;
+
+    right: -60px;
+    top: -90px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.emi-main-value-label {
+    position: relative;
+    z-index: 2;
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: rgba(255, 255, 255, 0.82);
+
+    font-size: 10px;
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.6px;
+}
+
+.emi-main-value strong {
+    position: relative;
+    z-index: 2;
+
+    display: block;
+
+    font-size: clamp(28px, 4vw, 39px);
+
+    line-height: 1.1;
+
+    font-weight: 900;
+}
+
+.emi-main-value span {
+    position: relative;
+    z-index: 2;
+
+    display: block;
+
+    margin-top: 7px;
+
+    color: rgba(255, 255, 255, 0.82);
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   KPI GRID
+========================================================= */
+
+.emi-kpi-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-bottom: 18px;
+}
+
+.emi-kpi {
+    padding: 16px;
+
+    border: 1px solid var(--emi-border);
+
+    border-radius: 14px;
+
+    background: #FFFFFF;
+}
+
+.emi-kpi-icon {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 9px;
+
+    border-radius: 10px;
+
+    background: var(--emi-light);
+
+    color: var(--emi-green);
+
+    font-size: 13px;
+}
+
+.emi-kpi strong {
+    display: block;
+
+    color: var(--emi-text);
+
+    font-size: 16px;
+    font-weight: 900;
+}
+
+.emi-kpi span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--emi-muted);
+
+    font-size: 9px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   LOAN BREAKDOWN
+========================================================= */
+
+.emi-breakdown {
+    margin-top: 18px;
+}
+
+.emi-breakdown h3 {
+    margin: 0 0 13px;
+
+    font-size: 15px;
+}
+
+.emi-breakdown-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 11px 0;
+
+    border-bottom: 1px solid var(--emi-border);
+}
+
+.emi-breakdown-row:last-child {
+    border-bottom: 0;
+}
+
+.emi-breakdown-row span {
+    color: var(--emi-muted);
+
+    font-size: 10px;
+}
+
+.emi-breakdown-row strong {
+    color: var(--emi-text);
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   CONTRIBUTION BAR
+========================================================= */
+
+.emi-contribution {
+    margin-top: 19px;
+
+    padding: 16px;
+
+    border-radius: 14px;
+
+    background: var(--emi-blue-light);
+
+    border: 1px solid #BBDEFB;
+}
+
+.emi-contribution-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 9px;
+}
+
+.emi-contribution-header span {
+    color: #45657D;
+
+    font-size: 10px;
+}
+
+.emi-contribution-header strong {
+    color: #1565C0;
+
+    font-size: 12px;
+}
+
+.emi-progress {
+    width: 100%;
+    height: 9px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background: #CFE4F5;
+}
+
+.emi-progress-bar {
+    width: 0;
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        linear-gradient(
+            90deg,
+            #42A5F5,
+            var(--emi-blue)
+        );
+
+    transition: width 0.5s ease;
+}
+
+
+/* =========================================================
+   SMART FINANCE INSIGHT
+========================================================= */
+
+.emi-insight {
+    position: relative;
+
+    margin-top: 20px;
+
+    padding: 18px 18px 18px 56px;
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--emi-purple-light),
+            #FFFFFF
+        );
+
+    border: 1px solid #E1BEE7;
+}
+
+.emi-insight-icon {
+    position: absolute;
+
+    left: 16px;
+    top: 17px;
+
+    width: 29px;
+    height: 29px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: var(--emi-purple);
+
+    color: #FFFFFF;
+
+    font-size: 12px;
+}
+
+.emi-insight strong {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #6A1B9A;
+
+    font-size: 11px;
+}
+
+.emi-insight p {
+    margin: 0;
+
+    color: #65446D;
+
+    font-size: 10px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   FARM FINANCE FLOW
+========================================================= */
+
+.emi-flow-card {
+    margin-top: 24px;
+
+    padding: 20px;
+
+    border: 1px solid var(--emi-border);
+
+    border-radius: var(--emi-radius);
+
+    background: var(--emi-card);
+
+    box-shadow: var(--emi-shadow);
+}
+
+.emi-flow-card h3 {
+    margin: 0 0 15px;
+
+    font-size: 16px;
+}
+
+.emi-flow {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    overflow-x: auto;
+
+    padding-bottom: 4px;
+}
+
+.emi-flow-step {
+    min-width: 125px;
+
+    padding: 13px 10px;
+
+    border: 1px solid var(--emi-border);
+
+    border-radius: 13px;
+
+    background: #F8FBF8;
+
     text-align: center;
 }
 
-.result-icon {
-    width: 62px;
-    height: 62px;
-    margin: 0 auto 13px;
-    border-radius: 17px;
-    background: #e8f5e9;
-    color: #2e7d32;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 25px;
-}
-
-.result-card h2 {
-    color: #1b5e20;
-}
-
-.result-card > p {
-    color: #7b877c;
-    font-size: 13px;
-    margin-top: 6px;
-}
-
-
-/* EMI RESULT */
-
-.emi-result {
-    background: #f4f9f4;
-    border-radius: 15px;
-    margin: 22px 0;
-    padding: 20px;
-}
-
-.emi-result span {
+.emi-flow-step i {
     display: block;
-    color: #6d796e;
-    font-size: 13px;
-    margin-bottom: 8px;
+
+    margin-bottom: 7px;
+
+    color: var(--emi-green);
+
+    font-size: 16px;
 }
 
-.emi-result strong {
+.emi-flow-step strong {
     display: block;
-    color: #2e7d32;
-    font-size: 32px;
+
+    font-size: 10px;
 }
 
-
-/* DETAILS */
-
-.result-details {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-
-.result-details div {
-    background: #fafcfa;
-    border: 1px solid #edf1ed;
-    border-radius: 11px;
-    padding: 14px;
-}
-
-.result-details span {
+.emi-flow-step span {
     display: block;
-    color: #7b877c;
-    font-size: 11px;
-    margin-bottom: 6px;
+
+    margin-top: 3px;
+
+    color: var(--emi-muted);
+
+    font-size: 8px;
 }
 
-.result-details strong {
-    color: #354237;
-    font-size: 14px;
-}
-
-
-/* INFO */
-
-.info-card {
-    background: white;
-    border-radius: 18px;
-    padding: 22px 25px;
-    display: flex;
-    gap: 15px;
-    align-items: flex-start;
-    box-shadow: 0 5px 20px rgba(0,0,0,.06);
-}
-
-.info-icon {
-    width: 45px;
-    height: 45px;
+.emi-flow-arrow {
     flex-shrink: 0;
-    border-radius: 12px;
-    background: #fff8e1;
-    color: #f9a825;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
-.info-card h3 {
-    color: #1b5e20;
-    margin-bottom: 5px;
-}
+    color: var(--emi-green-3);
 
-.info-card p {
-    color: #718071;
     font-size: 13px;
+}
+
+
+/* =========================================================
+   QUICK ACTIONS
+========================================================= */
+
+.emi-actions {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 11px;
+
+    margin-top: 22px;
+}
+
+.emi-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    min-height: 44px;
+
+    padding: 9px 12px;
+
+    border: 1px solid var(--emi-border);
+
+    border-radius: 11px;
+
+    background: var(--emi-card);
+
+    color: var(--emi-text);
+
+    text-decoration: none;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    transition: var(--emi-transition);
+}
+
+.emi-action:hover {
+    transform: translateY(-2px);
+
+    border-color: var(--emi-green-3);
+
+    background: var(--emi-light);
+
+    color: var(--emi-green);
+}
+
+.emi-action i {
+    color: var(--emi-green);
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.emi-error {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 9px;
+
+    padding: 13px 14px;
+
+    margin-bottom: 16px;
+
+    border-radius: 11px;
+
+    background: var(--emi-red-light);
+
+    border: 1px solid #FFCDD2;
+
+    color: var(--emi-red);
+
+    font-size: 11px;
+
     line-height: 1.6;
 }
 
 
-/* BACK */
+/* =========================================================
+   DARK MODE
+========================================================= */
 
-.back-section {
-    margin-top: 22px;
+html.dark .emi-page,
+body.dark-mode .emi-page,
+html[data-theme="dark"] .emi-page,
+body[data-theme="dark"] .emi-page {
+    --emi-bg: #0D1710;
+    --emi-card: #142018;
+    --emi-text: #E8F5E9;
+    --emi-muted: #AAB8AD;
+    --emi-border: #29402D;
+
+    background:
+        radial-gradient(
+            circle at 8% 0%,
+            rgba(67, 160, 71, 0.08),
+            transparent 30%
+        ),
+        #0D1710;
 }
 
-.back-section a {
-    color: #2e7d32;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: bold;
+html.dark .emi-status-item,
+body.dark-mode .emi-status-item,
+html[data-theme="dark"] .emi-status-item,
+body[data-theme="dark"] .emi-status-item,
+html.dark .emi-card,
+body.dark-mode .emi-card,
+html[data-theme="dark"] .emi-card,
+body[data-theme="dark"] .emi-card,
+html.dark .emi-flow-card,
+body.dark-mode .emi-flow-card {
+    background: #142018;
+
+    border-color: #29402D;
 }
 
-.back-section a:hover {
-    color: #1b5e20;
+html.dark .emi-form-group input,
+body.dark-mode .emi-form-group input,
+html[data-theme="dark"] .emi-form-group input,
+body[data-theme="dark"] .emi-form-group input,
+html.dark .emi-form-group select,
+body.dark-mode .emi-form-group select,
+html[data-theme="dark"] .emi-form-group select,
+body[data-theme="dark"] .emi-form-group select {
+    background: #111B13;
+
+    color: #E8F5E9;
+
+    border-color: #35523A;
 }
 
-.back-section i {
-    margin-right: 6px;
+html.dark .emi-result-card,
+body.dark-mode .emi-result-card,
+html[data-theme="dark"] .emi-result-card,
+body[data-theme="dark"] .emi-result-card {
+    background: #142018;
+
+    border-color: #29402D;
+}
+
+html.dark .emi-kpi,
+body.dark-mode .emi-kpi,
+html[data-theme="dark"] .emi-kpi,
+body[data-theme="dark"] .emi-kpi,
+html.dark .emi-flow-step,
+body.dark-mode .emi-flow-step,
+html[data-theme="dark"] .emi-flow-step,
+body[data-theme="dark"] .emi-flow-step {
+    background: #18261B;
+
+    border-color: #29402D;
+}
+
+html.dark .emi-action,
+body.dark-mode .emi-action,
+html[data-theme="dark"] .emi-action,
+body[data-theme="dark"] .emi-action {
+    background: #142018;
+
+    border-color: #29402D;
+
+    color: #E8F5E9;
 }
 
 
-/* FOOTER */
+/* =========================================================
+   RTL
+========================================================= */
 
-footer {
-    text-align: center;
-    color: #7d8a7e;
-    font-size: 12px;
-    padding: 30px 10px 15px;
+html[dir="rtl"] .emi-page,
+body[dir="rtl"] .emi-page {
+    direction: rtl;
 }
 
-footer i {
-    color: #43a047;
-    margin-right: 5px;
+html[dir="rtl"] .emi-input-prefix,
+body[dir="rtl"] .emi-input-prefix {
+    left: auto;
+    right: 13px;
 }
 
-footer span {
-    margin: 0 8px;
+html[dir="rtl"] .emi-input-wrapper input,
+body[dir="rtl"] .emi-input-wrapper input {
+    padding-left: 13px;
+    padding-right: 35px;
+}
+
+html[dir="rtl"] .emi-insight,
+body[dir="rtl"] .emi-insight {
+    padding:
+        18px 56px 18px 18px;
+}
+
+html[dir="rtl"] .emi-insight-icon,
+body[dir="rtl"] .emi-insight-icon {
+    left: auto;
+    right: 16px;
+}
+
+html[dir="rtl"] .emi-flow {
+    direction: rtl;
 }
 
 
-/* RESPONSIVE */
+/* =========================================================
+   TABLET
+========================================================= */
 
-@media (max-width: 900px) {
+@media (max-width: 1050px) {
 
-    .main-content {
-        margin-left: 0;
-        padding: 15px;
-    }
-
-    .calculator-section {
-        grid-template-columns: 1fr;
-    }
-
-    .topbar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 18px;
-    }
-
-}
-
-@media (max-width: 500px) {
-
-    .title-section h1 {
-        font-size: 21px;
-    }
-
-    .emi-banner {
+    .emi-page {
         padding: 20px;
     }
 
-    .result-details {
+    .emi-main-grid {
         grid-template-columns: 1fr;
     }
 
-    .emi-result strong {
-        font-size: 27px;
+    .emi-status-strip {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
     }
 
+    .emi-actions {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .emi-page {
+        padding: 13px;
+    }
+
+    .emi-hero {
+        padding: 22px 18px;
+
+        border-radius: 19px;
+    }
+
+    .emi-hero-content {
+        align-items: flex-start;
+    }
+
+    .emi-hero h1 {
+        font-size: 25px;
+    }
+
+    .emi-hero p {
+        font-size: 12px;
+    }
+
+    .emi-hero-icon {
+        width: 58px;
+        height: 58px;
+
+        border-radius: 16px;
+
+        font-size: 26px;
+    }
+
+    .emi-status-strip {
+        grid-template-columns: 1fr;
+    }
+
+    .emi-card,
+    .emi-result-card,
+    .emi-flow-card {
+        padding: 18px;
+    }
+
+    .emi-kpi-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .emi-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .emi-main-value {
+        padding: 22px 15px;
+    }
+
+    .emi-main-value strong {
+        font-size: 30px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+    .emi-page {
+        padding: 9px;
+    }
+
+    .emi-hero {
+        padding: 20px 15px;
+    }
+
+    .emi-hero-icon {
+        display: none;
+    }
+
+    .emi-card,
+    .emi-result-card,
+    .emi-flow-card {
+        padding: 15px;
+    }
+
+    .emi-status-item {
+        min-height: 62px;
+    }
+
+    .emi-status-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .emi-flow-step {
+        min-width: 105px;
+    }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+.emi-calculate-btn:focus-visible,
+.emi-action:focus-visible,
+.emi-form-group input:focus-visible,
+.emi-form-group select:focus-visible {
+    outline: 3px solid rgba(67, 160, 71, 0.25);
+
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .emi-card,
+    .emi-action,
+    .emi-calculate-btn,
+    .emi-progress-bar {
+        transition: none;
+    }
 }

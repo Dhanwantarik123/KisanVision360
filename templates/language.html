@@ -1,509 +1,160 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>KisanVision360 | Select Language</title>
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/language.css') }}">
-
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-    <style>
-        /* Keep Google Translate widget hidden */
-        #google_translate_element {
-            display: none;
-        }
-
-        .language-card {
-            cursor: pointer;
-        }
-
-        .language-card:disabled {
-            opacity: 0.7;
-            cursor: wait;
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="overlay">
-
-    <div class="language-box">
-
-        <!-- Logo -->
-        <img src="{{ url_for('static', filename='images/logo.png') }}"
-             class="logo"
-             alt="KisanVision360 Logo">
-
-        <!-- Title -->
-        <h1>KisanVision360</h1>
-
-        <p class="tagline">
-            🌾 AI Powered Smart Agriculture Platform
-        </p>
-
-        <!-- AI Features Badge -->
-        <div class="ai-badge">
-            🤖 Artificial Intelligence
-            &nbsp; 🌦 Live Weather
-            &nbsp; 📈 Market Prices
-        </div>
-
-        <!-- Language Heading -->
-        <h2>Select Your Language</h2>
-
-        <p class="subtitle">
-            Choose your preferred language to continue
-        </p>
-
-        <!-- Google Translate -->
-        <div id="google_translate_element"></div>
-
-        <!-- Language Cards -->
-        <div class="language-grid">
-
-            <!-- English -->
-            <button class="language-card"
-                    type="button"
-                    onclick="changeLanguage('en', this)">
-
-                <div class="flag">🇬🇧</div>
-
-                <h3>English</h3>
-
-                <p>Continue in English</p>
-
-                <i class="fas fa-arrow-right"></i>
-
-            </button>
-
-
-            <!-- Hindi -->
-            <button class="language-card"
-                    type="button"
-                    onclick="changeLanguage('hi', this)">
-
-                <div class="flag">🇮🇳</div>
-
-                <h3>हिन्दी</h3>
-
-                <p>हिन्दी में जारी रखें</p>
-
-                <i class="fas fa-arrow-right"></i>
-
-            </button>
-
-
-            <!-- Marathi -->
-            <button class="language-card"
-                    type="button"
-                    onclick="changeLanguage('mr', this)">
-
-                <div class="flag">🟠</div>
-
-                <h3>मराठी</h3>
-
-                <p>मराठीत सुरू ठेवा</p>
-
-                <i class="fas fa-arrow-right"></i>
-
-            </button>
-
-
-            <!-- Kannada -->
-            <button class="language-card"
-                    type="button"
-                    onclick="changeLanguage('kn', this)">
-
-                <div class="flag">🟢</div>
-
-                <h3>ಕನ್ನಡ</h3>
-
-                <p>ಕನ್ನಡದಲ್ಲಿ ಮುಂದುವರಿಸಿ</p>
-
-                <i class="fas fa-arrow-right"></i>
-
-            </button>
-
-
-            <!-- Telugu -->
-            <button class="language-card"
-                    type="button"
-                    onclick="changeLanguage('te', this)">
-
-                <div class="flag">🔵</div>
-
-                <h3>తెలుగు</h3>
-
-                <p>తెలుగులో కొనసాగించండి</p>
-
-                <i class="fas fa-arrow-right"></i>
-
-            </button>
-
-
-            <!-- Tamil -->
-            <button class="language-card"
-                    type="button"
-                    onclick="changeLanguage('ta', this)">
-
-                <div class="flag">🟣</div>
-
-                <h3>தமிழ்</h3>
-
-                <p>தமிழில் தொடரவும்</p>
-
-                <i class="fas fa-arrow-right"></i>
-
-            </button>
-
-
-            <!-- Malayalam -->
-            <button class="language-card"
-                    type="button"
-                    onclick="changeLanguage('ml', this)">
-
-                <div class="flag">🟡</div>
-
-                <h3>മലയാളം</h3>
-
-                <p>മലയാളത്തിൽ തുടരുക</p>
-
-                <i class="fas fa-arrow-right"></i>
-
-            </button>
-
-
-            <!-- Gujarati -->
-            <button class="language-card"
-                    type="button"
-                    onclick="changeLanguage('gu', this)">
-
-                <div class="flag">🔴</div>
-
-                <h3>ગુજરાતી</h3>
-
-                <p>ગુજરાતીમાં ચાલુ રાખો</p>
-
-                <i class="fas fa-arrow-right"></i>
-
-            </button>
-
-
-            <!-- Punjabi -->
-            <button class="language-card"
-                    type="button"
-                    onclick="changeLanguage('pa', this)">
-
-                <div class="flag">⚪</div>
-
-                <h3>ਪੰਜਾਬੀ</h3>
-
-                <p>ਪੰਜਾਬੀ ਵਿੱਚ ਜਾਰੀ ਰੱਖੋ</p>
-
-                <i class="fas fa-arrow-right"></i>
-
-            </button>
-
-
-            <!-- Bengali -->
-            <button class="language-card"
-                    type="button"
-                    onclick="changeLanguage('bn', this)">
-
-                <div class="flag">🟤</div>
-
-                <h3>বাংলা</h3>
-
-                <p>বাংলায় চালিয়ে যান</p>
-
-                <i class="fas fa-arrow-right"></i>
-
-            </button>
-
-        </div>
-
-
-        <!-- Features -->
-        <div class="features">
-
-            <div>
-                <i class="fas fa-cloud-sun"></i>
-                Weather Intelligence
-            </div>
-
-            <div>
-                <i class="fas fa-seedling"></i>
-                AI Crop Advisory
-            </div>
-
-            <div>
-                <i class="fas fa-store"></i>
-                Marketplace
-            </div>
-
-            <div>
-                <i class="fas fa-robot"></i>
-                AI Assistant
-            </div>
-
-        </div>
-
-
-        <!-- Footer -->
-        <div class="footer">
-
-            © 2026 KisanVision360
-            • AI Powered Agriculture Platform
-            • Made in India 🇮🇳
-
-        </div>
-
+﻿{% extends "base.html" %}
+
+{% block title %}Choose Language | KisanVision360+{% endblock %}
+
+{% block page_title %}Choose Language{% endblock %}
+{% block page_subtitle %}Select your preferred language{% endblock %}
+
+{% block content %}
+<section class="language-page kv-language-modern">
+  <div class="language-container">
+    <div class="language-header">
+      <div class="language-logo"><i class="fa-solid fa-language"></i></div>
+      <h1>Select Your Language</h1>
+      <p class="language-subtitle">Choose your preferred language for KisanVision360+</p>
     </div>
 
-</div>
+    <div class="selected-language" aria-live="polite">
+      <i class="fa-solid fa-circle-check"></i>
+      Selected Language:
+      <strong id="selectedLanguageName">{{ language_names.get(current_language, 'English') }}</strong>
+    </div>
 
+    {% set language_data = {
+      'en': ('ðŸ‡¬ðŸ‡§','English','English'),
+      'hi': ('ðŸ‡®ðŸ‡³','à¤¹à¤¿à¤¨à¥à¤¦à¥€','Hindi'),
+      'mr': ('ðŸ‡®ðŸ‡³','à¤®à¤°à¤¾à¤ à¥€','Marathi'),
+      'kn': ('ðŸ‡®ðŸ‡³','à²•à²¨à³à²¨à²¡','Kannada'),
+      'te': ('ðŸ‡®ðŸ‡³','à°¤à±†à°²à±à°—à±','Telugu'),
+      'ta': ('ðŸ‡®ðŸ‡³','à®¤à®®à®¿à®´à¯','Tamil'),
+      'ml': ('ðŸ‡®ðŸ‡³','à´®à´²à´¯à´¾à´³à´‚','Malayalam'),
+      'gu': ('ðŸ‡®ðŸ‡³','àª—à«àªœàª°àª¾àª¤à«€','Gujarati'),
+      'pa': ('ðŸ‡®ðŸ‡³','à¨ªà©°à¨œà¨¾à¨¬à©€','Punjabi'),
+      'bn': ('ðŸ‡®ðŸ‡³','à¦¬à¦¾à¦‚à¦²à¦¾','Bengali'),
+      'as': ('ðŸ‡®ðŸ‡³','à¦…à¦¸à¦®à§€à¦¯à¦¼à¦¾','Assamese'),
+      'or': ('ðŸ‡®ðŸ‡³','à¬“à¬¡à¬¼à¬¿à¬†','Odia'),
+      'ur': ('ðŸ‡µðŸ‡°','Ø§Ø±Ø¯Ùˆ','Urdu'),
+      'ne': ('ðŸ‡³ðŸ‡µ','à¤¨à¥‡à¤ªà¤¾à¤²à¥€','Nepali'),
+      'sa': ('ðŸ‡®ðŸ‡³','à¤¸à¤‚à¤¸à¥à¤•à¥ƒà¤¤à¤®à¥','Sanskrit'),
+      'kok': ('ðŸ‡®ðŸ‡³','à¤•à¥‹à¤‚à¤•à¤£à¥€','Konkani'),
+      'mai': ('ðŸ‡®ðŸ‡³','à¤®à¥ˆà¤¥à¤¿à¤²à¥€','Maithili'),
+      'ks': ('ðŸ‡®ðŸ‡³','à¤•à¥‰à¤¶à¥à¤° / Ú©Ù²Ø´ÙØ±','Kashmiri'),
+      'sd': ('ðŸ‡µðŸ‡°','Ø³Ù†ÚŒÙŠ','Sindhi'),
+      'mni': ('ðŸ‡®ðŸ‡³','à¦®à§ˆà¦¤à§ˆà¦²à§‹à¦¨','Manipuri')
+    } %}
 
+    <div class="language-grid" id="languageGrid">
+      {% for code, item in language_data.items() %}
+      <button type="button"
+              class="language-card {% if current_language == code %}selected{% endif %}"
+              data-lang="{{ code }}"
+              data-name="{{ item[2] }}"
+              onclick="selectKisanLanguage('{{ code }}', this)"
+              aria-pressed="{{ 'true' if current_language == code else 'false' }}">
+        <span class="language-icon">{{ item[0] }}</span>
+        <span class="language-name">{{ item[1] }}</span>
+        <span class="language-english">{{ item[2] }}</span>
+      </button>
+      {% endfor %}
+    </div>
+
+    <div class="language-actions">
+      <button type="button" class="continue-btn" id="continueLanguage">
+        <i class="fa-solid fa-arrow-right"></i> Continue
+      </button>
+      <a class="login-btn" href="{{ url_for('auth.login') }}">
+        <i class="fa-solid fa-right-to-bracket"></i> Login
+      </a>
+    </div>
+
+    <div class="language-note">
+      <i class="fa-solid fa-circle-info"></i>
+      Translation is powered by Google Translate.
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block head %}
+<style>
+.kv-language-modern{padding:clamp(12px,3vw,34px) 0 40px}
+.kv-language-modern .language-container{max-width:1120px;margin:auto}
+.kv-language-modern .language-header{text-align:center;margin-bottom:20px}
+.kv-language-modern .language-logo{width:64px;height:64px;margin:0 auto 12px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,#1b5e20,#43a047);color:#fff;font-size:28px;box-shadow:0 12px 30px rgba(27,94,32,.18)}
+.kv-language-modern .language-header h1{margin:0 0 7px;font-size:clamp(24px,3vw,34px);color:#1b5e20}
+.kv-language-modern .language-subtitle{margin:0;color:#718078}
+.kv-language-modern .selected-language{max-width:560px;margin:0 auto 22px;padding:13px 18px;border:1px solid #dfe9e1;border-radius:14px;background:#fff;box-shadow:0 8px 25px rgba(25,80,40,.07);text-align:center;color:#59665f}
+.kv-language-modern .selected-language i{color:#43a047;margin-right:6px}
+.kv-language-modern #selectedLanguageName{color:#1b5e20}
+.kv-language-modern .language-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.kv-language-modern .language-card{appearance:none;border:2px solid #e2e8e3;border-radius:16px;background:#fff;padding:17px 10px;min-height:118px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease,background .2s ease}
+.kv-language-modern .language-card:hover{transform:translateY(-3px);border-color:#43a047;box-shadow:0 12px 26px rgba(25,80,40,.10)}
+.kv-language-modern .language-card.selected{border-color:#2e7d32;background:#eaf7eb;box-shadow:0 8px 22px rgba(46,125,50,.12)}
+.kv-language-modern .language-icon{font-size:27px;margin-bottom:7px}
+.kv-language-modern .language-name{font-size:17px;font-weight:800;color:#193b24;line-height:1.35;text-align:center}
+.kv-language-modern .language-english{font-size:12px;color:#718078;margin-top:4px}
+.kv-language-modern .language-actions{display:flex;justify-content:center;gap:12px;margin-top:24px}
+.kv-language-modern .language-actions button,.kv-language-modern .language-actions a{border-radius:12px;padding:12px 24px;border:0;font-weight:800;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.kv-language-modern .continue-btn{background:#2e7d32;color:#fff}
+.kv-language-modern .login-btn{background:#fff;color:#2e7d32;border:2px solid #2e7d32}
+.kv-language-modern .language-note{text-align:center;color:#718078;font-size:12px;margin-top:18px}
+.kv-language-modern .language-note i{color:#fb8c00}
+@media(max-width:900px){.kv-language-modern .language-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){.kv-language-modern .language-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.kv-language-modern .language-actions{flex-direction:column}.kv-language-modern .language-actions button,.kv-language-modern .language-actions a{width:100%}}
+@media(max-width:380px){.kv-language-modern .language-grid{grid-template-columns:1fr}.kv-language-modern .language-card{min-height:100px}}
+</style>
+{% endblock %}
+
+{% block scripts %}
 <script>
+(function(){
+  let selected = "{{ current_language|default('en') }}";
 
-/* =====================================================
-   GOOGLE TRANSLATE INITIALIZATION
-===================================================== */
+  window.selectKisanLanguage = function(code, card){
+    selected = String(code || "en").toLowerCase();
+    document.querySelectorAll(".language-card").forEach(function(el){
+      const active = el.dataset.lang === selected;
+      el.classList.toggle("selected", active);
+      el.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+    const name = card && card.dataset.name
+      ? card.dataset.name
+      : (window.KisanVision360Language && window.KisanVision360Language.languages
+          ? selected.toUpperCase() : selected);
+    document.getElementById("selectedLanguageName").textContent = name;
+  };
 
-function googleTranslateElementInit() {
+  document.getElementById("continueLanguage").addEventListener("click", async function(){
+    const btn=this;
+    btn.disabled=true;
+    btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Applying...';
 
-    new google.translate.TranslateElement({
+    try{
+      if(window.setKisanLanguage){
+        window.setKisanLanguage(selected);
+      } else {
+        const r=await fetch("{{ url_for('auth.set_language') }}",{
+          method:"POST",
+          credentials:"same-origin",
+          headers:{"Content-Type":"application/json","Accept":"application/json"},
+          body:JSON.stringify({language:selected})
+        });
+        if(!r.ok) throw new Error("Language update failed");
+      }
 
-        pageLanguage: 'en',
-
-        includedLanguages:
-        'en,hi,mr,kn,te,ta,ml,gu,pa,bn',
-
-        autoDisplay: false
-
-    }, 'google_translate_element');
-
-}
-
-
-/* =====================================================
-   CHANGE LANGUAGE
-===================================================== */
-
-function changeLanguage(language, button) {
-
-    /* Prevent multiple clicks */
-    if (button) {
-        button.disabled = true;
+      if(selected !== "en"){
+        setTimeout(function(){
+          window.location.href="{{ url_for('auth.login') }}";
+        },1200);
+      }
+    }catch(e){
+      console.error(e);
+      btn.disabled=false;
+      btn.innerHTML='<i class="fa-solid fa-arrow-right"></i> Continue';
+      alert("Unable to change language. Please try again.");
     }
-
-
-    /* Save selected language */
-
-    localStorage.setItem(
-        'kisanvision360_language',
-        language
-    );
-
-
-    /* English does not need Google Translation */
-
-    if (language === 'en') {
-
-        window.location.href =
-            "{{ url_for('login') }}";
-
-        return;
-    }
-
-
-    /* Find Google Translate dropdown */
-
-    let select =
-        document.querySelector('.goog-te-combo');
-
-
-    /*
-     * Google Translate may take some time
-     * to load.
-     */
-
-    if (!select) {
-
-        setTimeout(function () {
-
-            select =
-                document.querySelector('.goog-te-combo');
-
-
-            if (select) {
-
-                select.value = language;
-
-                select.dispatchEvent(
-                    new Event('change')
-                );
-
-
-                /*
-                 * Give Google Translate time
-                 * to apply the language.
-                 */
-
-                setTimeout(function () {
-
-                    window.location.href =
-                        "{{ url_for('login') }}";
-
-                }, 1200);
-
-
-            } else {
-
-                /*
-                 * If Google Translate fails,
-                 * still continue to login.
-                 */
-
-                window.location.href =
-                    "{{ url_for('login') }}";
-
-            }
-
-        }, 1000);
-
-        return;
-    }
-
-
-    /* Apply selected language */
-
-    select.value = language;
-
-    select.dispatchEvent(
-        new Event('change')
-    );
-
-
-    /*
-     * Redirect to Login page
-     */
-
-    setTimeout(function () {
-
-        window.location.href =
-            "{{ url_for('login') }}";
-
-    }, 1200);
-
-}
-
-
-/* =====================================================
-   RESTORE SAVED LANGUAGE
-===================================================== */
-
-window.addEventListener('load', function () {
-
-    let savedLanguage =
-        localStorage.getItem(
-            'kisanvision360_language'
-        );
-
-
-    /*
-     * If language was previously selected,
-     * prepare Google Translate.
-     */
-
-    if (
-        savedLanguage &&
-        savedLanguage !== 'en'
-    ) {
-
-        setTimeout(function () {
-
-            let select =
-                document.querySelector('.goog-te-combo');
-
-
-            if (select) {
-
-                select.value =
-                    savedLanguage;
-
-                select.dispatchEvent(
-                    new Event('change')
-                );
-
-            }
-
-        }, 1500);
-
-    }
-
-});
-
-
-/* =====================================================
-   REMOVE GOOGLE TRANSLATE TOP BAR
-===================================================== */
-
-function removeGoogleTranslateBar() {
-
-    let style =
-        document.createElement('style');
-
-    style.innerHTML = `
-
-        .goog-te-banner-frame.skiptranslate {
-            display: none !important;
-        }
-
-        body {
-            top: 0 !important;
-        }
-
-        .goog-logo-link {
-            display: none !important;
-        }
-
-        .goog-te-gadget {
-            font-size: 0 !important;
-        }
-
-        .goog-te-gadget-icon {
-            display: none !important;
-        }
-
-    `;
-
-    document.head.appendChild(style);
-}
-
-
-/* Run after page loads */
-
-window.addEventListener(
-    'load',
-    removeGoogleTranslateBar
-);
-
+  });
+})();
 </script>
+{% endblock %}
 
-
-<!-- Google Translate Script -->
-
-<script
-    src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
-</script>
-
-
-</body>
-</html>

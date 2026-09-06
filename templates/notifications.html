@@ -1,125 +1,1246 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿{% extends "base.html" %}
 
-<head>
+{% block title %}KisanVision360+ | Smart Notifications{% endblock %}
 
-    <meta charset="UTF-8">
+{% block head %}
+<link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/notifications.css'
+        ) }}"
+    >
+<style>
 
-    <meta
-        name="viewport"
-        content="width=device-width,
-        initial-scale=1.0,
-        maximum-scale=1.0,
-        user-scalable=no">
+        /* =====================================================
+           KISANVISION360+ NOTIFICATION CENTER
+        ===================================================== */
 
-    <title>KisanVision360 | Notifications</title>
+        :root {
+            --green-dark: #1b5e20;
+            --green: #2e7d32;
+            --green-light: #43a047;
+            --green-soft: #e8f5e9;
 
+            --orange: #fb8c00;
+            --orange-soft: #fff3e0;
 
-    <!-- SIDEBAR -->
+            --red: #d32f2f;
+            --red-soft: #ffebee;
 
-    <link rel="stylesheet"
-          href="{{ url_for(
-              'static',
-              filename='css/sidebar.css'
-          ) }}">
+            --blue: #1976d2;
+            --blue-soft: #e3f2fd;
 
+            --purple: #7b1fa2;
+            --purple-soft: #f3e5f5;
 
-    <!-- NOTIFICATION CSS -->
+            --text: #263238;
+            --muted: #607d8b;
+            --border: #e0e6e3;
+            --white: #ffffff;
+            --background: #f4f8f5;
 
-    <link rel="stylesheet"
-          href="{{ url_for(
-              'static',
-              filename='css/notifications.css'
-          ) }}">
-
-
-    <!-- FONT AWESOME -->
-
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-</head>
-
-
-<body>
-
-
-<div class="dashboard-container">
+            --shadow:
+                0 10px 30px rgba(27, 94, 32, 0.08);
+        }
 
 
-    <!-- =========================================
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            background: var(--background);
+        }
+
+
+        .main-content {
+            padding-bottom: 40px;
+        }
+
+
+        /* =====================================================
+           TOPBAR
+        ===================================================== */
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 22px;
+        }
+
+
+        .page-title h1 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+        }
+
+
+        .page-title h1 i {
+            color: var(--green);
+        }
+
+
+        .page-title p {
+            margin: 5px 0 0;
+            color: var(--muted);
+        }
+
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+
+        .profile img {
+            width: 44px;
+            height: 44px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid var(--green-light);
+        }
+
+
+        .profile h4 {
+            margin: 0;
+        }
+
+
+        .profile span {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           SMART STATUS
+        ===================================================== */
+
+        .smart-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 18px;
+            margin-bottom: 18px;
+            background: linear-gradient(
+                135deg,
+                #e8f5e9,
+                #f7fff8
+            );
+            border: 1px solid #c8e6c9;
+            border-radius: 14px;
+            color: var(--green-dark);
+        }
+
+
+        .smart-status .status-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--green);
+            color: white;
+        }
+
+
+        .smart-status strong {
+            display: block;
+        }
+
+
+        .smart-status small {
+            color: var(--muted);
+        }
+
+
+        .status-live {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+
+        .status-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #2e7d32;
+            box-shadow: 0 0 0 5px rgba(46,125,50,.12);
+        }
+
+
+        /* =====================================================
+           CONTROL CARD
+        ===================================================== */
+
+        .notification-control-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 18px;
+        }
+
+
+        .control-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+
+        .control-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--green-soft);
+            color: var(--green);
+            font-size: 22px;
+        }
+
+
+        .control-left h2 {
+            margin: 0;
+            font-size: 19px;
+        }
+
+
+        .control-left p {
+            margin: 5px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+
+        .control-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+
+        .switch {
+            position: relative;
+            width: 54px;
+            height: 30px;
+            display: inline-block;
+        }
+
+
+        .switch input {
+            display: none;
+        }
+
+
+        .slider {
+            position: absolute;
+            inset: 0;
+            cursor: pointer;
+            border-radius: 30px;
+            background: #b0bec5;
+            transition: .25s;
+        }
+
+
+        .slider:before {
+            content: "";
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            left: 4px;
+            top: 4px;
+            border-radius: 50%;
+            background: white;
+            transition: .25s;
+            box-shadow: 0 2px 6px rgba(0,0,0,.2);
+        }
+
+
+        .switch input:checked + .slider {
+            background: var(--green);
+        }
+
+
+        .switch input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+
+        #notificationStatus {
+            color: var(--green);
+            min-width: 28px;
+        }
+
+
+        /* =====================================================
+           TEST BOX
+        ===================================================== */
+
+        .test-box {
+            background: linear-gradient(
+                135deg,
+                #fff8ed,
+                #ffffff
+            );
+            border: 1px solid #ffe0b2;
+            border-radius: 16px;
+            padding: 16px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+
+        .test-box h3 {
+            margin: 0;
+            font-size: 16px;
+        }
+
+
+        .test-box p {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+
+        .test-box button {
+            border: none;
+            background: var(--orange);
+            color: white;
+            padding: 10px 17px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ===================================================== */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+
+        .summary-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            box-shadow: var(--shadow);
+        }
+
+
+        .summary-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 13px;
+            background: var(--green-soft);
+            color: var(--green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .summary-icon.weather {
+            background: var(--blue-soft);
+            color: var(--blue);
+        }
+
+
+        .summary-icon.ai {
+            background: var(--purple-soft);
+            color: var(--purple);
+        }
+
+
+        .summary-icon.market {
+            background: var(--orange-soft);
+            color: var(--orange);
+        }
+
+
+        .summary-card h2 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+
+        .summary-card p {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           WEATHER
+        ===================================================== */
+
+        .weather-banner {
+            background:
+                linear-gradient(
+                    135deg,
+                    #e3f2fd,
+                    #ffffff
+                );
+            border: 1px solid #bbdefb;
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns:
+                1.2fr .8fr 2fr;
+            align-items: center;
+            gap: 20px;
+        }
+
+
+        .weather-location {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+
+        .location-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--blue);
+            color: white;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .weather-location h2 {
+            margin: 0;
+        }
+
+
+        .weather-location p {
+            margin: 3px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+
+        .weather-temperature strong {
+            display: block;
+            font-size: 25px;
+            color: #1565c0;
+        }
+
+
+        .weather-temperature span {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+
+        .weather-details {
+            display: grid;
+            grid-template-columns:
+                repeat(4, 1fr);
+            gap: 10px;
+        }
+
+
+        .weather-details > div {
+            background: rgba(255,255,255,.75);
+            border-radius: 12px;
+            padding: 10px;
+            text-align: center;
+        }
+
+
+        .weather-details i {
+            display: block;
+            color: var(--blue);
+            margin-bottom: 5px;
+        }
+
+
+        .weather-details span {
+            display: block;
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+
+        .weather-details strong {
+            display: block;
+            margin-top: 2px;
+        }
+
+
+        /* =====================================================
+           ALERT SECTION
+        ===================================================== */
+
+        .notification-section {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+
+        .section-header h2 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+
+        .section-header h2 i {
+            color: var(--green);
+        }
+
+
+        .section-header p {
+            margin: 5px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+
+        .read-all {
+            text-decoration: none;
+            background: var(--green-soft);
+            color: var(--green-dark);
+            padding: 9px 13px;
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           FILTERS
+        ===================================================== */
+
+        .notification-tools {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+
+        .notification-search {
+            flex: 1;
+            min-width: 220px;
+            position: relative;
+        }
+
+
+        .notification-search i {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #90a4ae;
+        }
+
+
+        .notification-search input {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 11px 12px 11px 38px;
+            outline: none;
+        }
+
+
+        .notification-search input:focus {
+            border-color: var(--green);
+        }
+
+
+        .filter-btn {
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--text);
+            padding: 10px 13px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+
+        .filter-btn.active {
+            background: var(--green);
+            border-color: var(--green);
+            color: white;
+        }
+
+
+        /* =====================================================
+           NOTIFICATION CARD
+        ===================================================== */
+
+        .notification-list {
+            display: grid;
+            gap: 12px;
+        }
+
+
+        .notification-card {
+            display: grid;
+            grid-template-columns: 52px 1fr auto;
+            align-items: center;
+            gap: 14px;
+            padding: 15px;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            background: white;
+            transition: .2s ease;
+        }
+
+
+        .notification-card:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 8px 20px rgba(0,0,0,.06);
+        }
+
+
+        .notification-card.unread {
+            border-left: 4px solid var(--green);
+            background: #fbfffc;
+        }
+
+
+        .notification-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--green-soft);
+            color: var(--green);
+            font-size: 19px;
+        }
+
+
+        .notification-card.weather
+        .notification-icon {
+            background: var(--blue-soft);
+            color: var(--blue);
+        }
+
+
+        .notification-card.ai
+        .notification-icon {
+            background: var(--purple-soft);
+            color: var(--purple);
+        }
+
+
+        .notification-card.market
+        .notification-icon {
+            background: var(--orange-soft);
+            color: var(--orange);
+        }
+
+
+        .notification-card.disease
+        .notification-icon {
+            background: var(--red-soft);
+            color: var(--red);
+        }
+
+
+        .notification-card.irrigation
+        .notification-icon {
+            background: var(--blue-soft);
+            color: var(--blue);
+        }
+
+
+        .notification-card.finance
+        .notification-icon {
+            background: var(--orange-soft);
+            color: var(--orange);
+        }
+
+
+        .notification-card.government
+        .notification-icon {
+            background: var(--purple-soft);
+            color: var(--purple);
+        }
+
+
+        .notification-content {
+            min-width: 0;
+        }
+
+
+        .notification-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+
+        .notification-title h3 {
+            margin: 0;
+            font-size: 15px;
+        }
+
+
+        .new-badge {
+            background: var(--green);
+            color: white;
+            border-radius: 20px;
+            padding: 3px 7px;
+            font-size: 9px;
+            font-weight: 800;
+        }
+
+
+        .notification-content p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+
+        .notification-content small {
+            display: block;
+            margin-top: 7px;
+            color: #78909c;
+            font-size: 11px;
+        }
+
+
+        .notification-actions {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+
+        .notification-actions a {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f7f6;
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+
+        .notification-actions a:hover {
+            background: var(--green-soft);
+            color: var(--green);
+        }
+
+
+        /* =====================================================
+           EMPTY
+        ===================================================== */
+
+        .empty-notifications {
+            text-align: center;
+            padding: 45px 20px;
+        }
+
+
+        .empty-notifications > div {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--green-soft);
+            color: var(--green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: auto;
+        }
+
+
+        .empty-notifications h2 {
+            margin-bottom: 5px;
+        }
+
+
+        .empty-notifications p {
+            color: var(--muted);
+        }
+
+
+        .empty-notifications a {
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background: var(--green);
+            color: white;
+            text-decoration: none;
+            border-radius: 9px;
+        }
+
+
+        /* =====================================================
+           MODULE CONNECTIONS
+        ===================================================== */
+
+        .modules-section {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+
+        .modules-section h2 {
+            margin: 0;
+        }
+
+
+        .modules-section > p {
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+
+        .module-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(5, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+
+        .module-grid a {
+            text-decoration: none;
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 10px;
+            text-align: center;
+            transition: .2s;
+        }
+
+
+        .module-grid a:hover {
+            border-color: var(--green);
+            transform: translateY(-2px);
+            background: var(--green-soft);
+        }
+
+
+        .module-grid i {
+            display: block;
+            color: var(--green);
+            font-size: 20px;
+            margin-bottom: 7px;
+        }
+
+
+        .module-grid span {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           NO SEARCH RESULT
+        ===================================================== */
+
+        .no-search-results {
+            display: none;
+            text-align: center;
+            padding: 35px 20px;
+            color: var(--muted);
+        }
+
+
+        .no-search-results i {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #90a4ae;
+        }
+
+
+        /* =====================================================
+           APP NOTIFICATION
+        ===================================================== */
+
+        .app-notification {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 99999;
+            width: min(360px, calc(100vw - 30px));
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: white;
+            border: 1px solid #c8e6c9;
+            border-radius: 14px;
+            box-shadow:
+                0 15px 40px rgba(0,0,0,.18);
+            animation: slideIn .3s ease;
+        }
+
+
+        .app-notification.hide {
+            animation: slideOut .4s ease forwards;
+        }
+
+
+        .app-notification-icon {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: var(--green-soft);
+            font-size: 22px;
+        }
+
+
+        .app-notification strong {
+            display: block;
+        }
+
+
+        .app-notification p {
+            margin: 3px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+
+        @keyframes slideIn {
+
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+        }
+
+
+        @keyframes slideOut {
+
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+            text-align: center;
+            color: var(--muted);
+            padding: 15px;
+            font-size: 12px;
+        }
+
+
+        footer i {
+            color: var(--green);
+        }
+
+
+        /* =====================================================
+           RTL
+        ===================================================== */
+
+        [dir="rtl"] .notification-card {
+            border-left: 1px solid var(--border);
+            border-right: 4px solid var(--green);
+        }
+
+
+        [dir="rtl"] .notification-search i {
+            left: auto;
+            right: 13px;
+        }
+
+
+        [dir="rtl"] .notification-search input {
+            padding-left: 12px;
+            padding-right: 38px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1000px) {
+
+            .summary-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .module-grid {
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+
+            .weather-banner {
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+            .weather-details {
+                grid-column: 1 / -1;
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .topbar {
+                align-items: flex-start;
+            }
+
+            .profile {
+                display: none;
+            }
+
+            .smart-status {
+                align-items: flex-start;
+            }
+
+            .status-live {
+                display: none;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .weather-banner {
+                grid-template-columns: 1fr;
+            }
+
+            .weather-details {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .section-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .notification-card {
+                grid-template-columns: 45px 1fr;
+            }
+
+            .notification-icon {
+                width: 45px;
+                height: 45px;
+            }
+
+            .notification-actions {
+                grid-column: 2;
+            }
+
+            .module-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 480px) {
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .notification-control-card {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .control-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .test-box {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .test-box button {
+                width: 100%;
+            }
+
+            .notification-tools {
+                flex-direction: column;
+            }
+
+            .notification-search {
+                width: 100%;
+            }
+
+            .filter-btn {
+                flex: 1;
+            }
+
+            .module-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+    </style>
+{% endblock %}
+
+{% block page_title %}Smart Notifications{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<!-- =====================================================
          SIDEBAR
-    ========================================== -->
+    ====================================================== -->
 
-    {% include "components/sidebar.html" %}
+    
 
 
-
-    <!-- =========================================
-         MAIN
-    ========================================== -->
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
 
     <main class="main-content">
 
 
-        <!-- =========================================
+        <!-- =================================================
              TOPBAR
-        ========================================== -->
+        ================================================== -->
 
-        <header class="topbar">
+        
 
-            <div class="page-title">
 
-                <h1>
+        <!-- =================================================
+             SMART STATUS
+        ================================================== -->
 
-                    <i class="fa-solid fa-bell"></i>
+        <div class="smart-status">
 
-                    Notifications
+            <div class="status-icon">
 
-                </h1>
-
-                <p>
-                    Live farming alerts and smart updates
-                </p>
+                <i class="fa-solid fa-brain"></i>
 
             </div>
 
+            <div>
 
-            <!-- PROFILE -->
+                <strong>
+                    KisanVision360+ Smart Alert Engine
+                </strong>
 
-            <div class="profile">
-
-                <img
-                    src="{{ url_for(
-                        'static',
-                        filename='images/farmer.jpg'
-                    ) }}"
-                    alt="Farmer">
-
-                <div>
-
-                    <h4>
-                        {{ name }}
-                    </h4>
-
-                    <span>
-                        Farmer
-                    </span>
-
-                </div>
+                <small>
+                    Weather, crop health, irrigation,
+                    market, finance and scheme alerts
+                </small>
 
             </div>
 
-        </header>
+            <div class="status-live">
+
+                <span class="status-dot"></span>
+
+                SYSTEM ACTIVE
+
+            </div>
+
+        </div>
 
 
-
-        <!-- =========================================
+        <!-- =================================================
              NOTIFICATION CONTROL
-        ========================================== -->
+        ================================================== -->
 
         <section class="notification-control-card">
-
 
             <div class="control-left">
 
@@ -129,7 +1250,6 @@
 
                 </div>
 
-
                 <div>
 
                     <h2>
@@ -137,7 +1257,7 @@
                     </h2>
 
                     <p>
-                        Receive weather and farming alerts
+                        Enable alerts for important farm activities
                     </p>
 
                 </div>
@@ -147,18 +1267,17 @@
 
             <div class="control-right">
 
-
                 <label class="switch">
 
                     <input
                         type="checkbox"
                         id="notificationToggle"
-                        checked>
+                        checked
+                    >
 
                     <span class="slider"></span>
 
                 </label>
-
 
                 <strong id="notificationStatus">
                     ON
@@ -169,10 +1288,9 @@
         </section>
 
 
-
-        <!-- =========================================
+        <!-- =================================================
              TEST NOTIFICATION
-        ========================================== -->
+        ================================================== -->
 
         <section class="test-box">
 
@@ -182,12 +1300,13 @@
 
                     <i class="fa-solid fa-vial"></i>
 
-                    Test Notification
+                    Test Notification System
 
                 </h3>
 
                 <p>
-                    Check if notifications are working.
+                    Send a test alert to verify browser or APK
+                    notification support.
                 </p>
 
             </div>
@@ -195,24 +1314,26 @@
 
             <button
                 type="button"
-                onclick="testNotification()">
+                onclick="testNotification()"
+            >
 
                 <i class="fa-solid fa-bell"></i>
 
-                Test
+                Test Alert
 
             </button>
 
         </section>
 
 
-
-        <!-- =========================================
+        <!-- =================================================
              SUMMARY
-        ========================================== -->
+        ================================================== -->
 
         <section class="summary-grid">
 
+
+            <!-- UNREAD -->
 
             <div class="summary-card">
 
@@ -237,6 +1358,7 @@
             </div>
 
 
+            <!-- WEATHER -->
 
             <div class="summary-card">
 
@@ -261,6 +1383,7 @@
             </div>
 
 
+            <!-- AI -->
 
             <div class="summary-card">
 
@@ -285,6 +1408,7 @@
             </div>
 
 
+            <!-- MARKET -->
 
             <div class="summary-card">
 
@@ -311,10 +1435,9 @@
         </section>
 
 
-
-        <!-- =========================================
-             WEATHER
-        ========================================== -->
+        <!-- =================================================
+             WEATHER CONTEXT
+        ================================================== -->
 
         {% if weather %}
 
@@ -336,7 +1459,7 @@
                     </h2>
 
                     <p>
-                        Live Weather
+                        Live Weather Context
                     </p>
 
                 </div>
@@ -347,7 +1470,7 @@
             <div class="weather-temperature">
 
                 <strong>
-                    {{ weather.temperature }}°C
+                    {{ weather.temperature }}Ã‚Â°C
                 </strong>
 
                 <span>
@@ -364,10 +1487,12 @@
 
                     <i class="fa-solid fa-temperature-half"></i>
 
-                    <span>Feels Like</span>
+                    <span>
+                        Feels Like
+                    </span>
 
                     <strong>
-                        {{ weather.feels_like }}°C
+                        {{ weather.feels_like }}Ã‚Â°C
                     </strong>
 
                 </div>
@@ -377,7 +1502,9 @@
 
                     <i class="fa-solid fa-droplet"></i>
 
-                    <span>Humidity</span>
+                    <span>
+                        Humidity
+                    </span>
 
                     <strong>
                         {{ weather.humidity }}%
@@ -390,7 +1517,9 @@
 
                     <i class="fa-solid fa-wind"></i>
 
-                    <span>Wind</span>
+                    <span>
+                        Wind
+                    </span>
 
                     <strong>
                         {{ weather.wind }} m/s
@@ -403,13 +1532,16 @@
 
                     <i class="fa-solid fa-cloud"></i>
 
-                    <span>Cloud</span>
+                    <span>
+                        Cloud
+                    </span>
 
                     <strong>
                         {{ weather.clouds|default(0) }}%
                     </strong>
 
                 </div>
+
 
             </div>
 
@@ -418,30 +1550,9 @@
         {% endif %}
 
 
-
-        <!-- =========================================
-             LIVE STATUS
-        ========================================== -->
-
-        <div class="live-status">
-
-            <span class="live-dot"></span>
-
-            <strong>
-                LIVE
-            </strong>
-
-            <span>
-                Smart farming notification system
-            </span>
-
-        </div>
-
-
-
-        <!-- =========================================
-             ALERT HEADER
-        ========================================== -->
+        <!-- =================================================
+             NOTIFICATION SECTION
+        ================================================== -->
 
         <section class="notification-section">
 
@@ -459,7 +1570,7 @@
                     </h2>
 
                     <p>
-                        Important updates for your farm
+                        Important updates connected to your farm
                     </p>
 
                 </div>
@@ -469,7 +1580,8 @@
                     href="{{ url_for(
                         'notifications.mark_all_read'
                     ) }}"
-                    class="read-all">
+                    class="read-all"
+                >
 
                     <i class="fa-solid fa-check-double"></i>
 
@@ -480,25 +1592,115 @@
             </div>
 
 
+            <!-- =================================================
+                 SEARCH + FILTER
+            ================================================== -->
 
-            <!-- =========================================
+            <div class="notification-tools">
+
+
+                <div class="notification-search">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="text"
+                        id="notificationSearch"
+                        placeholder="Search alerts..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="filter-btn active"
+                    data-filter="all"
+                >
+                    All
+                </button>
+
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    data-filter="unread"
+                >
+                    Unread
+                </button>
+
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    data-filter="weather"
+                >
+                    Weather
+                </button>
+
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    data-filter="ai"
+                >
+                    AI
+                </button>
+
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    data-filter="market"
+                >
+                    Market
+                </button>
+
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    data-filter="farm"
+                >
+                    Farm
+                </button>
+
+
+            </div>
+
+
+            <!-- =================================================
                  NOTIFICATION LIST
-            ========================================== -->
+            ================================================== -->
 
             {% if notifications %}
 
-            <div class="notification-list">
+            <div
+                class="notification-list"
+                id="notificationList"
+            >
 
 
                 {% for item in notifications %}
 
 
+                {% set notification_type =
+                    item.notification_type|default('general')|lower
+                %}
+
+
                 <article
-                    class="notification-card
-                    {% if not item.is_read %}
-                    unread
-                    {% endif %}
-                    {{ item.notification_type|default('general') }}">
+                    class="
+                        notification-card
+                        {{ notification_type }}
+                        {% if not item.is_read %}
+                            unread
+                        {% endif %}
+                    "
+                    data-type="{{ notification_type }}"
+                    data-unread="{% if not item.is_read %}true{% else %}false{% endif %}"
+                >
 
 
                     <!-- ICON -->
@@ -506,62 +1708,62 @@
                     <div class="notification-icon">
 
 
-                        {% if item.notification_type == "weather" %}
+                        {% if notification_type == "weather" %}
 
                             <i class="fa-solid fa-cloud-sun"></i>
 
 
-                        {% elif item.notification_type == "ai" %}
+                        {% elif notification_type == "ai" %}
 
                             <i class="fa-solid fa-robot"></i>
 
 
-                        {% elif item.notification_type == "irrigation" %}
+                        {% elif notification_type == "irrigation" %}
 
                             <i class="fa-solid fa-droplet"></i>
 
 
-                        {% elif item.notification_type == "disease" %}
+                        {% elif notification_type == "disease" %}
 
                             <i class="fa-solid fa-bug"></i>
 
 
-                        {% elif item.notification_type == "market" %}
+                        {% elif notification_type == "market" %}
 
                             <i class="fa-solid fa-chart-line"></i>
 
 
-                        {% elif item.notification_type == "order" %}
+                        {% elif notification_type == "order" %}
 
                             <i class="fa-solid fa-cart-shopping"></i>
 
 
-                        {% elif item.notification_type == "tools" %}
+                        {% elif notification_type == "tools" %}
 
                             <i class="fa-solid fa-screwdriver-wrench"></i>
 
 
-                        {% elif item.notification_type == "report" %}
+                        {% elif notification_type == "report" %}
 
                             <i class="fa-solid fa-file-lines"></i>
 
 
-                        {% elif item.notification_type == "finance" %}
+                        {% elif notification_type == "finance" %}
 
                             <i class="fa-solid fa-indian-rupee-sign"></i>
 
 
-                        {% elif item.notification_type == "government" %}
+                        {% elif notification_type == "government" %}
 
                             <i class="fa-solid fa-building-columns"></i>
 
 
-                        {% elif item.notification_type == "success" %}
+                        {% elif notification_type == "success" %}
 
                             <i class="fa-solid fa-circle-check"></i>
 
 
-                        {% elif item.notification_type == "warning" %}
+                        {% elif notification_type == "warning" %}
 
                             <i class="fa-solid fa-triangle-exclamation"></i>
 
@@ -572,8 +1774,8 @@
 
                         {% endif %}
 
-                    </div>
 
+                    </div>
 
 
                     <!-- CONTENT -->
@@ -612,8 +1814,8 @@
 
                         </small>
 
-                    </div>
 
+                    </div>
 
 
                     <!-- ACTIONS -->
@@ -628,7 +1830,9 @@
                                 'notifications.mark_one_read',
                                 notification_id=item.id
                             ) }}"
-                            title="Mark as read">
+                            title="Mark as read"
+                            aria-label="Mark as read"
+                        >
 
                             <i class="fa-solid fa-check"></i>
 
@@ -642,13 +1846,22 @@
                                 'notifications.delete_notification',
                                 notification_id=item.id
                             ) }}"
-                            title="Delete">
+                            title="Delete"
+                            aria-label="Delete notification"
+                            onclick="
+                                return confirm(
+                                    'Delete this notification?'
+                                );
+                            "
+                        >
 
                             <i class="fa-solid fa-trash"></i>
 
                         </a>
 
+
                     </div>
+
 
                 </article>
 
@@ -659,10 +1872,30 @@
             </div>
 
 
+            <div
+                class="no-search-results"
+                id="noSearchResults"
+            >
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <h3>
+                    No matching alerts
+                </h3>
+
+                <p>
+                    Try another search or notification category.
+                </p>
+
+            </div>
+
+
             {% else %}
 
 
-            <!-- EMPTY -->
+            <!-- =================================================
+                 EMPTY STATE
+            ================================================== -->
 
             <div class="empty-notifications">
 
@@ -680,7 +1913,7 @@
                     Everything looks normal for your farm.
                 </p>
 
-                <a href="{{ url_for('farmer') }}">
+                <a href="{{ url_for('farmer.farmer') }}">
 
                     <i class="fa-solid fa-house"></i>
 
@@ -693,158 +1926,198 @@
 
             {% endif %}
 
+
         </section>
 
 
-
-        <!-- =========================================
-             ALL MODULES
-        ========================================== -->
+        <!-- =================================================
+             SMART MODULE CONNECTIONS
+        ================================================== -->
 
         <section class="modules-section">
 
+
             <h2>
-                <i class="fa-solid fa-layer-group"></i>
-                Smart Farming Alerts
+
+                <i class="fa-solid fa-link"></i>
+
+                Connected Farm Alerts
+
             </h2>
 
+
             <p>
-                Notifications from all KisanVision360 modules
+                Notification intelligence connects multiple
+                KisanVision360+ modules.
             </p>
 
 
             <div class="module-grid">
 
 
-                <a href="{{ url_for('weather') }}">
+                <a href="{{ url_for('weather.weather') }}">
 
                     <i class="fa-solid fa-cloud-sun"></i>
 
-                    <span>Weather</span>
+                    <span>
+                        Weather
+                    </span>
 
                 </a>
 
 
-                <a href="{{ url_for('recommendation') }}">
+                <a href="{{ url_for('recommendation.recommendation') }}">
 
                     <i class="fa-solid fa-seedling"></i>
 
-                    <span>AI Recommendation</span>
+                    <span>
+                        AI Recommendation
+                    </span>
 
                 </a>
 
 
-                <a href="{{ url_for('irrigation') }}">
+                <a href="{{ url_for('irrigation.irrigation') }}">
 
                     <i class="fa-solid fa-droplet"></i>
 
-                    <span>Irrigation</span>
+                    <span>
+                        Irrigation
+                    </span>
 
                 </a>
 
 
-                <a href="{{ url_for('pest') }}">
+                <a href="{{ url_for('disease.disease') }}">
 
                     <i class="fa-solid fa-bug"></i>
 
-                    <span>Disease Detection</span>
+                    <span>
+                        Disease Detection
+                    </span>
 
                 </a>
 
 
-                <a href="{{ url_for('marketplace') }}">
+                <a href="{{ url_for('marketplace.farmer_marketplace') }}">
 
                     <i class="fa-solid fa-store"></i>
 
-                    <span>Marketplace</span>
+                    <span>
+                        Marketplace
+                    </span>
 
                 </a>
 
 
-                <a href="{{ url_for('orders') }}">
+                <a href="{{ url_for('admin.admin_orders') }}">
 
                     <i class="fa-solid fa-cart-shopping"></i>
 
-                    <span>Orders</span>
+                    <span>
+                        Orders
+                    </span>
 
                 </a>
 
 
-                <a href="{{ url_for('finance') }}">
+                <a href="{{ url_for('finance.finance') }}">
 
                     <i class="fa-solid fa-indian-rupee-sign"></i>
 
-                    <span>Finance</span>
+                    <span>
+                        Finance
+                    </span>
 
                 </a>
 
 
-                <a href="{{ url_for('government') }}">
+                <a href="{{ url_for('government.government') }}">
 
                     <i class="fa-solid fa-building-columns"></i>
 
-                    <span>Government Schemes</span>
+                    <span>
+                        Government Schemes
+                    </span>
 
                 </a>
 
 
-                <a href="{{ url_for('reports') }}">
+                <a href="{{ url_for('reports.reports') }}">
 
                     <i class="fa-solid fa-file-lines"></i>
 
-                    <span>Reports</span>
+                    <span>
+                        Reports
+                    </span>
 
                 </a>
 
 
             </div>
 
+
         </section>
 
 
-
-        <!-- =========================================
+        <!-- =================================================
              FOOTER
-        ========================================== -->
+        ================================================== -->
 
         <footer>
 
             <i class="fa-solid fa-leaf"></i>
 
-            KisanVision360
+            KisanVision360+
 
-            <span>•</span>
+            <span>Ã¢â‚¬Â¢</span>
 
-            AI Powered Agriculture Platform
+            Smart Agriculture Alert Center
 
-            <span>•</span>
+            <span>Ã¢â‚¬Â¢</span>
 
-            Made in India 🇮🇳
+            Made in India Ã°Å¸â€¡Â®Ã°Å¸â€¡Â³
 
         </footer>
 
 
     </main>
+{% endblock %}
 
-</div>
-
-
-
-<!-- =========================================
-     JAVASCRIPT
-========================================== -->
-
+{% block scripts %}
 <script>
 
+/* =====================================================
+   GLOBAL LANGUAGE
+   Language is selected once in language.html.
+===================================================== */
 
-/* =========================================
-   LOAD SETTING
-========================================= */
+(function () {
+
+    const savedLanguage =
+        "{{ session.get('language', 'en') }}";
+
+    const rtlLanguages =
+        ["ur", "ks", "sd"];
+
+    document.documentElement.lang =
+        savedLanguage || "en";
+
+    document.documentElement.dir =
+        rtlLanguages.includes(savedLanguage)
+            ? "rtl"
+            : "ltr";
+
+})();
+
+
+/* =====================================================
+   NOTIFICATION SETTING
+===================================================== */
 
 document.addEventListener(
     "DOMContentLoaded",
-    function()
-    {
+    function () {
 
         const toggle =
             document.getElementById(
@@ -855,6 +2128,10 @@ document.addEventListener(
             document.getElementById(
                 "notificationStatus"
             );
+
+        if (!toggle || !status) {
+            return;
+        }
 
 
         const saved =
@@ -869,12 +2146,16 @@ document.addEventListener(
 
             status.innerText = "OFF";
 
+            status.style.color = "#d32f2f";
+
         }
         else {
 
             toggle.checked = true;
 
             status.innerText = "ON";
+
+            status.style.color = "#2e7d32";
 
         }
 
@@ -888,13 +2169,11 @@ document.addEventListener(
 );
 
 
+/* =====================================================
+   TOGGLE NOTIFICATIONS
+===================================================== */
 
-/* =========================================
-   TOGGLE
-========================================= */
-
-function toggleNotification()
-{
+function toggleNotification() {
 
     const toggle =
         document.getElementById(
@@ -907,6 +2186,11 @@ function toggleNotification()
         );
 
 
+    if (!toggle || !status) {
+        return;
+    }
+
+
     if (toggle.checked) {
 
         localStorage.setItem(
@@ -916,7 +2200,14 @@ function toggleNotification()
 
         status.innerText = "ON";
 
+        status.style.color = "#2e7d32";
+
         requestPermission();
+
+        showAppNotification(
+            "Notifications enabled.",
+            "You will receive important farming alerts."
+        );
 
     }
     else {
@@ -928,23 +2219,21 @@ function toggleNotification()
 
         status.innerText = "OFF";
 
+        status.style.color = "#d32f2f";
+
     }
 
 }
 
 
+/* =====================================================
+   BROWSER PERMISSION
+===================================================== */
 
-/* =========================================
-   REQUEST PERMISSION
-========================================= */
-
-function requestPermission()
-{
+function requestPermission() {
 
     if (!("Notification" in window)) {
-
         return;
-
     }
 
 
@@ -960,13 +2249,11 @@ function requestPermission()
 }
 
 
-
-/* =========================================
+/* =====================================================
    TEST NOTIFICATION
-========================================= */
+===================================================== */
 
-function testNotification()
-{
+function testNotification() {
 
     const toggle =
         document.getElementById(
@@ -974,9 +2261,10 @@ function testNotification()
         );
 
 
-    if (!toggle.checked) {
+    if (!toggle || !toggle.checked) {
 
-        alert(
+        showAppNotification(
+            "Notifications are OFF",
             "Please turn ON notifications first."
         );
 
@@ -985,77 +2273,135 @@ function testNotification()
     }
 
 
-    /*
-       Browser notification
-    */
+    const icon =
+        "{{ url_for(
+            'static',
+            filename='images/farmer.png'
+        ) }}";
+
+
+    /* -----------------------------------------------
+       Browser Notification
+    ------------------------------------------------ */
 
     if (
         "Notification" in window &&
         Notification.permission === "granted"
     ) {
 
-        new Notification(
-            "🌾 KisanVision360",
-            {
-                body:
-                    "Weather and farming alerts are working.",
+        try {
 
-                icon:
-                    "{{ url_for(
-                        'static',
-                        filename='images/farmer.png'
-                    ) }}"
-            }
-        );
+            new Notification(
+                "Ã°Å¸Å’Â¾ KisanVision360+",
+                {
+                    body:
+                        "Weather and farming alerts are working.",
+                    icon: icon
+                }
+            );
+
+        }
+        catch (error) {
+
+            console.log(
+                "Browser notification error:",
+                error
+            );
+
+            showAppNotification(
+                "KisanVision360+",
+                "Weather and farming alerts are working."
+            );
+
+        }
 
     }
     else {
 
-        /*
-           Works inside mobile WebView also
-           as an in-page message.
-        */
+        /* -------------------------------------------
+           APK / WebView fallback
+        ------------------------------------------- */
 
-        showAppNotification();
+        showAppNotification(
+            "KisanVision360+",
+            "Weather and farming alerts are working."
+        );
 
     }
 
 
-    /*
-       Also create database notification
-    */
+    /* -----------------------------------------------
+       Database test notification
+    ------------------------------------------------ */
 
     fetch(
         "{{ url_for(
             'notifications.test_notification'
-        ) }}"
-    )
-    .then(
-        function()
+        ) }}",
         {
-            setTimeout(
-                function()
-                {
-                    location.reload();
-                },
-                500
-            );
+            method: "GET",
+            credentials: "same-origin"
         }
-    );
+    )
+    .then(function (response) {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Notification request failed"
+            );
+
+        }
+
+        return response;
+
+    })
+    .then(function () {
+
+        setTimeout(
+            function () {
+                location.reload();
+            },
+            700
+        );
+
+    })
+    .catch(function (error) {
+
+        console.log(
+            "Test notification backend error:",
+            error
+        );
+
+    });
 
 }
 
 
+/* =====================================================
+   APK / WEBVIEW IN-PAGE NOTIFICATION
+===================================================== */
 
-/* =========================================
-   MOBILE / APK FALLBACK
-========================================= */
+function showAppNotification(
+    title,
+    message
+) {
 
-function showAppNotification()
-{
+    const oldBox =
+        document.querySelector(
+            ".app-notification"
+        );
+
+
+    if (oldBox) {
+        oldBox.remove();
+    }
+
 
     const box =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
     box.className =
@@ -1065,17 +2411,19 @@ function showAppNotification()
     box.innerHTML = `
 
         <div class="app-notification-icon">
-            🌾
+            Ã°Å¸Å’Â¾
         </div>
 
         <div>
+
             <strong>
-                KisanVision360
+                ${escapeHTML(title)}
             </strong>
 
             <p>
-                Weather and farming alerts are enabled.
+                ${escapeHTML(message)}
             </p>
+
         </div>
 
     `;
@@ -1085,17 +2433,20 @@ function showAppNotification()
 
 
     setTimeout(
-        function()
-        {
+        function () {
 
             box.classList.add(
                 "hide"
             );
 
+
             setTimeout(
-                function()
-                {
-                    box.remove();
+                function () {
+
+                    if (box) {
+                        box.remove();
+                    }
+
                 },
                 400
             );
@@ -1106,21 +2457,349 @@ function showAppNotification()
 
 }
 
+
+/* =====================================================
+   SAFE HTML
+===================================================== */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =====================================================
+   NOTIFICATION SEARCH + FILTER
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const searchInput =
+            document.getElementById(
+                "notificationSearch"
+            );
+
+        const cards =
+            Array.from(
+                document.querySelectorAll(
+                    ".notification-card"
+                )
+            );
+
+        const filterButtons =
+            document.querySelectorAll(
+                ".filter-btn"
+            );
+
+        const noResults =
+            document.getElementById(
+                "noSearchResults"
+            );
+
+
+        let currentFilter =
+            "all";
+
+
+        function applyFilters() {
+
+            const search =
+                searchInput
+                    ? searchInput.value
+                        .toLowerCase()
+                        .trim()
+                    : "";
+
+
+            let visibleCount = 0;
+
+
+            cards.forEach(
+                function (card) {
+
+                    const text =
+                        card.innerText
+                            .toLowerCase();
+
+
+                    const type =
+                        card.dataset.type ||
+                        "general";
+
+
+                    const unread =
+                        card.dataset.unread ===
+                        "true";
+
+
+                    let matchesFilter =
+                        true;
+
+
+                    /* --------------------------------
+                       CATEGORY
+                    -------------------------------- */
+
+                    if (
+                        currentFilter ===
+                        "unread"
+                    ) {
+
+                        matchesFilter =
+                            unread;
+
+                    }
+                    else if (
+                        currentFilter ===
+                        "weather"
+                    ) {
+
+                        matchesFilter =
+                            type === "weather";
+
+                    }
+                    else if (
+                        currentFilter ===
+                        "ai"
+                    ) {
+
+                        matchesFilter =
+                            type === "ai";
+
+                    }
+                    else if (
+                        currentFilter ===
+                        "market"
+                    ) {
+
+                        matchesFilter =
+                            type === "market";
+
+                    }
+                    else if (
+                        currentFilter ===
+                        "farm"
+                    ) {
+
+                        matchesFilter =
+                            [
+                                "irrigation",
+                                "disease",
+                                "government",
+                                "finance",
+                                "warning",
+                                "success",
+                                "general"
+                            ].includes(type);
+
+                    }
+
+
+                    /* --------------------------------
+                       SEARCH
+                    -------------------------------- */
+
+                    const matchesSearch =
+                        text.includes(search);
+
+
+                    const visible =
+                        matchesFilter &&
+                        matchesSearch;
+
+
+                    card.style.display =
+                        visible
+                            ? "grid"
+                            : "none";
+
+
+                    if (visible) {
+                        visibleCount++;
+                    }
+
+                }
+            );
+
+
+            if (noResults) {
+
+                noResults.style.display =
+                    visibleCount === 0
+                        ? "block"
+                        : "none";
+
+            }
+
+        }
+
+
+        if (searchInput) {
+
+            searchInput.addEventListener(
+                "input",
+                applyFilters
+            );
+
+        }
+
+
+        filterButtons.forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        filterButtons.forEach(
+                            function (btn) {
+
+                                btn.classList.remove(
+                                    "active"
+                                );
+
+                            }
+                        );
+
+
+                        this.classList.add(
+                            "active"
+                        );
+
+
+                        currentFilter =
+                            this.dataset.filter ||
+                            "all";
+
+
+                        applyFilters();
+
+                    }
+                );
+
+            }
+        );
+
+
+        applyFilters();
+
+    }
+);
+
+
+/* =====================================================
+   AUTO-HIDE FLASH MESSAGES
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const messages =
+            document.querySelectorAll(
+                ".flash-message"
+            );
+
+
+        messages.forEach(
+            function (message) {
+
+                setTimeout(
+                    function () {
+
+                        message.style.opacity =
+                            "0";
+
+                        message.style.transform =
+                            "translateY(-5px)";
+
+                        setTimeout(
+                            function () {
+
+                                message.remove();
+
+                            },
+                            300
+                        );
+
+                    },
+                    5000
+                );
+
+            }
+        );
+
+    }
+);
+
+
+/* =====================================================
+   KEYBOARD SHORTCUT
+   "/" focuses notification search.
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (
+            event.key === "/" &&
+            ![
+                "INPUT",
+                "TEXTAREA",
+                "SELECT"
+            ].includes(
+                document.activeElement.tagName
+            )
+        ) {
+
+            event.preventDefault();
+
+            const search =
+                document.getElementById(
+                    "notificationSearch"
+                );
+
+
+            if (search) {
+                search.focus();
+            }
+
+        }
+
+    }
+);
+
 </script>
-
-
-<!-- CHATBOT -->
-
-{% include "components/chatbot.html" %}
-
 <script
-src="{{ url_for(
-    'static',
-    filename='js/chatbot.js'
-) }}">
-</script>
+    src="{{ url_for(
+        'static',
+        filename='js/chatbot.js'
+    ) }}"
+></script>
+{% endblock %}
 
 
-</body>
-
-</html>

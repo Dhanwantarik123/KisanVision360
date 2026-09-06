@@ -1,0 +1,1248 @@
+/* =========================================================
+   KISANVISION360+
+   SIGNUP PAGE CSS
+========================================================= */
+
+
+/* =========================================================
+   GLOBAL RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
+
+
+body {
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    color: #1b3a20;
+
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   SIGNUP PAGE
+========================================================= */
+
+.signup-page {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    padding: 35px 20px;
+
+    background: #e8f5e9;
+}
+
+
+/* =========================================================
+   BACKGROUND IMAGE
+========================================================= */
+
+.signup-background {
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-image:
+        url("../images/background.jpg");
+
+    background-size: cover;
+
+    background-position: center;
+
+    background-repeat: no-repeat;
+
+    z-index: 0;
+}
+
+
+/* =========================================================
+   BACKGROUND OVERLAY
+========================================================= */
+
+.signup-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(27, 94, 32, 0.78),
+            rgba(46, 125, 50, 0.60),
+            rgba(0, 0, 0, 0.40)
+        );
+
+    z-index: 1;
+}
+
+
+/* =========================================================
+   MAIN WRAPPER
+========================================================= */
+
+.signup-wrapper {
+    position: relative;
+
+    z-index: 10;
+
+    width: 100%;
+    max-width: 540px;
+
+    margin: auto;
+}
+
+
+/* =========================================================
+   SIGNUP BOX
+========================================================= */
+
+.signup-box {
+    width: 100%;
+
+    padding: 35px 38px;
+
+    background:
+        rgba(255, 255, 255, 0.96);
+
+    border-radius: 24px;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.28);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.8);
+
+    backdrop-filter: blur(12px);
+
+    -webkit-backdrop-filter: blur(12px);
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.brand-section {
+    text-align: center;
+
+    margin-bottom: 24px;
+}
+
+
+.brand-logo {
+    width: 78px;
+    height: 78px;
+
+    margin: 0 auto 12px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1b5e20,
+            #43a047
+        );
+
+    box-shadow:
+        0 10px 25px rgba(27, 94, 32, 0.30);
+
+    overflow: hidden;
+}
+
+
+.brand-logo img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    padding: 8px;
+}
+
+
+.logo-fallback {
+    display: none;
+
+    color: white;
+
+    font-size: 32px;
+}
+
+
+.brand-logo img[src=""] {
+    display: none;
+}
+
+
+.brand-section h1 {
+    color: #1b5e20;
+
+    font-size: 29px;
+
+    font-weight: 800;
+
+    letter-spacing: -0.5px;
+}
+
+
+.brand-section p {
+    margin-top: 5px;
+
+    color: #607d63;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   HEADING
+========================================================= */
+
+.signup-heading {
+    text-align: center;
+
+    margin-bottom: 25px;
+}
+
+
+.signup-heading h2 {
+    color: #183d20;
+
+    font-size: 23px;
+
+    font-weight: 750;
+
+    margin-bottom: 7px;
+}
+
+
+.signup-heading p {
+    color: #6b7d6d;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   FLASH MESSAGES
+========================================================= */
+
+.flash-container {
+    margin-bottom: 18px;
+}
+
+
+.flash-message {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 12px 14px;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+
+    margin-bottom: 8px;
+}
+
+
+.flash-message.success {
+    background: #e8f5e9;
+
+    color: #1b5e20;
+
+    border:
+        1px solid #a5d6a7;
+}
+
+
+.flash-message.error {
+    background: #ffebee;
+
+    color: #b71c1c;
+
+    border:
+        1px solid #ef9a9a;
+}
+
+
+.flash-message.warning {
+    background: #fff8e1;
+
+    color: #8d6e00;
+
+    border:
+        1px solid #ffe082;
+}
+
+
+.flash-message i {
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.signup-form {
+    width: 100%;
+}
+
+
+/* =========================================================
+   FORM GROUP
+========================================================= */
+
+.form-group {
+    width: 100%;
+
+    margin-bottom: 18px;
+
+    position: relative;
+
+    z-index: 20;
+}
+
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #294b30;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+
+.form-group label i {
+    color: #2e7d32;
+
+    margin-right: 6px;
+}
+
+
+/* =========================================================
+   INPUT WRAPPER
+========================================================= */
+
+.input-wrapper {
+    width: 100%;
+
+    min-height: 50px;
+
+    display: flex;
+
+    align-items: center;
+
+    position: relative;
+
+    z-index: 30;
+
+    background: #ffffff;
+
+    border:
+        1.5px solid #d5e3d7;
+
+    border-radius: 11px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.input-wrapper:focus-within {
+    border-color: #43a047;
+
+    box-shadow:
+        0 0 0 4px rgba(67, 160, 71, 0.12);
+
+    background: #ffffff;
+}
+
+
+/* =========================================================
+   INPUT ICON
+========================================================= */
+
+.input-icon {
+    width: 46px;
+
+    flex-shrink: 0;
+
+    text-align: center;
+
+    color: #66a36b;
+
+    font-size: 15px;
+
+    pointer-events: none;
+
+    z-index: 31;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.input-wrapper input {
+    width: 100%;
+
+    height: 48px;
+
+    min-width: 0;
+
+    border: none;
+
+    outline: none;
+
+    background: transparent;
+
+    color: #193c20;
+
+    font-size: 14px;
+
+    padding: 0 13px 0 0;
+
+    position: relative;
+
+    z-index: 32;
+
+    pointer-events: auto;
+
+    user-select: text;
+}
+
+
+.input-wrapper input::placeholder {
+    color: #9aaa9d;
+}
+
+
+.input-wrapper input:focus {
+    outline: none;
+}
+
+
+/* =========================================================
+   MOBILE NUMBER
+========================================================= */
+
+.mobile-wrapper {
+    overflow: hidden;
+}
+
+
+.country-code {
+    height: 48px;
+
+    min-width: 52px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: #2e7d32;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    border-right:
+        1px solid #dce8de;
+
+    background: #f5faf5;
+
+    flex-shrink: 0;
+
+    pointer-events: none;
+
+    user-select: none;
+}
+
+
+.mobile-wrapper input {
+    padding-left: 13px;
+
+    letter-spacing: 0.5px;
+}
+
+
+/* =========================================================
+   PASSWORD TOGGLE
+========================================================= */
+
+.password-toggle {
+    width: 46px;
+    height: 48px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #78927b;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    position: relative;
+
+    z-index: 35;
+}
+
+
+.password-toggle:hover {
+    color: #2e7d32;
+}
+
+
+.password-toggle:focus {
+    outline: none;
+}
+
+
+/* =========================================================
+   PASSWORD STRENGTH
+========================================================= */
+
+.password-strength {
+    margin-top: 7px;
+}
+
+
+.strength-bar {
+    width: 100%;
+
+    height: 4px;
+
+    background: #e4ebe5;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+
+.strength-bar span {
+    display: block;
+
+    width: 0%;
+
+    height: 100%;
+
+    background: #43a047;
+
+    border-radius: 10px;
+
+    transition:
+        width 0.25s ease;
+}
+
+
+.password-strength small {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #819084;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   FIELD ERROR
+========================================================= */
+
+.field-error {
+    display: block;
+
+    min-height: 16px;
+
+    margin-top: 4px;
+
+    color: #c62828;
+
+    font-size: 11px;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   ROLE OPTIONS
+========================================================= */
+
+.role-options {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 12px;
+
+    position: relative;
+
+    z-index: 25;
+}
+
+
+.role-card {
+    display: block;
+
+    margin: 0 !important;
+
+    cursor: pointer;
+
+    position: relative;
+
+    z-index: 26;
+}
+
+
+.role-card input {
+    position: absolute;
+
+    opacity: 0;
+
+    width: 1px;
+    height: 1px;
+
+    pointer-events: none;
+}
+
+
+.role-content {
+    min-height: 82px;
+
+    padding: 12px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    border:
+        1.5px solid #dce7dd;
+
+    border-radius: 13px;
+
+    background: #ffffff;
+
+    transition:
+        all 0.2s ease;
+
+    cursor: pointer;
+}
+
+
+.role-card:hover .role-content {
+    border-color: #81c784;
+
+    background: #f7fbf7;
+}
+
+
+.role-card input:checked
++ .role-content {
+    border-color: #43a047;
+
+    background: #edf8ee;
+
+    box-shadow:
+        0 0 0 3px rgba(
+            67,
+            160,
+            71,
+            0.10
+        );
+}
+
+
+.role-icon {
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #e8f5e9;
+
+    color: #2e7d32;
+
+    font-size: 17px;
+}
+
+
+.role-text {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+
+    min-width: 0;
+}
+
+
+.role-text strong {
+    color: #25472b;
+
+    font-size: 13px;
+}
+
+
+.role-text small {
+    color: #7b8c7e;
+
+    font-size: 10px;
+
+    line-height: 1.3;
+}
+
+
+/* =========================================================
+   TERMS
+========================================================= */
+
+.terms-section {
+    margin-top: 4px;
+
+    margin-bottom: 18px;
+
+    position: relative;
+
+    z-index: 25;
+}
+
+
+.checkbox-label {
+    display: flex !important;
+
+    align-items: flex-start;
+
+    gap: 9px;
+
+    cursor: pointer;
+
+    color: #657466;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+
+    margin: 0 !important;
+}
+
+
+.checkbox-label input {
+    position: absolute;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+
+.custom-checkbox {
+    width: 17px;
+    height: 17px;
+
+    flex-shrink: 0;
+
+    margin-top: 1px;
+
+    border:
+        1.5px solid #b8c9ba;
+
+    border-radius: 4px;
+
+    background: white;
+
+    position: relative;
+
+    transition: all 0.2s ease;
+}
+
+
+.checkbox-label input:checked
++ .custom-checkbox {
+    background: #2e7d32;
+
+    border-color: #2e7d32;
+}
+
+
+.checkbox-label input:checked
++ .custom-checkbox::after {
+    content: "✓";
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%, -55%);
+
+    color: white;
+
+    font-size: 11px;
+
+    font-weight: 800;
+}
+
+
+.terms-text a {
+    color: #2e7d32;
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+
+.terms-text a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   SIGNUP BUTTON
+========================================================= */
+
+.signup-button {
+    width: 100%;
+
+    min-height: 52px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1b5e20,
+            #43a047
+        );
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 750;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(
+            46,
+            125,
+            50,
+            0.25
+        );
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
+
+    position: relative;
+
+    z-index: 30;
+}
+
+
+.signup-button:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 12px 25px rgba(
+            46,
+            125,
+            50,
+            0.32
+        );
+}
+
+
+.signup-button:active {
+    transform: translateY(0);
+}
+
+
+.signup-button:disabled {
+    cursor: not-allowed;
+
+    opacity: 0.75;
+
+    transform: none;
+}
+
+
+.signup-button i {
+    margin-right: 7px;
+}
+
+
+/* =========================================================
+   SIGNUP LOADER
+========================================================= */
+
+.signup-loader {
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+}
+
+
+/* =========================================================
+   LOGIN LINK
+========================================================= */
+
+.login-link {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    margin-top: 20px;
+
+    color: #748177;
+
+    font-size: 12px;
+}
+
+
+.login-link a {
+    color: #2e7d32;
+
+    font-weight: 750;
+
+    text-decoration: none;
+}
+
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   GLOBAL LANGUAGE
+========================================================= */
+
+.global-language-info {
+    margin-top: 17px;
+
+    padding-top: 15px;
+
+    border-top:
+        1px solid #e5ebe6;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 6px;
+
+    color: #829084;
+
+    font-size: 10px;
+
+    text-align: center;
+}
+
+
+.global-language-info i {
+    color: #43a047;
+}
+
+
+.global-language-info a {
+    color: #2e7d32;
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+
+.global-language-info a:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   SECURITY INFO
+========================================================= */
+
+.security-info {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    margin-top: 10px;
+
+    color: #89958b;
+
+    font-size: 10px;
+
+    text-align: center;
+}
+
+
+.security-info i {
+    color: #43a047;
+}
+
+
+/* =========================================================
+   RTL SUPPORT
+========================================================= */
+
+[dir="rtl"] .form-group label i {
+    margin-right: 0;
+
+    margin-left: 6px;
+}
+
+
+[dir="rtl"] .input-wrapper input {
+    padding-left: 13px;
+
+    padding-right: 0;
+}
+
+
+[dir="rtl"] .country-code {
+    border-right: none;
+
+    border-left:
+        1px solid #dce8de;
+}
+
+
+[dir="rtl"] .login-link,
+[dir="rtl"] .global-language-info,
+[dir="rtl"] .security-info {
+    direction: rtl;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .signup-page {
+        padding: 20px 12px;
+    }
+
+
+    .signup-wrapper {
+        max-width: 100%;
+    }
+
+
+    .signup-box {
+        padding: 27px 20px;
+
+        border-radius: 20px;
+    }
+
+
+    .brand-logo {
+        width: 68px;
+        height: 68px;
+    }
+
+
+    .brand-section h1 {
+        font-size: 25px;
+    }
+
+
+    .signup-heading h2 {
+        font-size: 20px;
+    }
+
+
+    .role-options {
+        grid-template-columns: 1fr;
+    }
+
+
+    .role-content {
+        min-height: 70px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+
+    .signup-page {
+        padding: 12px 8px;
+    }
+
+
+    .signup-box {
+        padding: 23px 15px;
+
+        border-radius: 17px;
+    }
+
+
+    .brand-logo {
+        width: 60px;
+        height: 60px;
+    }
+
+
+    .brand-section h1 {
+        font-size: 22px;
+    }
+
+
+    .brand-section p {
+        font-size: 11px;
+    }
+
+
+    .signup-heading h2 {
+        font-size: 18px;
+    }
+
+
+    .signup-heading p {
+        font-size: 11px;
+    }
+
+
+    .input-wrapper,
+    .input-wrapper input {
+        min-height: 48px;
+
+        height: 48px;
+    }
+
+
+    .signup-button {
+        min-height: 49px;
+    }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+    outline:
+        3px solid rgba(
+            67,
+            160,
+            71,
+            0.35
+        );
+
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+
+        animation-iteration-count: 1 !important;
+
+        transition-duration: 0.01ms !important;
+    }
+
+}

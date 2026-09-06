@@ -1,79 +1,643 @@
-<div class="card">
+﻿<!-- =========================================================
+     KISANVISION360+ LANGUAGE CARDS
+========================================================= -->
 
-    <i class="fa-solid fa-language fa-2x"></i>
 
-    <h2>Language</h2>
+<!-- ENGLISH -->
+{% extends "base.html" %}
+<button
+    type="button"
+    class="language-card selected"
+    data-language="en"
+    data-name="English"
+    onclick="selectLanguage('en', this)">
 
-    <p>Select your preferred language</p>
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
 
-    <select id="language" onchange="changeLanguage()">
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
 
-        <option value="en">English</option>
+    <div class="flag">
+        ðŸ‡¬ðŸ‡§
+    </div>
 
-        <option value="hi">हिन्दी</option>
+    <h3>
+        English
+    </h3>
 
-        <option value="mr">मराठी</option>
+    <p>
+        Continue in English
+    </p>
 
-    </select>
+</button>
 
-    <br><br>
 
-    <button onclick="saveLanguage()">
+<!-- HINDI -->
 
-        Save Language
+<button
+    type="button"
+    class="language-card"
+    data-language="hi"
+    data-name="à¤¹à¤¿à¤¨à¥à¤¦à¥€"
+    onclick="selectLanguage('hi', this)">
 
-    </button>
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
 
-</div>
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
 
-<script>
+    <div class="flag">
+        ðŸ‡®ðŸ‡³
+    </div>
 
-function saveLanguage(){
+    <h3>
+        à¤¹à¤¿à¤¨à¥à¤¦à¥€
+    </h3>
 
-    let lang=document.getElementById("language").value;
+    <p>
+        à¤¹à¤¿à¤¨à¥à¤¦à¥€ à¤®à¥‡à¤‚ à¤œà¤¾à¤°à¥€ à¤°à¤–à¥‡à¤‚
+    </p>
 
-    fetch("/set-language",{
+</button>
 
-        method:"POST",
 
-        headers:{
+<!-- MARATHI -->
 
-            "Content-Type":"application/x-www-form-urlencoded"
+<button
+    type="button"
+    class="language-card"
+    data-language="mr"
+    data-name="à¤®à¤°à¤¾à¤ à¥€"
+    onclick="selectLanguage('mr', this)">
 
-        },
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
 
-        body:"language="+lang
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
 
-    })
+    <div class="flag">
+        ðŸŸ 
+    </div>
 
-    .then(()=>{
+    <h3>
+        à¤®à¤°à¤¾à¤ à¥€
+    </h3>
 
-        alert("Language Updated Successfully");
+    <p>
+        à¤®à¤°à¤¾à¤ à¥€à¤¤ à¤¸à¥à¤°à¥‚ à¤ à¥‡à¤µà¤¾
+    </p>
 
-        location.reload();
+</button>
 
-    });
 
-}
+<!-- KANNADA -->
 
-function changeLanguage(){
+<button
+    type="button"
+    class="language-card"
+    data-language="kn"
+    data-name="à²•à²¨à³à²¨à²¡"
+    onclick="selectLanguage('kn', this)">
 
-    let lang=document.getElementById("language").value;
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
 
-    localStorage.setItem("language",lang);
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
 
-}
+    <div class="flag">
+        ðŸŸ¢
+    </div>
 
-window.onload=function(){
+    <h3>
+        à²•à²¨à³à²¨à²¡
+    </h3>
 
-    let lang=localStorage.getItem("language");
+    <p>
+        à²•à²¨à³à²¨à²¡à²¦à²²à³à²²à²¿ à²®à³à²‚à²¦à³à²µà²°à²¿à²¸à²¿
+    </p>
 
-    if(lang){
+</button>
 
-        document.getElementById("language").value=lang;
 
-    }
+<!-- TELUGU -->
 
-}
+<button
+    type="button"
+    class="language-card"
+    data-language="te"
+    data-name="à°¤à±†à°²à±à°—à±"
+    onclick="selectLanguage('te', this)">
 
-</script>
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        ðŸ”µ
+    </div>
+
+    <h3>
+        à°¤à±†à°²à±à°—à±
+    </h3>
+
+    <p>
+        à°¤à±†à°²à±à°—à±à°²à±‹ à°•à±Šà°¨à°¸à°¾à°—à°¿à°‚à°šà°‚à°¡à°¿
+    </p>
+
+</button>
+
+
+<!-- TAMIL -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="ta"
+    data-name="à®¤à®®à®¿à®´à¯"
+    onclick="selectLanguage('ta', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        ðŸŸ£
+    </div>
+
+    <h3>
+        à®¤à®®à®¿à®´à¯
+    </h3>
+
+    <p>
+        à®¤à®®à®¿à®´à®¿à®²à¯ à®¤à¯Šà®Ÿà®°à®µà¯à®®à¯
+    </p>
+
+</button>
+
+
+<!-- MALAYALAM -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="ml"
+    data-name="à´®à´²à´¯à´¾à´³à´‚"
+    onclick="selectLanguage('ml', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        ðŸŸ¡
+    </div>
+
+    <h3>
+        à´®à´²à´¯à´¾à´³à´‚
+    </h3>
+
+    <p>
+        à´®à´²à´¯à´¾à´³à´¤àµà´¤à´¿àµ½ à´¤àµà´Ÿà´°àµà´•
+    </p>
+
+</button>
+
+
+<!-- GUJARATI -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="gu"
+    data-name="àª—à«àªœàª°àª¾àª¤à«€"
+    onclick="selectLanguage('gu', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        ðŸ”´
+    </div>
+
+    <h3>
+        àª—à«àªœàª°àª¾àª¤à«€
+    </h3>
+
+    <p>
+        àª—à«àªœàª°àª¾àª¤à«€àª®àª¾àª‚ àªšàª¾àª²à« àª°àª¾àª–à«‹
+    </p>
+
+</button>
+
+
+<!-- PUNJABI -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="pa"
+    data-name="à¨ªà©°à¨œà¨¾à¨¬à©€"
+    onclick="selectLanguage('pa', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        âšª
+    </div>
+
+    <h3>
+        à¨ªà©°à¨œà¨¾à¨¬à©€
+    </h3>
+
+    <p>
+        à¨ªà©°à¨œà¨¾à¨¬à©€ à¨µà¨¿à©±à¨š à¨œà¨¾à¨°à©€ à¨°à©±à¨–à©‹
+    </p>
+
+</button>
+
+
+<!-- BENGALI -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="bn"
+    data-name="à¦¬à¦¾à¦‚à¦²à¦¾"
+    onclick="selectLanguage('bn', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        ðŸŸ¤
+    </div>
+
+    <h3>
+        à¦¬à¦¾à¦‚à¦²à¦¾
+    </h3>
+
+    <p>
+        à¦¬à¦¾à¦‚à¦²à¦¾à¦¯à¦¼ à¦šà¦¾à¦²à¦¿à¦¯à¦¼à§‡ à¦¯à¦¾à¦¨
+    </p>
+
+</button>
+
+
+<!-- ASSAMESE -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="as"
+    data-name="à¦…à¦¸à¦®à§€à¦¯à¦¼à¦¾"
+    onclick="selectLanguage('as', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        ðŸŸ©
+    </div>
+
+    <h3>
+        à¦…à¦¸à¦®à§€à¦¯à¦¼à¦¾
+    </h3>
+
+    <p>
+        à¦…à¦¸à¦®à§€à¦¯à¦¼à¦¾à¦¤ à¦†à¦—à¦¬à¦¾à¦¢à¦¼à¦•
+    </p>
+
+</button>
+
+
+<!-- ODIA -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="or"
+    data-name="à¬“à¬¡à¬¼à¬¿à¬†"
+    onclick="selectLanguage('or', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        ðŸŸ¦
+    </div>
+
+    <h3>
+        à¬“à¬¡à¬¼à¬¿à¬†
+    </h3>
+
+    <p>
+        à¬“à¬¡à¬¼à¬¿à¬†à¬°à­‡ à¬œà¬¾à¬°à¬¿ à¬°à¬–à¬¨à­à¬¤à­
+    </p>
+
+</button>
+
+
+<!-- URDU -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="ur"
+    data-name="Ø§Ø±Ø¯Ùˆ"
+    onclick="selectLanguage('ur', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-left"></i>
+    </span>
+
+    <div class="flag">
+        ðŸŸ¢
+    </div>
+
+    <h3>
+        Ø§Ø±Ø¯Ùˆ
+    </h3>
+
+    <p>
+        Ø§Ø±Ø¯Ùˆ Ù…ÛŒÚº Ø¬Ø§Ø±ÛŒ Ø±Ú©Ú¾ÛŒÚº
+    </p>
+
+</button>
+
+
+<!-- NEPALI -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="ne"
+    data-name="à¤¨à¥‡à¤ªà¤¾à¤²à¥€"
+    onclick="selectLanguage('ne', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        ðŸ‡³ðŸ‡µ
+    </div>
+
+    <h3>
+        à¤¨à¥‡à¤ªà¤¾à¤²à¥€
+    </h3>
+
+    <p>
+        à¤¨à¥‡à¤ªà¤¾à¤²à¥€à¤®à¤¾ à¤œà¤¾à¤°à¥€ à¤°à¤¾à¤–à¥à¤¨à¥à¤¹à¥‹à¤¸à¥
+    </p>
+
+</button>
+
+
+<!-- SANSKRIT -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="sa"
+    data-name="à¤¸à¤‚à¤¸à¥à¤•à¥ƒà¤¤à¤®à¥"
+    onclick="selectLanguage('sa', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        ðŸ•‰ï¸
+    </div>
+
+    <h3>
+        à¤¸à¤‚à¤¸à¥à¤•à¥ƒà¤¤à¤®à¥
+    </h3>
+
+    <p>
+        à¤¸à¤‚à¤¸à¥à¤•à¥ƒà¤¤à¥‡à¤¨ à¤…à¤—à¥à¤°à¥‡ à¤—à¤šà¥à¤›à¤¤à¥
+    </p>
+
+</button>
+
+
+<!-- KONKANI -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="kok"
+    data-name="à¤•à¥‹à¤‚à¤•à¤£à¥€"
+    onclick="selectLanguage('kok', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        ðŸŸ 
+    </div>
+
+    <h3>
+        à¤•à¥‹à¤‚à¤•à¤£à¥€
+    </h3>
+
+    <p>
+        à¤•à¥‹à¤‚à¤•à¤£à¥€à¤¤ à¤¸à¥à¤°à¥‚ à¤¦à¤µà¤°à¤¾à¤¤
+    </p>
+
+</button>
+
+
+<!-- MAITHILI -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="mai"
+    data-name="à¤®à¥ˆà¤¥à¤¿à¤²à¥€"
+    onclick="selectLanguage('mai', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        ðŸŸ¡
+    </div>
+
+    <h3>
+        à¤®à¥ˆà¤¥à¤¿à¤²à¥€
+    </h3>
+
+    <p>
+        à¤®à¥ˆà¤¥à¤¿à¤²à¥€à¤®à¥‡ à¤œà¤¾à¤°à¥€ à¤°à¤¾à¤–à¥‚
+    </p>
+
+</button>
+
+
+<!-- KASHMIRI -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="ks"
+    data-name="à¤•à¥‰à¤¶à¥à¤°"
+    onclick="selectLanguage('ks', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-left"></i>
+    </span>
+
+    <div class="flag">
+        ðŸŸ¢
+    </div>
+
+    <h3>
+        à¤•à¥‰à¤¶à¥à¤°
+    </h3>
+
+    <p>
+        à¤•à¥‰à¤¶à¥à¤° à¤œà¤¼à¤¬à¤¾à¤¨à¤¸ à¤®à¤‚à¤œà¤¼ à¤œà¤¾à¤°à¥€
+    </p>
+
+</button>
+
+
+<!-- SINDHI -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="sd"
+    data-name="Ø³Ù†ÚŒÙŠ"
+    onclick="selectLanguage('sd', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-left"></i>
+    </span>
+
+    <div class="flag">
+        ðŸ”µ
+    </div>
+
+    <h3>
+        Ø³Ù†ÚŒÙŠ
+    </h3>
+
+    <p>
+        Ø³Ù†ÚŒÙŠ Û¾ Ø¬Ø§Ø±ÙŠ Ø±Ú©Ùˆ
+    </p>
+
+</button>
+
+
+<!-- MANIPURI -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="mni"
+    data-name="à¦®à§ˆà¦¤à§ˆà¦²à§‹à¦¨"
+    onclick="selectLanguage('mni', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        ðŸŸ£
+    </div>
+
+    <h3>
+        à¦®à§ˆà¦¤à§ˆà¦²à§‹à¦¨
+    </h3>
+
+    <p>
+        à¦®à§ˆà¦¤à§ˆà¦²à§‹à¦¨à¦¦à¦¾ à¦¥à¦¾à¦—à§Žà¦ªà¦¾
+    </p>
+
+</button>

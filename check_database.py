@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 
 db = sqlite3.connect(
@@ -13,3 +13,4 @@ print("Tables:")
 print(tables)
 
 db.close()
+

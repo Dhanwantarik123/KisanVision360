@@ -1,67 +1,921 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿{% extends "base.html" %}
 
-<head>
+{% block title %}KisanVision360+ | Nearby Dealers{% endblock %}
 
-<meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<title>
-KisanVision360 | Nearby Dealers
-</title>
-
-
+{% block head %}
 <link rel="stylesheet"
-      href="{{ url_for('static', filename='css/sidebar.css') }}">
+          href="{{ url_for('static', filename='css/dealers.css') }}">
+<style>
 
-<link rel="stylesheet"
-      href="{{ url_for('static', filename='css/dealers.css') }}">
+        /* =====================================================
+           KISANVISION360+ DEALER INTELLIGENCE
+        ====================================================== */
 
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        :root {
+            --green-dark: #1b5e20;
+            --green: #2e7d32;
+            --green-light: #e8f5e9;
+            --green-soft: #f5faf6;
+            --orange: #fb8c00;
+            --blue: #1565c0;
+            --red: #c62828;
+            --text: #263238;
+            --muted: #78909c;
+            --border: #dfe9e1;
+            --white: #ffffff;
+            --background: #f4f8f5;
+            --shadow: 0 10px 30px rgba(27, 94, 32, .07);
+        }
 
-</head>
+
+        * {
+            box-sizing: border-box;
+        }
 
 
-<body>
+        body {
+            margin: 0;
+            background: var(--background);
+            color: var(--text);
+            font-family: Arial, sans-serif;
+        }
 
 
-<!-- ================= SIDEBAR ================= -->
+        .main-content {
+            min-height: 100vh;
+            padding: 25px;
+        }
 
-{% include "components/sidebar.html" %}
+
+        /* =====================================================
+           TOPBAR
+        ====================================================== */
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+
+        .title-section {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+
+        .title-icon {
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            background: var(--green-light);
+            color: var(--green);
+            font-size: 23px;
+        }
+
+
+        .title-section h1 {
+            margin: 0;
+            color: var(--green-dark);
+            font-size: 25px;
+        }
+
+
+        .title-section p {
+            margin: 5px 0 0;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+
+        .profile img {
+            width: 45px;
+            height: 45px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #d8ead9;
+        }
+
+
+        .profile h4 {
+            margin: 0;
+            font-size: 12px;
+        }
+
+
+        .profile span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 9px;
+        }
+
+
+        .profile span i {
+            color: #43a047;
+            font-size: 6px;
+        }
+
+
+        /* =====================================================
+           SMART STATUS
+        ====================================================== */
+
+        .smart-status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 13px 16px;
+            border: 1px solid #d3e8d5;
+            border-radius: 14px;
+            background: linear-gradient(
+                100deg,
+                #e8f5e9,
+                #fbfefb
+            );
+        }
+
+
+        .smart-status-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+
+        .smart-status-icon {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: var(--green);
+            color: white;
+        }
+
+
+        .smart-status strong {
+            display: block;
+            color: var(--green-dark);
+            font-size: 11px;
+        }
+
+
+        .smart-status p {
+            margin: 3px 0 0;
+            color: var(--muted);
+            font-size: 9px;
+        }
+
+
+        .location-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 10px;
+            border-radius: 20px;
+            background: white;
+            color: var(--green);
+            font-size: 9px;
+            font-weight: bold;
+        }
+
+
+        /* =====================================================
+           HERO
+        ====================================================== */
+
+        .dealer-banner {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 20px;
+            padding: 25px;
+            overflow: hidden;
+            border-radius: 20px;
+            background:
+                linear-gradient(
+                    120deg,
+                    #1b5e20,
+                    #388e3c
+                );
+            color: white;
+            box-shadow: 0 15px 35px rgba(27,94,32,.15);
+        }
+
+
+        .dealer-banner::after {
+            content: "";
+            position: absolute;
+            width: 230px;
+            height: 230px;
+            right: -90px;
+            top: -110px;
+            border: 35px solid rgba(255,255,255,.07);
+            border-radius: 50%;
+        }
+
+
+        .banner-icon {
+            position: relative;
+            z-index: 1;
+            width: 70px;
+            height: 70px;
+            flex: 0 0 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+            background: rgba(255,255,255,.12);
+            font-size: 31px;
+        }
+
+
+        .dealer-banner h2 {
+            position: relative;
+            z-index: 1;
+            margin: 0 0 6px;
+            font-size: 22px;
+        }
+
+
+        .dealer-banner p {
+            position: relative;
+            z-index: 1;
+            max-width: 750px;
+            margin: 0;
+            color: #d9eedb;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           SEARCH
+        ====================================================== */
+
+        .search-card {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 18px;
+            padding: 15px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+
+
+        .search-box {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 11px 13px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: #fbfdfb;
+        }
+
+
+        .search-box i {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+
+        .search-box input {
+            width: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: var(--text);
+            font-size: 11px;
+        }
+
+
+        .location-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 11px 15px;
+            border: none;
+            border-radius: 10px;
+            background: var(--green);
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+
+        .location-btn:hover {
+            background: var(--green-dark);
+            transform: translateY(-1px);
+        }
+
+
+        /* =====================================================
+           STATISTICS
+        ====================================================== */
+
+        .dealer-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 13px;
+            margin-bottom: 25px;
+        }
+
+
+        .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 16px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+
+
+        .stat-icon {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 11px;
+            background: var(--green-light);
+            color: var(--green);
+        }
+
+
+        .stat-card strong {
+            display: block;
+            color: var(--green-dark);
+            font-size: 15px;
+        }
+
+
+        .stat-card span {
+            display: block;
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 9px;
+        }
+
+
+        /* =====================================================
+           SECTION HEADER
+        ====================================================== */
+
+        .dealer-section {
+            margin-bottom: 25px;
+        }
+
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 14px;
+        }
+
+
+        .section-heading h2 {
+            margin: 0;
+            color: var(--green-dark);
+            font-size: 20px;
+        }
+
+
+        .section-heading h2 i {
+            color: var(--green);
+            margin-right: 5px;
+        }
+
+
+        .section-heading p {
+            margin: 5px 0 0;
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+
+        .dealer-count {
+            padding: 7px 11px;
+            border-radius: 20px;
+            background: var(--green-light);
+            color: var(--green-dark);
+            font-size: 9px;
+            font-weight: bold;
+        }
+
+
+        /* =====================================================
+           DEALER GRID
+        ====================================================== */
+
+        .dealer-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+            gap: 15px;
+        }
+
+
+        .dealer-card {
+            display: flex;
+            flex-direction: column;
+            min-height: 245px;
+            padding: 17px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 17px;
+            box-shadow: var(--shadow);
+            transition: .25s ease;
+        }
+
+
+        .dealer-card:hover {
+            transform: translateY(-4px);
+            border-color: #b8d6bb;
+            box-shadow: 0 15px 35px rgba(27,94,32,.12);
+        }
+
+
+        .dealer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+
+        .dealer-icon {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: var(--green-light);
+            color: var(--green);
+            font-size: 18px;
+        }
+
+
+        .available {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 8px;
+            border-radius: 20px;
+            background: #edf8ee;
+            color: #2e7d32;
+            font-size: 8px;
+            font-weight: bold;
+        }
+
+
+        .available i {
+            font-size: 6px;
+        }
+
+
+        .dealer-body {
+            flex: 1;
+            padding: 17px 0 12px;
+        }
+
+
+        .dealer-body h2 {
+            margin: 0 0 12px;
+            color: var(--green-dark);
+            font-size: 15px;
+        }
+
+
+        .dealer-info {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+
+        .dealer-info p {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin: 0;
+            color: var(--muted);
+            font-size: 9px;
+            line-height: 1.5;
+        }
+
+
+        .dealer-info i {
+            width: 13px;
+            margin-top: 2px;
+            color: var(--green);
+        }
+
+
+        /* =====================================================
+           DEALER INTELLIGENCE
+        ====================================================== */
+
+        .dealer-intelligence {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 13px;
+        }
+
+
+        .dealer-intelligence span {
+            padding: 7px 5px;
+            text-align: center;
+            border-radius: 8px;
+            background: var(--green-soft);
+            color: var(--green-dark);
+            font-size: 7px;
+            font-weight: bold;
+        }
+
+
+        .dealer-intelligence i {
+            margin-right: 3px;
+            color: var(--green);
+        }
+
+
+        /* =====================================================
+           BUTTONS
+        ====================================================== */
+
+        .dealer-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+
+        .contact-btn,
+        .map-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 7px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-size: 9px;
+            font-weight: bold;
+            transition: .2s ease;
+        }
+
+
+        .contact-btn {
+            background: var(--green);
+            color: white;
+        }
+
+
+        .contact-btn:hover {
+            background: var(--green-dark);
+        }
+
+
+        .map-btn {
+            background: var(--green-light);
+            color: var(--green-dark);
+        }
+
+
+        .map-btn:hover {
+            background: #d5ebd7;
+        }
+
+
+        /* =====================================================
+           NO RESULT
+        ====================================================== */
+
+        .search-empty {
+            display: none;
+            padding: 30px;
+            text-align: center;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+        }
+
+
+        .search-empty i {
+            margin-bottom: 10px;
+            color: var(--muted);
+            font-size: 28px;
+        }
+
+
+        .search-empty h3 {
+            margin: 0;
+            color: var(--green-dark);
+            font-size: 15px;
+        }
+
+
+        .search-empty p {
+            margin: 6px 0 0;
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+
+        /* =====================================================
+           EMPTY STATE
+        ====================================================== */
+
+        .empty-state {
+            grid-column: 1 / -1;
+            padding: 45px 20px;
+            text-align: center;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 17px;
+        }
+
+
+        .empty-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+            border-radius: 50%;
+            background: var(--green-light);
+            color: var(--green);
+            font-size: 24px;
+        }
+
+
+        .empty-state h2 {
+            margin: 13px 0 5px;
+            color: var(--green-dark);
+            font-size: 17px;
+        }
+
+
+        .empty-state p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+
+        /* =====================================================
+           INFORMATION BANNER
+        ====================================================== */
+
+        .dealer-info-banner {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+            margin-bottom: 25px;
+            padding: 18px;
+            border: 1px solid #d3e8d5;
+            border-radius: 15px;
+            background: var(--green-light);
+        }
+
+
+        .info-icon {
+            width: 38px;
+            height: 38px;
+            flex: 0 0 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: white;
+            color: var(--green);
+        }
+
+
+        .dealer-info-banner h3 {
+            margin: 0;
+            color: var(--green-dark);
+            font-size: 13px;
+        }
+
+
+        .dealer-info-banner p {
+            margin: 5px 0 0;
+            color: #56745a;
+            font-size: 10px;
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ====================================================== */
+
+        footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 7px;
+            padding: 22px 10px;
+            color: var(--muted);
+            font-size: 9px;
+            text-align: center;
+        }
+
+
+        footer i {
+            color: var(--green);
+        }
+
+
+        footer strong {
+            color: var(--green-dark);
+        }
+
+
+        /* =====================================================
+           RTL
+        ====================================================== */
+
+        html[dir="rtl"] .section-heading h2 i {
+            margin-right: 0;
+            margin-left: 5px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 1050px) {
+
+            .dealer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            .dealer-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .dealer-intelligence {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .search-card {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .location-btn {
+                width: 100%;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .main-content {
+                padding: 15px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+            }
+
+            .profile {
+                display: none;
+            }
+
+            .dealer-banner {
+                align-items: flex-start;
+                padding: 18px;
+            }
+
+            .banner-icon {
+                width: 55px;
+                height: 55px;
+                flex-basis: 55px;
+                font-size: 23px;
+            }
+
+            .dealer-banner h2 {
+                font-size: 18px;
+            }
+
+            .dealer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .smart-status {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .location-status {
+                width: 100%;
+                justify-content: center;
+            }
+
+        }
+
+    </style>
+{% endblock %}
+
+{% block page_title %}Nearby Dealers{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<!-- =====================================================
+     SIDEBAR
+====================================================== -->
 
 
 
-<!-- ================= MAIN CONTENT ================= -->
+
+
+<!-- =====================================================
+     MAIN CONTENT
+====================================================== -->
 
 <div class="main-content">
 
 
-    <!-- ================= TOPBAR ================= -->
+    <!-- =================================================
+         TOPBAR
+    ================================================== -->
 
-    <header class="topbar">
+    
 
 
-        <div class="title-section">
+
+    <!-- =================================================
+         SMART STATUS
+    ================================================== -->
+
+    <div class="smart-status">
 
 
-            <div class="title-icon">
+        <div class="smart-status-left">
 
-                <i class="fa-solid fa-store"></i>
+
+            <div class="smart-status-icon">
+
+                <i class="fa-solid fa-location-crosshairs"></i>
 
             </div>
 
 
             <div>
 
-                <h1>
-                    Nearby Farm Machinery Dealers
-                </h1>
+                <strong>
+                    Smart Dealer Finder
+                </strong>
 
                 <p>
-                    Find agricultural machinery dealers near you
+                    Search available machinery dealers and open their
+                    location directly in Google Maps.
                 </p>
 
             </div>
@@ -70,42 +924,23 @@ KisanVision360 | Nearby Dealers
         </div>
 
 
+        <div class="location-status"
+             id="locationStatus">
 
-        <!-- PROFILE -->
+            <i class="fa-solid fa-location-dot"></i>
 
-        <div class="profile">
-
-
-            <img
-                src="{{ url_for(
-                    'static',
-                    filename='images/farmer.jpg'
-                ) }}"
-                alt="Farmer">
-
-
-            <div>
-
-                <h4>
-                    {{ name }}
-                </h4>
-
-                <span>
-                    <i class="fa-solid fa-circle"></i>
-                    Farmer
-                </span>
-
-            </div>
-
+            Location Ready
 
         </div>
 
 
-    </header>
+    </div>
 
 
 
-    <!-- ================= HERO ================= -->
+    <!-- =================================================
+         HERO
+    ================================================== -->
 
     <section class="dealer-banner">
 
@@ -125,7 +960,8 @@ KisanVision360 | Nearby Dealers
 
             <p>
                 Connect with trusted dealers for tractors,
-                harvesters, pumps and other agricultural equipment.
+                harvesters, pumps, irrigation equipment and
+                other agricultural machinery.
             </p>
 
         </div>
@@ -135,7 +971,9 @@ KisanVision360 | Nearby Dealers
 
 
 
-    <!-- ================= SEARCH ================= -->
+    <!-- =================================================
+         SEARCH
+    ================================================== -->
 
     <div class="search-card">
 
@@ -148,7 +986,8 @@ KisanVision360 | Nearby Dealers
             <input
                 type="text"
                 id="dealerSearch"
-                placeholder="Search dealer or location...">
+                placeholder="Search dealer or location..."
+                autocomplete="off">
 
 
         </div>
@@ -170,7 +1009,9 @@ KisanVision360 | Nearby Dealers
 
 
 
-    <!-- ================= STATISTICS ================= -->
+    <!-- =================================================
+         STATISTICS
+    ================================================== -->
 
     <div class="dealer-stats">
 
@@ -253,7 +1094,9 @@ KisanVision360 | Nearby Dealers
 
 
 
-    <!-- ================= DEALER SECTION ================= -->
+    <!-- =================================================
+         DEALERS
+    ================================================== -->
 
     <section class="dealer-section">
 
@@ -279,7 +1122,8 @@ KisanVision360 | Nearby Dealers
             </div>
 
 
-            <span class="dealer-count">
+            <span class="dealer-count"
+                  id="dealerCount">
 
                 {{ dealers|length }}
 
@@ -292,7 +1136,7 @@ KisanVision360 | Nearby Dealers
 
 
 
-        <!-- ================= DEALER GRID ================= -->
+        <!-- DEALER GRID -->
 
         <div class="dealer-grid"
              id="dealerGrid">
@@ -305,7 +1149,7 @@ KisanVision360 | Nearby Dealers
                  data-search="{{ dealer.name }} {{ dealer.location }}">
 
 
-                <!-- CARD HEADER -->
+                <!-- HEADER -->
 
                 <div class="dealer-header">
 
@@ -330,7 +1174,7 @@ KisanVision360 | Nearby Dealers
 
 
 
-                <!-- DEALER INFO -->
+                <!-- BODY -->
 
                 <div class="dealer-body">
 
@@ -372,7 +1216,43 @@ KisanVision360 | Nearby Dealers
 
 
 
-                <!-- BUTTONS -->
+                <!-- SMART INFORMATION -->
+
+                <div class="dealer-intelligence">
+
+
+                    <span>
+
+                        <i class="fa-solid fa-tractor"></i>
+
+                        Machinery
+
+                    </span>
+
+
+                    <span>
+
+                        <i class="fa-solid fa-phone"></i>
+
+                        Contact
+
+                    </span>
+
+
+                    <span>
+
+                        <i class="fa-solid fa-map-location-dot"></i>
+
+                        Map
+
+                    </span>
+
+
+                </div>
+
+
+
+                <!-- ACTIONS -->
 
                 <div class="dealer-actions">
 
@@ -381,11 +1261,9 @@ KisanVision360 | Nearby Dealers
                         href="tel:{{ dealer.phone }}"
                         class="contact-btn">
 
-
                         <i class="fa-solid fa-phone"></i>
 
                         Contact Dealer
-
 
                     </a>
 
@@ -393,13 +1271,12 @@ KisanVision360 | Nearby Dealers
                     <a
                         href="https://www.google.com/maps/search/?api=1&query={{ dealer.location | urlencode }}"
                         target="_blank"
+                        rel="noopener noreferrer"
                         class="map-btn">
-
 
                         <i class="fa-solid fa-map-location-dot"></i>
 
                         View Map
-
 
                     </a>
 
@@ -444,11 +1321,36 @@ KisanVision360 | Nearby Dealers
         </div>
 
 
+
+        <!-- SEARCH EMPTY -->
+
+        <div class="search-empty"
+             id="searchEmpty">
+
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+
+            <h3>
+                No Matching Dealers
+            </h3>
+
+
+            <p>
+                Try another dealer name, village, city or location.
+            </p>
+
+
+        </div>
+
+
     </section>
 
 
 
-    <!-- ================= INFORMATION ================= -->
+    <!-- =================================================
+         INFORMATION
+    ================================================== -->
 
     <section class="dealer-info-banner">
 
@@ -470,7 +1372,8 @@ KisanVision360 | Nearby Dealers
             <p>
                 Contact a nearby dealer to enquire about tractors,
                 harvesters, irrigation equipment, pumps and other
-                agricultural machinery.
+                agricultural machinery. Always confirm price,
+                availability and service details directly with the dealer.
             </p>
 
         </div>
@@ -480,18 +1383,20 @@ KisanVision360 | Nearby Dealers
 
 
 
-    <!-- ================= FOOTER ================= -->
+    <!-- =================================================
+         FOOTER
+    ================================================== -->
 
     <footer>
 
         <i class="fa-solid fa-leaf"></i>
 
         <strong>
-            KisanVision360
+            KisanVision360+
         </strong>
 
         <span>
-            •
+            â€¢
         </span>
 
         Smart Farming Equipment Support
@@ -503,73 +1408,179 @@ KisanVision360 | Nearby Dealers
 
 
 
-<!-- ================= JAVASCRIPT ================= -->
+<!-- =====================================================
+     JAVASCRIPT
+====================================================== -->
+{% endblock %}
 
+{% block scripts %}
 <script>
 
 
-/* ================= SEARCH ================= */
-
-const searchInput =
-    document.getElementById("dealerSearch");
-
-
-const dealerCards =
-    document.querySelectorAll(".dealer-card");
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
 
-if (searchInput) {
+        /* ================================================
+           GLOBAL LANGUAGE
+        ================================================= */
 
-    searchInput.addEventListener(
-        "input",
-        function () {
-
-
-            const searchValue =
-                this.value.toLowerCase().trim();
+        document.documentElement.lang =
+            "{{ session.get('language', 'en') }}";
 
 
-            dealerCards.forEach(
-                function(card) {
+
+        /* ================================================
+           SEARCH
+        ================================================= */
+
+        const searchInput =
+            document.getElementById("dealerSearch");
 
 
-                    const text =
-                        card.dataset.search.toLowerCase();
+        const dealerCards =
+            document.querySelectorAll(".dealer-card");
 
 
-                    if (
-                        text.includes(searchValue)
-                    ) {
+        const searchEmpty =
+            document.getElementById("searchEmpty");
 
-                        card.style.display =
-                            "block";
+
+        const dealerCount =
+            document.getElementById("dealerCount");
+
+
+        if (searchInput) {
+
+
+            searchInput.addEventListener(
+                "input",
+                function () {
+
+
+                    const searchValue =
+                        this.value
+                            .toLowerCase()
+                            .trim();
+
+
+                    let visibleCount = 0;
+
+
+                    dealerCards.forEach(
+                        function (card) {
+
+
+                            const searchText =
+                                (
+                                    card.dataset.search || ""
+                                ).toLowerCase();
+
+
+                            if (
+                                !searchValue ||
+                                searchText.includes(searchValue)
+                            ) {
+
+                                card.style.display =
+                                    "flex";
+
+                                visibleCount++;
+
+                            }
+
+                            else {
+
+                                card.style.display =
+                                    "none";
+
+                            }
+
+                        }
+                    );
+
+
+                    if (dealerCount) {
+
+                        dealerCount.textContent =
+                            visibleCount + " Dealers";
 
                     }
 
-                    else {
 
-                        card.style.display =
-                            "none";
+                    if (searchEmpty) {
+
+                        searchEmpty.style.display =
+                            (
+                                searchValue &&
+                                visibleCount === 0
+                            )
+                                ? "block"
+                                : "none";
 
                     }
 
                 }
             );
 
-
         }
-    );
-
-}
 
 
 
-/* ================= LOCATION ================= */
+        /* ================================================
+           CARD ANIMATION
+        ================================================= */
+
+        dealerCards.forEach(
+            function (card, index) {
+
+                card.style.opacity = "0";
+                card.style.transform = "translateY(10px)";
+
+                setTimeout(
+                    function () {
+
+                        card.style.transition =
+                            "opacity .35s ease, transform .35s ease";
+
+                        card.style.opacity = "1";
+                        card.style.transform = "translateY(0)";
+
+                    },
+                    index * 60
+                );
+
+            }
+        );
+
+    }
+);
+
+
+
+/* =====================================================
+   GEOLOCATION
+====================================================== */
 
 function findLocation() {
 
 
+    const status =
+        document.getElementById("locationStatus");
+
+
     if (!navigator.geolocation) {
+
+
+        if (status) {
+
+            status.innerHTML =
+                '<i class="fa-solid fa-triangle-exclamation"></i> '
+                + 'Location Not Supported';
+
+        }
+
 
         alert(
             "Location service is not supported by your browser."
@@ -580,9 +1591,20 @@ function findLocation() {
     }
 
 
+
+    if (status) {
+
+        status.innerHTML =
+            '<i class="fa-solid fa-spinner fa-spin"></i> '
+            + 'Finding Location...';
+
+    }
+
+
+
     navigator.geolocation.getCurrentPosition(
 
-        function(position) {
+        function (position) {
 
 
             const latitude =
@@ -593,6 +1615,15 @@ function findLocation() {
                 position.coords.longitude;
 
 
+            if (status) {
+
+                status.innerHTML =
+                    '<i class="fa-solid fa-circle-check"></i> '
+                    + 'Location Found';
+
+            }
+
+
             window.open(
                 "https://www.google.com/maps/search/?api=1&query="
                 + latitude
@@ -601,16 +1632,32 @@ function findLocation() {
                 "_blank"
             );
 
-
         },
 
 
-        function() {
+        function () {
+
+
+            if (status) {
+
+                status.innerHTML =
+                    '<i class="fa-solid fa-triangle-exclamation"></i> '
+                    + 'Permission Required';
+
+            }
+
 
             alert(
                 "Unable to access your location. Please allow location permission."
             );
 
+        },
+
+
+        {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 60000
         }
 
     );
@@ -618,8 +1665,5 @@ function findLocation() {
 }
 
 </script>
+{% endblock %}
 
-
-</body>
-
-</html>

@@ -1,945 +1,2435 @@
-```html
-<!DOCTYPE html>
-<html lang="en">
+﻿{% extends "base.html" %}
 
-<head>
+{% block title %}KisanVision360+ | Smart Farm Reports{% endblock %}
 
-    <meta charset="UTF-8">
+{% block head %}
+<link rel="stylesheet"
+          href="{{ url_for('static', filename='css/reports.css') }}">
+<style>
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+        /* =====================================================
+           KISANVISION360+ REPORT ENHANCEMENTS
+        ===================================================== */
 
-    <title>KisanVision360 | Farm Reports</title>
+        :root {
+            --kv-green: #1b5e20;
+            --kv-green-light: #43a047;
+            --kv-orange: #fb8c00;
+            --kv-blue: #1976d2;
+            --kv-red: #d32f2f;
+            --kv-text: #183b24;
+            --kv-muted: #66806f;
+            --kv-border: #e4eee7;
+            --kv-bg: #f5f9f6;
+            --kv-white: #ffffff;
+            --kv-shadow: 0 12px 30px rgba(27, 94, 32, 0.08);
+        }
 
-    <link rel="stylesheet"
-          href="{{ url_for('static',
-          filename='css/sidebar.css') }}">
+        * {
+            box-sizing: border-box;
+        }
 
-    <link rel="stylesheet"
-          href="{{ url_for('static',
-          filename='css/reports.css') }}">
+        html {
+            scroll-behavior: smooth;
+        }
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        body {
+            margin: 0;
+            background: var(--kv-bg);
+            color: var(--kv-text);
+        }
 
-</head>
+        .reports-container {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 24px;
+        }
 
-<body>
+        /* =====================================================
+           SMART STATUS BAR
+        ===================================================== */
 
-{% include "components/sidebar.html" %}
+        .smart-status-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .smart-status {
+            background: #ffffff;
+            border: 1px solid var(--kv-border);
+            border-radius: 14px;
+            padding: 13px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 5px 18px rgba(27, 94, 32, 0.04);
+        }
+
+        .smart-status-icon {
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e8f5e9;
+            color: var(--kv-green);
+        }
+
+        .smart-status strong {
+            display: block;
+            font-size: 13px;
+            color: var(--kv-text);
+        }
+
+        .smart-status span {
+            font-size: 11px;
+            color: var(--kv-muted);
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .reports-header {
+            background: linear-gradient(135deg, #ffffff, #f0f8f2);
+            border: 1px solid var(--kv-border);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--kv-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .reports-header h1 {
+            margin: 0 0 8px;
+            color: var(--kv-green);
+        }
+
+        .reports-header p {
+            margin: 0;
+            color: var(--kv-muted);
+            line-height: 1.6;
+        }
+
+        .reports-header .profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .reports-header .profile img {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #e8f5e9;
+        }
+
+        .reports-header .profile h4 {
+            margin: 0 0 4px;
+            color: var(--kv-text);
+        }
+
+        .reports-header .profile span {
+            color: var(--kv-muted);
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           ACTION BUTTONS
+        ===================================================== */
+
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .action {
+            border: 0;
+            text-decoration: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 17px;
+            border-radius: 12px;
+            font-weight: 700;
+            transition: 0.25s ease;
+            font-size: 14px;
+        }
+
+        .action:hover {
+            transform: translateY(-2px);
+        }
+
+        .action.dashboard {
+            background: #e8f5e9;
+            color: var(--kv-green);
+        }
+
+        .action.finance {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .action.weather {
+            background: #e1f5fe;
+            color: #0277bd;
+        }
+
+        .action.print {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        /* =====================================================
+           REPORT INTELLIGENCE BANNER
+        ===================================================== */
+
+        .intelligence-banner {
+            background: linear-gradient(
+                135deg,
+                #1b5e20,
+                #2e7d32,
+                #43a047
+            );
+            color: #ffffff;
+            border-radius: 22px;
+            padding: 25px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            box-shadow: 0 14px 35px rgba(27, 94, 32, 0.18);
+        }
+
+        .intelligence-left {
+            display: flex;
+            align-items: center;
+            gap: 17px;
+        }
+
+        .intelligence-icon {
+            width: 62px;
+            height: 62px;
+            flex-shrink: 0;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.16);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .intelligence-banner h2 {
+            margin: 0 0 5px;
+        }
+
+        .intelligence-banner p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        .report-date {
+            font-size: 13px;
+            opacity: 0.9;
+            white-space: nowrap;
+        }
+
+        /* =====================================================
+           FARM SCORE
+        ===================================================== */
+
+        .score-section {
+            background: #ffffff;
+            border: 1px solid var(--kv-border);
+            border-radius: 22px;
+            padding: 28px;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            margin-bottom: 30px;
+            box-shadow: var(--kv-shadow);
+        }
+
+        .score-circle {
+            width: 145px;
+            height: 145px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background:
+                conic-gradient(
+                    var(--kv-green)
+                    calc({{ farm_score|default(0)|float }} * 1%),
+                    #e7eee9 0
+                );
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .score-circle::before {
+            content: "";
+            position: absolute;
+            width: 113px;
+            height: 113px;
+            border-radius: 50%;
+            background: #ffffff;
+        }
+
+        .score-circle strong,
+        .score-circle span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .score-circle strong {
+            font-size: 38px;
+            color: var(--kv-green);
+            line-height: 1;
+        }
+
+        .score-circle span {
+            font-size: 13px;
+            color: var(--kv-muted);
+        }
+
+        .score-content h2 {
+            margin: 0 0 5px;
+            color: var(--kv-text);
+        }
+
+        .score-content h3 {
+            color: var(--kv-green);
+            margin: 0 0 10px;
+        }
+
+        .score-content p {
+            color: var(--kv-muted);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* =====================================================
+           SECTION TITLES
+        ===================================================== */
+
+        .section-title {
+            color: var(--kv-text);
+            margin: 30px 0 16px;
+        }
+
+        .section-title i {
+            color: var(--kv-green);
+            margin-right: 7px;
+        }
+
+        [dir="rtl"] .section-title i {
+            margin-right: 0;
+            margin-left: 7px;
+        }
+
+        /* =====================================================
+           FINANCE STATISTICS
+        ===================================================== */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border: 1px solid var(--kv-border);
+            border-radius: 18px;
+            padding: 20px;
+            display: flex;
+            gap: 15px;
+            box-shadow: 0 7px 22px rgba(27, 94, 32, 0.05);
+            transition: 0.25s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .stat-icon {
+            width: 46px;
+            height: 46px;
+            flex-shrink: 0;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-card.income .stat-icon {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .stat-card.expense .stat-icon {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .stat-card.profit .stat-icon {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .stat-card.margin .stat-icon {
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .stat-card p {
+            margin: 0 0 5px;
+            color: var(--kv-muted);
+            font-size: 13px;
+        }
+
+        .stat-card h2 {
+            margin: 0 0 5px;
+            color: var(--kv-text);
+            font-size: 23px;
+        }
+
+        .stat-card small {
+            color: var(--kv-muted);
+        }
+
+        .stat-card small.success {
+            color: #2e7d32;
+        }
+
+        .stat-card small.danger {
+            color: #c62828;
+        }
+
+        /* =====================================================
+           FINANCIAL HEALTH
+        ===================================================== */
+
+        .health-card {
+            margin-top: 20px;
+            background: #ffffff;
+            border: 1px solid var(--kv-border);
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: var(--kv-shadow);
+        }
+
+        .health-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .health-header strong {
+            color: var(--kv-text);
+        }
+
+        .health-header span {
+            color: var(--kv-green);
+            font-weight: 800;
+        }
+
+        .health-bar {
+            height: 12px;
+            background: #e9efeb;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .health-fill {
+            height: 100%;
+            width: {{ financial_score|default(0)|float }}%;
+            max-width: 100%;
+            background: linear-gradient(
+                90deg,
+                #43a047,
+                #1b5e20
+            );
+            border-radius: inherit;
+        }
+
+        /* =====================================================
+           WEATHER
+        ===================================================== */
+
+        .weather-report {
+            background: #ffffff;
+            border: 1px solid var(--kv-border);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: var(--kv-shadow);
+        }
+
+        .weather-location {
+            display: flex;
+            align-items: center;
+            gap: 17px;
+            margin-bottom: 24px;
+        }
+
+        .weather-icon {
+            width: 60px;
+            height: 60px;
+            flex-shrink: 0;
+            border-radius: 17px;
+            background: #e1f5fe;
+            color: #0288d1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+        }
+
+        .weather-location h2 {
+            margin: 0;
+            color: var(--kv-text);
+        }
+
+        .weather-location p {
+            margin: 3px 0;
+            color: var(--kv-muted);
+        }
+
+        .weather-location strong {
+            color: #1565c0;
+        }
+
+        .weather-values {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .weather-values > div {
+            background: #f7faf8;
+            border: 1px solid #e7eee9;
+            border-radius: 14px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .weather-values i {
+            display: block;
+            color: #1976d2;
+            font-size: 18px;
+            margin-bottom: 7px;
+        }
+
+        .weather-values span {
+            display: block;
+            font-size: 12px;
+            color: var(--kv-muted);
+        }
+
+        .weather-values strong {
+            display: block;
+            margin-top: 4px;
+            color: var(--kv-text);
+            font-size: 17px;
+        }
+
+        /* =====================================================
+           SMART ANALYSIS
+        ===================================================== */
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .analysis-card {
+            background: #ffffff;
+            border: 1px solid var(--kv-border);
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: var(--kv-shadow);
+        }
+
+        .analysis-header {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding-bottom: 15px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--kv-border);
+        }
+
+        .analysis-header > i {
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            background: #e8f5e9;
+            color: var(--kv-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .analysis-header h3 {
+            margin: 0;
+            color: var(--kv-text);
+        }
+
+        .analysis-header p {
+            margin: 3px 0 0;
+            font-size: 12px;
+            color: var(--kv-muted);
+        }
+
+        .analysis-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 12px 0;
+            border-bottom: 1px dashed #e6eee8;
+        }
+
+        .analysis-row:last-child {
+            border-bottom: 0;
+        }
+
+        .analysis-row span {
+            color: var(--kv-muted);
+        }
+
+        .analysis-row strong {
+            color: var(--kv-text);
+        }
+
+        /* =====================================================
+           SMART INSIGHT
+        ===================================================== */
+
+        .smart-insight {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 17px;
+            background: linear-gradient(
+                135deg,
+                #f1f8f2,
+                #ffffff
+            );
+            border: 1px solid #dcebdd;
+            display: flex;
+            gap: 14px;
+        }
+
+        .smart-insight-icon {
+            width: 43px;
+            height: 43px;
+            border-radius: 12px;
+            flex-shrink: 0;
+            background: #e8f5e9;
+            color: var(--kv-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .smart-insight h3 {
+            margin: 0 0 5px;
+            color: var(--kv-text);
+        }
+
+        .smart-insight p {
+            margin: 0;
+            color: var(--kv-muted);
+            line-height: 1.6;
+        }
+
+        /* =====================================================
+           PROBLEMS / POSITIVE / SOLUTIONS
+        ===================================================== */
+
+        .problem-card,
+        .positive-card,
+        .solutions-card,
+        .transaction-card {
+            background: #ffffff;
+            border: 1px solid var(--kv-border);
+            border-radius: 20px;
+            padding: 23px;
+            margin-top: 22px;
+            box-shadow: var(--kv-shadow);
+        }
+
+        .problem-card {
+            border-left: 5px solid #e53935;
+        }
+
+        .positive-card {
+            border-left: 5px solid #43a047;
+        }
+
+        .solutions-card {
+            border-left: 5px solid #fb8c00;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .card-title > i,
+        .solution-main-icon {
+            width: 45px;
+            height: 45px;
+            flex-shrink: 0;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .card-title h2 {
+            margin: 0;
+            color: var(--kv-text);
+        }
+
+        .card-title p {
+            margin: 3px 0 0;
+            color: var(--kv-muted);
+        }
+
+        .problem-list,
+        .positive-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .problem {
+            padding: 12px 14px;
+            background: #fff7f7;
+            border-radius: 12px;
+            color: #8e2424;
+            display: flex;
+            gap: 10px;
+        }
+
+        .no-problem {
+            padding: 14px;
+            background: #edf8ef;
+            border-radius: 12px;
+            color: #287631;
+        }
+
+        .positive-list > div {
+            padding: 12px 14px;
+            background: #f3faf4;
+            border-radius: 12px;
+            color: #2e6f35;
+        }
+
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .solution {
+            display: flex;
+            gap: 13px;
+            padding: 16px;
+            background: #fffaf3;
+            border: 1px solid #f7ead8;
+            border-radius: 15px;
+        }
+
+        .solution-number {
+            width: 34px;
+            height: 34px;
+            flex-shrink: 0;
+            border-radius: 10px;
+            background: #fb8c00;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        .solution h3 {
+            margin: 0 0 5px;
+            color: var(--kv-text);
+        }
+
+        .solution p {
+            margin: 0 0 8px;
+            color: var(--kv-muted);
+            line-height: 1.5;
+        }
+
+        .solution strong {
+            color: #ef6c00;
+        }
+
+        .solution span {
+            color: var(--kv-text);
+        }
+
+        /* =====================================================
+           TRANSACTION TABLE
+        ===================================================== */
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .table-container table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        .table-container th {
+            text-align: left;
+            padding: 14px;
+            background: #f2f7f3;
+            color: var(--kv-text);
+            font-size: 13px;
+        }
+
+        .table-container td {
+            padding: 14px;
+            border-bottom: 1px solid #edf2ee;
+            color: #496354;
+        }
+
+        .income-badge,
+        .expense-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .income-badge {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .expense-badge {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px !important;
+            color: var(--kv-muted);
+        }
+
+        /* =====================================================
+           MODULE CONNECTIONS
+        ===================================================== */
+
+        .module-links {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-top: 24px;
+        }
+
+        .module-links a {
+            background: #ffffff;
+            border: 1px solid var(--kv-border);
+            border-radius: 16px;
+            padding: 17px;
+            display: grid;
+            grid-template-columns: 42px 1fr 25px;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--kv-text);
+            transition: 0.25s ease;
+        }
+
+        .module-links a:hover {
+            transform: translateY(-3px);
+            border-color: #b8d7bd;
+            box-shadow: var(--kv-shadow);
+        }
+
+        .module-links a > i:first-child {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: #e8f5e9;
+            color: var(--kv-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .module-links strong,
+        .module-links span {
+            display: block;
+        }
+
+        .module-links span {
+            margin-top: 3px;
+            font-size: 12px;
+            color: var(--kv-muted);
+        }
+
+        .module-links a > i:last-child {
+            color: var(--kv-green);
+        }
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+            text-align: center;
+            padding: 28px 10px 10px;
+            color: var(--kv-muted);
+            font-size: 13px;
+        }
+
+        footer i {
+            color: var(--kv-green);
+        }
+
+        footer span {
+            margin: 0 5px;
+        }
+
+        /* =====================================================
+           RTL
+        ===================================================== */
+
+        [dir="rtl"] .problem-card,
+        [dir="rtl"] .positive-card,
+        [dir="rtl"] .solutions-card {
+            border-left: 1px solid var(--kv-border);
+            border-right: 5px solid;
+        }
+
+        [dir="rtl"] .problem-card {
+            border-right-color: #e53935;
+        }
+
+        [dir="rtl"] .positive-card {
+            border-right-color: #43a047;
+        }
+
+        [dir="rtl"] .solutions-card {
+            border-right-color: #fb8c00;
+        }
+
+        [dir="rtl"] .table-container th {
+            text-align: right;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1100px) {
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .weather-values {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .smart-status-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 800px) {
+
+            .reports-container {
+                padding: 15px;
+            }
+
+            .reports-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .intelligence-banner {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .score-section {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .analysis-grid,
+            .solutions-grid,
+            .module-links {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .smart-status-bar,
+            .stats-grid,
+            .weather-values {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .action {
+                width: 100%;
+            }
+
+            .intelligence-left {
+                align-items: flex-start;
+            }
+
+            .report-date {
+                white-space: normal;
+            }
+
+            .score-circle {
+                width: 125px;
+                height: 125px;
+            }
+
+            .score-circle::before {
+                width: 97px;
+                height: 97px;
+            }
+
+            .module-links a {
+                grid-template-columns: 40px 1fr 20px;
+            }
+        }
+
+        @media (max-width: 420px) {
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .reports-header {
+                padding: 18px;
+            }
+
+            .intelligence-banner {
+                padding: 18px;
+            }
+
+            .score-section {
+                padding: 20px;
+            }
+
+            .problem-card,
+            .positive-card,
+            .solutions-card,
+            .transaction-card {
+                padding: 17px;
+            }
+        }
+
+        /* =====================================================
+           PRINT MODE
+        ===================================================== */
+
+        @media print {
+
+            body {
+                background: #ffffff !important;
+            }
+
+            .action-buttons,
+            .smart-status-bar,
+            .module-links,
+            .sidebar,
+            .profile,
+            footer {
+                display: none !important;
+            }
+
+            .main-content {
+                margin: 0 !important;
+                width: 100% !important;
+            }
+
+            .reports-container {
+                max-width: 100%;
+                padding: 0;
+            }
+
+            .intelligence-banner {
+                box-shadow: none;
+                color: #000000;
+                background: #ffffff !important;
+                border: 2px solid #1b5e20;
+            }
+
+            .intelligence-icon {
+                color: #1b5e20;
+                background: #e8f5e9;
+            }
+
+            .stat-card,
+            .weather-report,
+            .analysis-card,
+            .problem-card,
+            .positive-card,
+            .solutions-card,
+            .transaction-card,
+            .score-section,
+            .health-card {
+                box-shadow: none !important;
+                break-inside: avoid;
+            }
+        }
+
+    </style>
+{% endblock %}
+
+{% block page_title %}Smart Farm Reports{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<!-- =====================================================
+     SAFE TEMPLATE DEFAULTS
+===================================================== -->
+
+{% set weather_data = weather|default({}, true) %}
+{% set warning_points = warning_points|default([], true) %}
+{% set positive_points = positive_points|default([], true) %}
+{% set solutions = solutions|default([], true) %}
+{% set transactions = transactions|default([], true) %}
+
+{% set farm_score_value = farm_score|default(0, true)|float %}
+{% set financial_score_value = financial_score|default(0, true)|float %}
+{% set weather_score_value = weather_score|default(0, true)|float %}
+{% set income_value = income|default(0, true)|float %}
+{% set expenses_value = expenses|default(0, true)|float %}
+{% set profit_value = profit|default(0, true)|float %}
 
 
 <div class="main-content">
 
-<div class="reports-container">
+    <div class="reports-container">
 
 
-<!-- =====================================================
-     HEADER
-===================================================== -->
+        <!-- =================================================
+             SMART STATUS
+        ================================================== -->
 
-<header class="reports-header">
+        <div class="smart-status-bar">
 
-    <div>
+            <div class="smart-status">
 
-        <h1>
-            <i class="fa-solid fa-chart-pie"></i>
-            Farm Reports
-        </h1>
+                <div class="smart-status-icon">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
 
-        <p>
-            Complete analysis of your farm
-            using Finance & Weather data
-        </p>
+                <div>
+                    <strong>Financial Analysis</strong>
+                    <span>Income & expense data</span>
+                </div>
 
-    </div>
+            </div>
 
 
-    <div class="profile">
+            <div class="smart-status">
 
-        <img
-            src="{{ url_for('static',
-            filename='images/farmer.jpg') }}"
-            alt="Farmer">
+                <div class="smart-status-icon">
+                    <i class="fa-solid fa-cloud-sun"></i>
+                </div>
 
-        <div>
+                <div>
+                    <strong>Weather Intelligence</strong>
+                    <span>Current farm conditions</span>
+                </div>
 
-            <h4>
-                {{ name|default("Farmer") }}
-            </h4>
+            </div>
 
-            <span>
-                <i class="fa-solid fa-user"></i>
-                Farmer
-            </span>
+
+            <div class="smart-status">
+
+                <div class="smart-status-icon">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+
+                <div>
+                    <strong>Smart Analysis</strong>
+                    <span>Combined farm insights</span>
+                </div>
+
+            </div>
+
+
+            <div class="smart-status">
+
+                <div class="smart-status-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+
+                <div>
+                    <strong>Farm Report</strong>
+                    <span>Ready for review</span>
+                </div>
+
+            </div>
 
         </div>
 
-    </div>
 
-</header>
+        <!-- =================================================
+             HEADER
+        ================================================== -->
 
+        <header class="reports-header">
 
-<!-- =====================================================
-     ACTION BUTTONS
-===================================================== -->
+            <div>
 
-<div class="action-buttons">
+                <h1>
+                    <i class="fa-solid fa-chart-pie"></i>
+                    Smart Farm Reports
+                </h1>
 
-    <a href="{{ url_for('farmer') }}"
-       class="action dashboard">
+                <p>
+                    Complete analysis of your farm using Finance,
+                    Weather and Smart Farming data.
+                </p>
 
-        <i class="fa-solid fa-house"></i>
-        Dashboard
-
-    </a>
-
-
-    <a href="{{ url_for('finance') }}"
-       class="action finance">
-
-        <i class="fa-solid fa-wallet"></i>
-        Finance
-
-    </a>
+            </div>
 
 
-    <a href="{{ url_for('weather') }}"
-       class="action weather">
+            <div class="profile">
 
-        <i class="fa-solid fa-cloud-sun"></i>
-        Weather
+                <img
+                    src="{{ url_for('static', filename='images/farmer.jpg') }}"
+                    alt="Farmer">
 
-    </a>
+                <div>
 
+                    <h4>
+                        {{ name|default("Farmer", true) }}
+                    </h4>
 
-    <button
-        onclick="window.print()"
-        class="action print">
+                    <span>
+                        <i class="fa-solid fa-user"></i>
+                        Farmer
+                    </span>
 
-        <i class="fa-solid fa-print"></i>
-        Print Report
+                </div>
 
-    </button>
+            </div>
 
-</div>
-
-
-<!-- =====================================================
-     FARM SCORE
-===================================================== -->
-
-<div class="score-section">
-
-    <div class="score-circle">
-
-        <strong>
-            {{ farm_score|default(0) }}
-        </strong>
-
-        <span>
-            / 100
-        </span>
-
-    </div>
+        </header>
 
 
-    <div class="score-content">
+        <!-- =================================================
+             ACTIONS
+        ================================================== -->
 
-        <h2>
-            Overall Farm Health
+        <div class="action-buttons">
+
+            <!-- FIXED: farmer.farmer -->
+
+            <a href="{{ url_for('farmer.farmer') }}"
+               class="action dashboard">
+
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+
+            </a>
+
+
+            <!-- FIXED: finance.finance -->
+
+            <a href="{{ url_for('finance.finance') }}"
+               class="action finance">
+
+                <i class="fa-solid fa-wallet"></i>
+                Finance
+
+            </a>
+
+
+            <!-- FIXED: weather.weather -->
+
+            <a href="{{ url_for('weather.weather') }}"
+               class="action weather">
+
+                <i class="fa-solid fa-cloud-sun"></i>
+                Weather
+
+            </a>
+
+
+            <button
+                type="button"
+                onclick="printReport()"
+                class="action print">
+
+                <i class="fa-solid fa-print"></i>
+                Print Report
+
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             INTELLIGENCE BANNER
+        ================================================== -->
+
+        <div class="intelligence-banner">
+
+            <div class="intelligence-left">
+
+                <div class="intelligence-icon">
+
+                    <i class="fa-solid fa-brain"></i>
+
+                </div>
+
+                <div>
+
+                    <h2>
+                        KisanVision360+ Farm Intelligence Report
+                    </h2>
+
+                    <p>
+                        Finance + Weather data combined to help
+                        you understand your farm performance.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="report-date">
+
+                <i class="fa-regular fa-calendar"></i>
+
+                <span id="reportDate">
+                    Generating report...
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             FARM SCORE
+        ================================================== -->
+
+        <div class="score-section">
+
+            <div class="score-circle">
+
+                <strong>
+                    {{ farm_score_value|round|int }}
+                </strong>
+
+                <span>
+                    / 100
+                </span>
+
+            </div>
+
+
+            <div class="score-content">
+
+                <h2>
+                    Overall Farm Health
+                </h2>
+
+                <h3>
+                    {{ farm_status|default("Needs Attention", true) }}
+                </h3>
+
+                <p>
+                    Your farm health score combines financial
+                    performance and current weather conditions.
+                    Use the insights below to identify areas
+                    that need attention.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             FINANCIAL SUMMARY
+        ================================================== -->
+
+        <h2 class="section-title">
+
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+
+            Financial Summary
+
         </h2>
 
-        <h3>
-            {{ farm_status|default("Needs Attention") }}
-        </h3>
 
-        <p>
-            This score combines your financial
-            performance and current weather conditions.
-        </p>
-
-    </div>
-
-</div>
+        <div class="stats-grid">
 
 
-<!-- =====================================================
-     FINANCE SUMMARY
-===================================================== -->
+            <!-- INCOME -->
 
-<h2 class="section-title">
+            <div class="stat-card income">
 
-    <i class="fa-solid fa-indian-rupee-sign"></i>
+                <div class="stat-icon">
 
-    Financial Summary
+                    <i class="fa-solid fa-arrow-trend-up"></i>
 
-</h2>
+                </div>
+
+                <div>
+
+                    <p>Total Income</p>
+
+                    <h2>
+                        â‚¹ {{ "%.2f"|format(income_value) }}
+                    </h2>
+
+                    <small>
+                        {{ income_count|default(0, true) }}
+                        income transactions
+                    </small>
+
+                </div>
+
+            </div>
 
 
-<div class="stats-grid">
+            <!-- EXPENSE -->
+
+            <div class="stat-card expense">
+
+                <div class="stat-icon">
+
+                    <i class="fa-solid fa-arrow-trend-down"></i>
+
+                </div>
+
+                <div>
+
+                    <p>Total Expenses</p>
+
+                    <h2>
+                        â‚¹ {{ "%.2f"|format(expenses_value) }}
+                    </h2>
+
+                    <small>
+                        {{ expense_count|default(0, true) }}
+                        expense transactions
+                    </small>
+
+                </div>
+
+            </div>
 
 
-    <!-- INCOME -->
+            <!-- PROFIT -->
 
-    <div class="stat-card income">
+            <div class="stat-card profit">
 
-        <div class="stat-icon">
+                <div class="stat-icon">
 
-            <i class="fa-solid fa-arrow-trend-up"></i>
+                    <i class="fa-solid fa-chart-line"></i>
+
+                </div>
+
+                <div>
+
+                    <p>Net Profit</p>
+
+                    <h2>
+                        â‚¹ {{ "%.2f"|format(profit_value) }}
+                    </h2>
+
+
+                    {% if profit_value > 0 %}
+
+                        <small class="success">
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+                            Profitable
+
+                        </small>
+
+                    {% elif profit_value < 0 %}
+
+                        <small class="danger">
+
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+
+                            Loss
+
+                        </small>
+
+                    {% else %}
+
+                        <small>
+                            Break-even
+                        </small>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- MARGIN -->
+
+            <div class="stat-card margin">
+
+                <div class="stat-icon">
+
+                    <i class="fa-solid fa-percent"></i>
+
+                </div>
+
+                <div>
+
+                    <p>Profit Margin</p>
+
+                    <h2>
+                        {{ profit_margin|default(0, true) }}%
+                    </h2>
+
+                    <small>
+                        Expense Ratio:
+                        {{ expense_ratio|default(0, true) }}%
+                    </small>
+
+                </div>
+
+            </div>
 
         </div>
 
-        <div>
 
-            <p>Total Income</p>
+        <!-- =================================================
+             FINANCIAL HEALTH
+        ================================================== -->
 
-            <h2>
-                ₹ {{ "%.2f"|format(income|default(0)) }}
-            </h2>
+        <div class="health-card">
 
-            <small>
-                {{ income_count|default(0) }}
-                income transactions
-            </small>
+            <div class="health-header">
 
-        </div>
+                <strong>
+                    Financial Health Score
+                </strong>
 
-    </div>
+                <span>
+                    {{ financial_score_value|round|int }}/100
+                </span>
 
+            </div>
 
-    <!-- EXPENSE -->
+            <div class="health-bar">
 
-    <div class="stat-card expense">
+                <div class="health-fill"></div>
 
-        <div class="stat-icon">
-
-            <i class="fa-solid fa-arrow-trend-down"></i>
-
-        </div>
-
-        <div>
-
-            <p>Total Expenses</p>
-
-            <h2>
-                ₹ {{ "%.2f"|format(expenses|default(0)) }}
-            </h2>
-
-            <small>
-                {{ expense_count|default(0) }}
-                expense transactions
-            </small>
+            </div>
 
         </div>
 
-    </div>
+
+        <!-- =================================================
+             WEATHER
+        ================================================== -->
+
+        <h2 class="section-title">
+
+            <i class="fa-solid fa-cloud-sun"></i>
+
+            Current Weather Report
+
+        </h2>
 
 
-    <!-- PROFIT -->
+        <div class="weather-report">
 
-    <div class="stat-card profit">
 
-        <div class="stat-icon">
+            <div class="weather-location">
 
-            <i class="fa-solid fa-chart-line"></i>
+                <div class="weather-icon">
+
+                    <i class="fa-solid fa-cloud-sun"></i>
+
+                </div>
+
+                <div>
+
+                    <h2>
+                        {{ weather_data.city|default("Nagpur", true) }}
+                    </h2>
+
+                    <p>
+                        {{ weather_data.country|default("India", true) }}
+                    </p>
+
+                    <strong>
+                        {{ weather_data.description|default("Weather unavailable", true) }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="weather-values">
+
+
+                <!-- TEMPERATURE -->
+
+                <div>
+
+                    <i class="fa-solid fa-temperature-half"></i>
+
+                    <span>Temperature</span>
+
+                    <strong>
+                        {{ weather_data.temperature|default(0, true) }}Â°C
+                    </strong>
+
+                </div>
+
+
+                <!-- HUMIDITY -->
+
+                <div>
+
+                    <i class="fa-solid fa-droplet"></i>
+
+                    <span>Humidity</span>
+
+                    <strong>
+                        {{ weather_data.humidity|default(0, true) }}%
+                    </strong>
+
+                </div>
+
+
+                <!-- RAINFALL -->
+
+                <div>
+
+                    <i class="fa-solid fa-cloud-rain"></i>
+
+                    <span>Rainfall</span>
+
+                    <strong>
+                        {{ weather_data.rainfall|default(0, true) }} mm
+                    </strong>
+
+                </div>
+
+
+                <!-- WIND -->
+
+                <div>
+
+                    <i class="fa-solid fa-wind"></i>
+
+                    <span>Wind</span>
+
+                    <strong>
+                        {{ weather_data.wind|default(
+                            weather_data.wind_speed|default(0, true),
+                            true
+                        ) }} m/s
+                    </strong>
+
+                </div>
+
+
+                <!-- PRESSURE -->
+
+                <div>
+
+                    <i class="fa-solid fa-gauge-high"></i>
+
+                    <span>Pressure</span>
+
+                    <strong>
+                        {{ weather_data.pressure|default(0, true) }} hPa
+                    </strong>
+
+                </div>
+
+
+                <!-- CLOUD -->
+
+                <div>
+
+                    <i class="fa-solid fa-cloud"></i>
+
+                    <span>Cloud Cover</span>
+
+                    <strong>
+                        {{ weather_data.clouds|default(
+                            weather_data.cloud_cover|default(0, true),
+                            true
+                        ) }}%
+                    </strong>
+
+                </div>
+
+
+                <!-- VISIBILITY -->
+
+                <div>
+
+                    <i class="fa-solid fa-eye"></i>
+
+                    <span>Visibility</span>
+
+                    <strong>
+                        {{ weather_data.visibility|default(0, true) }} km
+                    </strong>
+
+                </div>
+
+
+                <!-- UV -->
+
+                <div>
+
+                    <i class="fa-solid fa-sun"></i>
+
+                    <span>UV Index</span>
+
+                    <strong>
+                        {{ weather_data.uv_index|default("N/A", true) }}
+                    </strong>
+
+                </div>
+
+            </div>
 
         </div>
 
-        <div>
 
-            <p>Net Profit</p>
+        <!-- =================================================
+             SMART FARM ANALYSIS
+        ================================================== -->
 
-            <h2>
-                ₹ {{ "%.2f"|format(profit|default(0)) }}
-            </h2>
+        <h2 class="section-title">
 
-            {% if profit|default(0) > 0 %}
+            <i class="fa-solid fa-brain"></i>
 
-            <small class="success">
-                <i class="fa-solid fa-circle-check"></i>
-                Profitable
-            </small>
+            Smart Farm Analysis
 
-            {% elif profit|default(0) < 0 %}
+        </h2>
 
-            <small class="danger">
+
+        <div class="analysis-grid">
+
+
+            <!-- FINANCE ANALYSIS -->
+
+            <div class="analysis-card">
+
+                <div class="analysis-header">
+
+                    <i class="fa-solid fa-wallet"></i>
+
+                    <div>
+
+                        <h3>
+                            Financial Analysis
+                        </h3>
+
+                        <p>
+                            Based on your Finance records
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="analysis-row">
+
+                    <span>Income</span>
+
+                    <strong>
+                        â‚¹ {{ "%.2f"|format(income_value) }}
+                    </strong>
+
+                </div>
+
+
+                <div class="analysis-row">
+
+                    <span>Expenses</span>
+
+                    <strong>
+                        â‚¹ {{ "%.2f"|format(expenses_value) }}
+                    </strong>
+
+                </div>
+
+
+                <div class="analysis-row">
+
+                    <span>Profit</span>
+
+                    <strong>
+                        â‚¹ {{ "%.2f"|format(profit_value) }}
+                    </strong>
+
+                </div>
+
+
+                <div class="analysis-row">
+
+                    <span>Financial Score</span>
+
+                    <strong>
+                        {{ financial_score_value|round|int }}/100
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- WEATHER ANALYSIS -->
+
+            <div class="analysis-card">
+
+                <div class="analysis-header">
+
+                    <i class="fa-solid fa-cloud-sun"></i>
+
+                    <div>
+
+                        <h3>
+                            Weather Analysis
+                        </h3>
+
+                        <p>
+                            Current weather conditions
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="analysis-row">
+
+                    <span>Temperature</span>
+
+                    <strong>
+                        {{ weather_data.temperature|default(0, true) }}Â°C
+                    </strong>
+
+                </div>
+
+
+                <div class="analysis-row">
+
+                    <span>Humidity</span>
+
+                    <strong>
+                        {{ weather_data.humidity|default(0, true) }}%
+                    </strong>
+
+                </div>
+
+
+                <div class="analysis-row">
+
+                    <span>Rainfall</span>
+
+                    <strong>
+                        {{ weather_data.rainfall|default(0, true) }} mm
+                    </strong>
+
+                </div>
+
+
+                <div class="analysis-row">
+
+                    <span>Weather Score</span>
+
+                    <strong>
+                        {{ weather_score_value|round|int }}/100
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SMART INSIGHT
+        ================================================== -->
+
+        <div class="smart-insight">
+
+            <div class="smart-insight-icon">
+
+                <i class="fa-solid fa-lightbulb"></i>
+
+            </div>
+
+            <div>
+
+                <h3>
+                    KisanVision360+ Smart Insight
+                </h3>
+
+                <p>
+
+                    {% if profit_value > 0 %}
+
+                        Your recorded income is currently higher
+                        than your expenses. Continue monitoring
+                        production costs and market prices to
+                        protect your profit margin.
+
+                    {% elif profit_value < 0 %}
+
+                        Your recorded expenses are higher than
+                        income. Review major farm costs and check
+                        current market prices before making the
+                        next selling decision.
+
+                    {% else %}
+
+                        Your farm is currently around break-even.
+                        Continue recording income and expenses
+                        to generate stronger financial insights.
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             PROBLEMS
+        ================================================== -->
+
+        <div class="problem-card">
+
+            <div class="card-title">
+
                 <i class="fa-solid fa-triangle-exclamation"></i>
-                Loss
-            </small>
 
-            {% else %}
+                <div>
 
-            <small>
-                Break-even
-            </small>
+                    <h2>
+                        Problems Detected
+                    </h2>
 
-            {% endif %}
+                    <p>
+                        Important issues identified from your farm data
+                    </p>
 
-        </div>
-
-    </div>
-
-
-    <!-- MARGIN -->
-
-    <div class="stat-card margin">
-
-        <div class="stat-icon">
-
-            <i class="fa-solid fa-percent"></i>
-
-        </div>
-
-        <div>
-
-            <p>Profit Margin</p>
-
-            <h2>
-                {{ profit_margin|default(0) }}%
-            </h2>
-
-            <small>
-                Expense Ratio:
-                {{ expense_ratio|default(0) }}%
-            </small>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     WEATHER
-===================================================== -->
-
-<h2 class="section-title">
-
-    <i class="fa-solid fa-cloud-sun"></i>
-
-    Current Weather Report
-
-</h2>
-
-
-<div class="weather-report">
-
-
-    <div class="weather-location">
-
-        <div class="weather-icon">
-
-            <i class="fa-solid fa-cloud-sun"></i>
-
-        </div>
-
-        <div>
-
-            <h2>
-                {{ weather.city|default("Nagpur") }}
-            </h2>
-
-            <p>
-                {{ weather.country|default("India") }}
-            </p>
-
-            <strong>
-                {{ weather.description|default("Weather unavailable") }}
-            </strong>
-
-        </div>
-
-    </div>
-
-
-    <div class="weather-values">
-
-
-        <div>
-
-            <i class="fa-solid fa-temperature-half"></i>
-
-            <span>Temperature</span>
-
-            <strong>
-                {{ weather.temperature|default(0) }}°C
-            </strong>
-
-        </div>
-
-
-        <div>
-
-            <i class="fa-solid fa-droplet"></i>
-
-            <span>Humidity</span>
-
-            <strong>
-                {{ weather.humidity|default(0) }}%
-            </strong>
-
-        </div>
-
-
-        <div>
-
-            <i class="fa-solid fa-cloud-rain"></i>
-
-            <span>Rainfall</span>
-
-            <strong>
-                {{ weather.rainfall|default(0) }} mm
-            </strong>
-
-        </div>
-
-
-        <div>
-
-            <i class="fa-solid fa-wind"></i>
-
-            <span>Wind</span>
-
-            <strong>
-                {{ weather.wind|default(0) }} m/s
-            </strong>
-
-        </div>
-
-
-        <div>
-
-            <i class="fa-solid fa-gauge-high"></i>
-
-            <span>Pressure</span>
-
-            <strong>
-                {{ weather.pressure|default(0) }} hPa
-            </strong>
-
-        </div>
-
-
-        <div>
-
-            <i class="fa-solid fa-cloud"></i>
-
-            <span>Cloud Cover</span>
-
-            <strong>
-                {{ weather.clouds|default(0) }}%
-            </strong>
-
-        </div>
-
-
-        <div>
-
-            <i class="fa-solid fa-eye"></i>
-
-            <span>Visibility</span>
-
-            <strong>
-                {{ weather.visibility|default(0) }} km
-            </strong>
-
-        </div>
-
-
-        <div>
-
-            <i class="fa-solid fa-sun"></i>
-
-            <span>UV Index</span>
-
-            <strong>
-                {{ weather.uv_index|default("N/A") }}
-            </strong>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     COMBINED ANALYSIS
-===================================================== -->
-
-<h2 class="section-title">
-
-    <i class="fa-solid fa-brain"></i>
-
-    Smart Farm Analysis
-
-</h2>
-
-
-<div class="analysis-grid">
-
-
-    <!-- FINANCE ANALYSIS -->
-
-    <div class="analysis-card">
-
-        <div class="analysis-header">
-
-            <i class="fa-solid fa-wallet"></i>
-
-            <div>
-
-                <h3>
-                    Financial Analysis
-                </h3>
-
-                <p>
-                    Based on your Finance records
-                </p>
+                </div>
 
             </div>
 
-        </div>
 
+            <div class="problem-list">
 
-        <div class="analysis-row">
+                {% for problem in warning_points %}
 
-            <span>Income</span>
+                    <div class="problem">
 
-            <strong>
-                ₹ {{ "%.2f"|format(income|default(0)) }}
-            </strong>
+                        <i class="fa-solid fa-circle-exclamation"></i>
 
-        </div>
-
-
-        <div class="analysis-row">
-
-            <span>Expenses</span>
-
-            <strong>
-                ₹ {{ "%.2f"|format(expenses|default(0)) }}
-            </strong>
-
-        </div>
-
-
-        <div class="analysis-row">
-
-            <span>Profit</span>
-
-            <strong>
-                ₹ {{ "%.2f"|format(profit|default(0)) }}
-            </strong>
-
-        </div>
-
-
-        <div class="analysis-row">
-
-            <span>Financial Score</span>
-
-            <strong>
-                {{ financial_score|default(0) }}/100
-            </strong>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- WEATHER ANALYSIS -->
-
-    <div class="analysis-card">
-
-        <div class="analysis-header">
-
-            <i class="fa-solid fa-cloud-sun"></i>
-
-            <div>
-
-                <h3>
-                    Weather Analysis
-                </h3>
-
-                <p>
-                    Current weather conditions
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="analysis-row">
-
-            <span>Temperature</span>
-
-            <strong>
-                {{ weather.temperature|default(0) }}°C
-            </strong>
-
-        </div>
-
-
-        <div class="analysis-row">
-
-            <span>Humidity</span>
-
-            <strong>
-                {{ weather.humidity|default(0) }}%
-            </strong>
-
-        </div>
-
-
-        <div class="analysis-row">
-
-            <span>Rainfall</span>
-
-            <strong>
-                {{ weather.rainfall|default(0) }} mm
-            </strong>
-
-        </div>
-
-
-        <div class="analysis-row">
-
-            <span>Weather Score</span>
-
-            <strong>
-                {{ weather_score|default(0) }}/100
-            </strong>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     PROBLEMS
-===================================================== -->
-
-<div class="problem-card">
-
-    <div class="card-title">
-
-        <i class="fa-solid fa-triangle-exclamation"></i>
-
-        <div>
-
-            <h2>
-                Problems Detected
-            </h2>
-
-            <p>
-                Important issues identified from your data
-            </p>
-
-        </div>
-
-    </div>
-
-
-    <div class="problem-list">
-
-        {% for problem in warning_points %}
-
-        <div class="problem">
-
-            <i class="fa-solid fa-circle-exclamation"></i>
-
-            <span>
-                {{ problem }}
-            </span>
-
-        </div>
-
-        {% else %}
-
-        <div class="no-problem">
-
-            <i class="fa-solid fa-circle-check"></i>
-
-            No major problems detected.
-
-        </div>
-
-        {% endfor %}
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     POSITIVE PERFORMANCE
-===================================================== -->
-
-<div class="positive-card">
-
-    <div class="card-title">
-
-        <i class="fa-solid fa-circle-check"></i>
-
-        <div>
-
-            <h2>
-                Positive Performance
-            </h2>
-
-            <p>
-                Good points identified from your farm data
-            </p>
-
-        </div>
-
-    </div>
-
-
-    <div class="positive-list">
-
-        {% for point in positive_points %}
-
-        <div>
-
-            <i class="fa-solid fa-check"></i>
-
-            {{ point }}
-
-        </div>
-
-        {% else %}
-
-        <div>
-            Update Finance data to get more insights.
-        </div>
-
-        {% endfor %}
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     SMART SOLUTIONS
-===================================================== -->
-
-<div class="solutions-card">
-
-    <div class="card-title">
-
-        <div class="solution-main-icon">
-
-            <i class="fa-solid fa-lightbulb"></i>
-
-        </div>
-
-        <div>
-
-            <h2>
-                Smart Solutions
-            </h2>
-
-            <p>
-                Recommended actions based on Finance
-                + Weather conditions
-            </p>
-
-        </div>
-
-    </div>
-
-
-    <div class="solutions-grid">
-
-        {% for solution in solutions %}
-
-        <div class="solution">
-
-            <div class="solution-number">
-                {{ loop.index }}
-            </div>
-
-            <div>
-
-                <h3>
-                    {{ solution.title }}
-                </h3>
-
-                <p>
-                    {{ solution.description }}
-                </p>
-
-                <strong>
-                    <i class="fa-solid fa-arrow-right"></i>
-                    Solution:
-                </strong>
-
-                <span>
-                    {{ solution.action }}
-                </span>
-
-            </div>
-
-        </div>
-
-        {% else %}
-
-        <div class="solution">
-
-            <div class="solution-number">
-                1
-            </div>
-
-            <div>
-
-                <h3>
-                    Continue Monitoring
-                </h3>
-
-                <p>
-                    Your farm data is currently normal.
-                </p>
-
-                <strong>
-                    Solution:
-                </strong>
-
-                <span>
-                    Continue updating Finance and Weather data.
-                </span>
-
-            </div>
-
-        </div>
-
-        {% endfor %}
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     TRANSACTION HISTORY
-===================================================== -->
-
-<div class="transaction-card">
-
-    <div class="card-title">
-
-        <i class="fa-solid fa-receipt"></i>
-
-        <div>
-
-            <h2>
-                Finance Transaction History
-            </h2>
-
-            <p>
-                Data taken directly from Finance
-            </p>
-
-        </div>
-
-    </div>
-
-
-    <div class="table-container">
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>
-                        Description
-                    </th>
-
-                    <th>
-                        Amount
-                    </th>
-
-                    <th>
-                        Type
-                    </th>
-
-                    <th>
-                        Date
-                    </th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody>
-
-            {% for row in transactions %}
-
-                <tr>
-
-                    <td>
-                        {{ row[0] }}
-                    </td>
-
-                    <td>
-                        ₹ {{ "%.2f"|format(row[1]|float) }}
-                    </td>
-
-                    <td>
-
-                        {% if row[2]|lower == "income" %}
-
-                        <span class="income-badge">
-                            <i class="fa-solid fa-arrow-up"></i>
-                            Income
+                        <span>
+                            {{ problem }}
                         </span>
 
-                        {% else %}
+                    </div>
 
-                        <span class="expense-badge">
-                            <i class="fa-solid fa-arrow-down"></i>
-                            Expense
-                        </span>
+                {% else %}
 
-                        {% endif %}
+                    <div class="no-problem">
 
-                    </td>
+                        <i class="fa-solid fa-circle-check"></i>
 
-                    <td>
-                        {{ row[3] }}
-                    </td>
+                        No major problems detected.
 
-                </tr>
+                    </div>
 
-            {% else %}
+                {% endfor %}
 
-                <tr>
+            </div>
 
-                    <td colspan="4"
-                        class="empty">
+        </div>
 
-                        No Finance transactions available.
 
-                    </td>
+        <!-- =================================================
+             POSITIVE PERFORMANCE
+        ================================================== -->
 
-                </tr>
+        <div class="positive-card">
 
-            {% endfor %}
+            <div class="card-title">
 
-            </tbody>
+                <i class="fa-solid fa-circle-check"></i>
 
-        </table>
+                <div>
+
+                    <h2>
+                        Positive Performance
+                    </h2>
+
+                    <p>
+                        Good points identified from your farm data
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="positive-list">
+
+                {% for point in positive_points %}
+
+                    <div>
+
+                        <i class="fa-solid fa-check"></i>
+
+                        {{ point }}
+
+                    </div>
+
+                {% else %}
+
+                    <div>
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        Update Finance and Weather data to receive
+                        more personalized insights.
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SMART SOLUTIONS
+        ================================================== -->
+
+        <div class="solutions-card">
+
+            <div class="card-title">
+
+                <div class="solution-main-icon">
+
+                    <i class="fa-solid fa-lightbulb"></i>
+
+                </div>
+
+                <div>
+
+                    <h2>
+                        Smart Solutions
+                    </h2>
+
+                    <p>
+                        Recommended actions based on Finance
+                        + Weather conditions
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="solutions-grid">
+
+                {% for solution in solutions %}
+
+                    <div class="solution">
+
+                        <div class="solution-number">
+                            {{ loop.index }}
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                {{ solution.title|default("Recommended Action", true) }}
+                            </h3>
+
+                            <p>
+                                {{ solution.description|default(
+                                    "Review your farm data and continue monitoring.",
+                                    true
+                                ) }}
+                            </p>
+
+                            <strong>
+
+                                <i class="fa-solid fa-arrow-right"></i>
+
+                                Solution:
+
+                            </strong>
+
+                            <span>
+                                {{ solution.action|default(
+                                    "Continue monitoring farm conditions.",
+                                    true
+                                ) }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                {% else %}
+
+                    <div class="solution">
+
+                        <div class="solution-number">
+                            1
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Continue Monitoring
+                            </h3>
+
+                            <p>
+                                Your farm data is currently normal.
+                            </p>
+
+                            <strong>
+                                Solution:
+                            </strong>
+
+                            <span>
+                                Continue updating Finance and Weather data.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             TRANSACTION HISTORY
+        ================================================== -->
+
+        <div class="transaction-card">
+
+            <div class="card-title">
+
+                <i class="fa-solid fa-receipt"></i>
+
+                <div>
+
+                    <h2>
+                        Finance Transaction History
+                    </h2>
+
+                    <p>
+                        Data taken directly from Finance
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Description</th>
+
+                            <th>Amount</th>
+
+                            <th>Type</th>
+
+                            <th>Date</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    {% for row in transactions %}
+
+                        <tr>
+
+                            <td>
+                                {{ row[0]|default("", true) }}
+                            </td>
+
+                            <td>
+                                â‚¹ {{ "%.2f"|format(row[1]|default(0, true)|float) }}
+                            </td>
+
+                            <td>
+
+                                {% if row[2]|default("")|lower == "income" %}
+
+                                    <span class="income-badge">
+
+                                        <i class="fa-solid fa-arrow-up"></i>
+
+                                        Income
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="expense-badge">
+
+                                        <i class="fa-solid fa-arrow-down"></i>
+
+                                        Expense
+
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+                                {{ row[3]|default("", true) }}
+                            </td>
+
+                        </tr>
+
+                    {% else %}
+
+                        <tr>
+
+                            <td colspan="4" class="empty">
+
+                                <i class="fa-solid fa-receipt"></i>
+
+                                No Finance transactions available.
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             CONNECTED MODULES
+        ================================================== -->
+
+        <h2 class="section-title">
+
+            <i class="fa-solid fa-link"></i>
+
+            Connected Farm Intelligence
+
+        </h2>
+
+
+        <div class="module-links">
+
+
+            <!-- FIXED -->
+
+            <a href="{{ url_for('finance.finance') }}">
+
+                <i class="fa-solid fa-wallet"></i>
+
+                <div>
+
+                    <strong>
+                        Finance
+                    </strong>
+
+                    <span>
+                        Manage income & expenses
+                    </span>
+
+                </div>
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </a>
+
+
+            <!-- FIXED -->
+
+            <a href="{{ url_for('weather.weather') }}">
+
+                <i class="fa-solid fa-cloud-sun"></i>
+
+                <div>
+
+                    <strong>
+                        Live Weather
+                    </strong>
+
+                    <span>
+                        Monitor weather conditions
+                    </span>
+
+                </div>
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </a>
+
+
+            <!-- FIXED -->
+
+            <a href="{{ url_for('recommendation.recommendation') }}">
+
+                <i class="fa-solid fa-seedling"></i>
+
+                <div>
+
+                    <strong>
+                        AI Crop Recommendation
+                    </strong>
+
+                    <span>
+                        Select crops based on farm conditions
+                    </span>
+
+                </div>
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </a>
+
+
+            <!-- FIXED -->
+
+            <a href="{{ url_for('irrigation.irrigation') }}">
+
+                <i class="fa-solid fa-droplet"></i>
+
+                <div>
+
+                    <strong>
+                        Smart Irrigation
+                    </strong>
+
+                    <span>
+                        Plan irrigation using weather
+                    </span>
+
+                </div>
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer>
+
+            <i class="fa-solid fa-leaf"></i>
+
+            KisanVision360+
+
+            <span>â€¢</span>
+
+            AI-Powered Smart Farming Platform
+
+            <span>â€¢</span>
+
+            Finance + Weather Intelligence
+
+            <span>â€¢</span>
+
+            Made in India ðŸ‡®ðŸ‡³
+
+        </footer>
+
 
     </div>
 
@@ -947,130 +2437,100 @@
 
 
 <!-- =====================================================
-     MODULE LINKS
+     JAVASCRIPT
 ===================================================== -->
+{% endblock %}
 
-<div class="module-links">
+{% block scripts %}
+<script>
 
+    /* =====================================================
+       REPORT DATE
+    ===================================================== */
 
-    <a href="{{ url_for('finance') }}">
+    document.addEventListener("DOMContentLoaded", function () {
 
-        <i class="fa-solid fa-wallet"></i>
+        const dateElement =
+            document.getElementById("reportDate");
 
-        <div>
+        if (!dateElement) {
+            return;
+        }
 
-            <strong>
-                Finance
-            </strong>
+        const now = new Date();
 
-            <span>
-                Manage income & expenses
-            </span>
+        try {
 
-        </div>
+            dateElement.textContent =
+                now.toLocaleDateString(
+                    "en-IN",
+                    {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric"
+                    }
+                );
 
-        <i class="fa-solid fa-arrow-right"></i>
+        } catch (error) {
 
-    </a>
+            dateElement.textContent =
+                now.toLocaleDateString();
 
+        }
 
-    <a href="{{ url_for('weather') }}">
-
-        <i class="fa-solid fa-cloud-sun"></i>
-
-        <div>
-
-            <strong>
-                Live Weather
-            </strong>
-
-            <span>
-                Monitor weather conditions
-            </span>
-
-        </div>
-
-        <i class="fa-solid fa-arrow-right"></i>
-
-    </a>
+    });
 
 
-    <a href="{{ url_for('recommendation') }}">
+    /* =====================================================
+       PRINT REPORT
+    ===================================================== */
 
-        <i class="fa-solid fa-seedling"></i>
+    function printReport() {
 
-        <div>
+        document.body.classList.add("printing");
 
-            <strong>
-                AI Crop Recommendation
-            </strong>
+        setTimeout(function () {
 
-            <span>
-                Get crop recommendations
-            </span>
+            window.print();
 
-        </div>
+            setTimeout(function () {
 
-        <i class="fa-solid fa-arrow-right"></i>
+                document.body.classList.remove("printing");
 
-    </a>
+            }, 500);
 
+        }, 100);
 
-    <a href="{{ url_for('irrigation') }}">
-
-        <i class="fa-solid fa-droplet"></i>
-
-        <div>
-
-            <strong>
-                Smart Irrigation
-            </strong>
-
-            <span>
-                Plan irrigation using weather
-            </span>
-
-        </div>
-
-        <i class="fa-solid fa-arrow-right"></i>
-
-    </a>
-
-</div>
+    }
 
 
-<!-- =====================================================
-     FOOTER
-===================================================== -->
+    /* =====================================================
+       PREVENT PRINT BUTTON DOUBLE CLICK
+    ===================================================== */
 
-<footer>
+    document.addEventListener("DOMContentLoaded", function () {
 
-    <i class="fa-solid fa-leaf"></i>
+        const printButton =
+            document.querySelector(".action.print");
 
-    KisanVision360
+        if (!printButton) {
+            return;
+        }
 
-    <span>•</span>
+        printButton.addEventListener("click", function () {
 
-    AI-Powered Smart Farming Platform
+            this.disabled = true;
 
-    <span>•</span>
+            setTimeout(() => {
 
-    Finance + Weather Reports
+                this.disabled = false;
 
-    <span>•</span>
+            }, 1500);
 
-    Made in India 🇮🇳
+        });
 
-</footer>
+    });
 
+</script>
+{% endblock %}
 
-</div>
-
-</div>
-
-</body>
-
-</html>
-```
-
-This template expects the Flask route to provide `income`, `expenses`, `profit`, `financial_score`, `weather`, `weather_score`, `farm_score`, `warning_points`, `positive_points`, `solutions`, and `transactions`.

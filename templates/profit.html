@@ -1,418 +1,1087 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿{% extends "base.html" %}
 
-<head>
+{% block title %}KisanVision360+ | My Profile{% endblock %}
 
-    <meta charset="UTF-8">
+{% block head %}
+<link rel="stylesheet"
+          href="{{ url_for(
+              'static',
+              filename='css/profile.css'
+          ) }}">
+{% endblock %}
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+{% block page_title %}My Profile{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
 
-    <title>KisanVision360 | Profit Analysis</title>
+{% block content %}
+<!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/sidebar.css') }}">
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/finance.css') }}">
-
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-</head>
-
-
-<body>
-
-{% include "components/sidebar.html" %}
+    
 
 
-<main class="main-content">
 
-    <!-- TOPBAR -->
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
 
-    <header class="topbar">
+    <div class="main-content">
 
-        <div class="title-section">
 
-            <div class="title-icon">
-                <i class="fa-solid fa-chart-line"></i>
+        <div class="profile-page">
+
+
+            <!-- =================================================
+                 TOP HEADER
+            ================================================= -->
+
+            <div class="profile-topbar">
+
+
+                <div class="profile-heading">
+
+
+                    <div class="heading-icon">
+
+                        <i class="fa-solid fa-user"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h1>
+                            My Profile
+                        </h1>
+
+                        <p>
+                            Manage your KisanVision360+
+                            account and personalization.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="top-actions">
+
+
+                    <a
+                        href="/farmer"
+                        class="top-btn dashboard-btn"
+                    >
+
+                        <i class="fa-solid fa-house"></i>
+
+                        Dashboard
+
+                    </a>
+
+
+                    <a
+                        href="/settings"
+                        class="top-btn settings-btn"
+                    >
+
+                        <i class="fa-solid fa-gear"></i>
+
+                        Settings
+
+                    </a>
+
+
+                </div>
+
+
             </div>
 
-            <div>
 
-                <h1>Profit Analysis</h1>
 
-                <p>
-                    View your farm income, expenses and net profit
-                </p>
+            <!-- =================================================
+                 SMART PROFILE STATUS
+            ================================================= -->
+
+            <div class="smart-status">
+
+
+                <!-- ACCOUNT -->
+
+                <div class="smart-status-card">
+
+                    <i class="fa-solid fa-user-check"></i>
+
+                    <div>
+
+                        <strong>
+                            Account Active
+                        </strong>
+
+                        <span>
+                            Your account is available
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- LANGUAGE -->
+
+                <div class="smart-status-card">
+
+                    <i class="fa-solid fa-language"></i>
+
+                    <div>
+
+                        <strong>
+                            Global Language
+                        </strong>
+
+                        <span>
+                            {{ session.get('language', 'en')|upper }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FARM INTELLIGENCE -->
+
+                <div class="smart-status-card">
+
+                    <i class="fa-solid fa-cloud-sun"></i>
+
+                    <div>
+
+                        <strong>
+                            Farm Intelligence
+                        </strong>
+
+                        <span>
+                            Weather-aware services
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SECURITY -->
+
+                <div class="smart-status-card">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    <div>
+
+                        <strong>
+                            Account Protected
+                        </strong>
+
+                        <span>
+                            Profile & password controls
+                        </span>
+
+                    </div>
+
+                </div>
+
 
             </div>
 
-        </div>
 
 
-        <div class="profile">
+            <!-- =================================================
+                 PROFILE HERO
+            ================================================= -->
 
-            <img
-                src="{{ url_for(
-                    'static',
-                    filename='images/farmer.jpg'
-                ) }}"
-                alt="Farmer">
+            <div class="profile-card">
 
-            <div>
 
-                <h4>{{ name }}</h4>
+                <!-- PROFILE PHOTO -->
+
+                <div class="dp-box">
+
+
+                    <img
+                        src="{{ profile_pic if profile_pic else url_for(
+                            'static',
+                            filename='images/farmer.jpg'
+                        ) }}"
+                        class="profile-image"
+                        alt="Profile Photo"
+                    >
+
+
+                    <!-- PHOTO UPLOAD FORM -->
+
+                    <form
+                        action="/upload-profile"
+                        method="POST"
+                        enctype="multipart/form-data"
+                        id="profilePhotoForm"
+                    >
+
+
+                        <label
+                            for="photo"
+                            class="camera-button"
+                            title="Change Profile Photo"
+                        >
+
+                            <i class="fa-solid fa-camera"></i>
+
+                        </label>
+
+
+                        <input
+                            type="file"
+                            id="photo"
+                            name="profile"
+                            accept="image/jpeg,image/png,image/webp"
+                            hidden
+                        >
+
+
+                    </form>
+
+
+                </div>
+
+
+
+                <!-- PROFILE INFORMATION -->
+
+                <div class="profile-hero-content">
+
+
+                    <h2>
+
+                        {{ name|default(
+                            session.get('name', 'User'),
+                            true
+                        ) }}
+
+                    </h2>
+
+
+                    <p>
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        Nagpur, Maharashtra
+
+                    </p>
+
+
+                    <span class="role-badge">
+
+                        <i class="fa-solid fa-user-check"></i>
+
+                        {{ role|default(
+                            session.get('role', 'Farmer'),
+                            true
+                        ) }}
+
+                    </span>
+
+
+
+                    <!-- HERO BADGES -->
+
+                    <div class="hero-badges">
+
+
+                        <span class="hero-badge">
+
+                            <i class="fa-solid fa-leaf"></i>
+
+                            Smart Farming
+
+                        </span>
+
+
+                        <span class="hero-badge">
+
+                            <i class="fa-solid fa-brain"></i>
+
+                            AI Personalization
+
+                        </span>
+
+
+                        <span class="hero-badge">
+
+                            <i class="fa-solid fa-mobile-screen"></i>
+
+                            KisanVision360+
+
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 CURRENT STATUS
+            ================================================= -->
+
+            <h2 class="section-title">
+
+                <i class="fa-solid fa-chart-simple"></i>
+
+                Current Status
+
+            </h2>
+
+
+
+            <div class="status-grid">
+
+
+                <!-- LOCATION -->
+
+                <div class="status-card">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    <h3>
+                        Nagpur
+                    </h3>
+
+                    <p>
+                        Farm Location
+                    </p>
+
+                </div>
+
+
+
+                <!-- TEMPERATURE -->
+
+                <div class="status-card">
+
+                    <i class="fa-solid fa-temperature-half"></i>
+
+
+                    {% if weather %}
+
+                        <h3>
+                            {{ weather.temperature }} Â°C
+                        </h3>
+
+                    {% else %}
+
+                        <h3>
+                            N/A
+                        </h3>
+
+                    {% endif %}
+
+
+                    <p>
+                        Current Temperature
+                    </p>
+
+                </div>
+
+
+
+                <!-- WEATHER -->
+
+                <div class="status-card">
+
+                    <i class="fa-solid fa-cloud"></i>
+
+
+                    {% if weather %}
+
+                        <h3>
+                            {{ weather.condition }}
+                        </h3>
+
+                    {% else %}
+
+                        <h3>
+                            No Data
+                        </h3>
+
+                    {% endif %}
+
+
+                    <p>
+                        Weather Status
+                    </p>
+
+                </div>
+
+
+
+                <!-- ACCOUNT STATUS -->
+
+                <div class="status-card">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    <h3 class="status-online">
+                        Active
+                    </h3>
+
+                    <p>
+                        Account Status
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 PERSONAL INFORMATION
+            ================================================= -->
+
+            <div class="details-card">
+
+
+                <h2>
+
+                    <i class="fa-solid fa-address-card"></i>
+
+                    Personal Information
+
+                </h2>
+
+
+                <div class="info-grid">
+
+
+                    <!-- NAME -->
+
+                    <div class="info-item">
+
+                        <label>
+                            Full Name
+                        </label>
+
+                        <div class="info-value">
+
+                            {{ name|default(
+                                session.get('name', 'User'),
+                                true
+                            ) }}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- MOBILE -->
+
+                    <div class="info-item">
+
+                        <label>
+                            Mobile Number
+                        </label>
+
+                        <div class="info-value">
+
+                            {{ mobile|default(
+                                'Not provided',
+                                true
+                            ) }}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- EMAIL -->
+
+                    <div class="info-item">
+
+                        <label>
+                            Email Address
+                        </label>
+
+                        <div class="info-value">
+
+                            {{ email|default(
+                                'Not provided',
+                                true
+                            ) }}
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ROLE -->
+
+                    <div class="info-item">
+
+                        <label>
+                            Account Role
+                        </label>
+
+                        <div class="info-value">
+
+                            {{ role|default(
+                                session.get('role', 'Farmer'),
+                                true
+                            ) }}
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     PROFILE COMPLETION
+                ================================================= -->
+
+                <div class="completion-card">
+
+
+                    <div class="completion-header">
+
+                        <strong>
+                            Profile Completion
+                        </strong>
+
+                        <span class="completion-percent">
+                            85%
+                        </span>
+
+                    </div>
+
+
+                    <div class="completion-track">
+
+                        <div class="completion-fill"></div>
+
+                    </div>
+
+
+                    <p>
+
+                        Complete your profile to improve
+                        KisanVision360+ personalization.
+
+                    </p>
+
+
+                </div>
+
+
+
+                <br>
+
+
+                <a
+                    href="/edit-profile"
+                    class="account-btn"
+                >
+
+                    <i class="fa-solid fa-pen"></i>
+
+                    Edit Profile
+
+                </a>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 AI PERSONALIZATION
+            ================================================= -->
+
+            <div class="ai-profile-card">
+
+
+                <div class="ai-icon">
+
+                    <i class="fa-solid fa-brain"></i>
+
+                </div>
+
+
+                <div>
+
+
+                    <h3>
+                        Smart Profile Personalization
+                    </h3>
+
+
+                    <p>
+
+                        Your profile can be used by
+                        KisanVision360+ to personalize
+                        agriculture recommendations such as
+                        crop suitability, weather alerts,
+                        irrigation planning, market insights
+                        and government scheme discovery.
+
+                    </p>
+
+
+                    <div class="ai-modules">
+
+
+                        <span class="ai-module">
+                            Crop Advisor
+                        </span>
+
+
+                        <span class="ai-module">
+                            Weather
+                        </span>
+
+
+                        <span class="ai-module">
+                            Irrigation
+                        </span>
+
+
+                        <span class="ai-module">
+                            Disease Detection
+                        </span>
+
+
+                        <span class="ai-module">
+                            Market Intelligence
+                        </span>
+
+
+                        <span class="ai-module">
+                            Government Schemes
+                        </span>
+
+
+                        <span class="ai-module">
+                            Finance
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 ACCOUNT MANAGEMENT
+            ================================================= -->
+
+            <h2 class="section-title">
+
+                <i class="fa-solid fa-user-gear"></i>
+
+                Account Management
+
+            </h2>
+
+
+
+            <div class="account-grid">
+
+
+                <!-- EDIT PROFILE -->
+
+                <div class="account-card">
+
+                    <i class="fa-solid fa-user-pen"></i>
+
+                    <h3>
+                        Edit Profile
+                    </h3>
+
+                    <p>
+
+                        Update your name, mobile number,
+                        email and account information.
+
+                    </p>
+
+                    <a
+                        href="/edit-profile"
+                        class="account-btn"
+                    >
+
+                        Edit Profile
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+
+
+                <!-- CHANGE PASSWORD -->
+
+                <div class="account-card">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    <h3>
+                        Change Password
+                    </h3>
+
+                    <p>
+
+                        Change your password and keep
+                        your account protected.
+
+                    </p>
+
+                    <a
+                        href="/change-password"
+                        class="account-btn"
+                    >
+
+                        Change Password
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+
+
+                <!-- SETTINGS -->
+
+                <div class="account-card">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    <h3>
+                        Account Settings
+                    </h3>
+
+                    <p>
+
+                        Manage language, notifications,
+                        weather and other preferences.
+
+                    </p>
+
+                    <a
+                        href="/settings"
+                        class="account-btn"
+                    >
+
+                        Open Settings
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+
+
+                <!-- HELP -->
+
+                <div class="account-card">
+
+                    <i class="fa-solid fa-circle-question"></i>
+
+                    <h3>
+                        Help & Support
+                    </h3>
+
+                    <p>
+
+                        Get assistance with KisanVision360+
+                        services and features.
+
+                    </p>
+
+                    <a
+                        href="/help"
+                        class="account-btn"
+                    >
+
+                        Open Help
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </a>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 LOGOUT
+            ================================================= -->
+
+            <div class="logout-card">
+
+
+                <div class="logout-info">
+
+
+                    <div class="logout-icon">
+
+                        <i class="fa-solid fa-right-from-bracket"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Logout
+                        </h3>
+
+                        <p>
+                            Sign out safely from your
+                            KisanVision360+ account.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <a
+                    href="/logout"
+                    class="logout-btn"
+                >
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    Logout
+
+                </a>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 FOOTER
+            ================================================= -->
+
+            <div class="profile-footer">
+
+                <i class="fa-solid fa-leaf"></i>
+
+                <strong>
+                    KisanVision360+
+                </strong>
 
                 <span>
-                    <i class="fa-solid fa-circle"></i>
-                    Farmer
+                    â€¢
                 </span>
 
-            </div>
+                Smart Farming Platform
 
-        </div>
-
-    </header>
-
-
-    <!-- PROFIT BANNER -->
-
-    <section class="finance-banner">
-
-        <div class="banner-content">
-
-            <div class="banner-icon">
-
-                <i class="fa-solid fa-chart-pie"></i>
-
-            </div>
-
-            <div>
-
-                <h2>
-                    Farm Profit Analysis
-                </h2>
-
-                <p>
-                    Understand your overall farming financial performance.
-                </p>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- STATISTICS -->
-
-    <section class="finance-grid">
-
-
-        <!-- TOTAL INCOME -->
-
-        <div class="finance-card income-card">
-
-            <div class="card-top">
-
-                <div class="card-icon">
-
-                    <i class="fa-solid fa-arrow-trend-up"></i>
-
-                </div>
-
-                <span class="card-label">
-                    INCOME
+                <span>
+                    â€¢
                 </span>
 
+                Made in India ðŸ‡®ðŸ‡³
+
             </div>
 
-            <h3>
-                Total Income
-            </h3>
-
-            <h2>
-                ₹ {{ "%.2f"|format(total_income|float) }}
-            </h2>
-
-            <p>
-                <i class="fa-solid fa-circle-check"></i>
-                Total money received
-            </p>
 
         </div>
 
 
-        <!-- TOTAL EXPENSE -->
+    </div>
 
-        <div class="finance-card expense-card">
 
-            <div class="card-top">
+</div>
 
-                <div class="card-icon">
 
-                    <i class="fa-solid fa-arrow-trend-down"></i>
 
-                </div>
+<!-- =====================================================
+     TOAST
+====================================================== -->
 
-                <span class="card-label">
-                    EXPENSE
-                </span>
+<div
+    class="profile-toast"
+    id="profileToast"
+>
+{% endblock %}
 
-            </div>
+{% block scripts %}
+<script>
 
-            <h3>
-                Total Expenses
-            </h3>
+/* =========================================================
+   PROFILE PHOTO
+========================================================= */
 
-            <h2>
-                ₹ {{ "%.2f"|format(total_expense|float) }}
-            </h2>
+const photoInput =
+    document.getElementById("photo");
 
-            <p>
-                <i class="fa-solid fa-circle-check"></i>
-                Total money spent
-            </p>
 
-        </div>
+const profilePhotoForm =
+    document.getElementById("profilePhotoForm");
 
 
-        <!-- NET PROFIT -->
+photoInput.addEventListener(
+    "change",
+    function () {
 
-        <div class="finance-card profit-card">
+        const file = this.files[0];
 
-            <div class="card-top">
 
-                <div class="card-icon">
+        if (!file) {
+            return;
+        }
 
-                    <i class="fa-solid fa-chart-line"></i>
 
-                </div>
+        const allowedTypes = [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        ];
 
-                <span class="card-label">
-                    PROFIT
-                </span>
 
-            </div>
+        if (!allowedTypes.includes(file.type)) {
 
-            <h3>
-                Net Profit
-            </h3>
+            showProfileToast(
+                "Please select a JPG, PNG or WEBP image."
+            );
 
-            <h2>
-                ₹ {{ "%.2f"|format(profit|float) }}
-            </h2>
+            this.value = "";
 
+            return;
+        }
 
-            {% if profit >= 0 %}
 
-            <p>
+        const maxSize =
+            5 * 1024 * 1024;
 
-                <i class="fa-solid fa-face-smile"></i>
 
-                Your farm is profitable
+        if (file.size > maxSize) {
 
-            </p>
+            showProfileToast(
+                "Profile image must be below 5 MB."
+            );
 
-            {% else %}
+            this.value = "";
 
-            <p>
+            return;
+        }
 
-                <i class="fa-solid fa-triangle-exclamation"></i>
 
-                Expenses are higher than income
+        profilePhotoForm.submit();
 
-            </p>
+    }
+);
 
-            {% endif %}
 
-        </div>
+/* =========================================================
+   TOAST
+========================================================= */
 
-    </section>
+function showProfileToast(message) {
 
+    const toast =
+        document.getElementById("profileToast");
 
-    <!-- PROFIT CALCULATION -->
 
-    <section class="transaction-section">
+    toast.textContent = message;
 
-        <div class="section-header">
 
-            <div>
+    toast.classList.add("show");
 
-                <h2>
 
-                    <i class="fa-solid fa-calculator"></i>
+    setTimeout(
+        function () {
 
-                    Profit Calculation
+            toast.classList.remove("show");
 
-                </h2>
+        },
+        2800
+    );
 
-                <p>
-                    Simple calculation of your farm profit
-                </p>
+}
 
-            </div>
 
-        </div>
+/* =========================================================
+   GLOBAL LANGUAGE
+========================================================= */
 
+const savedLanguage =
+    localStorage.getItem(
+        "kisanvision360_language"
+    );
 
-        <div class="table-card">
 
-            <div style="
-                padding:30px;
-                font-size:15px;
-                color:#365a45;
-            ">
+const currentLanguage =
+    "{{ session.get('language', 'en') }}";
 
-                <p style="margin-bottom:15px;">
 
-                    <strong>Total Income:</strong>
+if (
+    !savedLanguage &&
+    currentLanguage
+) {
 
-                    ₹ {{ "%.2f"|format(total_income|float) }}
+    localStorage.setItem(
+        "kisanvision360_language",
+        currentLanguage
+    );
 
-                </p>
+}
 
 
-                <p style="margin-bottom:15px;">
+/* =========================================================
+   PREVENT INVALID IMAGE FORM SUBMISSION
+========================================================= */
 
-                    <strong>Total Expenses:</strong>
+profilePhotoForm.addEventListener(
+    "submit",
+    function () {
 
-                    ₹ {{ "%.2f"|format(total_expense|float) }}
+        if (!photoInput.files.length) {
+            return false;
+        }
 
-                </p>
+    }
+);
 
+</script>
+{% endblock %}
 
-                <hr style="
-                    margin:20px 0;
-                    border:none;
-                    border-top:1px solid #e5eee7;
-                ">
-
-
-                <p style="
-                    font-size:20px;
-                    font-weight:bold;
-                    color:#087c42;
-                ">
-
-                    Net Profit:
-
-                    ₹ {{ "%.2f"|format(profit|float) }}
-
-                </p>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- ACTIONS -->
-
-    <section class="action-grid">
-
-        <a
-            href="{{ url_for('finance') }}"
-            class="action-card income-action">
-
-            <div class="action-icon">
-
-                <i class="fa-solid fa-wallet"></i>
-
-            </div>
-
-            <div>
-
-                <h3>
-                    Finance Dashboard
-                </h3>
-
-                <p>
-                    Back to finance dashboard
-                </p>
-
-            </div>
-
-            <i class="fa-solid fa-arrow-right action-arrow"></i>
-
-        </a>
-
-
-        <a
-            href="{{ url_for('income') }}"
-            class="action-card income-action">
-
-            <div class="action-icon">
-
-                <i class="fa-solid fa-plus"></i>
-
-            </div>
-
-            <div>
-
-                <h3>
-                    Add Income
-                </h3>
-
-                <p>
-                    Record new income
-                </p>
-
-            </div>
-
-            <i class="fa-solid fa-arrow-right action-arrow"></i>
-
-        </a>
-
-
-        <a
-            href="{{ url_for('expense') }}"
-            class="action-card expense-action">
-
-            <div class="action-icon">
-
-                <i class="fa-solid fa-minus"></i>
-
-            </div>
-
-            <div>
-
-                <h3>
-                    Add Expense
-                </h3>
-
-                <p>
-                    Record new expense
-                </p>
-
-            </div>
-
-            <i class="fa-solid fa-arrow-right action-arrow"></i>
-
-        </a>
-
-    </section>
-
-
-    <!-- FOOTER -->
-
-    <footer class="finance-footer">
-
-        <i class="fa-solid fa-leaf"></i>
-
-        KisanVision360 Smart Farming Finance
-
-        <span>•</span>
-
-        Profit Analysis
-
-    </footer>
-
-</main>
-
-</body>
-
-</html>

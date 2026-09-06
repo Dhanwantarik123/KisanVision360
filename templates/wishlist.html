@@ -1,0 +1,1429 @@
+﻿{% extends "base.html" %}
+
+{% block title %}KisanVision360+ | Smart Wishlist{% endblock %}
+
+{% block head %}
+<link rel="stylesheet"
+          href="{{ url_for('static', filename='css/wishlist.css') }}">
+{% endblock %}
+
+{% block page_title %}Smart Wishlist{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="wishlist-header">
+
+        <div class="header-left">
+
+            <div class="page-icon">
+                <i class="fas fa-heart"></i>
+            </div>
+
+            <div class="header-text">
+
+                <h1>
+                    Smart Wishlist
+                </h1>
+
+                <p>
+                    Save, compare and plan your marketplace purchases
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- FIXED BLUEPRINT ENDPOINT -->
+        <a href="{{ url_for('marketplace.consumer_marketplace') }}"
+           class="marketplace-btn">
+
+            <i class="fas fa-store"></i>
+
+            Explore Marketplace
+
+        </a>
+
+    </header>
+
+
+    <!-- =====================================================
+         SMART STATUS
+    ====================================================== -->
+
+    <div class="smart-status">
+
+        <span class="status-dot"></span>
+
+        <strong>
+            WISHLIST INTELLIGENCE
+        </strong>
+
+        <span>
+            Your saved products are ready for comparison and purchase planning.
+        </span>
+
+    </div>
+
+
+    {% if wishlist and wishlist|length > 0 %}
+
+    <!-- =====================================================
+         SMART INSIGHT
+    ====================================================== -->
+
+    <div class="smart-insight">
+
+        <div class="smart-insight-icon">
+
+            <i class="fas fa-wand-magic-sparkles"></i>
+
+        </div>
+
+        <div>
+
+            <h3>
+                Smart Buying Insight
+            </h3>
+
+            <p id="smartWishlistInsight">
+                Reviewing your saved products...
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         STATISTICS
+    ====================================================== -->
+
+    <section class="wishlist-stats">
+
+        <!-- Wishlist Items -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="fas fa-heart"></i>
+
+            </div>
+
+            <div class="stat-info">
+
+                <span>
+                    Wishlist Items
+                </span>
+
+                <strong id="wishlistCount">
+                    {{ wishlist|length }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Wishlist Value -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon orange">
+
+                <i class="fas fa-indian-rupee-sign"></i>
+
+            </div>
+
+            <div class="stat-info">
+
+                <span>
+                    Wishlist Value
+                </span>
+
+                <strong id="wishlistValue">
+                    â‚¹0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Available Products -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon blue">
+
+                <i class="fas fa-box"></i>
+
+            </div>
+
+            <div class="stat-info">
+
+                <span>
+                    Available Products
+                </span>
+
+                <strong id="availableCount">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Compare -->
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="fas fa-scale-balanced"></i>
+
+            </div>
+
+            <div class="stat-info">
+
+                <span>
+                    Compare Selected
+                </span>
+
+                <strong id="compareCount">
+                    0 / 3
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         TOOLBAR
+    ====================================================== -->
+
+    <section class="wishlist-toolbar">
+
+        <div class="search-box">
+
+            <i class="fas fa-search"></i>
+
+            <input
+                type="text"
+                id="wishlistSearch"
+                placeholder="Search saved products..."
+                autocomplete="off">
+
+        </div>
+
+
+        <div class="toolbar-right">
+
+            <select
+                id="categoryFilter"
+                class="category-select">
+
+                <option value="all">
+                    All Categories
+                </option>
+
+            </select>
+
+
+            <select
+                id="sortWishlist"
+                class="sort-select">
+
+                <option value="default">
+                    Sort: Default
+                </option>
+
+                <option value="name-asc">
+                    Name: A â†’ Z
+                </option>
+
+                <option value="name-desc">
+                    Name: Z â†’ A
+                </option>
+
+                <option value="price-low">
+                    Price: Low â†’ High
+                </option>
+
+                <option value="price-high">
+                    Price: High â†’ Low
+                </option>
+
+                <option value="stock-high">
+                    Stock: High â†’ Low
+                </option>
+
+            </select>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         COMPARE BAR
+    ====================================================== -->
+
+    <div class="compare-bar"
+         id="compareBar">
+
+        <div class="compare-info">
+
+            <i class="fas fa-scale-balanced"></i>
+
+            <span>
+
+                <strong id="compareNumber">
+                    0
+                </strong>
+
+                products selected for comparison
+
+            </span>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="compare-action"
+            onclick="compareSelected()">
+
+            <i class="fas fa-code-compare"></i>
+
+            Compare Products
+
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         PRODUCT GRID
+    ====================================================== -->
+
+    <section>
+
+        <div class="wishlist-grid"
+             id="wishlistGrid">
+
+
+            {% for item in wishlist %}
+
+            {% set stock = item.quantity|default(0, true)|int %}
+
+            <article
+                class="wishlist-card"
+
+                data-name="{{ item.name|default('', true)|lower }}"
+
+                data-price="{{ item.price|default(0, true) }}"
+
+                data-category="{{ item.category|default('Other', true)|lower }}"
+
+                data-stock="{{ stock }}"
+
+                data-id="{{ item.id|default('', true) }}">
+
+
+                <!-- =================================================
+                     PRODUCT IMAGE
+                ================================================== -->
+
+                <div class="product-image">
+
+                    {% if item.image %}
+
+                    <img
+                        src="{{ url_for(
+                            'static',
+                            filename='uploads/' ~ item.image
+                        ) }}"
+
+                        alt="{{ item.name|default('Product', true) }}"
+
+                        loading="lazy"
+
+                        onerror="
+                            this.style.display='none';
+                            this.nextElementSibling.style.display='flex';
+                        ">
+
+                    <div class="no-image"
+                         style="display:none;">
+
+                        <i class="fas fa-image"></i>
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="no-image">
+
+                        <i class="fas fa-image"></i>
+
+                    </div>
+
+                    {% endif %}
+
+
+                    <!-- Saved Badge -->
+
+                    <span class="wishlist-badge">
+
+                        <i class="fas fa-heart"></i>
+
+                        Saved
+
+                    </span>
+
+
+                    <!-- Compare -->
+
+                    <label class="select-compare">
+
+                        <input
+                            type="checkbox"
+                            class="compare-checkbox"
+                            onchange="toggleCompare(this)">
+
+                        Compare
+
+                    </label>
+
+                </div>
+
+
+                <!-- =================================================
+                     PRODUCT CONTENT
+                ================================================== -->
+
+                <div class="product-content">
+
+
+                    <!-- Product Name -->
+
+                    <h2 class="product-name">
+
+                        {{ item.name|default('Unnamed Product', true) }}
+
+                    </h2>
+
+
+                    <!-- Description -->
+
+                    {% if item.description %}
+
+                    <p class="description">
+
+                        {{ item.description }}
+
+                    </p>
+
+                    {% else %}
+
+                    <p class="description">
+
+                        Quality product saved in your
+                        KisanVision360+ marketplace wishlist.
+
+                    </p>
+
+                    {% endif %}
+
+
+                    <!-- =================================================
+                         META
+                    ================================================== -->
+
+                    <div class="product-meta">
+
+
+                        {% if item.category is defined and item.category %}
+
+                        <span class="meta-tag">
+
+                            <i class="fas fa-layer-group"></i>
+
+                            {{ item.category }}
+
+                        </span>
+
+                        {% endif %}
+
+
+                        {% if item.location is defined and item.location %}
+
+                        <span class="meta-tag">
+
+                            <i class="fas fa-location-dot"></i>
+
+                            {{ item.location }}
+
+                        </span>
+
+                        {% endif %}
+
+
+                    </div>
+
+
+                    <!-- =================================================
+                         PRICE
+                    ================================================== -->
+
+                    <div class="price-row">
+
+
+                        {% if item.price is defined %}
+
+                        <div class="price">
+
+                            â‚¹{{ item.price|default(0, true) }}
+
+                        </div>
+
+                        {% endif %}
+
+
+                        {% if item.quantity is defined %}
+
+                        <div class="quantity">
+
+                            <i class="fas fa-box"></i>
+
+                            {{ item.quantity }}
+
+                        </div>
+
+                        {% endif %}
+
+
+                    </div>
+
+
+                    <!-- =================================================
+                         STOCK STATUS
+                    ================================================== -->
+
+                    <div class="stock-status">
+
+                        <span>
+                            Stock status
+                        </span>
+
+
+                        {% if stock <= 0 %}
+
+                        <span class="stock-out">
+
+                            <i class="fas fa-circle-xmark"></i>
+
+                            Out of Stock
+
+                        </span>
+
+                        {% elif stock <= 5 %}
+
+                        <span class="stock-low">
+
+                            <i class="fas fa-triangle-exclamation"></i>
+
+                            Low Stock
+
+                        </span>
+
+                        {% else %}
+
+                        <span class="stock-good">
+
+                            <i class="fas fa-circle-check"></i>
+
+                            Available
+
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- =================================================
+                         ACTIONS
+                    ================================================== -->
+
+                    <div class="product-actions">
+
+
+                        {% if item.id is defined and item.id %}
+
+
+                        <!-- VIEW DETAILS -->
+
+                        <a
+                            href="{{ url_for(
+                                'marketplace.product_details',
+                                product_id=item.id
+                            ) }}"
+
+                            class="action-btn view-btn">
+
+                            <i class="fas fa-eye"></i>
+
+                            View Details
+
+                        </a>
+
+
+                        <!-- REMOVE -->
+
+                        <form
+                            method="POST"
+
+                            action="{{ url_for(
+                                'marketplace.remove_from_wishlist',
+                                product_id=item.id
+                            ) }}"
+
+                            class="remove-form"
+
+                            onsubmit="return confirmWishlistRemove(event, this);">
+
+
+                            <button
+                                type="submit"
+                                class="action-btn remove-btn">
+
+                                <i class="fas fa-trash"></i>
+
+                                Remove
+
+                            </button>
+
+
+                        </form>
+
+
+                        <!-- ADD TO CART -->
+
+                        <form
+                            method="POST"
+
+                            action="{{ url_for(
+                                'marketplace.add_to_cart',
+                                product_id=item.id
+                            ) }}">
+
+                            <button
+                                type="submit"
+
+                                class="action-btn cart-btn"
+
+                                {% if stock <= 0 %}
+                                disabled
+                                {% endif %}>
+
+
+                                {% if stock <= 0 %}
+
+                                <i class="fas fa-ban"></i>
+
+                                Out of Stock
+
+                                {% else %}
+
+                                <i class="fas fa-cart-plus"></i>
+
+                                Add to Cart
+
+                                {% endif %}
+
+
+                            </button>
+
+                        </form>
+
+
+                        {% endif %}
+
+
+                    </div>
+
+                </div>
+
+            </article>
+
+            {% endfor %}
+
+
+        </div>
+
+
+        <!-- =====================================================
+             NO SEARCH RESULTS
+        ====================================================== -->
+
+        <div
+            class="no-results"
+            id="noResults">
+
+            <i class="fas fa-search"></i>
+
+            <h3>
+                No Products Found
+            </h3>
+
+            <p>
+                Try another product name or category.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    {% else %}
+
+
+    <!-- =====================================================
+         EMPTY WISHLIST
+    ====================================================== -->
+
+    <section class="empty-wishlist">
+
+        <div class="empty-inner">
+
+
+            <div class="empty-icon">
+
+                <i class="far fa-heart"></i>
+
+            </div>
+
+
+            <h2>
+
+                Your Wishlist is Empty
+
+            </h2>
+
+
+            <p>
+
+                Save products from the KisanVision360+
+                Marketplace and compare them before buying.
+
+            </p>
+
+
+            <!-- FIXED BLUEPRINT ENDPOINT -->
+
+            <a
+                href="{{ url_for('marketplace.consumer_marketplace') }}"
+
+                class="shop-btn">
+
+                <i class="fas fa-store"></i>
+
+                Explore Marketplace
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+/* =========================================================
+   KISANVISION360+ SMART WISHLIST
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    const cards = Array.from(
+        document.querySelectorAll(".wishlist-card")
+    );
+
+
+    const searchInput =
+        document.getElementById("wishlistSearch");
+
+
+    const categoryFilter =
+        document.getElementById("categoryFilter");
+
+
+    const sortSelect =
+        document.getElementById("sortWishlist");
+
+
+    const grid =
+        document.getElementById("wishlistGrid");
+
+
+    const noResults =
+        document.getElementById("noResults");
+
+
+    /* =====================================================
+       CALCULATE STATISTICS
+    ===================================================== */
+
+    let totalValue = 0;
+
+    let availableCount = 0;
+
+    const categories = new Set();
+
+
+    cards.forEach(function (card) {
+
+        const price = parseFloat(
+            card.dataset.price || "0"
+        );
+
+
+        const stock = parseInt(
+            card.dataset.stock || "0",
+            10
+        );
+
+
+        const category =
+            card.dataset.category || "other";
+
+
+        if (!Number.isNaN(price)) {
+
+            totalValue += price;
+
+        }
+
+
+        if (stock > 0) {
+
+            availableCount++;
+
+        }
+
+
+        categories.add(category);
+
+    });
+
+
+    /* =====================================================
+       DISPLAY STATISTICS
+    ===================================================== */
+
+    const wishlistValue =
+        document.getElementById("wishlistValue");
+
+
+    const availableElement =
+        document.getElementById("availableCount");
+
+
+    if (wishlistValue) {
+
+        wishlistValue.textContent =
+            "â‚¹" +
+            totalValue.toLocaleString(
+                "en-IN",
+                {
+                    maximumFractionDigits: 2
+                }
+            );
+
+    }
+
+
+    if (availableElement) {
+
+        availableElement.textContent =
+            availableCount;
+
+    }
+
+
+    /* =====================================================
+       CATEGORY FILTER
+    ===================================================== */
+
+    if (categoryFilter) {
+
+        Array.from(categories)
+            .sort()
+            .forEach(function (category) {
+
+                if (!category) {
+                    return;
+                }
+
+
+                const option =
+                    document.createElement("option");
+
+
+                option.value =
+                    category;
+
+
+                option.textContent =
+                    category.charAt(0).toUpperCase() +
+                    category.slice(1);
+
+
+                categoryFilter.appendChild(option);
+
+            });
+
+    }
+
+
+    /* =====================================================
+       SMART INSIGHT
+    ===================================================== */
+
+    const insight =
+        document.getElementById(
+            "smartWishlistInsight"
+        );
+
+
+    if (insight) {
+
+        if (cards.length >= 5) {
+
+            insight.textContent =
+                "You have several saved products. Compare important options before moving them to your cart.";
+
+        }
+
+        else if (availableCount < cards.length) {
+
+            insight.textContent =
+                "Some saved products may have limited availability. Review stock status before purchasing.";
+
+        }
+
+        else if (totalValue > 50000) {
+
+            insight.textContent =
+                "Your wishlist contains a higher-value purchase plan. Comparing products can help you make a better decision.";
+
+        }
+
+        else {
+
+            insight.textContent =
+                "Your saved products are available for review. Compare price, category and stock before purchasing.";
+
+        }
+
+    }
+
+
+    /* =====================================================
+       SEARCH + CATEGORY
+    ===================================================== */
+
+    function applyFilters() {
+
+        const search =
+            searchInput
+                ? searchInput.value.toLowerCase().trim()
+                : "";
+
+
+        const category =
+            categoryFilter
+                ? categoryFilter.value
+                : "all";
+
+
+        let visible = 0;
+
+
+        cards.forEach(function (card) {
+
+            const name =
+                card.dataset.name || "";
+
+
+            const cardCategory =
+                card.dataset.category || "other";
+
+
+            const matchesSearch =
+                name.includes(search);
+
+
+            const matchesCategory =
+                category === "all" ||
+                cardCategory === category;
+
+
+            if (
+                matchesSearch &&
+                matchesCategory
+            ) {
+
+                card.style.display = "";
+
+                visible++;
+
+            }
+
+            else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+
+        if (noResults) {
+
+            noResults.style.display =
+                visible === 0
+                    ? "block"
+                    : "none";
+
+        }
+
+    }
+
+
+    if (searchInput) {
+
+        searchInput.addEventListener(
+            "input",
+            applyFilters
+        );
+
+    }
+
+
+    if (categoryFilter) {
+
+        categoryFilter.addEventListener(
+            "change",
+            applyFilters
+        );
+
+    }
+
+
+    /* =====================================================
+       SORT
+    ===================================================== */
+
+    if (sortSelect) {
+
+        sortSelect.addEventListener(
+            "change",
+            function () {
+
+
+                const value =
+                    this.value;
+
+
+                cards.sort(function (a, b) {
+
+                    const nameA =
+                        a.dataset.name || "";
+
+
+                    const nameB =
+                        b.dataset.name || "";
+
+
+                    const priceA =
+                        parseFloat(
+                            a.dataset.price || "0"
+                        );
+
+
+                    const priceB =
+                        parseFloat(
+                            b.dataset.price || "0"
+                        );
+
+
+                    const stockA =
+                        parseInt(
+                            a.dataset.stock || "0",
+                            10
+                        );
+
+
+                    const stockB =
+                        parseInt(
+                            b.dataset.stock || "0",
+                            10
+                        );
+
+
+                    switch (value) {
+
+                        case "name-asc":
+
+                            return nameA.localeCompare(
+                                nameB
+                            );
+
+
+                        case "name-desc":
+
+                            return nameB.localeCompare(
+                                nameA
+                            );
+
+
+                        case "price-low":
+
+                            return priceA - priceB;
+
+
+                        case "price-high":
+
+                            return priceB - priceA;
+
+
+                        case "stock-high":
+
+                            return stockB - stockA;
+
+
+                        default:
+
+                            return 0;
+
+                    }
+
+                });
+
+
+                cards.forEach(function (card) {
+
+                    grid.appendChild(card);
+
+                });
+
+
+                applyFilters();
+
+            }
+        );
+
+    }
+
+
+    /* Initial filter */
+
+    applyFilters();
+
+});
+
+
+/* =========================================================
+   COMPARE PRODUCTS
+========================================================= */
+
+function toggleCompare(checkbox) {
+
+
+    const selected =
+        document.querySelectorAll(
+            ".compare-checkbox:checked"
+        );
+
+
+    if (selected.length > 3) {
+
+        checkbox.checked = false;
+
+
+        showToast(
+            "You can compare up to 3 products."
+        );
+
+
+        return;
+
+    }
+
+
+    const card =
+        checkbox.closest(".wishlist-card");
+
+
+    if (card) {
+
+        card.classList.toggle(
+            "selected",
+            checkbox.checked
+        );
+
+    }
+
+
+    updateCompareBar();
+
+}
+
+
+/* =========================================================
+   UPDATE COMPARE BAR
+========================================================= */
+
+function updateCompareBar() {
+
+
+    const selected =
+        document.querySelectorAll(
+            ".compare-checkbox:checked"
+        );
+
+
+    const bar =
+        document.getElementById(
+            "compareBar"
+        );
+
+
+    const number =
+        document.getElementById(
+            "compareNumber"
+        );
+
+
+    const count =
+        document.getElementById(
+            "compareCount"
+        );
+
+
+    if (number) {
+
+        number.textContent =
+            selected.length;
+
+    }
+
+
+    if (count) {
+
+        count.textContent =
+            selected.length + " / 3";
+
+    }
+
+
+    if (bar) {
+
+        bar.classList.toggle(
+            "show",
+            selected.length > 0
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   COMPARE SELECTED
+========================================================= */
+
+function compareSelected() {
+
+
+    const selected =
+        Array.from(
+            document.querySelectorAll(
+                ".compare-checkbox:checked"
+            )
+        );
+
+
+    if (selected.length < 2) {
+
+        showToast(
+            "Select at least 2 products to compare."
+        );
+
+        return;
+
+    }
+
+
+    const products =
+        selected.map(function (checkbox) {
+
+
+            const card =
+                checkbox.closest(
+                    ".wishlist-card"
+                );
+
+
+            return {
+
+                id:
+                    card.dataset.id || "",
+
+                name:
+                    card.dataset.name || "",
+
+                price:
+                    card.dataset.price || "0",
+
+                category:
+                    card.dataset.category || "",
+
+                stock:
+                    card.dataset.stock || "0"
+
+            };
+
+        });
+
+
+    localStorage.setItem(
+        "kisanvision360_compare",
+        JSON.stringify(products)
+    );
+
+
+    showToast(
+        "Products saved for comparison."
+    );
+
+}
+
+
+/* =========================================================
+   REMOVE CONFIRMATION
+========================================================= */
+
+function confirmWishlistRemove(
+    event,
+    form
+) {
+
+
+    event.preventDefault();
+
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to remove this product from your wishlist?"
+        );
+
+
+    if (!confirmed) {
+
+        return false;
+
+    }
+
+
+    showToast(
+        "Removing product from wishlist..."
+    );
+
+
+    setTimeout(function () {
+
+        form.submit();
+
+    }, 100);
+
+
+    return false;
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer;
+
+
+function showToast(message) {
+
+
+    const toast =
+        document.getElementById(
+            "wishlistToast"
+        );
+
+
+    const toastMessage =
+        document.getElementById(
+            "toastMessage"
+        );
+
+
+    if (!toast || !toastMessage) {
+
+        return;
+
+    }
+
+
+    toastMessage.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(function () {
+
+            toast.classList.remove(
+                "show"
+            );
+
+        }, 3000);
+
+}
+
+</script>
+{% endblock %}
+

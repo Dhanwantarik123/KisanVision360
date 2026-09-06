@@ -1,3 +1,4 @@
+﻿{% extends "base.html" %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -131,7 +132,7 @@
 
         <i class="fa-solid fa-temperature-half"></i>
 
-        {{ weather.temperature if weather else '27' }}°C
+        {{ weather.temperature if weather else '27' }}Â°C
 
     </div>
 
@@ -149,7 +150,7 @@
 
         <i class="fa-solid fa-droplet"></i>
 
-        {{ weather.humidity if weather else '—' }}%
+        {{ weather.humidity if weather else 'â€”' }}%
 
     </div>
 
@@ -253,11 +254,11 @@
         </option>
 
         <option value="hi">
-            हिन्दी
+            à¤¹à¤¿à¤¨à¥à¤¦à¥€
         </option>
 
         <option value="mr">
-            मराठी
+            à¤®à¤°à¤¾à¤ à¥€
         </option>
 
     </select>
@@ -346,7 +347,7 @@
 
         <strong>Temperature:</strong>
 
-        {{ weather.temperature if weather else '27' }}°C
+        {{ weather.temperature if weather else '27' }}Â°C
 
     </p>
 
@@ -537,7 +538,7 @@
     </strong>
 
     <span>
-        •
+        â€¢
     </span>
 
     Smart Farming Platform

@@ -1,4 +1,4 @@
-import mysql.connector
+﻿import mysql.connector
 
 try:
     db = mysql.connector.connect(
@@ -12,3 +12,4 @@ try:
 
 except mysql.connector.Error as err:
     print(err)
+

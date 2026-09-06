@@ -1,55 +1,1092 @@
-```html
-<!DOCTYPE html>
-<html lang="en">
+﻿{% extends "base.html" %}
 
-<head>
+{% block title %}KisanVision360+ | Farm Income{% endblock %}
 
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>KisanVision360 | Income</title>
-
-    <!-- Sidebar CSS -->
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/sidebar.css') }}">
-
-    <!-- Income CSS -->
-    <link rel="stylesheet"
+{% block head %}
+<link rel="stylesheet"
           href="{{ url_for('static', filename='css/income.css') }}">
+<style>
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        :root {
+            --green-dark: #1b5e20;
+            --green: #2e7d32;
+            --green-light: #43a047;
+            --green-soft: #e8f5e9;
 
-</head>
+            --orange: #fb8c00;
+            --blue: #1565c0;
+            --red: #d32f2f;
 
-<body>
+            --dark: #17351b;
+            --text: #263238;
+            --muted: #718096;
 
-    <!-- Sidebar -->
-    {% include "components/sidebar.html" %}
+            --border: #dfe8df;
+            --background: #f5f8f5;
+            --white: #ffffff;
+        }
 
 
-    <!-- Main Content -->
-    <div class="main-content">
+        * {
+            box-sizing: border-box;
+        }
 
-        <!-- Topbar -->
+
+        body {
+            margin: 0;
+
+            background:
+                radial-gradient(
+                    circle at 10% 10%,
+                    rgba(67,160,71,0.07),
+                    transparent 25%
+                ),
+                var(--background);
+
+            color: var(--text);
+
+            font-family:
+                Inter,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+        }
+
+
+        .main-content {
+            padding-bottom: 40px;
+        }
+
+
+        /* =====================================================
+           TOPBAR
+        ====================================================== */
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .topbar h2 {
+            margin: 0 0 5px;
+
+            color: var(--dark);
+
+            font-size: 22px;
+        }
+
+
+        .topbar > div:first-child p {
+            margin: 0;
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+
+        .profile {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .profile img {
+            width: 43px;
+            height: 43px;
+
+            object-fit: cover;
+
+            border-radius: 50%;
+
+            border: 2px solid
+                rgba(46,125,50,0.18);
+        }
+
+
+        .profile h4 {
+            margin: 0 0 3px;
+
+            color: var(--dark);
+
+            font-size: 11px;
+        }
+
+
+        .profile p {
+            margin: 0;
+
+            color: var(--muted);
+
+            font-size: 9px;
+        }
+
+
+        /* =====================================================
+           BACK BUTTON
+        ====================================================== */
+
+        .back-button {
+            margin-bottom: 18px;
+        }
+
+
+        .back-button a {
+            display: inline-flex;
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 9px 13px;
+
+            border-radius: 9px;
+
+            background: white;
+
+            border:
+                1px solid
+                var(--border);
+
+            color: var(--green);
+
+            text-decoration: none;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+
+        .back-button a:hover {
+            background: var(--green-soft);
+
+            transform: translateX(-2px);
+        }
+
+
+        /* =====================================================
+           HERO
+        ====================================================== */
+
+        .income-hero {
+            position: relative;
+
+            overflow: hidden;
+
+            margin-bottom: 18px;
+
+            padding: 24px;
+
+            border-radius: 19px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #174d1c,
+                    #2e7d32
+                );
+
+            color: white;
+
+            box-shadow:
+                0 13px 30px
+                rgba(27,94,32,0.14);
+        }
+
+
+        .income-hero::after {
+            content: "";
+
+            position: absolute;
+
+            width: 150px;
+            height: 150px;
+
+            right: -55px;
+            top: -75px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,0.08);
+        }
+
+
+        .hero-content {
+            position: relative;
+
+            z-index: 2;
+
+            max-width: 720px;
+        }
+
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+
+            gap: 6px;
+
+            margin-bottom: 8px;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,255,255,0.12);
+
+            font-size: 9px;
+            font-weight: 900;
+
+            letter-spacing: 0.4px;
+        }
+
+
+        .income-hero h1 {
+            margin: 0 0 7px;
+
+            font-size: 24px;
+        }
+
+
+        .income-hero p {
+            margin: 0;
+
+            color:
+                rgba(255,255,255,0.82);
+
+            font-size: 10px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ====================================================== */
+
+        .summary-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .summary-card {
+            padding: 16px;
+
+            background: white;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 6px 20px
+                rgba(27,94,32,0.05);
+        }
+
+
+        .summary-icon {
+            width: 37px;
+            height: 37px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 10px;
+
+            border-radius: 10px;
+
+            background: var(--green-soft);
+
+            color: var(--green);
+
+            font-size: 14px;
+        }
+
+
+        .summary-card:nth-child(2)
+        .summary-icon {
+            background: #fff4e5;
+            color: var(--orange);
+        }
+
+
+        .summary-card:nth-child(3)
+        .summary-icon {
+            background: #eaf2ff;
+            color: var(--blue);
+        }
+
+
+        .summary-card:nth-child(4)
+        .summary-icon {
+            background: #f1e9ff;
+            color: #7b1fa2;
+        }
+
+
+        .summary-card h3 {
+            margin: 0 0 5px;
+
+            color: var(--dark);
+
+            font-size: 16px;
+        }
+
+
+        .summary-card p {
+            margin: 0;
+
+            color: var(--muted);
+
+            font-size: 9px;
+        }
+
+
+        /* =====================================================
+           MAIN LAYOUT
+        ====================================================== */
+
+        .income-layout {
+            display: grid;
+
+            grid-template-columns:
+                minmax(280px, 0.8fr)
+                minmax(420px, 1.2fr);
+
+            gap: 17px;
+
+            align-items: start;
+        }
+
+
+        .card {
+            padding: 21px;
+
+            background: white;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 17px;
+
+            box-shadow:
+                0 7px 23px
+                rgba(27,94,32,0.05);
+        }
+
+
+        .card-heading {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 17px;
+        }
+
+
+        .heading-icon {
+            width: 37px;
+            height: 37px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: var(--green-soft);
+
+            color: var(--green);
+        }
+
+
+        .card-heading h2 {
+            margin: 0 0 3px;
+
+            color: var(--dark);
+
+            font-size: 15px;
+        }
+
+
+        .card-heading p {
+            margin: 0;
+
+            color: var(--muted);
+
+            font-size: 9px;
+        }
+
+
+        /* =====================================================
+           FORM
+        ====================================================== */
+
+        .income-form {
+            display: grid;
+
+            gap: 12px;
+        }
+
+
+        .form-group {
+            display: grid;
+
+            gap: 6px;
+        }
+
+
+        .form-group label {
+            color: var(--dark);
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+
+        .form-group input {
+            width: 100%;
+
+            min-height: 42px;
+
+            padding: 0 12px;
+
+            border:
+                1px solid
+                #d9e4d9;
+
+            border-radius: 9px;
+
+            outline: none;
+
+            background: #fbfdfb;
+
+            color: var(--text);
+
+            font-size: 10px;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .form-group input:focus {
+            border-color: var(--green);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(67,160,71,0.10);
+        }
+
+
+        .amount-input {
+            position: relative;
+        }
+
+
+        .amount-input span {
+            position: absolute;
+
+            left: 12px;
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            color: var(--green);
+
+            font-size: 11px;
+            font-weight: 900;
+
+            pointer-events: none;
+        }
+
+
+        .amount-input input {
+            padding-left: 28px;
+        }
+
+
+        .add-income-btn {
+            width: 100%;
+
+            min-height: 43px;
+
+            margin-top: 3px;
+
+            border: 0;
+
+            border-radius: 9px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--green),
+                    var(--green-light)
+                );
+
+            color: white;
+
+            font-size: 10px;
+            font-weight: 900;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 7px 17px
+                rgba(46,125,50,0.16);
+
+            transition:
+                transform 0.2s ease,
+                opacity 0.2s ease;
+        }
+
+
+        .add-income-btn:hover {
+            transform: translateY(-2px);
+        }
+
+
+        .add-income-btn:disabled {
+            opacity: 0.65;
+
+            cursor: wait;
+
+            transform: none;
+        }
+
+
+        /* =====================================================
+           SMART INSIGHT
+        ====================================================== */
+
+        .smart-insight {
+            margin-top: 15px;
+
+            padding: 13px;
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f0f8f0,
+                    #ffffff
+                );
+
+            border:
+                1px solid
+                #dcebdd;
+        }
+
+
+        .smart-insight strong {
+            display: block;
+
+            margin-bottom: 4px;
+
+            color: var(--green);
+
+            font-size: 10px;
+        }
+
+
+        .smart-insight p {
+            margin: 0;
+
+            color: var(--muted);
+
+            font-size: 9px;
+
+            line-height: 1.55;
+        }
+
+
+        /* =====================================================
+           HISTORY
+        ====================================================== */
+
+        .history-tools {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-bottom: 13px;
+        }
+
+
+        .history-search {
+            flex: 1;
+
+            min-height: 35px;
+
+            padding: 0 10px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 8px;
+
+            outline: none;
+
+            font-size: 9px;
+        }
+
+
+        .history-search:focus {
+            border-color: var(--green);
+        }
+
+
+        .sort-select {
+            min-height: 35px;
+
+            padding: 0 8px;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 8px;
+
+            background: white;
+
+            color: var(--text);
+
+            outline: none;
+
+            font-size: 9px;
+        }
+
+
+        .table-wrapper {
+            width: 100%;
+
+            overflow-x: auto;
+        }
+
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 440px;
+        }
+
+
+        thead {
+            background: #f3f8f3;
+        }
+
+
+        th {
+            padding: 11px 10px;
+
+            color: var(--muted);
+
+            text-align: left;
+
+            font-size: 9px;
+            font-weight: 900;
+        }
+
+
+        td {
+            padding: 12px 10px;
+
+            border-top:
+                1px solid
+                #edf2ed;
+
+            color: var(--text);
+
+            font-size: 9px;
+        }
+
+
+        tbody tr {
+            transition:
+                background 0.2s ease;
+        }
+
+
+        tbody tr:hover {
+            background: #fbfdfb;
+        }
+
+
+        .date-cell {
+            color: var(--muted);
+        }
+
+
+        .amount-cell {
+            color: var(--green);
+
+            font-weight: 900;
+
+            white-space: nowrap;
+        }
+
+
+        .income-badge {
+            display: inline-flex;
+            align-items: center;
+
+            gap: 4px;
+
+            padding: 4px 7px;
+
+            border-radius: 20px;
+
+            background: var(--green-soft);
+
+            color: var(--green);
+
+            font-size: 8px;
+            font-weight: 900;
+        }
+
+
+        .no-income {
+            padding: 35px 15px;
+
+            text-align: center;
+
+            color: var(--muted);
+        }
+
+
+        .no-income i {
+            display: block;
+
+            margin-bottom: 9px;
+
+            color: var(--green-light);
+
+            font-size: 28px;
+        }
+
+
+        .no-income strong {
+            display: block;
+
+            margin-bottom: 4px;
+
+            color: var(--dark);
+
+            font-size: 12px;
+        }
+
+
+        .no-income span {
+            font-size: 9px;
+        }
+
+
+        /* =====================================================
+           FINANCIAL FLOW
+        ====================================================== */
+
+        .income-flow {
+            margin-top: 18px;
+
+            padding: 18px;
+
+            background: white;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 6px 20px
+                rgba(27,94,32,0.04);
+        }
+
+
+        .flow-title {
+            margin-bottom: 14px;
+        }
+
+
+        .flow-title h2 {
+            margin: 0 0 4px;
+
+            color: var(--dark);
+
+            font-size: 15px;
+        }
+
+
+        .flow-title p {
+            margin: 0;
+
+            color: var(--muted);
+
+            font-size: 9px;
+        }
+
+
+        .flow {
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap: 8px;
+        }
+
+
+        .flow-step {
+            position: relative;
+
+            padding: 12px 7px;
+
+            border-radius: 10px;
+
+            background: #f7faf7;
+
+            text-align: center;
+        }
+
+
+        .flow-step i {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: var(--green);
+
+            font-size: 14px;
+        }
+
+
+        .flow-step span {
+            color: var(--dark);
+
+            font-size: 8px;
+            font-weight: 800;
+        }
+
+
+        .flow-arrow {
+            position: absolute;
+
+            right: -9px;
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            z-index: 3;
+
+            color: var(--green-light);
+
+            font-size: 9px;
+        }
+
+
+        .flow-step:last-child
+        .flow-arrow {
+            display: none;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 950px) {
+
+            .summary-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .income-layout {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .topbar {
+                align-items: flex-start;
+            }
+
+
+            .profile {
+                display: none;
+            }
+
+
+            .income-hero {
+                padding: 20px;
+            }
+
+
+            .income-hero h1 {
+                font-size: 20px;
+            }
+
+
+            .summary-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+
+            .history-tools {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+
+            .flow {
+                grid-template-columns: 1fr;
+            }
+
+
+            .flow-arrow {
+                display: none;
+            }
+
+        }
+
+
+        @media (max-width: 430px) {
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .card {
+                padding: 17px;
+            }
+
+        }
+
+
+        /* =====================================================
+           RTL
+        ====================================================== */
+
+        [dir="rtl"] th {
+            text-align: right;
+        }
+
+
+        [dir="rtl"] .amount-input span {
+            left: auto;
+            right: 12px;
+        }
+
+
+        [dir="rtl"] .amount-input input {
+            padding-left: 12px;
+            padding-right: 28px;
+        }
+
+    </style>
+{% endblock %}
+
+{% block page_title %}Farm Income{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<!-- =================================================
+             TOPBAR
+        ================================================== -->
+
         <div class="topbar">
 
+
             <div>
-                <h2>💵 Farm Income</h2>
-                <p>Manage Crop Sales & Other Income</p>
+
+                <h2>
+
+                    <i class="fa-solid fa-money-bill-trend-up"></i>
+
+                    Farm Income
+
+                </h2>
+
+
+                <p>
+                    Manage crop sales and other farm income
+                </p>
+
             </div>
+
 
             <div class="profile">
 
-                <img src="{{ url_for('static', filename='images/farmer.jpg') }}"
-                     alt="Farmer">
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename='images/farmer.jpg'
+                    ) }}"
+                    alt="Farmer profile">
+
 
                 <div>
-                    <h4>{{ name }}</h4>
-                    <p>Farmer</p>
+
+                    <h4>
+
+                        {{ name|default(
+                            session.get('name', 'Farmer'),
+                            true
+                        ) }}
+
+                    </h4>
+
+
+                    <p>
+                        Farmer
+                    </p>
+
                 </div>
 
             </div>
@@ -57,115 +1094,1117 @@
         </div>
 
 
-        <!-- Back to Orders Button -->
+
+        <!-- =================================================
+             BACK TO FINANCE
+        ================================================== -->
+
         <div class="back-button">
 
-            <a href="{{ url_for('finance') }}">
+
+            <!-- FIXED BLUEPRINT ENDPOINT -->
+
+            <a href="{{ url_for('finance.finance') }}">
+
+
                 <i class="fa-solid fa-arrow-left"></i>
+
+
                 Back to Finance
+
+
             </a>
 
         </div>
 
 
-        <!-- Add Income Form -->
-        <div class="form-card">
 
-            <h2>Add Income</h2>
+        <!-- =================================================
+             HERO
+        ================================================== -->
 
-            <form method="POST">
-
-                <label for="description">
-                    Description
-                </label>
-
-                <input
-                    type="text"
-                    id="description"
-                    name="description"
-                    placeholder="e.g. Wheat Sale"
-                    required>
+        <section class="income-hero">
 
 
-                <label for="amount">
-                    Amount (₹)
-                </label>
-
-                <input
-                    type="number"
-                    id="amount"
-                    name="amount"
-                    placeholder="Enter amount"
-                    step="0.01"
-                    min="0"
-                    required>
+            <div class="hero-content">
 
 
-                <button type="submit">
-
-                    <i class="fa-solid fa-plus"></i>
-
-                    Add Income
-
-                </button>
-
-            </form>
-
-        </div>
+                <div class="hero-label">
 
 
-        <!-- Income History -->
-        <div class="table-card">
+                    <i class="fa-solid fa-chart-line"></i>
 
-            <h2>Income History</h2>
 
-            <table>
+                    KisanVision360+ Income Intelligence
 
-                <thead>
 
-                    <tr>
-                        <th>Date</th>
-                        <th>Description</th>
-                        <th>Amount</th>
-                    </tr>
+                </div>
 
-                </thead>
 
-                <tbody>
+                <h1>
+                    Track Every Rupee Your Farm Earns
+                </h1>
 
-                    {% for row in income_list %}
 
-                    <tr>
+                <p>
 
-                        <td>{{ row[0] }}</td>
+                    Record crop sales and other income to build
+                    a clearer picture of your farm's financial
+                    performance.
 
-                        <td>{{ row[1] }}</td>
+                </p>
 
-                        <td>₹ {{ row[2] }}</td>
 
-                    </tr>
+            </div>
 
-                    {% else %}
 
-                    <tr>
+        </section>
 
-                        <td colspan="3">
-                            No income records found.
-                        </td>
 
-                    </tr>
 
-                    {% endfor %}
+        <!-- =================================================
+             CALCULATE INCOME STATISTICS
+        ================================================== -->
 
-                </tbody>
+        {% set income_stats = namespace(
+            total=0,
+            count=0,
+            highest=0
+        ) %}
 
-            </table>
 
-        </div>
+        {% for row in income_list %}
 
-    </div>
 
-</body>
+            {% set row_amount = row[2]|float %}
 
-</html>
-```
+
+            {% set income_stats.total =
+                income_stats.total + row_amount %}
+
+
+            {% set income_stats.count =
+                income_stats.count + 1 %}
+
+
+            {% if row_amount > income_stats.highest %}
+
+
+                {% set income_stats.highest =
+                    row_amount %}
+
+
+            {% endif %}
+
+
+        {% endfor %}
+
+
+        {% set average_income =
+            (
+                income_stats.total /
+                income_stats.count
+            )
+            if income_stats.count > 0
+            else 0
+        %}
+
+
+
+        <!-- =================================================
+             SUMMARY
+        ================================================== -->
+
+        <section class="summary-grid">
+
+
+            <div class="summary-card">
+
+
+                <div class="summary-icon">
+
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                </div>
+
+
+                <h3>
+
+                    â‚¹{{ "%.2f"|format(
+                        income_stats.total
+                    ) }}
+
+                </h3>
+
+
+                <p>
+                    Total Recorded Income
+                </p>
+
+
+            </div>
+
+
+
+            <div class="summary-card">
+
+
+                <div class="summary-icon">
+
+                    <i class="fa-solid fa-receipt"></i>
+
+                </div>
+
+
+                <h3>
+
+                    {{ income_stats.count }}
+
+                </h3>
+
+
+                <p>
+                    Income Records
+                </p>
+
+
+            </div>
+
+
+
+            <div class="summary-card">
+
+
+                <div class="summary-icon">
+
+                    <i class="fa-solid fa-chart-column"></i>
+
+                </div>
+
+
+                <h3>
+
+                    â‚¹{{ "%.2f"|format(
+                        average_income
+                    ) }}
+
+                </h3>
+
+
+                <p>
+                    Average Income
+                </p>
+
+
+            </div>
+
+
+
+            <div class="summary-card">
+
+
+                <div class="summary-icon">
+
+                    <i class="fa-solid fa-arrow-trend-up"></i>
+
+                </div>
+
+
+                <h3>
+
+                    â‚¹{{ "%.2f"|format(
+                        income_stats.highest
+                    ) }}
+
+                </h3>
+
+
+                <p>
+                    Highest Recorded Income
+                </p>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             MAIN LAYOUT
+        ================================================== -->
+
+        <section class="income-layout">
+
+
+            <!-- =============================================
+                 ADD INCOME
+            ============================================== -->
+
+            <div class="card">
+
+
+                <div class="card-heading">
+
+
+                    <div class="heading-icon">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Add Income
+                        </h2>
+
+
+                        <p>
+                            Record a new farm earning
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <form
+                    method="POST"
+                    class="income-form"
+                    id="incomeForm"
+                >
+
+
+                    <div class="form-group">
+
+
+                        <label for="description">
+
+                            Income Description
+
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="description"
+                            name="description"
+                            placeholder="e.g. Wheat Sale"
+                            maxlength="120"
+                            autocomplete="off"
+                            required>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+
+                        <label for="amount">
+
+                            Income Amount
+
+                        </label>
+
+
+                        <div class="amount-input">
+
+
+                            <span>
+                                â‚¹
+                            </span>
+
+
+                            <input
+                                type="number"
+                                id="amount"
+                                name="amount"
+                                placeholder="Enter amount"
+                                step="0.01"
+                                min="0.01"
+                                inputmode="decimal"
+                                required>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <button
+                        type="submit"
+                        class="add-income-btn"
+                        id="addIncomeBtn"
+                    >
+
+
+                        <i class="fa-solid fa-plus"></i>
+
+
+                        Add Income
+
+
+                    </button>
+
+
+                </form>
+
+
+
+                <!-- SMART INSIGHT -->
+
+                <div class="smart-insight">
+
+
+                    <strong>
+
+
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+
+                        Smart Income Insight
+
+
+                    </strong>
+
+
+                    <p id="incomeInsight">
+
+
+                        {% if income_stats.total > 0 %}
+
+
+                            Your recorded income is
+                            â‚¹{{ "%.2f"|format(
+                                income_stats.total
+                            ) }}.
+
+                            Continue recording every sale so the
+                            Finance module can provide better
+                            profitability insights.
+
+
+                        {% else %}
+
+
+                            Start by recording your first crop
+                            sale or other farm earning.
+
+
+                        {% endif %}
+
+
+                    </p>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =============================================
+                 INCOME HISTORY
+            ============================================== -->
+
+            <div class="card">
+
+
+                <div class="card-heading">
+
+
+                    <div class="heading-icon">
+
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Income History
+                        </h2>
+
+
+                        <p>
+                            Review your recorded earnings
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- SEARCH / SORT -->
+
+                <div class="history-tools">
+
+
+                    <input
+                        type="search"
+                        id="incomeSearch"
+                        class="history-search"
+                        placeholder="Search income..."
+                        autocomplete="off">
+
+
+                    <select
+                        id="incomeSort"
+                        class="sort-select"
+                    >
+
+
+                        <option value="default">
+                            Default
+                        </option>
+
+
+                        <option value="highest">
+                            Highest Amount
+                        </option>
+
+
+                        <option value="lowest">
+                            Lowest Amount
+                        </option>
+
+
+                    </select>
+
+
+                </div>
+
+
+
+                <!-- TABLE -->
+
+                <div class="table-wrapper">
+
+
+                    <table id="incomeTable">
+
+
+                        <thead>
+
+
+                            <tr>
+
+
+                                <th>
+                                    Date
+                                </th>
+
+
+                                <th>
+                                    Description
+                                </th>
+
+
+                                <th>
+                                    Amount
+                                </th>
+
+
+                            </tr>
+
+
+                        </thead>
+
+
+                        <tbody>
+
+
+                            {% for row in income_list %}
+
+
+                            <tr
+                                class="income-row"
+                                data-description="{{ row[1]|default('', true)|lower }}"
+                                data-amount="{{ row[2]|default(0, true)|float }}"
+                            >
+
+
+                                <td class="date-cell">
+
+
+                                    <i class="fa-regular fa-calendar"></i>
+
+
+                                    {{ row[0] }}
+
+
+                                </td>
+
+
+                                <td>
+
+                                    {{ row[1] }}
+
+                                </td>
+
+
+                                <td class="amount-cell">
+
+
+                                    <span class="income-badge">
+
+
+                                        <i class="fa-solid fa-arrow-up"></i>
+
+
+                                        â‚¹ {{ row[2] }}
+
+
+                                    </span>
+
+
+                                </td>
+
+
+                            </tr>
+
+
+                            {% else %}
+
+
+                            <tr id="emptyIncomeRow">
+
+
+                                <td colspan="3">
+
+
+                                    <div class="no-income">
+
+
+                                        <i class="fa-solid fa-wallet"></i>
+
+
+                                        <strong>
+                                            No income records found
+                                        </strong>
+
+
+                                        <span>
+
+                                            Add your first crop sale
+                                            or farm earning using
+                                            the form.
+
+                                        </span>
+
+
+                                    </div>
+
+
+                                </td>
+
+
+                            </tr>
+
+
+                            {% endfor %}
+
+
+                        </tbody>
+
+
+                    </table>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             FINANCIAL FLOW
+        ================================================== -->
+
+        <section class="income-flow">
+
+
+            <div class="flow-title">
+
+
+                <h2>
+                    Farm Financial Flow
+                </h2>
+
+
+                <p>
+
+                    KisanVision360+ connects income with your
+                    wider farm financial decisions.
+
+                </p>
+
+
+            </div>
+
+
+
+            <div class="flow">
+
+
+                <div class="flow-step">
+
+
+                    <i class="fa-solid fa-seedling"></i>
+
+
+                    <span>
+                        Crop
+                    </span>
+
+
+                    <i class="fa-solid fa-chevron-right flow-arrow"></i>
+
+
+                </div>
+
+
+
+                <div class="flow-step">
+
+
+                    <i class="fa-solid fa-wheat-awn"></i>
+
+
+                    <span>
+                        Production
+                    </span>
+
+
+                    <i class="fa-solid fa-chevron-right flow-arrow"></i>
+
+
+                </div>
+
+
+
+                <div class="flow-step">
+
+
+                    <i class="fa-solid fa-store"></i>
+
+
+                    <span>
+                        Crop Sale
+                    </span>
+
+
+                    <i class="fa-solid fa-chevron-right flow-arrow"></i>
+
+
+                </div>
+
+
+
+                <div class="flow-step">
+
+
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+
+
+                    <span>
+                        Income
+                    </span>
+
+
+                    <i class="fa-solid fa-chevron-right flow-arrow"></i>
+
+
+                </div>
+
+
+
+                <div class="flow-step">
+
+
+                    <i class="fa-solid fa-chart-pie"></i>
+
+
+                    <span>
+                        Profit Analysis
+                    </span>
+
+
+                    <i class="fa-solid fa-chevron-right flow-arrow"></i>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+
+                /* =============================================
+                   FORM PROTECTION
+                ============================================== */
+
+                const form =
+                    document.getElementById(
+                        "incomeForm"
+                    );
+
+
+                const submitButton =
+                    document.getElementById(
+                        "addIncomeBtn"
+                    );
+
+
+                if (
+                    form &&
+                    submitButton
+                ) {
+
+
+                    form.addEventListener(
+                        "submit",
+                        function (event) {
+
+
+                            const description =
+                                document
+                                .getElementById(
+                                    "description"
+                                )
+                                .value
+                                .trim();
+
+
+                            const amount =
+                                parseFloat(
+                                    document
+                                    .getElementById(
+                                        "amount"
+                                    )
+                                    .value
+                                );
+
+
+                            if (
+                                description.length < 2
+                            ) {
+
+
+                                event.preventDefault();
+
+
+                                alert(
+                                    "Please enter a valid income description."
+                                );
+
+
+                                return;
+
+                            }
+
+
+                            if (
+                                !Number.isFinite(amount) ||
+                                amount <= 0
+                            ) {
+
+
+                                event.preventDefault();
+
+
+                                alert(
+                                    "Please enter a valid income amount."
+                                );
+
+
+                                return;
+
+                            }
+
+
+                            submitButton.disabled = true;
+
+
+                            submitButton.innerHTML =
+                                '<i class="fa-solid fa-spinner fa-spin"></i> Saving Income...';
+
+                        }
+                    );
+
+                }
+
+
+
+                /* =============================================
+                   SEARCH
+                ============================================== */
+
+                const searchInput =
+                    document.getElementById(
+                        "incomeSearch"
+                    );
+
+
+                function applyIncomeSearch() {
+
+
+                    const query =
+                        searchInput
+                        ? searchInput.value
+                            .trim()
+                            .toLowerCase()
+                        : "";
+
+
+                    const rows =
+                        document.querySelectorAll(
+                            ".income-row"
+                        );
+
+
+                    rows.forEach(
+                        function (row) {
+
+
+                            const description =
+                                row.dataset.description ||
+                                "";
+
+
+                            const amount =
+                                row.dataset.amount ||
+                                "";
+
+
+                            const date =
+                                row.querySelector(
+                                    ".date-cell"
+                                )?.textContent
+                                .trim()
+                                .toLowerCase() ||
+                                "";
+
+
+                            const searchableText =
+                                description +
+                                " " +
+                                amount +
+                                " " +
+                                date;
+
+
+                            row.style.display =
+                                searchableText.includes(
+                                    query
+                                )
+                                ? ""
+                                : "none";
+
+                        }
+                    );
+
+                }
+
+
+                if (searchInput) {
+
+
+                    searchInput.addEventListener(
+                        "input",
+                        applyIncomeSearch
+                    );
+
+                }
+
+
+
+                /* =============================================
+                   SORT
+                ============================================== */
+
+                const sortSelect =
+                    document.getElementById(
+                        "incomeSort"
+                    );
+
+
+                const tableBody =
+                    document.querySelector(
+                        "#incomeTable tbody"
+                    );
+
+
+                if (
+                    sortSelect &&
+                    tableBody
+                ) {
+
+
+                    sortSelect.addEventListener(
+                        "change",
+                        function () {
+
+
+                            const rows =
+                                Array.from(
+                                    tableBody.querySelectorAll(
+                                        ".income-row"
+                                    )
+                                );
+
+
+                            if (
+                                this.value ===
+                                "highest"
+                            ) {
+
+
+                                rows.sort(
+                                    function (a, b) {
+
+
+                                        return (
+                                            parseFloat(
+                                                b.dataset.amount ||
+                                                0
+                                            ) -
+                                            parseFloat(
+                                                a.dataset.amount ||
+                                                0
+                                            )
+                                        );
+
+                                    }
+                                );
+
+                            }
+
+
+                            else if (
+                                this.value ===
+                                "lowest"
+                            ) {
+
+
+                                rows.sort(
+                                    function (a, b) {
+
+
+                                        return (
+                                            parseFloat(
+                                                a.dataset.amount ||
+                                                0
+                                            ) -
+                                            parseFloat(
+                                                b.dataset.amount ||
+                                                0
+                                            )
+                                        );
+
+                                    }
+                                );
+
+                            }
+
+
+                            else {
+
+
+                                /*
+                                 Default order is the order
+                                 received from the backend.
+                                */
+
+                                rows.sort(
+                                    function (a, b) {
+
+                                        return (
+                                            Number(
+                                                a.dataset.originalIndex ||
+                                                0
+                                            ) -
+                                            Number(
+                                                b.dataset.originalIndex ||
+                                                0
+                                            )
+                                        );
+
+                                    }
+                                );
+
+                            }
+
+
+                            rows.forEach(
+                                function (row) {
+
+                                    tableBody.appendChild(
+                                        row
+                                    );
+
+                                }
+                            );
+
+
+                            applyIncomeSearch();
+
+                        }
+                    );
+
+
+                    /*
+                     Store original row order.
+                    */
+
+                    const rows =
+                        tableBody.querySelectorAll(
+                            ".income-row"
+                        );
+
+
+                    rows.forEach(
+                        function (row, index) {
+
+                            row.dataset.originalIndex =
+                                index;
+
+                        }
+                    );
+
+                }
+
+
+            }
+        );
+
+    </script>
+{% endblock %}
+

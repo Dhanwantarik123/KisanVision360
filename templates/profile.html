@@ -1,607 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿{% extends "base.html" %}
 
-<head>
+{% block title %}KisanVision360+ | My Profile{% endblock %}
 
-    <meta charset="UTF-8">
+{% block head %}
+<link rel="stylesheet"
+          href="{{ url_for(
+              'static',
+              filename='css/profile.css'
+          ) }}">
+{% endblock %}
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+{% block page_title %}My Profile{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
 
-    <title>KisanVision360 | My Profile</title>
+{% block content %}
+<!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
 
+    
 
-    <!-- SIDEBAR -->
 
-    <link rel="stylesheet"
-          href="{{ url_for('static',
-          filename='css/sidebar.css') }}">
 
-
-    <!-- PROFILE CSS -->
-
-    <link rel="stylesheet"
-          href="{{ url_for('static',
-          filename='css/profile.css') }}">
-
-
-    <!-- FONT AWESOME -->
-
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-
-        body {
-
-            margin: 0;
-
-            background: #f4f7f4;
-
-            font-family: Arial, sans-serif;
-
-        }
-
-
-        .profile-page {
-
-            padding: 25px;
-
-        }
-
-
-        /* ================= TOPBAR ================= */
-
-        .profile-topbar {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            gap: 20px;
-
-            margin-bottom: 25px;
-
-            flex-wrap: wrap;
-
-        }
-
-
-        .profile-topbar h1 {
-
-            margin: 0;
-
-            color: #1b5e20;
-
-            font-size: 30px;
-
-        }
-
-
-        .profile-topbar p {
-
-            margin-top: 8px;
-
-            color: #666;
-
-        }
-
-
-        .top-actions {
-
-            display: flex;
-
-            gap: 10px;
-
-            flex-wrap: wrap;
-
-        }
-
-
-        .top-btn {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 8px;
-
-            padding: 11px 16px;
-
-            border-radius: 9px;
-
-            text-decoration: none;
-
-            color: white;
-
-            font-weight: 600;
-
-        }
-
-
-        .dashboard-btn {
-
-            background: #455a64;
-
-        }
-
-
-        .settings-btn {
-
-            background: #2e7d32;
-
-        }
-
-
-        .dashboard-btn:hover {
-
-            background: #263238;
-
-        }
-
-
-        .settings-btn:hover {
-
-            background: #1b5e20;
-
-        }
-
-
-        /* ================= PROFILE HERO ================= */
-
-        .profile-card {
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #1b5e20,
-                    #43a047
-                );
-
-            color: white;
-
-            border-radius: 20px;
-
-            padding: 30px;
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 25px;
-
-            margin-bottom: 25px;
-
-            box-shadow:
-                0 7px 25px rgba(0,0,0,0.12);
-
-        }
-
-
-        .dp-box {
-
-            position: relative;
-
-            width: 125px;
-
-            height: 125px;
-
-            flex-shrink: 0;
-
-        }
-
-
-        .profile-image {
-
-            width: 125px;
-
-            height: 125px;
-
-            border-radius: 50%;
-
-            object-fit: cover;
-
-            border: 5px solid white;
-
-        }
-
-
-        .camera-button {
-
-            position: absolute;
-
-            right: 3px;
-
-            bottom: 3px;
-
-            width: 38px;
-
-            height: 38px;
-
-            border-radius: 50%;
-
-            background: #ff9800;
-
-            color: white;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            cursor: pointer;
-
-            border: 3px solid white;
-
-        }
-
-
-        .profile-card h2 {
-
-            margin: 0 0 8px;
-
-            font-size: 27px;
-
-        }
-
-
-        .profile-card p {
-
-            margin: 5px 0;
-
-            opacity: 0.95;
-
-        }
-
-
-        .role-badge {
-
-            display: inline-block;
-
-            margin-top: 8px;
-
-            padding: 7px 12px;
-
-            background: rgba(255,255,255,0.18);
-
-            border-radius: 20px;
-
-            font-size: 13px;
-
-        }
-
-
-        /* ================= STATUS ================= */
-
-        .section-title {
-
-            color: #333;
-
-            margin: 25px 0 15px;
-
-        }
-
-
-        .status-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(auto-fit, minmax(200px, 1fr));
-
-            gap: 18px;
-
-            margin-bottom: 25px;
-
-        }
-
-
-        .status-card {
-
-            background: white;
-
-            padding: 22px;
-
-            border-radius: 16px;
-
-            box-shadow:
-                0 5px 18px rgba(0,0,0,0.08);
-
-            border-left: 5px solid #2e7d32;
-
-        }
-
-
-        .status-card i {
-
-            font-size: 25px;
-
-            color: #2e7d32;
-
-            margin-bottom: 12px;
-
-        }
-
-
-        .status-card h3 {
-
-            margin: 5px 0;
-
-            color: #333;
-
-            font-size: 21px;
-
-        }
-
-
-        .status-card p {
-
-            margin: 0;
-
-            color: #777;
-
-            font-size: 13px;
-
-        }
-
-
-        /* ================= DETAILS ================= */
-
-        .details-card {
-
-            background: white;
-
-            padding: 25px;
-
-            border-radius: 18px;
-
-            box-shadow:
-                0 5px 20px rgba(0,0,0,0.08);
-
-            margin-bottom: 25px;
-
-        }
-
-
-        .details-card h2 {
-
-            margin-top: 0;
-
-            color: #1b5e20;
-
-        }
-
-
-        .info-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(auto-fit, minmax(250px, 1fr));
-
-            gap: 18px;
-
-        }
-
-
-        .info-item label {
-
-            display: block;
-
-            margin-bottom: 7px;
-
-            font-size: 13px;
-
-            color: #777;
-
-            font-weight: 600;
-
-        }
-
-
-        .info-value {
-
-            width: 100%;
-
-            background: #f7f9f7;
-
-            border: 1px solid #e1e5e1;
-
-            padding: 12px;
-
-            border-radius: 9px;
-
-            color: #333;
-
-            min-height: 43px;
-
-        }
-
-
-        /* ================= ACCOUNT ================= */
-
-        .account-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(auto-fit, minmax(230px, 1fr));
-
-            gap: 18px;
-
-            margin-bottom: 25px;
-
-        }
-
-
-        .account-card {
-
-            background: white;
-
-            padding: 22px;
-
-            border-radius: 16px;
-
-            box-shadow:
-                0 5px 18px rgba(0,0,0,0.08);
-
-        }
-
-
-        .account-card i {
-
-            font-size: 27px;
-
-            color: #2e7d32;
-
-            margin-bottom: 12px;
-
-        }
-
-
-        .account-card h3 {
-
-            margin: 5px 0;
-
-            color: #333;
-
-        }
-
-
-        .account-card p {
-
-            color: #777;
-
-            font-size: 14px;
-
-            line-height: 1.5;
-
-        }
-
-
-        .account-btn {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 7px;
-
-            padding: 9px 13px;
-
-            border-radius: 8px;
-
-            background: #2e7d32;
-
-            color: white;
-
-            text-decoration: none;
-
-            font-size: 13px;
-
-            font-weight: 600;
-
-        }
-
-
-        .account-btn:hover {
-
-            background: #1b5e20;
-
-        }
-
-
-        /* ================= FOOTER ================= */
-
-        .profile-footer {
-
-            text-align: center;
-
-            color: #777;
-
-            padding: 25px 10px;
-
-        }
-
-
-        .profile-footer i {
-
-            color: #2e7d32;
-
-        }
-
-
-        /* ================= MOBILE ================= */
-
-        @media (max-width: 650px) {
-
-            .profile-page {
-
-                padding: 15px;
-
-            }
-
-
-            .profile-card {
-
-                flex-direction: column;
-
-                text-align: center;
-
-            }
-
-
-            .profile-topbar h1 {
-
-                font-size: 24px;
-
-            }
-
-
-            .top-actions {
-
-                width: 100%;
-
-            }
-
-
-            .top-btn {
-
-                flex: 1;
-
-                justify-content: center;
-
-            }
-
-        }
-
-    </style>
-
-</head>
-
-
-<body>
-
-
-<div class="dashboard-container">
-
-
-    <!-- ================= SIDEBAR ================= -->
-
-    {% include "components/sidebar.html" %}
-
-
-
-    <!-- ================= MAIN CONTENT ================= -->
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
 
     <div class="main-content">
 
@@ -609,27 +32,36 @@
         <div class="profile-page">
 
 
-            <!-- ================= TOPBAR ================= -->
+            <!-- =================================================
+                 TOP HEADER
+            ================================================= -->
 
             <div class="profile-topbar">
 
 
-                <div>
+                <div class="profile-heading">
 
-                    <h1>
+
+                    <div class="heading-icon">
 
                         <i class="fa-solid fa-user"></i>
 
-                        My Profile
+                    </div>
 
-                    </h1>
 
-                    <p>
+                    <div>
 
-                        Manage your KisanVision360
-                        farmer account.
+                        <h1>
+                            My Profile
+                        </h1>
 
-                    </p>
+                        <p>
+                            Manage your KisanVision360+
+                            account and personalization.
+                        </p>
+
+                    </div>
+
 
                 </div>
 
@@ -640,7 +72,8 @@
 
                     <a
                         href="/farmer"
-                        class="top-btn dashboard-btn">
+                        class="top-btn dashboard-btn"
+                    >
 
                         <i class="fa-solid fa-house"></i>
 
@@ -651,7 +84,8 @@
 
                     <a
                         href="/settings"
-                        class="top-btn settings-btn">
+                        class="top-btn settings-btn"
+                    >
 
                         <i class="fa-solid fa-gear"></i>
 
@@ -667,30 +101,141 @@
 
 
 
-            <!-- ================= PROFILE HERO ================= -->
+            <!-- =================================================
+                 SMART PROFILE STATUS
+            ================================================= -->
+
+            <div class="smart-status">
+
+
+                <!-- ACCOUNT -->
+
+                <div class="smart-status-card">
+
+                    <i class="fa-solid fa-user-check"></i>
+
+                    <div>
+
+                        <strong>
+                            Account Active
+                        </strong>
+
+                        <span>
+                            Your account is available
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- LANGUAGE -->
+
+                <div class="smart-status-card">
+
+                    <i class="fa-solid fa-language"></i>
+
+                    <div>
+
+                        <strong>
+                            Global Language
+                        </strong>
+
+                        <span>
+                            {{ session.get('language', 'en')|upper }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FARM INTELLIGENCE -->
+
+                <div class="smart-status-card">
+
+                    <i class="fa-solid fa-cloud-sun"></i>
+
+                    <div>
+
+                        <strong>
+                            Farm Intelligence
+                        </strong>
+
+                        <span>
+                            Weather-aware services
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SECURITY -->
+
+                <div class="smart-status-card">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    <div>
+
+                        <strong>
+                            Account Protected
+                        </strong>
+
+                        <span>
+                            Profile & password controls
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 PROFILE HERO
+            ================================================= -->
 
             <div class="profile-card">
 
+
+                <!-- PROFILE PHOTO -->
 
                 <div class="dp-box">
 
 
                     <img
-                        src="{{ profile_pic if profile_pic else url_for('static', filename='images/farmer.jpg') }}"
+                        src="{{ profile_pic if profile_pic else url_for(
+                            'static',
+                            filename='images/farmer.jpg'
+                        ) }}"
                         class="profile-image"
-                        alt="Profile Photo">
+                        alt="Profile Photo"
+                    >
 
+
+                    <!-- PHOTO UPLOAD FORM -->
 
                     <form
                         action="/upload-profile"
                         method="POST"
-                        enctype="multipart/form-data">
+                        enctype="multipart/form-data"
+                        id="profilePhotoForm"
+                    >
 
 
                         <label
                             for="photo"
                             class="camera-button"
-                            title="Change Profile Photo">
+                            title="Change Profile Photo"
+                        >
 
                             <i class="fa-solid fa-camera"></i>
 
@@ -701,9 +246,10 @@
                             type="file"
                             id="photo"
                             name="profile"
-                            accept="image/*"
+                            accept="image/jpeg,image/png,image/webp"
                             hidden
-                            onchange="this.form.submit()">
+                        >
+
 
                     </form>
 
@@ -712,11 +258,18 @@
 
 
 
-                <div>
+                <!-- PROFILE INFORMATION -->
+
+                <div class="profile-hero-content">
 
 
                     <h2>
-                        {{ name }}
+
+                        {{ name|default(
+                            session.get('name', 'User'),
+                            true
+                        ) }}
+
                     </h2>
 
 
@@ -733,9 +286,48 @@
 
                         <i class="fa-solid fa-user-check"></i>
 
-                        {{ role }}
+                        {{ role|default(
+                            session.get('role', 'Farmer'),
+                            true
+                        ) }}
 
                     </span>
+
+
+
+                    <!-- HERO BADGES -->
+
+                    <div class="hero-badges">
+
+
+                        <span class="hero-badge">
+
+                            <i class="fa-solid fa-leaf"></i>
+
+                            Smart Farming
+
+                        </span>
+
+
+                        <span class="hero-badge">
+
+                            <i class="fa-solid fa-brain"></i>
+
+                            AI Personalization
+
+                        </span>
+
+
+                        <span class="hero-badge">
+
+                            <i class="fa-solid fa-mobile-screen"></i>
+
+                            KisanVision360+
+
+                        </span>
+
+
+                    </div>
 
 
                 </div>
@@ -745,7 +337,9 @@
 
 
 
-            <!-- ================= STATUS ================= -->
+            <!-- =================================================
+                 CURRENT STATUS
+            ================================================= -->
 
             <h2 class="section-title">
 
@@ -754,6 +348,7 @@
                 Current Status
 
             </h2>
+
 
 
             <div class="status-grid">
@@ -787,7 +382,7 @@
                     {% if weather %}
 
                         <h3>
-                            {{ weather.temperature }} °C
+                            {{ weather.temperature }} Â°C
                         </h3>
 
                     {% else %}
@@ -837,13 +432,13 @@
 
 
 
-                <!-- ACCOUNT -->
+                <!-- ACCOUNT STATUS -->
 
                 <div class="status-card">
 
                     <i class="fa-solid fa-shield-halved"></i>
 
-                    <h3>
+                    <h3 class="status-online">
                         Active
                     </h3>
 
@@ -858,7 +453,9 @@
 
 
 
-            <!-- ================= PERSONAL INFORMATION ================= -->
+            <!-- =================================================
+                 PERSONAL INFORMATION
+            ================================================= -->
 
             <div class="details-card">
 
@@ -875,6 +472,8 @@
                 <div class="info-grid">
 
 
+                    <!-- NAME -->
+
                     <div class="info-item">
 
                         <label>
@@ -882,12 +481,19 @@
                         </label>
 
                         <div class="info-value">
-                            {{ name }}
+
+                            {{ name|default(
+                                session.get('name', 'User'),
+                                true
+                            ) }}
+
                         </div>
 
                     </div>
 
 
+
+                    <!-- MOBILE -->
 
                     <div class="info-item">
 
@@ -897,13 +503,18 @@
 
                         <div class="info-value">
 
-                            {{ mobile }}
+                            {{ mobile|default(
+                                'Not provided',
+                                true
+                            ) }}
 
                         </div>
 
                     </div>
 
 
+
+                    <!-- EMAIL -->
 
                     <div class="info-item">
 
@@ -913,13 +524,18 @@
 
                         <div class="info-value">
 
-                            {{ email }}
+                            {{ email|default(
+                                'Not provided',
+                                true
+                            ) }}
 
                         </div>
 
                     </div>
 
 
+
+                    <!-- ROLE -->
 
                     <div class="info-item">
 
@@ -929,7 +545,10 @@
 
                         <div class="info-value">
 
-                            {{ role }}
+                            {{ role|default(
+                                session.get('role', 'Farmer'),
+                                true
+                            ) }}
 
                         </div>
 
@@ -939,12 +558,53 @@
                 </div>
 
 
+
+                <!-- =================================================
+                     PROFILE COMPLETION
+                ================================================= -->
+
+                <div class="completion-card">
+
+
+                    <div class="completion-header">
+
+                        <strong>
+                            Profile Completion
+                        </strong>
+
+                        <span class="completion-percent">
+                            85%
+                        </span>
+
+                    </div>
+
+
+                    <div class="completion-track">
+
+                        <div class="completion-fill"></div>
+
+                    </div>
+
+
+                    <p>
+
+                        Complete your profile to improve
+                        KisanVision360+ personalization.
+
+                    </p>
+
+
+                </div>
+
+
+
                 <br>
 
 
                 <a
                     href="/edit-profile"
-                    class="account-btn">
+                    class="account-btn"
+                >
 
                     <i class="fa-solid fa-pen"></i>
 
@@ -957,7 +617,91 @@
 
 
 
-            <!-- ================= ACCOUNT MANAGEMENT ================= -->
+            <!-- =================================================
+                 AI PERSONALIZATION
+            ================================================= -->
+
+            <div class="ai-profile-card">
+
+
+                <div class="ai-icon">
+
+                    <i class="fa-solid fa-brain"></i>
+
+                </div>
+
+
+                <div>
+
+
+                    <h3>
+                        Smart Profile Personalization
+                    </h3>
+
+
+                    <p>
+
+                        Your profile can be used by
+                        KisanVision360+ to personalize
+                        agriculture recommendations such as
+                        crop suitability, weather alerts,
+                        irrigation planning, market insights
+                        and government scheme discovery.
+
+                    </p>
+
+
+                    <div class="ai-modules">
+
+
+                        <span class="ai-module">
+                            Crop Advisor
+                        </span>
+
+
+                        <span class="ai-module">
+                            Weather
+                        </span>
+
+
+                        <span class="ai-module">
+                            Irrigation
+                        </span>
+
+
+                        <span class="ai-module">
+                            Disease Detection
+                        </span>
+
+
+                        <span class="ai-module">
+                            Market Intelligence
+                        </span>
+
+
+                        <span class="ai-module">
+                            Government Schemes
+                        </span>
+
+
+                        <span class="ai-module">
+                            Finance
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 ACCOUNT MANAGEMENT
+            ================================================= -->
 
             <h2 class="section-title">
 
@@ -966,6 +710,7 @@
                 Account Management
 
             </h2>
+
 
 
             <div class="account-grid">
@@ -984,13 +729,14 @@
                     <p>
 
                         Update your name, mobile number,
-                        email and other account information.
+                        email and account information.
 
                     </p>
 
                     <a
                         href="/edit-profile"
-                        class="account-btn">
+                        class="account-btn"
+                    >
 
                         Edit Profile
 
@@ -1002,7 +748,7 @@
 
 
 
-                <!-- PASSWORD -->
+                <!-- CHANGE PASSWORD -->
 
                 <div class="account-card">
 
@@ -1014,14 +760,15 @@
 
                     <p>
 
-                        Change your account password
-                        and keep your account secure.
+                        Change your password and keep
+                        your account protected.
 
                     </p>
 
                     <a
                         href="/change-password"
-                        class="account-btn">
+                        class="account-btn"
+                    >
 
                         Change Password
 
@@ -1052,7 +799,8 @@
 
                     <a
                         href="/settings"
-                        class="account-btn">
+                        class="account-btn"
+                    >
 
                         Open Settings
 
@@ -1076,14 +824,15 @@
 
                     <p>
 
-                        Get assistance with KisanVision360
-                        farmer services and features.
+                        Get assistance with KisanVision360+
+                        services and features.
 
                     </p>
 
                     <a
                         href="/help"
-                        class="account-btn">
+                        class="account-btn"
+                    >
 
                         Open Help
 
@@ -1098,30 +847,44 @@
 
 
 
-            <!-- ================= LOGOUT ================= -->
+            <!-- =================================================
+                 LOGOUT
+            ================================================= -->
 
-            <div class="account-card">
-
-
-                <i class="fa-solid fa-right-from-bracket"></i>
-
-
-                <h3>
-                    Logout
-                </h3>
+            <div class="logout-card">
 
 
-                <p>
+                <div class="logout-info">
 
-                    Sign out safely from your
-                    KisanVision360 account.
 
-                </p>
+                    <div class="logout-icon">
+
+                        <i class="fa-solid fa-right-from-bracket"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Logout
+                        </h3>
+
+                        <p>
+                            Sign out safely from your
+                            KisanVision360+ account.
+                        </p>
+
+                    </div>
+
+
+                </div>
 
 
                 <a
                     href="/logout"
-                    class="account-btn">
+                    class="logout-btn"
+                >
 
                     <i class="fa-solid fa-right-from-bracket"></i>
 
@@ -1134,21 +897,29 @@
 
 
 
-            <!-- ================= FOOTER ================= -->
+            <!-- =================================================
+                 FOOTER
+            ================================================= -->
 
             <div class="profile-footer">
 
                 <i class="fa-solid fa-leaf"></i>
 
-                KisanVision360
+                <strong>
+                    KisanVision360+
+                </strong>
 
-                <span>•</span>
+                <span>
+                    â€¢
+                </span>
 
                 Smart Farming Platform
 
-                <span>•</span>
+                <span>
+                    â€¢
+                </span>
 
-                Made in India 🇮🇳
+                Made in India ðŸ‡®ðŸ‡³
 
             </div>
 
@@ -1162,6 +933,155 @@
 </div>
 
 
-</body>
 
-</html>
+<!-- =====================================================
+     TOAST
+====================================================== -->
+
+<div
+    class="profile-toast"
+    id="profileToast"
+>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+/* =========================================================
+   PROFILE PHOTO
+========================================================= */
+
+const photoInput =
+    document.getElementById("photo");
+
+
+const profilePhotoForm =
+    document.getElementById("profilePhotoForm");
+
+
+photoInput.addEventListener(
+    "change",
+    function () {
+
+        const file = this.files[0];
+
+
+        if (!file) {
+            return;
+        }
+
+
+        const allowedTypes = [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        ];
+
+
+        if (!allowedTypes.includes(file.type)) {
+
+            showProfileToast(
+                "Please select a JPG, PNG or WEBP image."
+            );
+
+            this.value = "";
+
+            return;
+        }
+
+
+        const maxSize =
+            5 * 1024 * 1024;
+
+
+        if (file.size > maxSize) {
+
+            showProfileToast(
+                "Profile image must be below 5 MB."
+            );
+
+            this.value = "";
+
+            return;
+        }
+
+
+        profilePhotoForm.submit();
+
+    }
+);
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showProfileToast(message) {
+
+    const toast =
+        document.getElementById("profileToast");
+
+
+    toast.textContent = message;
+
+
+    toast.classList.add("show");
+
+
+    setTimeout(
+        function () {
+
+            toast.classList.remove("show");
+
+        },
+        2800
+    );
+
+}
+
+
+/* =========================================================
+   GLOBAL LANGUAGE
+========================================================= */
+
+const savedLanguage =
+    localStorage.getItem(
+        "kisanvision360_language"
+    );
+
+
+const currentLanguage =
+    "{{ session.get('language', 'en') }}";
+
+
+if (
+    !savedLanguage &&
+    currentLanguage
+) {
+
+    localStorage.setItem(
+        "kisanvision360_language",
+        currentLanguage
+    );
+
+}
+
+
+/* =========================================================
+   PREVENT INVALID IMAGE FORM SUBMISSION
+========================================================= */
+
+profilePhotoForm.addEventListener(
+    "submit",
+    function () {
+
+        if (!photoInput.files.length) {
+            return false;
+        }
+
+    }
+);
+
+</script>
+{% endblock %}
+

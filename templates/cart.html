@@ -1,0 +1,2275 @@
+﻿{% extends "base.html" %}
+
+{% block title %}KisanVision360+ | Smart Cart{% endblock %}
+
+{% block head %}
+<link rel="stylesheet"
+          href="{{ url_for(
+              'static',
+              filename='css/cart.css'
+          ) }}">
+<style>
+
+        /* =====================================================
+           KISANVISION360+ SMART CART
+        ===================================================== */
+
+        .kv-cart-page {
+            max-width: 1450px;
+            margin: auto;
+            padding: 24px;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .kv-cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 22px;
+        }
+
+        .kv-cart-heading {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .kv-cart-heading-icon {
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-size: 23px;
+        }
+
+        .kv-cart-heading h1 {
+            margin: 0;
+            color: #174d24;
+            font-size: 25px;
+        }
+
+        .kv-cart-heading p {
+            margin: 5px 0 0;
+            color: #7d877f;
+            font-size: 11px;
+        }
+
+        .kv-continue-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 15px;
+            border-radius: 10px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            text-decoration: none;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .kv-continue-btn:hover {
+            background: #dceddd;
+        }
+
+
+        /* =====================================================
+           SMART BANNER
+        ===================================================== */
+
+        .kv-cart-banner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 22px;
+            padding: 20px 22px;
+            border-radius: 18px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #174d24,
+                    #2e7d32
+                );
+            color: white;
+        }
+
+        .kv-cart-banner h2 {
+            margin: 5px 0;
+            font-size: 20px;
+        }
+
+        .kv-cart-banner p {
+            margin: 0;
+            max-width: 750px;
+            color: #e2f1e4;
+            font-size: 10px;
+            line-height: 1.6;
+        }
+
+        .kv-cart-label {
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            opacity: .85;
+        }
+
+        .kv-cart-banner-badge {
+            padding: 12px 15px;
+            border-radius: 12px;
+            background: rgba(255,255,255,.12);
+            white-space: nowrap;
+            font-size: 9px;
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           CART LAYOUT
+        ===================================================== */
+
+        .kv-cart-layout {
+            display: grid;
+            grid-template-columns:
+                minmax(0, 1fr)
+                350px;
+            gap: 20px;
+            align-items: start;
+        }
+
+
+        /* =====================================================
+           ITEMS SECTION
+        ===================================================== */
+
+        .kv-cart-items-section {
+            padding: 20px;
+            border: 1px solid #e2eae3;
+            border-radius: 18px;
+            background: #fff;
+            box-shadow:
+                0 7px 25px rgba(0,0,0,.04);
+        }
+
+        .kv-cart-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .kv-cart-section-header h2 {
+            margin: 0;
+            color: #285731;
+            font-size: 17px;
+        }
+
+        .kv-cart-section-header p {
+            margin: 5px 0 0;
+            color: #89918b;
+            font-size: 9px;
+        }
+
+        .kv-item-count {
+            padding: 6px 10px;
+            border-radius: 20px;
+            background: #f0f7f1;
+            color: #2e7d32;
+            font-size: 9px;
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           CART ITEM
+        ===================================================== */
+
+        .kv-cart-item {
+            display: grid;
+            grid-template-columns:
+                85px
+                minmax(150px, 1fr)
+                115px
+                110px
+                32px;
+            gap: 15px;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #edf1ed;
+            transition: .25s;
+        }
+
+        .kv-cart-item:last-child {
+            border-bottom: none;
+        }
+
+
+        /* IMAGE */
+
+        .kv-product-image {
+            width: 85px;
+            height: 85px;
+            overflow: hidden;
+            border-radius: 13px;
+            background: #f0f7f1;
+        }
+
+        .kv-product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .kv-image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #43a047;
+            font-size: 25px;
+        }
+
+
+        /* DETAILS */
+
+        .kv-product-details h3 {
+            margin: 0 0 5px;
+            color: #304035;
+            font-size: 13px;
+        }
+
+        .kv-product-details p {
+            margin: 0 0 8px;
+            color: #8a938d;
+            font-size: 9px;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .kv-product-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .kv-unit-price {
+            color: #2e7d32;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .kv-available {
+            color: #4c7651;
+            font-size: 8px;
+        }
+
+        .kv-available i {
+            margin-right: 3px;
+        }
+
+
+        /* =====================================================
+           QUANTITY
+        ===================================================== */
+
+        .kv-quantity-label {
+            display: block;
+            margin-bottom: 6px;
+            color: #8a938d;
+            font-size: 8px;
+        }
+
+        .kv-quantity-box {
+            display: flex;
+            align-items: center;
+            border: 1px solid #dfe7e0;
+            border-radius: 9px;
+            overflow: hidden;
+            background: #fbfdfb;
+        }
+
+        .kv-quantity-btn {
+            width: 29px;
+            height: 31px;
+            border: none;
+            background: transparent;
+            color: #2e7d32;
+            cursor: pointer;
+        }
+
+        .kv-quantity-btn:hover {
+            background: #e8f5e9;
+        }
+
+        .kv-quantity-input {
+            width: 45px;
+            height: 31px;
+            border: none;
+            outline: none;
+            text-align: center;
+            background: transparent;
+            color: #344238;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .kv-quantity-input::-webkit-inner-spin-button,
+        .kv-quantity-input::-webkit-outer-spin-button {
+            appearance: none;
+        }
+
+
+        /* =====================================================
+           ITEM TOTAL
+        ===================================================== */
+
+        .kv-item-total span {
+            display: block;
+            margin-bottom: 5px;
+            color: #8b948e;
+            font-size: 8px;
+        }
+
+        .kv-item-total strong {
+            color: #285731;
+            font-size: 13px;
+        }
+
+
+        /* REMOVE */
+
+        .kv-remove-btn {
+            width: 31px;
+            height: 31px;
+            border: none;
+            border-radius: 9px;
+            background: #fff1f1;
+            color: #d32f2f;
+            cursor: pointer;
+        }
+
+        .kv-remove-btn:hover {
+            background: #ffdddd;
+        }
+
+
+        /* =====================================================
+           CART ACTIONS
+        ===================================================== */
+
+        .kv-cart-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .kv-cart-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 13px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-size: 9px;
+            font-weight: 800;
+        }
+
+        .kv-shopping-action {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .kv-clear-action {
+            border: 1px solid #efcaca;
+            background: white;
+            color: #c62828;
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ===================================================== */
+
+        .kv-order-summary {
+            position: sticky;
+            top: 20px;
+            overflow: hidden;
+            border: 1px solid #e2eae3;
+            border-radius: 18px;
+            background: #fff;
+            box-shadow:
+                0 7px 25px rgba(0,0,0,.05);
+        }
+
+        .kv-summary-header {
+            padding: 17px 18px;
+            background: #f3f8f3;
+        }
+
+        .kv-summary-header h2 {
+            margin: 0;
+            color: #285731;
+            font-size: 16px;
+        }
+
+        .kv-summary-body {
+            padding: 18px;
+        }
+
+        .kv-summary-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 13px;
+            color: #707a73;
+            font-size: 10px;
+        }
+
+        .kv-summary-row strong {
+            color: #354139;
+        }
+
+        .kv-free {
+            color: #2e7d32 !important;
+        }
+
+        .kv-summary-divider {
+            height: 1px;
+            margin: 15px 0;
+            background: #e8ece8;
+        }
+
+        .kv-summary-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .kv-summary-total span {
+            color: #37453b;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .kv-summary-total strong {
+            color: #1b5e20;
+            font-size: 19px;
+        }
+
+
+        /* =====================================================
+           SMART INSIGHT
+        ===================================================== */
+
+        .kv-cart-insight {
+            margin: 17px 0;
+            padding: 13px;
+            border-radius: 11px;
+            background: #f1f8f2;
+            border: 1px solid #dcebdd;
+        }
+
+        .kv-cart-insight-title {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 6px;
+            color: #285731;
+            font-size: 9px;
+            font-weight: 800;
+        }
+
+        .kv-cart-insight p {
+            margin: 0;
+            color: #68746c;
+            font-size: 8px;
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           DELIVERY
+        ===================================================== */
+
+        .kv-delivery-info {
+            display: flex;
+            gap: 10px;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 11px;
+            background: #fafcf9;
+        }
+
+        .kv-delivery-icon {
+            width: 31px;
+            height: 31px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-size: 12px;
+        }
+
+        .kv-delivery-info strong {
+            color: #415046;
+            font-size: 9px;
+        }
+
+        .kv-delivery-info p {
+            margin: 3px 0 0;
+            color: #8a938d;
+            font-size: 8px;
+        }
+
+
+        /* =====================================================
+           CHECKOUT
+        ===================================================== */
+
+        .kv-checkout-btn {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+            padding: 13px 14px;
+            border-radius: 10px;
+            background: #2e7d32;
+            color: white;
+            text-decoration: none;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .kv-checkout-btn:hover {
+            background: #1b5e20;
+        }
+
+
+        .kv-secure {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            color: #8b948e;
+            font-size: 8px;
+        }
+
+        .kv-secure i {
+            color: #43a047;
+        }
+
+
+        /* =====================================================
+           EMPTY CART
+        ===================================================== */
+
+        .kv-empty-cart {
+            padding: 70px 25px;
+            text-align: center;
+            border: 1px solid #e2eae3;
+            border-radius: 20px;
+            background: #fff;
+        }
+
+        .kv-empty-icon {
+            width: 85px;
+            height: 85px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            background: #e8f5e9;
+            color: #43a047;
+            font-size: 31px;
+        }
+
+        .kv-empty-cart h2 {
+            margin: 0 0 8px;
+            color: #285731;
+            font-size: 20px;
+        }
+
+        .kv-empty-cart p {
+            max-width: 500px;
+            margin: 0 auto 20px;
+            color: #858e88;
+            font-size: 10px;
+            line-height: 1.7;
+        }
+
+        .kv-shop-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 12px 17px;
+            border-radius: 10px;
+            background: #2e7d32;
+            color: white;
+            text-decoration: none;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           TOAST
+        ===================================================== */
+
+        .kv-cart-toast {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 12px 15px;
+            border-radius: 11px;
+            background: #26352b;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,.2);
+            font-size: 9px;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(15px);
+            transition: .25s;
+        }
+
+        .kv-cart-toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .kv-cart-toast i {
+            color: #81c784;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .kv-cart-footer {
+            padding: 25px 0 10px;
+            text-align: center;
+            color: #8a938c;
+            font-size: 9px;
+        }
+
+        .kv-cart-footer strong {
+            color: #2e7d32;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1050px) {
+
+            .kv-cart-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .kv-order-summary {
+                position: static;
+            }
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            .kv-cart-item {
+                grid-template-columns:
+                    70px
+                    1fr
+                    30px;
+                gap: 12px;
+            }
+
+            .kv-product-image {
+                width: 70px;
+                height: 70px;
+            }
+
+            .kv-quantity-control,
+            .kv-item-total {
+                grid-column: span 1;
+            }
+
+            .kv-remove-btn {
+                grid-column: 3;
+                grid-row: 1;
+            }
+
+            .kv-quantity-control {
+                grid-column: 2;
+            }
+
+            .kv-item-total {
+                grid-column: 2;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .kv-cart-page {
+                padding: 15px;
+            }
+
+            .kv-cart-header {
+                align-items: flex-start;
+            }
+
+            .kv-continue-btn {
+                display: none;
+            }
+
+            .kv-cart-banner-badge {
+                display: none;
+            }
+
+            .kv-cart-banner {
+                padding: 18px;
+            }
+
+            .kv-cart-items-section {
+                padding: 15px;
+            }
+
+            .kv-cart-actions {
+                flex-direction: column;
+            }
+
+            .kv-cart-action {
+                justify-content: center;
+            }
+
+        }
+
+    </style>
+{% endblock %}
+
+{% block page_title %}Smart Cart{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+
+
+
+<main class="main-content">
+
+
+<div class="kv-cart-page">
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="kv-cart-header">
+
+    <div class="kv-cart-heading">
+
+        <div class="kv-cart-heading-icon">
+
+            <i class="fa-solid fa-cart-shopping"></i>
+
+        </div>
+
+        <div>
+
+            <h1>
+                My Smart Cart
+            </h1>
+
+            <p>
+                Review your selected farm products before checkout.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <a
+        href="{{ url_for(
+            'marketplace.consumer_marketplace'
+        ) }}"
+        class="kv-continue-btn">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Continue Shopping
+
+    </a>
+
+</header>
+
+
+<!-- =====================================================
+     SMART BANNER
+===================================================== -->
+
+<section class="kv-cart-banner">
+
+    <div>
+
+        <span class="kv-cart-label">
+            KISANVISION360+ MARKETPLACE
+        </span>
+
+        <h2>
+            Fresh Products. Direct Marketplace.
+        </h2>
+
+        <p>
+            Your selected agricultural products are ready
+            for review. Check quantities and total amount
+            before placing your order.
+        </p>
+
+    </div>
+
+
+    <div class="kv-cart-banner-badge">
+
+        <i class="fa-solid fa-shield-halved"></i>
+
+        Secure Shopping
+
+    </div>
+
+</section>
+
+
+{% if cart %}
+
+
+<!-- =====================================================
+     CART LAYOUT
+===================================================== -->
+
+<div class="kv-cart-layout">
+
+
+<!-- =====================================================
+     LEFT
+===================================================== -->
+
+<section class="kv-cart-items-section">
+
+
+    <div class="kv-cart-section-header">
+
+        <div>
+
+            <h2>
+
+                <i class="fa-solid fa-basket-shopping"></i>
+
+                Cart Items
+
+            </h2>
+
+            <p>
+                Review quantity and product details
+            </p>
+
+        </div>
+
+
+        <span class="kv-item-count">
+
+            {{ cart|length }}
+
+            item{% if cart|length != 1 %}s{% endif %}
+
+        </span>
+
+    </div>
+
+
+    <!-- =================================================
+         ITEMS
+    ================================================= -->
+
+    <div class="kv-cart-items">
+
+
+        {% for item in cart %}
+
+
+        <article
+            class="kv-cart-item"
+            data-price="{{ item.price }}"
+            data-id="{{ item.id }}">
+
+
+            <!-- IMAGE -->
+
+            <div class="kv-product-image">
+
+                {% if item.image %}
+
+                    <img
+                        src="{{ url_for(
+                            'static',
+                            filename='uploads/products/' ~ item.image
+                        ) }}"
+                        alt="{{ item.name }}"
+                        onerror="
+                            this.style.display='none';
+                            this.nextElementSibling.style.display='flex';
+                        ">
+
+                    <div
+                        class="kv-image-placeholder"
+                        style="display:none;">
+
+                        <i class="fa-solid fa-seedling"></i>
+
+                    </div>
+
+                {% else %}
+
+                    <div class="kv-image-placeholder">
+
+                        <i class="fa-solid fa-seedling"></i>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- DETAILS -->
+
+            <div class="kv-product-details">
+
+                <h3>
+                    {{ item.name }}
+                </h3>
+
+
+                {% if item.description %}
+
+                <p>
+                    {{ item.description }}
+                </p>
+
+                {% endif %}
+
+
+                <div class="kv-product-meta">
+
+                    <span class="kv-unit-price">
+
+                        â‚¹{{ "%.2f"|format(
+                            item.price|float
+                        ) }}
+
+                    </span>
+
+
+                    <span class="kv-available">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        Available
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- QUANTITY -->
+
+            <div class="kv-quantity-control">
+
+                <span class="kv-quantity-label">
+                    Quantity
+                </span>
+
+
+                <div class="kv-quantity-box">
+
+                    <button
+                        type="button"
+                        class="kv-quantity-btn decrease"
+                        data-id="{{ item.id }}"
+                        aria-label="Decrease quantity">
+
+                        <i class="fa-solid fa-minus"></i>
+
+                    </button>
+
+
+                    <input
+                        type="number"
+                        class="kv-quantity-input"
+                        value="{{ item.quantity }}"
+                        min="1"
+                        max="999"
+                        data-id="{{ item.id }}">
+
+
+                    <button
+                        type="button"
+                        class="kv-quantity-btn increase"
+                        data-id="{{ item.id }}"
+                        aria-label="Increase quantity">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- TOTAL -->
+
+            <div class="kv-item-total">
+
+                <span>
+                    Item Total
+                </span>
+
+                <strong class="item-total-price">
+
+                    â‚¹{{ "%.2f"|format(
+                        (item.price|float) *
+                        (item.quantity|int)
+                    ) }}
+
+                </strong>
+
+            </div>
+
+
+            <!-- REMOVE -->
+
+            <button
+                type="button"
+                class="kv-remove-btn remove-item"
+                data-id="{{ item.id }}"
+                title="Remove item">
+
+                <i class="fa-solid fa-trash"></i>
+
+            </button>
+
+
+        </article>
+
+
+        {% endfor %}
+
+
+    </div>
+
+
+    <!-- =================================================
+         CART ACTIONS
+    ================================================= -->
+
+    <div class="kv-cart-actions">
+
+
+        <a
+            href="{{ url_for(
+                'marketplace.consumer_marketplace'
+            ) }}"
+            class="kv-cart-action kv-shopping-action">
+
+            <i class="fa-solid fa-store"></i>
+
+            Continue Shopping
+
+        </a>
+
+
+        <button
+            type="button"
+            id="clearCartBtn"
+            class="kv-cart-action kv-clear-action">
+
+            <i class="fa-solid fa-trash-can"></i>
+
+            Clear Cart
+
+        </button>
+
+
+    </div>
+
+
+</section>
+
+
+<!-- =====================================================
+     RIGHT SUMMARY
+===================================================== -->
+
+<aside class="kv-order-summary">
+
+
+    <div class="kv-summary-header">
+
+        <h2>
+
+            <i class="fa-solid fa-receipt"></i>
+
+            Order Summary
+
+        </h2>
+
+    </div>
+
+
+    <div class="kv-summary-body">
+
+
+        <div class="kv-summary-row">
+
+            <span>
+                Items
+            </span>
+
+            <strong id="cartItemCount">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="kv-summary-row">
+
+            <span>
+                Subtotal
+            </span>
+
+            <strong id="subtotal">
+                â‚¹0.00
+            </strong>
+
+        </div>
+
+
+        <div class="kv-summary-row">
+
+            <span>
+                Delivery
+            </span>
+
+            <strong class="kv-free">
+                FREE
+            </strong>
+
+        </div>
+
+
+        <div class="kv-summary-row">
+
+            <span>
+                Platform Fee
+            </span>
+
+            <strong>
+                â‚¹0.00
+            </strong>
+
+        </div>
+
+
+        <div class="kv-summary-divider"></div>
+
+
+        <div class="kv-summary-total">
+
+            <span>
+                Total Amount
+            </span>
+
+            <strong id="grandTotal">
+                â‚¹0.00
+            </strong>
+
+        </div>
+
+
+        <!-- =================================================
+             SMART INSIGHT
+        ================================================= -->
+
+        <div class="kv-cart-insight">
+
+            <div class="kv-cart-insight-title">
+
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                Smart Cart Insight
+
+            </div>
+
+
+            <p id="cartInsight">
+
+                Calculating your cart summary...
+
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             DELIVERY
+        ================================================= -->
+
+        <div class="kv-delivery-info">
+
+            <div class="kv-delivery-icon">
+
+                <i class="fa-solid fa-truck"></i>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    Free Delivery
+                </strong>
+
+                <p>
+                    Delivery charges are currently free.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- CHECKOUT -->
+
+        <a
+            href="{{ url_for(
+                'marketplace.checkout'
+            ) }}"
+            class="kv-checkout-btn">
+
+            <span>
+                Proceed to Checkout
+            </span>
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+        </a>
+
+
+        <!-- SECURE -->
+
+        <div class="kv-secure">
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+            Secure &amp; Safe Shopping
+
+        </div>
+
+
+    </div>
+
+
+</aside>
+
+
+</div>
+
+
+{% else %}
+
+
+<!-- =====================================================
+     EMPTY CART
+===================================================== -->
+
+<section class="kv-empty-cart">
+
+
+    <div class="kv-empty-icon">
+
+        <i class="fa-solid fa-cart-shopping"></i>
+
+    </div>
+
+
+    <h2>
+        Your Cart is Empty
+    </h2>
+
+
+    <p>
+
+        You haven't added any products yet.
+        Explore the KisanVision360+ marketplace to
+        discover fresh agricultural products directly
+        through the farming marketplace.
+
+    </p>
+
+
+    <a
+        href="{{ url_for(
+            'marketplace.consumer_marketplace'
+        ) }}"
+        class="kv-shop-btn">
+
+        <i class="fa-solid fa-store"></i>
+
+        Explore Marketplace
+
+    </a>
+
+
+</section>
+
+
+{% endif %}
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="kv-cart-footer">
+
+    <i class="fa-solid fa-leaf"></i>
+
+    <strong>
+        KisanVision360+
+    </strong>
+
+    â€¢ Smart Agricultural Marketplace
+
+    â€¢ Â© 2026
+
+</footer>
+
+
+</div>
+
+</main>
+
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div
+    id="cartToast"
+    class="kv-cart-toast">
+
+    <i class="fa-solid fa-circle-check"></i>
+
+    <span id="toastMessage">
+        Cart updated successfully.
+    </span>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
+
+    const cartItems =
+        document.querySelectorAll(
+            ".kv-cart-item"
+        );
+
+
+    const cartItemCount =
+        document.getElementById(
+            "cartItemCount"
+        );
+
+
+    const subtotalElement =
+        document.getElementById(
+            "subtotal"
+        );
+
+
+    const grandTotalElement =
+        document.getElementById(
+            "grandTotal"
+        );
+
+
+    const cartInsight =
+        document.getElementById(
+            "cartInsight"
+        );
+
+
+    /* =====================================================
+       TOAST
+    ===================================================== */
+
+    function showToast(
+        message,
+        success = true
+    ) {
+
+        const toast =
+            document.getElementById(
+                "cartToast"
+            );
+
+
+        const messageElement =
+            document.getElementById(
+                "toastMessage"
+            );
+
+
+        if (
+            !toast ||
+            !messageElement
+        ) {
+            return;
+        }
+
+
+        messageElement.textContent =
+            message;
+
+
+        const icon =
+            toast.querySelector("i");
+
+
+        if (icon) {
+
+            icon.className =
+                success
+                    ? "fa-solid fa-circle-check"
+                    : "fa-solid fa-circle-exclamation";
+
+        }
+
+
+        toast.classList.add("show");
+
+
+        setTimeout(
+            function () {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2500
+        );
+
+    }
+
+
+    /* =====================================================
+       UPDATE TOTALS
+    ===================================================== */
+
+    function updateTotals() {
+
+        let subtotal = 0;
+
+        let totalItems = 0;
+
+
+        document
+            .querySelectorAll(
+                ".kv-cart-item"
+            )
+            .forEach(
+                function (item) {
+
+
+                const price =
+                    parseFloat(
+                        item.dataset.price
+                    ) || 0;
+
+
+                const input =
+                    item.querySelector(
+                        ".kv-quantity-input"
+                    );
+
+
+                if (!input) {
+                    return;
+                }
+
+
+                let quantity =
+                    parseInt(
+                        input.value
+                    ) || 1;
+
+
+                if (quantity < 1) {
+                    quantity = 1;
+                }
+
+
+                const total =
+                    price * quantity;
+
+
+                totalItems += quantity;
+
+                subtotal += total;
+
+
+                const totalElement =
+                    item.querySelector(
+                        ".item-total-price"
+                    );
+
+
+                if (totalElement) {
+
+                    totalElement.textContent =
+                        "â‚¹" +
+                        total.toFixed(2);
+
+                }
+
+
+            });
+
+
+        if (subtotalElement) {
+
+            subtotalElement.textContent =
+                "â‚¹" +
+                subtotal.toFixed(2);
+
+        }
+
+
+        if (grandTotalElement) {
+
+            grandTotalElement.textContent =
+                "â‚¹" +
+                subtotal.toFixed(2);
+
+        }
+
+
+        if (cartItemCount) {
+
+            cartItemCount.textContent =
+                totalItems;
+
+        }
+
+
+        /* SMART INSIGHT */
+
+        if (cartInsight) {
+
+            if (totalItems === 0) {
+
+                cartInsight.textContent =
+                    "Your cart is ready for fresh products.";
+
+            }
+            else if (subtotal >= 10000) {
+
+                cartInsight.textContent =
+                    "Your cart contains a higher-value order. Review quantities and product details before checkout.";
+
+            }
+            else if (totalItems >= 5) {
+
+                cartInsight.textContent =
+                    "You have selected multiple products. Review the quantities before placing your order.";
+
+            }
+            else {
+
+                cartInsight.textContent =
+                    "Your cart is ready. Verify the final quantity and total amount before checkout.";
+
+            }
+
+        }
+
+    }
+
+
+    /* =====================================================
+       SERVER UPDATE
+    ===================================================== */
+
+    async function updateQuantity(
+        productId,
+        quantity
+    ) {
+
+        try {
+
+            const response =
+                await fetch(
+                    "{{ url_for(
+                        'marketplace.update_cart'
+                    ) }}",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            product_id:
+                                productId,
+
+                            quantity:
+                                quantity
+
+                        })
+
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+
+                showToast(
+                    data.message ||
+                    "Unable to update quantity.",
+                    false
+                );
+
+                return false;
+
+            }
+
+
+            showToast(
+                data.message ||
+                "Quantity updated."
+            );
+
+
+            return true;
+
+        }
+
+
+        catch (error) {
+
+            console.error(
+                "UPDATE CART ERROR:",
+                error
+            );
+
+
+            showToast(
+                "Server error while updating cart.",
+                false
+            );
+
+
+            return false;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       PLUS
+    ===================================================== */
+
+    document
+        .querySelectorAll(
+            ".increase"
+        )
+        .forEach(
+            function (button) {
+
+
+            button.addEventListener(
+                "click",
+                async function () {
+
+
+                const id =
+                    this.dataset.id;
+
+
+                const input =
+                    document.querySelector(
+                        `.kv-quantity-input[data-id="${id}"]`
+                    );
+
+
+                if (!input) {
+                    return;
+                }
+
+
+                const oldQuantity =
+                    parseInt(
+                        input.value
+                    ) || 1;
+
+
+                if (oldQuantity >= 999) {
+
+                    showToast(
+                        "Maximum quantity is 999.",
+                        false
+                    );
+
+                    return;
+
+                }
+
+
+                const newQuantity =
+                    oldQuantity + 1;
+
+
+                input.value =
+                    newQuantity;
+
+
+                updateTotals();
+
+
+                const success =
+                    await updateQuantity(
+                        id,
+                        newQuantity
+                    );
+
+
+                if (!success) {
+
+                    input.value =
+                        oldQuantity;
+
+                    updateTotals();
+
+                }
+
+            });
+
+        });
+
+
+    /* =====================================================
+       MINUS
+    ===================================================== */
+
+    document
+        .querySelectorAll(
+            ".decrease"
+        )
+        .forEach(
+            function (button) {
+
+
+            button.addEventListener(
+                "click",
+                async function () {
+
+
+                const id =
+                    this.dataset.id;
+
+
+                const input =
+                    document.querySelector(
+                        `.kv-quantity-input[data-id="${id}"]`
+                    );
+
+
+                if (!input) {
+                    return;
+                }
+
+
+                const oldQuantity =
+                    parseInt(
+                        input.value
+                    ) || 1;
+
+
+                if (oldQuantity <= 1) {
+
+                    showToast(
+                        "Minimum quantity is 1.",
+                        false
+                    );
+
+                    return;
+
+                }
+
+
+                const newQuantity =
+                    oldQuantity - 1;
+
+
+                input.value =
+                    newQuantity;
+
+
+                updateTotals();
+
+
+                const success =
+                    await updateQuantity(
+                        id,
+                        newQuantity
+                    );
+
+
+                if (!success) {
+
+                    input.value =
+                        oldQuantity;
+
+                    updateTotals();
+
+                }
+
+            });
+
+        });
+
+
+    /* =====================================================
+       MANUAL QUANTITY
+    ===================================================== */
+
+    document
+        .querySelectorAll(
+            ".kv-quantity-input"
+        )
+        .forEach(
+            function (input) {
+
+
+            input.addEventListener(
+                "focus",
+                function () {
+
+                    this.dataset.previous =
+                        this.value;
+
+                }
+            );
+
+
+            input.addEventListener(
+                "change",
+                async function () {
+
+
+                const id =
+                    this.dataset.id;
+
+
+                const previous =
+                    parseInt(
+                        this.dataset.previous
+                    ) || 1;
+
+
+                let quantity =
+                    parseInt(
+                        this.value
+                    );
+
+
+                if (
+                    !quantity ||
+                    quantity < 1
+                ) {
+
+                    quantity = 1;
+
+                }
+
+
+                if (quantity > 999) {
+
+                    quantity = 999;
+
+                    showToast(
+                        "Maximum quantity is 999.",
+                        false
+                    );
+
+                }
+
+
+                this.value =
+                    quantity;
+
+
+                updateTotals();
+
+
+                const success =
+                    await updateQuantity(
+                        id,
+                        quantity
+                    );
+
+
+                if (!success) {
+
+                    this.value =
+                        previous;
+
+                    updateTotals();
+
+                }
+
+            });
+
+        });
+
+
+    /* =====================================================
+       REMOVE ITEM
+    ===================================================== */
+
+    document
+        .querySelectorAll(
+            ".remove-item"
+        )
+        .forEach(
+            function (button) {
+
+
+            button.addEventListener(
+                "click",
+                async function () {
+
+
+                const id =
+                    this.dataset.id;
+
+
+                const item =
+                    this.closest(
+                        ".kv-cart-item"
+                    );
+
+
+                if (!item) {
+                    return;
+                }
+
+
+                const confirmed =
+                    confirm(
+                        "Remove this product from your cart?"
+                    );
+
+
+                if (!confirmed) {
+                    return;
+                }
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            "{{ url_for(
+                                'marketplace.remove_from_cart'
+                            ) }}",
+                            {
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body:
+                                    JSON.stringify({
+                                        product_id:
+                                            id
+                                    })
+                            }
+                        );
+
+
+                    const data =
+                        await response.json();
+
+
+                    if (
+                        !response.ok ||
+                        !data.success
+                    ) {
+
+                        showToast(
+                            data.message ||
+                            "Unable to remove item.",
+                            false
+                        );
+
+                        return;
+
+                    }
+
+
+                    item.style.opacity =
+                        "0";
+
+                    item.style.transform =
+                        "translateX(30px)";
+
+
+                    setTimeout(
+                        function () {
+
+                            item.remove();
+
+                            updateTotals();
+
+
+                            showToast(
+                                data.message ||
+                                "Product removed from cart."
+                            );
+
+
+                            const remaining =
+                                document.querySelectorAll(
+                                    ".kv-cart-item"
+                                ).length;
+
+
+                            if (remaining === 0) {
+
+                                setTimeout(
+                                    function () {
+
+                                        location.reload();
+
+                                    },
+                                    700
+                                );
+
+                            }
+
+                        },
+                        300
+                    );
+
+                }
+
+
+                catch (error) {
+
+                    console.error(
+                        "REMOVE CART ERROR:",
+                        error
+                    );
+
+
+                    showToast(
+                        "Server error while removing item.",
+                        false
+                    );
+
+                }
+
+            });
+
+        });
+
+
+    /* =====================================================
+       CLEAR CART
+    ===================================================== */
+
+    const clearCartBtn =
+        document.getElementById(
+            "clearCartBtn"
+        );
+
+
+    if (clearCartBtn) {
+
+
+        clearCartBtn.addEventListener(
+            "click",
+            async function () {
+
+
+            const confirmed =
+                confirm(
+                    "Are you sure you want to clear your entire cart?"
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "{{ url_for(
+                            'marketplace.clear_cart'
+                        ) }}",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:
+                                JSON.stringify({})
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    showToast(
+                        data.message ||
+                        "Unable to clear cart.",
+                        false
+                    );
+
+                    return;
+
+                }
+
+
+                showToast(
+                    data.message ||
+                    "Cart cleared successfully."
+                );
+
+
+                setTimeout(
+                    function () {
+
+                        location.reload();
+
+                    },
+                    700
+                );
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "CLEAR CART ERROR:",
+                    error
+                );
+
+
+                showToast(
+                    "Server error while clearing cart.",
+                    false
+                );
+
+            }
+
+        });
+
+    }
+
+
+    /* =====================================================
+       INITIAL CALCULATION
+    ===================================================== */
+
+    updateTotals();
+
+
+});
+
+</script>
+{% endblock %}
+

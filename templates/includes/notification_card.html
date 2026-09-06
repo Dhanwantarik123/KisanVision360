@@ -1,3 +1,4 @@
+﻿{% extends "base.html" %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +9,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>KisanVision360 Notifications</title>
+    <title>KisanVision360+ | Smart Notifications</title>
 
     <style>
 
@@ -18,6 +19,7 @@
             box-sizing: border-box;
             font-family: "Segoe UI", Arial, sans-serif;
         }
+
 
         body {
 
@@ -45,43 +47,56 @@
         }
 
 
-        /* ================= CARD ================= */
+        /* =====================================================
+           MAIN CARD
+        ===================================================== */
 
-        .card {
+        .notification-card {
 
             width: 100%;
 
-            max-width: 420px;
+            max-width: 560px;
 
             background: rgba(255,255,255,0.98);
 
-            padding: 35px;
+            padding: 32px;
 
-            border-radius: 20px;
-
-            text-align: center;
+            border-radius: 24px;
 
             box-shadow:
-                0 15px 40px rgba(0,0,0,0.15);
+                0 18px 50px rgba(0,0,0,0.14);
+
+            border: 1px solid #e1ebe3;
 
         }
 
 
-        /* ================= ICON ================= */
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .header {
+
+            text-align: center;
+
+            margin-bottom: 25px;
+
+        }
+
 
         .notification-icon {
 
-            width: 75px;
+            width: 78px;
 
-            height: 75px;
+            height: 78px;
 
-            margin: 0 auto 18px;
+            margin: 0 auto 15px;
 
-            border-radius: 50%;
+            border-radius: 22px;
 
             background: #e8f5e9;
 
-            color: #08783f;
+            color: #1b5e20;
 
             display: flex;
 
@@ -89,55 +104,134 @@
 
             justify-content: center;
 
-            font-size: 32px;
+            font-size: 34px;
 
         }
 
 
-        /* ================= TITLE ================= */
-
-        .card h2 {
+        .header h1 {
 
             color: #14532d;
 
-            font-size: 24px;
+            font-size: 26px;
 
             margin-bottom: 8px;
 
         }
 
 
-        .card p {
+        .header p {
 
-            color: #777;
+            color: #6b756e;
 
             font-size: 14px;
 
-            line-height: 1.5;
-
-            margin-bottom: 25px;
+            line-height: 1.6;
 
         }
 
 
-        /* ================= TOGGLE AREA ================= */
+        /* =====================================================
+           MASTER NOTIFICATION
+        ===================================================== */
 
-        .toggle-box {
+        .master-box {
 
             display: flex;
 
-            justify-content: center;
-
             align-items: center;
+
+            justify-content: space-between;
 
             gap: 15px;
 
-            margin-bottom: 25px;
+            padding: 18px;
+
+            border-radius: 16px;
+
+            background: #f5faf5;
+
+            border: 1px solid #e0ebe1;
+
+            margin-bottom: 18px;
 
         }
 
 
-        /* ================= SWITCH ================= */
+        .master-info {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+        }
+
+
+        .master-icon {
+
+            width: 45px;
+
+            height: 45px;
+
+            border-radius: 12px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #e8f5e9;
+
+            color: #2e7d32;
+
+            font-size: 19px;
+
+        }
+
+
+        .master-info strong {
+
+            display: block;
+
+            color: #26352b;
+
+            font-size: 15px;
+
+            margin-bottom: 3px;
+
+        }
+
+
+        .master-info span {
+
+            color: #7a847d;
+
+            font-size: 12px;
+
+        }
+
+
+        #status {
+
+            font-weight: 800;
+
+            font-size: 13px;
+
+            color: #777;
+
+            min-width: 42px;
+
+            text-align: right;
+
+        }
+
+
+        /* =====================================================
+           SWITCH
+        ===================================================== */
 
         .switch {
 
@@ -147,7 +241,9 @@
 
             width: 58px;
 
-            height: 30px;
+            height: 31px;
+
+            flex-shrink: 0;
 
         }
 
@@ -167,15 +263,15 @@
 
             position: absolute;
 
-            cursor: pointer;
-
             inset: 0;
 
-            background: #ccc;
+            cursor: pointer;
 
-            border-radius: 30px;
+            background: #c9d0cb;
 
-            transition: 0.3s;
+            border-radius: 40px;
+
+            transition: .3s;
 
         }
 
@@ -186,9 +282,9 @@
 
             position: absolute;
 
-            width: 24px;
+            width: 25px;
 
-            height: 24px;
+            height: 25px;
 
             left: 3px;
 
@@ -198,60 +294,281 @@
 
             border-radius: 50%;
 
-            transition: 0.3s;
+            transition: .3s;
 
             box-shadow:
-                0 2px 5px rgba(0,0,0,.2);
+                0 2px 6px rgba(0,0,0,.20);
 
         }
 
 
         input:checked + .slider {
 
-            background: #08783f;
+            background: #2e7d32;
 
         }
 
 
         input:checked + .slider:before {
 
-            transform: translateX(28px);
+            transform: translateX(27px);
 
         }
 
 
-        /* ================= STATUS ================= */
+        /* =====================================================
+           SMART ALERTS
+        ===================================================== */
 
-        #status {
+        .section-title {
 
-            font-weight: bold;
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            color: #24572c;
 
             font-size: 16px;
 
-            color: #08783f;
-
-            min-width: 40px;
+            margin: 22px 0 12px;
 
         }
 
 
-        /* ================= BUTTON ================= */
+        .section-title i {
 
-        .test-btn {
+            color: #43a047;
 
-            border: none;
+        }
 
-            background: #08783f;
 
-            color: white;
+        .alert-grid {
 
-            padding: 12px 20px;
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 10px;
+
+        }
+
+
+        .alert-item {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            padding: 13px;
+
+            border-radius: 13px;
+
+            background: #fafcfb;
+
+            border: 1px solid #e3ebe4;
+
+        }
+
+
+        .alert-left {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+        }
+
+
+        .alert-icon {
+
+            width: 35px;
+
+            height: 35px;
 
             border-radius: 10px;
 
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #edf7ee;
+
+            color: #2e7d32;
+
+            font-size: 15px;
+
+        }
+
+
+        .alert-name {
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            color: #344239;
+
+        }
+
+
+        /* =====================================================
+           SMALL SWITCH
+        ===================================================== */
+
+        .small-switch {
+
+            position: relative;
+
+            width: 40px;
+
+            height: 22px;
+
+            flex-shrink: 0;
+
+        }
+
+
+        .small-switch input {
+
+            opacity: 0;
+
+            width: 0;
+
+            height: 0;
+
+        }
+
+
+        .small-slider {
+
+            position: absolute;
+
+            inset: 0;
+
+            background: #d1d7d2;
+
+            border-radius: 30px;
+
+            cursor: pointer;
+
+            transition: .25s;
+
+        }
+
+
+        .small-slider:before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 16px;
+
+            height: 16px;
+
+            left: 3px;
+
+            bottom: 3px;
+
+            background: white;
+
+            border-radius: 50%;
+
+            transition: .25s;
+
+        }
+
+
+        .small-switch input:checked + .small-slider {
+
+            background: #43a047;
+
+        }
+
+
+        .small-switch input:checked + .small-slider:before {
+
+            transform: translateX(18px);
+
+        }
+
+
+        /* =====================================================
+           SMART STATUS
+        ===================================================== */
+
+        .smart-status {
+
+            margin-top: 18px;
+
+            padding: 14px 16px;
+
+            border-radius: 14px;
+
+            background: #f1f8e9;
+
+            border: 1px solid #dcebd5;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            color: #33691e;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+
+        }
+
+
+        .smart-status i {
+
+            font-size: 18px;
+
+        }
+
+
+        /* =====================================================
+           TEST BUTTON
+        ===================================================== */
+
+        .test-btn {
+
+            width: 100%;
+
+            margin-top: 18px;
+
+            padding: 14px 18px;
+
+            border: none;
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1b5e20,
+                    #43a047
+                );
+
+            color: white;
+
             font-size: 14px;
 
-            font-weight: 600;
+            font-weight: 800;
 
             cursor: pointer;
 
@@ -262,53 +579,98 @@
 
         .test-btn:hover {
 
-            background: #065f32;
-
             transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 20px rgba(27,94,32,.20);
 
         }
 
 
-        /* ================= MESSAGE ================= */
+        .test-btn:disabled {
+
+            opacity: .7;
+
+            cursor: not-allowed;
+
+            transform: none;
+
+        }
+
+
+        /* =====================================================
+           MESSAGE
+        ===================================================== */
 
         #message {
 
-            margin-top: 15px;
-
-            font-size: 13px;
-
             min-height: 20px;
+
+            margin-top: 13px;
+
+            text-align: center;
+
+            font-size: 12px;
+
+            line-height: 1.5;
 
         }
 
 
-        /* ================= RESPONSIVE ================= */
+        /* =====================================================
+           FOOTER INFO
+        ===================================================== */
 
-        @media (max-width: 600px) {
+        .footer-info {
+
+            text-align: center;
+
+            margin-top: 18px;
+
+            color: #8a948d;
+
+            font-size: 11px;
+
+            line-height: 1.5;
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 550px) {
 
             body {
 
+                padding: 12px;
+
+            }
+
+            .notification-card {
+
+                padding: 24px 18px;
+
+                border-radius: 20px;
+
+            }
+
+            .header h1 {
+
+                font-size: 22px;
+
+            }
+
+            .alert-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .master-box {
+
                 padding: 15px;
-
-            }
-
-            .card {
-
-                padding: 28px 20px;
-
-                max-width: 100%;
-
-            }
-
-            .card h2 {
-
-                font-size: 21px;
-
-            }
-
-            .card p {
-
-                font-size: 13px;
 
             }
 
@@ -317,9 +679,9 @@
 
         @media (max-width: 350px) {
 
-            .card {
+            .notification-card {
 
-                padding: 22px 15px;
+                padding: 20px 14px;
 
             }
 
@@ -329,7 +691,7 @@
 
                 height: 65px;
 
-                font-size: 27px;
+                font-size: 28px;
 
             }
 
@@ -343,38 +705,66 @@
 <body>
 
 
-<div class="card">
+<div class="notification-card">
 
 
-    <!-- ICON -->
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
 
-    <div class="notification-icon">
+    <div class="header">
 
-        🔔
+        <div class="notification-icon">
+
+            ðŸ””
+
+        </div>
+
+        <h1>
+
+            KisanVision360+
+
+        </h1>
+
+        <p>
+
+            Smart farming alerts based on weather,
+            crops, irrigation, disease, market prices
+            and government schemes.
+
+        </p>
 
     </div>
 
 
-    <!-- TITLE -->
+    <!-- =====================================================
+         MASTER NOTIFICATION
+    ====================================================== -->
 
-    <h2>
+    <div class="master-box">
 
-        Notifications
+        <div class="master-info">
 
-    </h2>
+            <div class="master-icon">
 
+                ðŸ””
 
-    <p>
+            </div>
 
-        Get weather updates and important
-        farming alerts from KisanVision360.
+            <div>
 
-    </p>
+                <strong>
+                    Smart Notifications
+                </strong>
 
+                <span>
+                    Enable farming alerts
+                </span>
 
-    <!-- TOGGLE -->
+            </div>
 
-    <div class="toggle-box">
+        </div>
+
 
         <label class="switch">
 
@@ -389,28 +779,269 @@
 
 
         <span id="status">
-
             OFF
-
         </span>
 
     </div>
 
 
-    <!-- TEST BUTTON -->
+    <!-- =====================================================
+         ALERT CATEGORIES
+    ====================================================== -->
+
+    <div class="section-title">
+
+        <i class="fa-solid fa-bell"></i>
+
+        Alert Categories
+
+    </div>
+
+
+    <div class="alert-grid">
+
+
+        <!-- WEATHER -->
+
+        <div class="alert-item">
+
+            <div class="alert-left">
+
+                <div class="alert-icon">
+                    ðŸŒ¦ï¸
+                </div>
+
+                <span class="alert-name">
+                    Weather
+                </span>
+
+            </div>
+
+            <label class="small-switch">
+
+                <input
+                    type="checkbox"
+                    id="weatherAlert"
+                    checked
+                    onchange="saveAlertPreference('weatherAlert')">
+
+                <span class="small-slider"></span>
+
+            </label>
+
+        </div>
+
+
+        <!-- IRRIGATION -->
+
+        <div class="alert-item">
+
+            <div class="alert-left">
+
+                <div class="alert-icon">
+                    ðŸ’§
+                </div>
+
+                <span class="alert-name">
+                    Irrigation
+                </span>
+
+            </div>
+
+            <label class="small-switch">
+
+                <input
+                    type="checkbox"
+                    id="irrigationAlert"
+                    checked
+                    onchange="saveAlertPreference('irrigationAlert')">
+
+                <span class="small-slider"></span>
+
+            </label>
+
+        </div>
+
+
+        <!-- DISEASE -->
+
+        <div class="alert-item">
+
+            <div class="alert-left">
+
+                <div class="alert-icon">
+                    ðŸ¦ 
+                </div>
+
+                <span class="alert-name">
+                    Disease
+                </span>
+
+            </div>
+
+            <label class="small-switch">
+
+                <input
+                    type="checkbox"
+                    id="diseaseAlert"
+                    checked
+                    onchange="saveAlertPreference('diseaseAlert')">
+
+                <span class="small-slider"></span>
+
+            </label>
+
+        </div>
+
+
+        <!-- MARKET -->
+
+        <div class="alert-item">
+
+            <div class="alert-left">
+
+                <div class="alert-icon">
+                    ðŸ“ˆ
+                </div>
+
+                <span class="alert-name">
+                    Market Prices
+                </span>
+
+            </div>
+
+            <label class="small-switch">
+
+                <input
+                    type="checkbox"
+                    id="marketAlert"
+                    checked
+                    onchange="saveAlertPreference('marketAlert')">
+
+                <span class="small-slider"></span>
+
+            </label>
+
+        </div>
+
+
+        <!-- SCHEMES -->
+
+        <div class="alert-item">
+
+            <div class="alert-left">
+
+                <div class="alert-icon">
+                    ðŸ›ï¸
+                </div>
+
+                <span class="alert-name">
+                    Government Schemes
+                </span>
+
+            </div>
+
+            <label class="small-switch">
+
+                <input
+                    type="checkbox"
+                    id="schemeAlert"
+                    checked
+                    onchange="saveAlertPreference('schemeAlert')">
+
+                <span class="small-slider"></span>
+
+            </label>
+
+        </div>
+
+
+        <!-- FARMING -->
+
+        <div class="alert-item">
+
+            <div class="alert-left">
+
+                <div class="alert-icon">
+                    ðŸŒ±
+                </div>
+
+                <span class="alert-name">
+                    Crop Updates
+                </span>
+
+            </div>
+
+            <label class="small-switch">
+
+                <input
+                    type="checkbox"
+                    id="cropAlert"
+                    checked
+                    onchange="saveAlertPreference('cropAlert')">
+
+                <span class="small-slider"></span>
+
+            </label>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         SMART STATUS
+    ====================================================== -->
+
+    <div
+        class="smart-status"
+        id="smartStatus">
+
+        <i class="fa-solid fa-robot"></i>
+
+        <span>
+            Smart alerts are personalized according
+            to your farming activities.
+        </span>
+
+    </div>
+
+
+    <!-- =====================================================
+         TEST BUTTON
+    ====================================================== -->
 
     <button
         class="test-btn"
+        id="testButton"
         onclick="testNotification()">
 
-        🔔 Test Notification
+        ðŸ”” Test Notification
 
     </button>
 
 
-    <!-- MESSAGE -->
+    <!-- =====================================================
+         MESSAGE
+    ====================================================== -->
 
     <div id="message"></div>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <div class="footer-info">
+
+        KisanVision360+ Smart Alert System
+
+        <br>
+
+        Weather â€¢ Irrigation â€¢ Disease â€¢ Market â€¢ Schemes
+
+    </div>
 
 
 </div>
@@ -420,123 +1051,304 @@
 <script>
 
 /* =========================================================
-   LOAD SAVED NOTIFICATION SETTING
+   KISANVISION360+
+   SMART NOTIFICATION SYSTEM
 ========================================================= */
 
-window.addEventListener("load", function () {
+"use strict";
+
+
+/* =========================================================
+   DEFAULT SETTINGS
+========================================================= */
+
+const DEFAULT_ALERT_SETTINGS = {
+
+    weatherAlert: true,
+
+    irrigationAlert: true,
+
+    diseaseAlert: true,
+
+    marketAlert: true,
+
+    schemeAlert: true,
+
+    cropAlert: true
+
+};
+
+
+/* =========================================================
+   HELPER
+========================================================= */
+
+function getNotificationEnabled() {
+
+    return localStorage.getItem(
+        "notification"
+    ) === "ON";
+
+}
+
+
+/* =========================================================
+   UPDATE MASTER STATUS
+========================================================= */
+
+function updateStatus() {
 
     const checkbox =
-        document.getElementById("notification");
+        document.getElementById(
+            "notification"
+        );
 
     const status =
-        document.getElementById("status");
+        document.getElementById(
+            "status"
+        );
 
-    const saved =
-        localStorage.getItem("notification");
 
+    if (checkbox.checked) {
 
-    if (saved === "ON") {
+        status.innerText =
+            "ON";
 
-        checkbox.checked = true;
-
-        status.innerHTML = "ON";
-
-        status.style.color = "#08783f";
+        status.style.color =
+            "#08783f";
 
     }
 
     else {
 
-        checkbox.checked = false;
+        status.innerText =
+            "OFF";
 
-        status.innerHTML = "OFF";
-
-        status.style.color = "#777";
+        status.style.color =
+            "#777";
 
     }
 
-});
+}
 
 
 /* =========================================================
-   TOGGLE NOTIFICATION
+   LOAD SETTINGS
+========================================================= */
+
+window.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const checkbox =
+            document.getElementById(
+                "notification"
+            );
+
+
+        const saved =
+            localStorage.getItem(
+                "notification"
+            );
+
+
+        checkbox.checked =
+            saved === "ON";
+
+
+        updateStatus();
+
+
+        /*
+           Load category settings
+        */
+
+        Object.keys(
+            DEFAULT_ALERT_SETTINGS
+        ).forEach(function (key) {
+
+            const element =
+                document.getElementById(
+                    key
+                );
+
+
+            if (!element) {
+
+                return;
+
+            }
+
+
+            const savedValue =
+                localStorage.getItem(
+                    key
+                );
+
+
+            if (savedValue === null) {
+
+                element.checked =
+                    DEFAULT_ALERT_SETTINGS[key];
+
+            }
+
+            else {
+
+                element.checked =
+                    savedValue === "ON";
+
+            }
+
+        });
+
+
+        updateSmartStatus();
+
+    }
+);
+
+
+/* =========================================================
+   TOGGLE MASTER NOTIFICATION
 ========================================================= */
 
 async function toggleNotification() {
 
     const checkbox =
-        document.getElementById("notification");
-
-    const status =
-        document.getElementById("status");
+        document.getElementById(
+            "notification"
+        );
 
     const message =
-        document.getElementById("message");
+        document.getElementById(
+            "message"
+        );
 
 
-    /* ================= ON ================= */
+    /*
+       Turning ON
+    */
 
     if (checkbox.checked) {
+
+        /*
+           Browser support
+        */
+
+        if (!("Notification" in window)) {
+
+            checkbox.checked =
+                false;
+
+            localStorage.setItem(
+                "notification",
+                "OFF"
+            );
+
+            updateStatus();
+
+            showMessage(
+                "âŒ Your browser does not support notifications.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        /*
+           Request browser permission
+        */
+
+        if (
+            Notification.permission ===
+            "default"
+        ) {
+
+            const permission =
+                await Notification.requestPermission();
+
+
+            if (
+                permission !==
+                "granted"
+            ) {
+
+                checkbox.checked =
+                    false;
+
+                localStorage.setItem(
+                    "notification",
+                    "OFF"
+                );
+
+                updateStatus();
+
+                showMessage(
+                    "âš ï¸ Notification permission was not granted.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+        }
+
+
+        /*
+           Permission denied
+        */
+
+        if (
+            Notification.permission ===
+            "denied"
+        ) {
+
+            checkbox.checked =
+                false;
+
+            localStorage.setItem(
+                "notification",
+                "OFF"
+            );
+
+            updateStatus();
+
+            showMessage(
+                "âŒ Notifications are blocked in browser settings.",
+                "error"
+            );
+
+            return;
+
+        }
+
 
         localStorage.setItem(
             "notification",
             "ON"
         );
 
-        status.innerHTML = "ON";
 
-        status.style.color = "#08783f";
+        updateStatus();
 
-
-        /* Request permission */
-
-        if ("Notification" in window) {
-
-            if (Notification.permission === "default") {
-
-                const permission =
-                    await Notification.requestPermission();
-
-                if (permission !== "granted") {
-
-                    checkbox.checked = false;
-
-                    localStorage.setItem(
-                        "notification",
-                        "OFF"
-                    );
-
-                    status.innerHTML = "OFF";
-
-                    status.style.color = "#777";
-
-                    message.innerHTML =
-                        "⚠️ Notification permission was not granted.";
-
-                    message.style.color = "#e53935";
-
-                    return;
-
-                }
-
-            }
+        updateSmartStatus();
 
 
-            if (Notification.permission === "granted") {
-
-                message.innerHTML =
-                    "✅ Notifications enabled.";
-
-                message.style.color = "#08783f";
-
-            }
-
-        }
+        showMessage(
+            "âœ… Smart farming notifications enabled.",
+            "success"
+        );
 
     }
 
 
-    /* ================= OFF ================= */
+    /*
+       Turning OFF
+    */
 
     else {
 
@@ -545,16 +1357,147 @@ async function toggleNotification() {
             "OFF"
         );
 
-        status.innerHTML = "OFF";
 
-        status.style.color = "#777";
+        updateStatus();
 
-        message.innerHTML =
-            "🔕 Notifications disabled.";
+        updateSmartStatus();
 
-        message.style.color = "#777";
+
+        showMessage(
+            "ðŸ”• Smart farming notifications disabled.",
+            "normal"
+        );
 
     }
+
+}
+
+
+/* =========================================================
+   SAVE ALERT CATEGORY
+========================================================= */
+
+function saveAlertPreference(
+    alertId
+) {
+
+    const element =
+        document.getElementById(
+            alertId
+        );
+
+
+    if (!element) {
+
+        return;
+
+    }
+
+
+    localStorage.setItem(
+        alertId,
+        element.checked
+            ? "ON"
+            : "OFF"
+    );
+
+
+    updateSmartStatus();
+
+}
+
+
+/* =========================================================
+   SMART STATUS
+========================================================= */
+
+function updateSmartStatus() {
+
+    const status =
+        document.getElementById(
+            "smartStatus"
+        );
+
+
+    if (!status) {
+
+        return;
+
+    }
+
+
+    const enabled =
+        getNotificationEnabled();
+
+
+    if (!enabled) {
+
+        status.innerHTML =
+
+            '<i class="fa-solid fa-bell-slash"></i>' +
+
+            '<span>' +
+
+            'Notifications are currently disabled. ' +
+
+            'Enable them to receive smart farming alerts.' +
+
+            '</span>';
+
+        return;
+
+    }
+
+
+    const categories = [
+
+        "weatherAlert",
+
+        "irrigationAlert",
+
+        "diseaseAlert",
+
+        "marketAlert",
+
+        "schemeAlert",
+
+        "cropAlert"
+
+    ];
+
+
+    let count = 0;
+
+
+    categories.forEach(
+        function (key) {
+
+            if (
+                localStorage.getItem(key)
+                === "ON"
+            ) {
+
+                count++;
+
+            }
+
+        }
+    );
+
+
+    status.innerHTML =
+
+        '<i class="fa-solid fa-robot"></i>' +
+
+        '<span>' +
+
+        'Smart alerts active for ' +
+
+        count +
+
+        ' farming categories.' +
+
+        '</span>';
 
 }
 
@@ -566,36 +1509,54 @@ async function toggleNotification() {
 async function testNotification() {
 
     const message =
-        document.getElementById("message");
+        document.getElementById(
+            "message"
+        );
+
+    const button =
+        document.getElementById(
+            "testButton"
+        );
 
 
-    /* Browser support */
+    /*
+       Browser support
+    */
 
     if (!("Notification" in window)) {
 
-        message.innerHTML =
-            "❌ This browser does not support notifications.";
-
-        message.style.color = "#e53935";
+        showMessage(
+            "âŒ This browser does not support notifications.",
+            "error"
+        );
 
         return;
 
     }
 
 
-    /* Permission request */
+    /*
+       Request permission
+    */
 
-    if (Notification.permission === "default") {
+    if (
+        Notification.permission ===
+        "default"
+    ) {
 
         const permission =
             await Notification.requestPermission();
 
-        if (permission !== "granted") {
 
-            message.innerHTML =
-                "⚠️ Please allow notifications in your browser.";
+        if (
+            permission !==
+            "granted"
+        ) {
 
-            message.style.color = "#e53935";
+            showMessage(
+                "âš ï¸ Please allow notifications in your browser.",
+                "error"
+            );
 
             return;
 
@@ -604,101 +1565,404 @@ async function testNotification() {
     }
 
 
-    /* Permission denied */
+    /*
+       Permission denied
+    */
 
-    if (Notification.permission === "denied") {
+    if (
+        Notification.permission ===
+        "denied"
+    ) {
 
-        message.innerHTML =
-            "❌ Notifications are blocked. Allow them from browser settings.";
-
-        message.style.color = "#e53935";
+        showMessage(
+            "âŒ Notifications are blocked. Allow them from browser settings.",
+            "error"
+        );
 
         return;
 
     }
 
 
-    /* Send notification */
+    /*
+       Enable local setting
+    */
 
-    new Notification(
-        "🌾 KisanVision360",
-        {
-            body:
-                "Weather and farming alerts are enabled.",
-            icon:
-                "../images/logo.png"
-        }
+    localStorage.setItem(
+        "notification",
+        "ON"
     );
 
 
-    message.innerHTML =
-        "✅ Test notification sent successfully.";
+    document.getElementById(
+        "notification"
+    ).checked = true;
 
-    message.style.color =
-        "#08783f";
+
+    updateStatus();
+
+
+    /*
+       Button loading
+    */
+
+    button.disabled =
+        true;
+
+    button.innerHTML =
+        "â³ Sending...";
+
+
+    /*
+       Send notification
+    */
+
+    setTimeout(
+        function () {
+
+            new Notification(
+                "ðŸŒ¾ KisanVision360+",
+                {
+
+                    body:
+                        "Smart farming notifications are working successfully.",
+
+                    icon:
+                        "../images/logo.png",
+
+                    tag:
+                        "kisanvision360-test"
+
+                }
+            );
+
+
+            button.disabled =
+                false;
+
+            button.innerHTML =
+                "ðŸ”” Test Notification";
+
+
+            showMessage(
+                "âœ… Test notification sent successfully.",
+                "success"
+            );
+
+
+            updateSmartStatus();
+
+        },
+        500
+    );
 
 }
 
 
 /* =========================================================
-   AUTOMATIC FARMING ALERT
+   FARMING ALERT FUNCTION
 ========================================================= */
 
-function sendFarmingAlert(messageText) {
+function sendFarmingAlert(
+    messageText,
+    category = "cropAlert",
+    title = "ðŸŒ¾ KisanVision360+"
+) {
 
-    const enabled =
-        localStorage.getItem("notification");
+    /*
+       Master notification check
+    */
+
+    if (
+        !getNotificationEnabled()
+    ) {
+
+        return false;
+
+    }
 
 
-    if (enabled !== "ON") {
+    /*
+       Category check
+    */
 
-        return;
+    if (
+        localStorage.getItem(
+            category
+        ) === "OFF"
+    ) {
+
+        return false;
 
     }
 
 
-    if (!("Notification" in window)) {
+    /*
+       Browser check
+    */
 
-        return;
+    if (
+        !("Notification" in window)
+    ) {
+
+        return false;
 
     }
 
 
-    if (Notification.permission !== "granted") {
+    /*
+       Permission check
+    */
 
-        return;
+    if (
+        Notification.permission !==
+        "granted"
+    ) {
+
+        return false;
 
     }
 
+
+    /*
+       Send alert
+    */
 
     new Notification(
-        "🌾 KisanVision360 Farming Alert",
+        title,
         {
-            body: messageText,
+
+            body:
+                messageText,
 
             icon:
-                "../images/logo.png"
+                "../images/logo.png",
+
+            tag:
+                "kisanvision360-" +
+                category
+
         }
+    );
+
+
+    return true;
+
+}
+
+
+/* =========================================================
+   SPECIALIZED FARM ALERTS
+========================================================= */
+
+
+/*
+   Weather alert
+*/
+
+function sendWeatherAlert(
+    messageText
+) {
+
+    return sendFarmingAlert(
+        messageText,
+        "weatherAlert",
+        "ðŸŒ¦ï¸ KisanVision360+ Weather Alert"
+    );
+
+}
+
+
+/*
+   Irrigation alert
+*/
+
+function sendIrrigationAlert(
+    messageText
+) {
+
+    return sendFarmingAlert(
+        messageText,
+        "irrigationAlert",
+        "ðŸ’§ KisanVision360+ Irrigation Alert"
+    );
+
+}
+
+
+/*
+   Disease alert
+*/
+
+function sendDiseaseAlert(
+    messageText
+) {
+
+    return sendFarmingAlert(
+        messageText,
+        "diseaseAlert",
+        "ðŸ¦  KisanVision360+ Disease Alert"
+    );
+
+}
+
+
+/*
+   Market alert
+*/
+
+function sendMarketAlert(
+    messageText
+) {
+
+    return sendFarmingAlert(
+        messageText,
+        "marketAlert",
+        "ðŸ“ˆ KisanVision360+ Market Alert"
+    );
+
+}
+
+
+/*
+   Government scheme alert
+*/
+
+function sendSchemeAlert(
+    messageText
+) {
+
+    return sendFarmingAlert(
+        messageText,
+        "schemeAlert",
+        "ðŸ›ï¸ KisanVision360+ Scheme Alert"
+    );
+
+}
+
+
+/*
+   Crop alert
+*/
+
+function sendCropAlert(
+    messageText
+) {
+
+    return sendFarmingAlert(
+        messageText,
+        "cropAlert",
+        "ðŸŒ± KisanVision360+ Crop Alert"
     );
 
 }
 
 
 /* =========================================================
-   EXAMPLE ALERT
+   MESSAGE HELPER
+========================================================= */
+
+function showMessage(
+    text,
+    type
+) {
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    message.innerText =
+        text;
+
+
+    if (type === "success") {
+
+        message.style.color =
+            "#08783f";
+
+    }
+
+    else if (type === "error") {
+
+        message.style.color =
+            "#d32f2f";
+
+    }
+
+    else {
+
+        message.style.color =
+            "#777";
+
+    }
+
+
+    /*
+       Automatically remove message
+    */
+
+    setTimeout(
+        function () {
+
+            message.innerText =
+                "";
+
+        },
+        5000
+    );
+
+}
+
+
+/* =========================================================
+   GLOBAL ACCESS
 ========================================================= */
 
 /*
-   You can call this function from your
-   weather / irrigation JavaScript.
+   Other KisanVision360+ JavaScript files can use:
 
-   Example:
+   sendWeatherAlert("Rain expected today.");
 
-   sendFarmingAlert(
-       "💧 Irrigation is recommended for your crop."
+   sendIrrigationAlert(
+       "Irrigation is recommended for your crop."
+   );
+
+   sendDiseaseAlert(
+       "Disease risk detected for your crop."
+   );
+
+   sendMarketAlert(
+       "Market price has changed."
+   );
+
+   sendSchemeAlert(
+       "A government scheme may match your profile."
+   );
+
+   sendCropAlert(
+       "Your crop cultivation activity is due today."
    );
 */
 
+window.KisanVisionNotifications = {
+
+    send: sendFarmingAlert,
+
+    weather: sendWeatherAlert,
+
+    irrigation: sendIrrigationAlert,
+
+    disease: sendDiseaseAlert,
+
+    market: sendMarketAlert,
+
+    scheme: sendSchemeAlert,
+
+    crop: sendCropAlert
+
+};
 
 </script>
 

@@ -1,181 +1,393 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿{% extends "base.html" %}
 
-<head>
+{% set weather_data = weather|default({}, true) %}
+{% set forecast_data = forecast|default([], true) %}
+{% set notification_count = notification_count|default(0, true) %}
+{% set name = name|default("Farmer", true) %}
 
-    <meta charset="UTF-8">
+{% block title %}KisanVision360+ | Weather Intelligence{% endblock %}
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+{% block head %}
+<link rel="stylesheet"
+          href="{{ url_for('static', filename='css/weather.css') }}">
+{% endblock %}
 
-    <title>KisanVision360 | Live Weather</title>
+{% block page_title %}Weather Intelligence{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
 
+{% block content %}
+<!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
 
-    <!-- Sidebar CSS -->
-
-    <link rel="stylesheet"
-          href="{{ url_for('static',
-          filename='css/sidebar.css') }}">
-
-
-    <!-- Weather CSS -->
-
-    <link rel="stylesheet"
-          href="{{ url_for('static',
-          filename='css/weather.css') }}">
+    
 
 
-    <!-- Font Awesome -->
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-
-    <!-- Google Translate -->
-
-    <style>
-
-        #google_translate_element {
-            display: none;
-        }
-
-        .goog-te-banner-frame.skiptranslate {
-            display: none !important;
-        }
-
-        body {
-            top: 0 !important;
-        }
-
-        .goog-logo-link {
-            display: none !important;
-        }
-
-        .goog-te-gadget {
-            font-size: 0 !important;
-        }
-
-    </style>
-
-</head>
+    <main class="main-content weather-main">
 
 
-<body>
+        <!-- =================================================
+             TOP HEADER
+        ================================================== -->
+
+        
 
 
-<div class="dashboard-container">
+        <!-- WEATHER ERROR MESSAGE -->
+
+        <div
+            id="weatherError"
+            class="weather-error-message"
+            style="display:none;">
+        </div>
 
 
-    <!-- ================= SIDEBAR ================= -->
+        <!-- LOADING -->
 
-    {% include 'components/sidebar.html' %}
+        <div
+            id="weatherLoader"
+            class="weather-loader"
+            style="display:none;">
+
+            <div class="weather-loader-spinner">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+            </div>
+
+            <span>
+                Loading live weather...
+            </span>
+
+        </div>
 
 
-    <!-- ================= MAIN CONTENT ================= -->
-
-    <div class="main-content">
+        {% if weather_data %}
 
 
-        <!-- ================= TOP BAR ================= -->
+        <!-- =================================================
+             LIVE CONNECTION STATUS
+        ================================================== -->
 
-        <header class="topbar">
+        <section class="weather-live-status">
 
-            <div>
+            <div class="live-status-left">
 
-                <h1>
+                <span class="live-pulse"></span>
 
-                    <i class="fa-solid fa-cloud-sun"></i>
+                <div>
 
-                    Live Weather Dashboard
+                    <strong>
+                        LIVE WEATHER CONNECTED
+                    </strong>
 
-                </h1>
+                    <small>
+                        Weather intelligence is connected to the online weather service.
+                    </small>
 
-                <p>
-
-                    {{ weather.city|default("Nagpur") }},
-                    {{ weather.country|default("India") }}
-
-                </p>
+                </div>
 
             </div>
 
 
-            <div class="top-right">
+            <div class="live-status-right">
+
+                <i class="fa-solid fa-satellite-dish"></i>
+
+                <span>
+                    Real-time data
+                </span>
+
+            </div>
+
+        </section>
 
 
-                <!-- REFRESH -->
+        <!-- =================================================
+             WEATHER HERO
+        ================================================== -->
 
-                <button
-                    type="button"
-                    class="weather-link-btn"
-                    onclick="location.reload()">
-
-                    <i class="fa-solid fa-rotate"></i>
-
-                    Refresh Weather
-
-                </button>
+        <section class="weather-hero">
 
 
-                <!-- SEARCH -->
+            <!-- HERO MAIN -->
 
-                <div class="search-box">
+            <div class="weather-hero-main">
 
-                    <i class="fa-solid fa-search"></i>
 
-                    <form
-                        action="{{ url_for('weather') }}"
-                        method="GET">
+                <!-- LOCATION -->
 
-                        <input
-                            type="text"
-                            name="city"
-                            id="citySearch"
-                            placeholder="Search City"
-                            autocomplete="off">
+                <div class="hero-location">
 
-                    </form>
+                    <span class="location-icon">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </span>
+
+                    <div>
+
+                        <span class="hero-label">
+                            Current Location
+                        </span>
+
+                        <strong id="city">
+
+                            {{ weather_data.city|default("Nagpur", true) }},
+                            {{ weather_data.country|default("India", true) }}
+
+                        </strong>
+
+                    </div>
 
                 </div>
 
 
-                <!-- NOTIFICATION -->
+                <!-- WEATHER ICON -->
 
-                <a
-                    href="{{ url_for('notifications') }}"
-                    class="notification">
+                <div class="hero-weather-visual">
 
-                    <i class="fa-solid fa-bell"></i>
+                    {% if weather_data.icon %}
 
-                    {% if notification_count|default(0) > 0 %}
+                    <img
+                        id="weatherIcon"
+                        src="https://openweathermap.org/img/wn/{{ weather_data.icon }}@4x.png"
+                        alt="{{ weather_data.description|default('Weather', true) }}">
 
-                    <span>
-                        {{ notification_count }}
-                    </span>
+                    {% else %}
+
+                    <div
+                        id="weatherIcon"
+                        class="fallback-weather-icon">
+
+                        <i class="fa-solid fa-cloud-sun"></i>
+
+                    </div>
 
                     {% endif %}
 
-                </a>
+                </div>
 
 
-                <!-- PROFILE -->
+                <!-- TEMPERATURE -->
 
-                <div class="profile">
+                <div class="hero-temperature">
 
-                    <img
-                        src="{{ url_for('static',
-                        filename='images/farmer.jpg') }}"
-                        alt="Farmer">
+                    <span id="temperature">
+                        {{ weather_data.temperature|default("--", true) }}
+                    </span>
+
+                    <sup>Â°C</sup>
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div
+                    id="description"
+                    class="hero-description">
+
+                    {{ weather_data.description|default(
+                        "Weather information unavailable",
+                        true
+                    ) }}
+
+                </div>
+
+
+                <!-- SOURCE -->
+
+                <div class="hero-source">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    Weather service connected
+
+                </div>
+
+
+                <!-- UPDATED -->
+
+                <small
+                    id="updatedAt"
+                    class="weather-updated">
+
+                    {% if weather_data.updated_at %}
+                        Updated: {{ weather_data.updated_at }}
+                    {% endif %}
+
+                </small>
+
+            </div>
+
+
+            <!-- =================================================
+                 HERO METRICS
+            ================================================== -->
+
+            <div class="hero-metrics">
+
+
+                <!-- FEELS LIKE -->
+
+                <div class="hero-metric">
+
+                    <div class="hero-metric-icon temperature-icon">
+
+                        <i class="fa-solid fa-temperature-half"></i>
+
+                    </div>
 
                     <div>
 
-                        <h4>
-                            {{ name|default("Farmer") }}
-                        </h4>
+                        <span>
+                            Feels Like
+                        </span>
 
-                        <small>
-                            Farmer
-                        </small>
+                        <strong id="feelsLike">
+
+                            {{ weather_data.feels_like|default("--", true) }}Â°C
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- HUMIDITY -->
+
+                <div class="hero-metric">
+
+                    <div class="hero-metric-icon humidity-icon">
+
+                        <i class="fa-solid fa-droplet"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Humidity
+                        </span>
+
+                        <strong id="humidity">
+
+                            {{ weather_data.humidity|default("--", true) }}%
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- WIND -->
+
+                <div class="hero-metric">
+
+                    <div class="hero-metric-icon wind-icon">
+
+                        <i class="fa-solid fa-wind"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Wind Speed
+                        </span>
+
+                        <strong id="windSpeed">
+
+                            {{ weather_data.wind|default(
+                                weather_data.wind_speed|default("--", true),
+                                true
+                            ) }} m/s
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CLOUD -->
+
+                <div class="hero-metric">
+
+                    <div class="hero-metric-icon cloud-icon">
+
+                        <i class="fa-solid fa-cloud"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Cloud Cover
+                        </span>
+
+                        <strong id="clouds">
+
+                            {{ weather_data.clouds|default("--", true) }}%
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- VISIBILITY -->
+
+                <div class="hero-metric">
+
+                    <div class="hero-metric-icon visibility-icon">
+
+                        <i class="fa-solid fa-eye"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Visibility
+                        </span>
+
+                        <strong id="visibility">
+
+                            {{ weather_data.visibility|default("--", true) }} km
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RAIN -->
+
+                <div class="hero-metric">
+
+                    <div class="hero-metric-icon rain-icon">
+
+                        <i class="fa-solid fa-cloud-rain"></i>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Rainfall
+                        </span>
+
+                        <strong id="rainfall">
+
+                            {{ weather_data.rainfall|default(0, true) }} mm
+
+                        </strong>
 
                     </div>
 
@@ -183,58 +395,414 @@
 
             </div>
 
-        </header>
+        </section>
 
 
+        <!-- =================================================
+             WEATHER INTELLIGENCE
+        ================================================== -->
 
-        <!-- ================= LIVE WEATHER ================= -->
+        <section class="weather-section">
 
-        {% if weather %}
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-kicker">
+                        FARM DECISION SUPPORT
+                    </span>
+
+                    <h2>
+                        <i class="fa-solid fa-brain"></i>
+                        Farm Weather Intelligence
+                    </h2>
+
+                    <p>
+                        Convert current weather conditions into practical farming decisions.
+                    </p>
+
+                </div>
+
+                <div class="section-badge">
+
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                    AI Assisted
+
+                </div>
+
+            </div>
 
 
-        <section class="hero">
+            <div class="intelligence-grid">
 
 
-            <!-- LEFT -->
+                <!-- IRRIGATION -->
 
-            <div class="hero-left">
+                <article class="intelligence-card irrigation-card">
+
+                    <div class="intelligence-card-top">
+
+                        <div class="intelligence-icon">
+
+                            <i class="fa-solid fa-droplet"></i>
+
+                        </div>
+
+                        <span class="intelligence-status">
+                            Water
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        Irrigation Watch
+                    </h3>
+
+                    <p id="irrigationInsight">
+                        Checking current rainfall and humidity conditions...
+                    </p>
+
+                    <a
+                        href="{{ url_for('irrigation.irrigation') }}"
+                        class="intelligence-link">
+
+                        Open Irrigation
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </a>
+
+                </article>
 
 
-                <div class="weather-image">
+                <!-- CROP -->
 
-                    {% if weather.icon %}
+                <article class="intelligence-card crop-card">
 
-                    <img
-                        src="https://openweathermap.org/img/wn/{{ weather.icon }}@4x.png"
-                        alt="{{ weather.description|default('Weather') }}">
+                    <div class="intelligence-card-top">
 
-                    {% endif %}
+                        <div class="intelligence-icon">
+
+                            <i class="fa-solid fa-seedling"></i>
+
+                        </div>
+
+                        <span class="intelligence-status">
+                            Crop
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        Crop Activity
+                    </h3>
+
+                    <p id="cropInsight">
+                        Weather conditions can help guide crop planning.
+                    </p>
+
+                    <a
+                        href="{{ url_for('recommendation.recommendation') }}"
+                        class="intelligence-link">
+
+                        AI Crop Advisor
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </a>
+
+                </article>
+
+
+                <!-- DISEASE -->
+
+                <article class="intelligence-card disease-card">
+
+                    <div class="intelligence-card-top">
+
+                        <div class="intelligence-icon">
+
+                            <i class="fa-solid fa-virus"></i>
+
+                        </div>
+
+                        <span class="intelligence-status">
+                            Risk
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        Disease Risk
+                    </h3>
+
+                    <p id="diseaseInsight">
+                        Monitoring humidity and rainfall conditions.
+                    </p>
+
+                    <a
+                        href="{{ url_for('disease.disease') }}"
+                        class="intelligence-link">
+
+                        Disease Detection
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </a>
+
+                </article>
+
+
+                <!-- FIELD -->
+
+                <article class="intelligence-card field-card">
+
+                    <div class="intelligence-card-top">
+
+                        <div class="intelligence-icon">
+
+                            <i class="fa-solid fa-tractor"></i>
+
+                        </div>
+
+                        <span class="intelligence-status">
+                            Field
+                        </span>
+
+                    </div>
+
+                    <h3>
+                        Field Work
+                    </h3>
+
+                    <p id="fieldInsight">
+                        Weather-aware planning can reduce unnecessary field risk.
+                    </p>
+
+                    <a
+                        href="{{ url_for('farmer.farmer') }}"
+                        class="intelligence-link">
+
+                        Farm Dashboard
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </a>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CURRENT CONDITIONS
+        ================================================== -->
+
+        <section class="weather-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-kicker">
+                        LIVE METRICS
+                    </span>
+
+                    <h2>
+                        <i class="fa-solid fa-chart-line"></i>
+                        Current Conditions
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="metric-grid">
+
+
+                <!-- TEMPERATURE -->
+
+                <div class="metric-card">
+
+                    <div class="metric-icon">
+                        <i class="fa-solid fa-temperature-high"></i>
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Temperature
+                        </span>
+
+                        <strong id="temp">
+
+                            {{ weather_data.temperature|default("--", true) }}Â°C
+
+                        </strong>
+
+                    </div>
 
                 </div>
 
 
+                <!-- HUMIDITY -->
+
+                <div class="metric-card">
+
+                    <div class="metric-icon">
+                        <i class="fa-solid fa-droplet"></i>
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Humidity
+                        </span>
+
+                        <strong>
+
+                            {{ weather_data.humidity|default("--", true) }}%
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- WIND -->
+
+                <div class="metric-card">
+
+                    <div class="metric-icon">
+                        <i class="fa-solid fa-wind"></i>
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Wind
+                        </span>
+
+                        <strong>
+
+                            {{ weather_data.wind|default(
+                                weather_data.wind_speed|default("--", true),
+                                true
+                            ) }} m/s
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PRESSURE -->
+
+                <div class="metric-card">
+
+                    <div class="metric-icon">
+                        <i class="fa-solid fa-gauge-high"></i>
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Pressure
+                        </span>
+
+                        <strong>
+
+                            {{ weather_data.pressure|default("--", true) }} hPa
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RAINFALL -->
+
+                <div class="metric-card">
+
+                    <div class="metric-icon">
+                        <i class="fa-solid fa-cloud-rain"></i>
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Rainfall
+                        </span>
+
+                        <strong>
+
+                            {{ weather_data.rainfall|default(0, true) }} mm
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- UV -->
+
+                <div class="metric-card">
+
+                    <div class="metric-icon">
+                        <i class="fa-solid fa-sun"></i>
+                    </div>
+
+                    <div>
+
+                        <span>
+                            UV Index
+                        </span>
+
+                        <strong>
+
+                            {{ weather_data.uv_index|default("N/A", true) }}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             FORECAST
+        ================================================== -->
+
+        <section class="weather-section">
+
+            <div class="section-heading">
+
                 <div>
 
+                    <span class="section-kicker">
+                        FARM PLANNING
+                    </span>
+
                     <h2>
-
-                        <i class="fa-solid fa-location-dot"></i>
-
-                        {{ weather.city|default("Nagpur") }}
-
+                        <i class="fa-solid fa-calendar-days"></i>
+                        Weather Forecast
                     </h2>
 
-
-                    <h1>
-
-                        {{ weather.temperature|default(0) }}°C
-
-                    </h1>
-
-
                     <p>
-
-                        {{ weather.description|default("Weather information") }}
-
+                        Use the upcoming weather trend to plan irrigation,
+                        spraying, sowing and harvesting.
                     </p>
 
                 </div>
@@ -242,491 +810,738 @@
             </div>
 
 
+            <div class="forecast-container">
 
-            <!-- RIGHT -->
+                <div
+                    class="forecast-grid"
+                    id="forecastGrid">
 
-            <div class="hero-right">
+
+                    {% if forecast_data %}
+
+                        {% for day in forecast_data[:10] %}
+
+                        <article class="forecast-card">
+
+                            <div class="forecast-top">
+
+                                <strong>
+                                    {{ day.day|default("Day", true) }}
+                                </strong>
+
+                                <span>
+                                    {{ day.date|default("", true) }}
+                                </span>
+
+                            </div>
 
 
-                <!-- FEELS LIKE -->
+                            <div class="forecast-icon">
 
-                <div class="mini-card">
+                                {% if day.icon %}
 
-                    <i class="fa-solid fa-temperature-half"></i>
+                                <img
+                                    src="https://openweathermap.org/img/wn/{{ day.icon }}@2x.png"
+                                    alt="{{ day.description|default('Weather', true) }}">
 
-                    <h3>
-                        Feels Like
-                    </h3>
+                                {% else %}
 
-                    <h2>
-                        {{ weather.feels_like|default(0) }}°C
-                    </h2>
+                                <i class="fa-solid fa-cloud-sun"></i>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="forecast-temperature">
+
+                                {{ day.temp|default(
+                                    day.temperature|default("--", true),
+                                    true
+                                ) }}Â°C
+
+                            </div>
+
+
+                            <div class="forecast-description">
+
+                                {{ day.description|default(
+                                    day.condition|default("Forecast", true),
+                                    true
+                                ) }}
+
+                            </div>
+
+
+                            <div class="forecast-info">
+
+                                <span class="rain-info">
+
+                                    <i class="fa-solid fa-cloud-rain"></i>
+
+                                    {{ day.rain_probability|default(
+                                        day.rain|default(0, true),
+                                        true
+                                    ) }}%
+
+                                </span>
+
+
+                                <span class="humidity-info">
+
+                                    <i class="fa-solid fa-droplet"></i>
+
+                                    {{ day.humidity|default("--", true) }}%
+
+                                </span>
+
+                            </div>
+
+                        </article>
+
+                        {% endfor %}
+
+
+                    {% else %}
+
+                        <div class="forecast-empty">
+
+                            <div class="empty-icon">
+
+                                <i class="fa-solid fa-cloud-sun-rain"></i>
+
+                            </div>
+
+                            <h3>
+                                Forecast unavailable
+                            </h3>
+
+                            <p>
+                                Upcoming forecast information is currently unavailable.
+                                Please refresh the weather data.
+                            </p>
+
+                        </div>
+
+                    {% endif %}
 
                 </div>
-
-
-
-                <!-- HUMIDITY -->
-
-                <div class="mini-card">
-
-                    <i class="fa-solid fa-droplet"></i>
-
-                    <h3>
-                        Humidity
-                    </h3>
-
-                    <h2>
-                        {{ weather.humidity|default(0) }}%
-                    </h2>
-
-                </div>
-
-
-
-                <!-- WIND -->
-
-                <div class="mini-card">
-
-                    <i class="fa-solid fa-wind"></i>
-
-                    <h3>
-                        Wind
-                    </h3>
-
-                    <h2>
-                        {{ weather.wind|default(0) }} m/s
-                    </h2>
-
-                </div>
-
-
-
-                <!-- CLOUD -->
-
-                <div class="mini-card">
-
-                    <i class="fa-solid fa-cloud"></i>
-
-                    <h3>
-                        Cloud Cover
-                    </h3>
-
-                    <h2>
-                        {{ weather.clouds|default(0) }}%
-                    </h2>
-
-                </div>
-
-
-
-                <!-- VISIBILITY -->
-
-                <div class="mini-card">
-
-                    <i class="fa-solid fa-eye"></i>
-
-                    <h3>
-                        Visibility
-                    </h3>
-
-                    <h2>
-                        {{ weather.visibility|default(0) }} km
-                    </h2>
-
-                </div>
-
-
-
-                <!-- RAINFALL -->
-
-                <div class="mini-card">
-
-                    <i class="fa-solid fa-cloud-rain"></i>
-
-                    <h3>
-                        Rainfall
-                    </h3>
-
-                    <h2>
-                        {{ weather.rainfall|default(0) }} mm
-                    </h2>
-
-                </div>
-
 
             </div>
 
         </section>
 
 
+        <!-- =================================================
+             WEATHER RISK
+        ================================================== -->
 
-        <!-- ================= WEATHER CARDS ================= -->
+        <section class="weather-section">
 
-        <section class="weather-grid">
+            <div class="section-heading">
 
+                <div>
 
-            <!-- TEMPERATURE -->
+                    <span class="section-kicker">
+                        RISK MONITORING
+                    </span>
 
-            <div class="weather-card">
+                    <h2>
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        Weather Risk Monitor
+                    </h2>
 
-                <i class="fa-solid fa-temperature-high"></i>
+                    <p>
+                        Quick interpretation of weather conditions for farm operations.
+                    </p>
 
-                <h3>
-                    Temperature
-                </h3>
-
-                <h2>
-                    {{ weather.temperature|default(0) }}°C
-                </h2>
-
-            </div>
-
-
-
-            <!-- HUMIDITY -->
-
-            <div class="weather-card">
-
-                <i class="fa-solid fa-droplet"></i>
-
-                <h3>
-                    Humidity
-                </h3>
-
-                <h2>
-                    {{ weather.humidity|default(0) }}%
-                </h2>
+                </div>
 
             </div>
 
 
+            <div class="risk-layout">
 
-            <!-- WIND -->
 
-            <div class="weather-card">
+                <!-- RISK SIGNALS -->
 
-                <i class="fa-solid fa-wind"></i>
+                <article class="risk-panel">
 
-                <h3>
-                    Wind Speed
-                </h3>
+                    <div class="panel-title">
 
-                <h2>
-                    {{ weather.wind|default(0) }} m/s
-                </h2>
+                        <div class="panel-title-icon">
+
+                            <i class="fa-solid fa-shield-halved"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Farm Risk Signals
+                            </h3>
+
+                            <span>
+                                Current condition analysis
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- RAIN -->
+
+                    <div class="risk-row">
+
+                        <div class="risk-name">
+
+                            <span class="risk-symbol rain-symbol">
+
+                                <i class="fa-solid fa-cloud-rain"></i>
+
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Rainfall
+                                </strong>
+
+                                <small>
+                                    Water accumulation risk
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <span
+                            id="rainRisk"
+                            class="risk-badge risk-low">
+
+                            Monitoring
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- HUMIDITY -->
+
+                    <div class="risk-row">
+
+                        <div class="risk-name">
+
+                            <span class="risk-symbol humidity-symbol">
+
+                                <i class="fa-solid fa-droplet"></i>
+
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Humidity
+                                </strong>
+
+                                <small>
+                                    Disease environment
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <span
+                            id="humidityRisk"
+                            class="risk-badge risk-low">
+
+                            Monitoring
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- WIND -->
+
+                    <div class="risk-row">
+
+                        <div class="risk-name">
+
+                            <span class="risk-symbol wind-symbol">
+
+                                <i class="fa-solid fa-wind"></i>
+
+                            </span>
+
+                            <div>
+
+                                <strong>
+                                    Wind
+                                </strong>
+
+                                <small>
+                                    Field operation impact
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <span
+                            id="windRisk"
+                            class="risk-badge risk-low">
+
+                            Monitoring
+
+                        </span>
+
+                    </div>
+
+                </article>
+
+
+                <!-- SMART ADVICE -->
+
+                <article class="risk-panel advice-panel">
+
+                    <div class="panel-title">
+
+                        <div class="panel-title-icon advice-icon">
+
+                            <i class="fa-solid fa-lightbulb"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Smart Farming Advice
+                            </h3>
+
+                            <span>
+                                Weather-based recommendation
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="smart-advice">
+
+                        <div class="advice-icon">
+
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h3 id="smartAdviceTitle">
+                                Weather-Based Farm Planning
+                            </h3>
+
+                            <div id="smartAdvice">
+
+                                <p>
+                                    Use the current weather and forecast
+                                    to plan irrigation, crop protection
+                                    and field operations.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
 
             </div>
-
-
-
-            <!-- PRESSURE -->
-
-            <div class="weather-card">
-
-                <i class="fa-solid fa-gauge-high"></i>
-
-                <h3>
-                    Pressure
-                </h3>
-
-                <h2>
-                    {{ weather.pressure|default(0) }} hPa
-                </h2>
-
-            </div>
-
-
-
-            <!-- CONDITION -->
-
-            <div class="weather-card">
-
-                <i class="fa-solid fa-cloud"></i>
-
-                <h3>
-                    Condition
-                </h3>
-
-                <h2>
-                    {{ weather.description|default("N/A") }}
-                </h2>
-
-            </div>
-
-
-
-            <!-- UV -->
-
-            <div class="weather-card">
-
-                <i class="fa-solid fa-sun"></i>
-
-                <h3>
-                    UV Index
-                </h3>
-
-                <h2>
-                    {{ weather.uv_index|default("N/A") }}
-                </h2>
-
-            </div>
-
 
         </section>
 
 
+        <!-- =================================================
+             CONNECTED FARM INTELLIGENCE
+        ================================================== -->
 
-        <!-- ================= WEATHER STATUS ================= -->
+        <section class="weather-section">
 
-        <div class="weather-status">
+            <div class="section-heading">
 
-            <span class="live-dot"></span>
+                <div>
 
-            <strong>LIVE</strong>
+                    <span class="section-kicker">
+                        KISANVISION360+ ECOSYSTEM
+                    </span>
 
-            <span>
-                Weather data is updated from the online weather service.
-            </span>
+                    <h2>
+                        <i class="fa-solid fa-link"></i>
+                        Connected Farm Intelligence
+                    </h2>
 
-        </div>
+                    <p>
+                        Weather becomes more useful when connected with other
+                        smart farming modules.
+                    </p>
 
+                </div>
 
-
-        <!-- ================= ACTION BUTTONS ================= -->
-
-        <div class="buttons">
-
-
-            <a href="{{ url_for('recommendation') }}">
-
-                <button
-                    type="button"
-                    class="green-btn">
-
-                    <i class="fa-solid fa-seedling"></i>
-
-                    AI Crop Recommendation
-
-                </button>
-
-            </a>
+            </div>
 
 
-
-            <a href="{{ url_for('irrigation') }}">
-
-                <button
-                    type="button"
-                    class="blue-btn">
-
-                    <i class="fa-solid fa-droplet"></i>
-
-                    Irrigation Advisor
-
-                </button>
-
-            </a>
+            <div class="connected-flow">
 
 
+                <div class="flow-item">
 
-            <a href="{{ url_for('farmer') }}">
+                    <span class="flow-icon">
+                        ðŸŒ¦ï¸
+                    </span>
 
-                <button
-                    type="button"
-                    class="gray-btn">
+                    <strong>
+                        Weather
+                    </strong>
 
-                    <i class="fa-solid fa-house"></i>
-
-                    Dashboard
-
-                </button>
-
-            </a>
+                </div>
 
 
-        </div>
+                <span class="flow-arrow">
+                    â†’
+                </span>
 
+
+                <div class="flow-item">
+
+                    <span class="flow-icon">
+                        ðŸŒ±
+                    </span>
+
+                    <strong>
+                        Crop Advisor
+                    </strong>
+
+                </div>
+
+
+                <span class="flow-arrow">
+                    â†’
+                </span>
+
+
+                <div class="flow-item">
+
+                    <span class="flow-icon">
+                        ðŸ’§
+                    </span>
+
+                    <strong>
+                        Irrigation
+                    </strong>
+
+                </div>
+
+
+                <span class="flow-arrow">
+                    â†’
+                </span>
+
+
+                <div class="flow-item">
+
+                    <span class="flow-icon">
+                        ðŸ¦ 
+                    </span>
+
+                    <strong>
+                        Disease Detection
+                    </strong>
+
+                </div>
+
+
+                <span class="flow-arrow">
+                    â†’
+                </span>
+
+
+                <div class="flow-item">
+
+                    <span class="flow-icon">
+                        ðŸ“ˆ
+                    </span>
+
+                    <strong>
+                        Market
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             QUICK ACTIONS
+        ================================================== -->
+
+        <section class="weather-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-kicker">
+                        QUICK ACCESS
+                    </span>
+
+                    <h2>
+                        <i class="fa-solid fa-bolt"></i>
+                        Farm Actions
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="weather-actions">
+
+
+                <!-- CROP -->
+
+                <a
+                    href="{{ url_for('recommendation.recommendation') }}"
+                    class="weather-action-card green-action">
+
+                    <span class="action-icon">
+
+                        <i class="fa-solid fa-seedling"></i>
+
+                    </span>
+
+                    <span class="action-content">
+
+                        <strong>
+                            AI Crop Advisor
+                        </strong>
+
+                        <small>
+                            Get crop recommendations
+                        </small>
+
+                    </span>
+
+                    <i class="fa-solid fa-arrow-right action-arrow"></i>
+
+                </a>
+
+
+                <!-- IRRIGATION -->
+
+                <a
+                    href="{{ url_for('irrigation.irrigation') }}"
+                    class="weather-action-card blue-action">
+
+                    <span class="action-icon">
+
+                        <i class="fa-solid fa-droplet"></i>
+
+                    </span>
+
+                    <span class="action-content">
+
+                        <strong>
+                            Irrigation Advisor
+                        </strong>
+
+                        <small>
+                            Plan water requirements
+                        </small>
+
+                    </span>
+
+                    <i class="fa-solid fa-arrow-right action-arrow"></i>
+
+                </a>
+
+
+                <!-- DISEASE -->
+
+                <a
+                    href="{{ url_for('disease.disease') }}"
+                    class="weather-action-card orange-action">
+
+                    <span class="action-icon">
+
+                        <i class="fa-solid fa-virus"></i>
+
+                    </span>
+
+                    <span class="action-content">
+
+                        <strong>
+                            Disease Detection
+                        </strong>
+
+                        <small>
+                            Analyze crop disease
+                        </small>
+
+                    </span>
+
+                    <i class="fa-solid fa-arrow-right action-arrow"></i>
+
+                </a>
+
+
+                <!-- DASHBOARD -->
+
+                <a
+                    href="{{ url_for('farmer.farmer') }}"
+                    class="weather-action-card dark-action">
+
+                    <span class="action-icon">
+
+                        <i class="fa-solid fa-house"></i>
+
+                    </span>
+
+                    <span class="action-content">
+
+                        <strong>
+                            Farm Dashboard
+                        </strong>
+
+                        <small>
+                            Return to dashboard
+                        </small>
+
+                    </span>
+
+                    <i class="fa-solid fa-arrow-right action-arrow"></i>
+
+                </a>
+
+            </div>
+
+        </section>
 
 
         {% else %}
 
 
-        <!-- ================= WEATHER ERROR ================= -->
+        <!-- =================================================
+             WEATHER ERROR
+        ================================================== -->
 
-        <div class="weather-error">
+        <section class="weather-error">
 
-            <i class="fa-solid fa-cloud-exclamation"></i>
+            <div class="weather-error-icon">
+
+                <i class="fa-solid fa-cloud"></i>
+
+            </div>
+
+            <span class="error-kicker">
+                WEATHER SERVICE
+            </span>
 
             <h2>
                 Weather information unavailable
             </h2>
 
             <p>
-                Please check your internet connection or search another city.
+                We could not retrieve weather information right now.
+                Check your internet connection or search for another city.
             </p>
 
-            <a href="{{ url_for('weather') }}">
 
-                <i class="fa-solid fa-rotate"></i>
+            <div class="error-actions">
 
-                Try Again
+                <a
+                    href="{{ url_for('weather.weather') }}"
+                    class="error-button primary-error-button">
 
-            </a>
+                    <i class="fa-solid fa-rotate"></i>
 
-        </div>
+                    Try Again
+
+                </a>
+
+
+                <a
+                    href="{{ url_for('farmer.farmer') }}"
+                    class="error-button secondary-error-button">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    Dashboard
+
+                </a>
+
+            </div>
+
+        </section>
 
 
         {% endif %}
 
 
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
 
-        <!-- ================= FOOTER ================= -->
+        <footer class="weather-footer">
 
-        <footer>
+            <div class="footer-brand">
 
-            <i class="fa-solid fa-leaf"></i>
+                <i class="fa-solid fa-leaf"></i>
 
-            KisanVision360
+                <strong>
+                    KisanVision360+
+                </strong>
 
-            <span>•</span>
+            </div>
 
-            Live Weather & Smart Farming
+            <span>
+                â€¢
+            </span>
 
-            <span>•</span>
+            <span>
+                Weather Intelligence
+            </span>
 
-            Made in India 🇮🇳
+            <span>
+                â€¢
+            </span>
+
+            <span>
+                Smart Farming ðŸ‡®ðŸ‡³
+            </span>
+
+            <span
+                id="lastRefresh"
+                class="last-refresh">
+            </span>
 
         </footer>
 
 
-    </div>
+    </main>
+{% endblock %}
 
-</div>
-
-
-
-<!-- ================= GOOGLE TRANSLATE ================= -->
-
-<div id="google_translate_element"></div>
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/weather.js') }}"></script>
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+{% endblock %}
 
 
-<script>
-
-function googleTranslateElementInit() {
-
-    new google.translate.TranslateElement({
-
-        pageLanguage: "en",
-
-        includedLanguages:
-        "en,hi,mr,kn,te,ta,ml,gu,pa,bn",
-
-        autoDisplay: false
-
-    }, "google_translate_element");
-
-}
-
-
-function applySavedLanguage() {
-
-    const language =
-        localStorage.getItem(
-            "kisanvision360_language"
-        );
-
-
-    if (!language || language === "en") {
-        return;
-    }
-
-
-    let attempts = 0;
-
-
-    const timer = setInterval(function() {
-
-        const select =
-            document.querySelector(
-                ".goog-te-combo"
-            );
-
-
-        attempts++;
-
-
-        if (select) {
-
-            select.value = language;
-
-            select.dispatchEvent(
-                new Event("change")
-            );
-
-            clearInterval(timer);
-
-        }
-
-
-        if (attempts >= 20) {
-
-            clearInterval(timer);
-
-        }
-
-    }, 500);
-
-}
-
-
-window.addEventListener(
-    "load",
-    function() {
-
-        setTimeout(
-            applySavedLanguage,
-            1500
-        );
-
-    }
-);
-
-</script>
-
-
-
-<!-- Google Translate -->
-
-<script
-src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
-</script>
-
-
-
-<!-- Weather JS -->
-
-<script
-src="{{ url_for('static',
-filename='js/weather.js') }}">
-</script>
-
-
-
-<!-- Chatbot JS -->
-
-<script
-src="{{ url_for('static',
-filename='js/chatbot.js') }}">
-</script>
-
-
-
-<!-- Chatbot -->
-
-{% include 'components/chatbot.html' %}
-
-
-</body>
-
-</html>

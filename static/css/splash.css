@@ -1,270 +1,972 @@
-*{
+/* =========================================================
+   KISANVISION360+
+   PREMIUM SPLASH SCREEN
+   Background: static/images/background.jpg
+   ========================================================= */
 
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:"Segoe UI",sans-serif;
-
+:root {
+    --green-dark: #0b3d12;
+    --green: #1b5e20;
+    --green-light: #43a047;
+    --green-soft: #81c784;
+    --orange: #fb8c00;
+    --orange-light: #ffb74d;
+    --white: #ffffff;
+    --muted: rgba(255, 255, 255, 0.80);
 }
 
-body{
 
-height:100vh;
+/* =========================================================
+   RESET
+   ========================================================= */
 
-background:url("../images/background.jpg");
-
-background-size:cover;
-
-background-position:center;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-overflow:hidden;
-
-position:relative;
-
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.overlay{
 
-position:absolute;
+/* =========================================================
+   HTML / BODY
+   ========================================================= */
 
-width:100%;
-height:100%;
-
-background:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55));
-
-backdrop-filter:blur(5px);
-
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
 }
 
-.glass{
 
-position:relative;
+/* =========================================================
+   BODY
+   ========================================================= */
 
-z-index:10;
+body {
+    min-height: 100vh;
 
-width:700px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-padding:45px;
+    overflow: hidden;
 
-background:rgba(255,255,255,.12);
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-backdrop-filter:blur(20px);
+    /* ================================================
+       YOUR BACKGROUND IMAGE
+       ================================================ */
 
-border:1px solid rgba(255,255,255,.25);
+    background-image:
+        linear-gradient(
+            rgba(0, 35, 10, 0.48),
+            rgba(0, 35, 10, 0.48)
+        ),
+        url("../images/background.jpg");
 
-border-radius:30px;
-
-text-align:center;
-
-color:white;
-
-box-shadow:0 20px 60px rgba(0,0,0,.35);
-
-animation:fade 1s ease;
-
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
-.logo{
 
-width:220px;
+/* =========================================================
+   BACKGROUND DECORATION
+   ========================================================= */
 
-border-radius:50%;
+.background-decoration {
+    position: fixed;
 
-animation:zoom 1.5s infinite alternate;
+    inset: 0;
 
-margin-bottom:15px;
+    width: 100%;
+    height: 100%;
 
+    pointer-events: none;
+
+    overflow: hidden;
+
+    z-index: 1;
 }
 
-h1{
 
-font-size:56px;
+/* =========================================================
+   PARTICLES
+   ========================================================= */
 
-font-weight:bold;
+.particle {
+    position: absolute;
 
-margin-bottom:10px;
+    width: 8px;
+    height: 8px;
 
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.22);
+
+    box-shadow:
+        0 0 12px
+        rgba(255, 255, 255, 0.15);
+
+    animation:
+        floatParticle
+        linear infinite;
 }
 
-h3{
 
-margin-bottom:15px;
+.particle:nth-child(1) {
+    left: 8%;
+    top: 20%;
 
-color:#d7ffd7;
-
+    animation-duration: 8s;
 }
 
-p{
 
-font-size:18px;
+.particle:nth-child(2) {
+    left: 20%;
+    top: 75%;
 
-line-height:30px;
+    width: 5px;
+    height: 5px;
 
-opacity:.95;
-
+    animation-duration: 11s;
 }
 
-.feature-grid{
 
-display:grid;
+.particle:nth-child(3) {
+    left: 78%;
+    top: 18%;
 
-grid-template-columns:repeat(2,1fr);
+    width: 6px;
+    height: 6px;
 
-gap:18px;
-
-margin:35px 0;
-
+    animation-duration: 9s;
 }
 
-.feature{
 
-background:rgba(255,255,255,.18);
+.particle:nth-child(4) {
+    left: 90%;
+    top: 65%;
 
-padding:18px;
+    width: 10px;
+    height: 10px;
 
-border-radius:15px;
-
-transition:.3s;
-
+    animation-duration: 12s;
 }
 
-.feature:hover{
 
-transform:translateY(-5px);
+.particle:nth-child(5) {
+    left: 55%;
+    top: 90%;
 
-background:rgba(255,255,255,.28);
+    width: 5px;
+    height: 5px;
 
+    animation-duration: 10s;
 }
 
-.feature i{
 
-font-size:28px;
+@keyframes floatParticle {
 
-color:#8fff6a;
+    0% {
+        transform:
+            translateY(40px);
 
-margin-bottom:10px;
+        opacity: 0;
+    }
 
-display:block;
+    20% {
+        opacity: 1;
+    }
 
+    80% {
+        opacity: 1;
+    }
+
+    100% {
+        transform:
+            translateY(-120px);
+
+        opacity: 0;
+    }
 }
 
-.loader{
 
-width:70px;
-height:70px;
+/* =========================================================
+   MAIN SPLASH WRAPPER
+   EXACT CENTER
+   ========================================================= */
 
-margin:auto;
+.splash-wrapper {
+    position: relative;
 
-border:6px solid rgba(255,255,255,.2);
+    z-index: 5;
 
-border-top:6px solid #7CFC00;
+    width: min(92%, 620px);
 
-border-radius:50%;
+    margin: auto;
 
-animation:spin 1s linear infinite;
+    display: flex;
 
+    align-items: center;
+    justify-content: center;
 }
 
-.loading{
 
-margin-top:15px;
+/* =========================================================
+   GLASS CARD
+   ========================================================= */
 
-font-size:18px;
+.glass {
+    position: relative;
 
+    width: 100%;
+
+    padding:
+        38px 34px 28px;
+
+    text-align: center;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.25);
+
+    border-radius: 30px;
+
+    background:
+        rgba(0, 45, 15, 0.38);
+
+    backdrop-filter:
+        blur(18px);
+
+    -webkit-backdrop-filter:
+        blur(18px);
+
+    box-shadow:
+        0 30px 80px
+        rgba(0, 0, 0, 0.38);
+
+    animation:
+        cardAppear
+        0.8s
+        ease forwards;
 }
 
-.footer{
 
-margin-top:30px;
+@keyframes cardAppear {
 
-opacity:.85;
+    from {
+        opacity: 0;
 
-font-size:15px;
+        transform:
+            translateY(25px)
+            scale(0.96);
+    }
 
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
 }
 
-@keyframes spin{
 
-100%{
+/* =========================================================
+   LOGO CONTAINER
+   ========================================================= */
 
-transform:rotate(360deg);
+.logo-container {
+    position: relative;
 
+    width: 110px;
+    height: 110px;
+
+    margin:
+        0 auto 18px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
 }
 
+
+/* =========================================================
+   LOGO RING
+   ========================================================= */
+
+.logo-ring {
+    position: absolute;
+
+    inset: 0;
+
+    border:
+        2px solid
+        rgba(255, 255, 255, 0.25);
+
+    border-top-color:
+        var(--green-soft);
+
+    border-right-color:
+        var(--orange-light);
+
+    border-radius: 50%;
+
+    animation:
+        logoSpin
+        5s
+        linear
+        infinite;
 }
 
-@keyframes zoom{
 
-from{
+@keyframes logoSpin {
 
-transform:scale(.95);
-
+    to {
+        transform:
+            rotate(360deg);
+    }
 }
 
-to{
 
-transform:scale(1.05);
+/* =========================================================
+   LOGO
+   ========================================================= */
 
+.logo {
+    position: relative;
+
+    z-index: 2;
+
+    width: 78px;
+    height: 78px;
+
+    object-fit: contain;
+
+    border-radius: 20px;
+
+    filter:
+        drop-shadow(
+            0 8px 15px
+            rgba(0, 0, 0, 0.30)
+        );
+
+    animation:
+        logoPulse
+        2.5s
+        ease-in-out
+        infinite;
 }
 
+
+@keyframes logoPulse {
+
+    0%,
+    100% {
+        transform:
+            scale(1);
+    }
+
+    50% {
+        transform:
+            scale(1.05);
+    }
 }
 
-@keyframes fade{
 
-from{
+/* =========================================================
+   BRAND TITLE
+   ========================================================= */
 
-opacity:0;
-transform:translateY(40px);
+.brand-title {
+    margin: 0;
 
+    color:
+        var(--white);
+
+    font-size:
+        clamp(30px, 6vw, 44px);
+
+    font-weight: 900;
+
+    letter-spacing:
+        -1px;
+
+    line-height: 1.15;
+
+    text-shadow:
+        0 5px 20px
+        rgba(0, 0, 0, 0.35);
 }
 
-to{
 
-opacity:1;
-transform:translateY(0);
+/* =========================================================
+   PLUS SYMBOL
+   ========================================================= */
 
+.plus {
+    color:
+        var(--orange-light);
+
+    text-shadow:
+        0 0 15px
+        rgba(255, 183, 77, 0.35);
 }
 
+
+/* =========================================================
+   TAGLINE
+   ========================================================= */
+
+.brand-tagline {
+    margin:
+        8px 0 0;
+
+    color:
+        #c8e6c9;
+
+    font-size:
+        clamp(14px, 3vw, 18px);
+
+    font-weight: 700;
+
+    line-height: 1.4;
 }
 
-@media(max-width:768px){
 
-.glass{
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
 
-width:92%;
+.description {
+    max-width: 480px;
 
-padding:25px;
+    margin:
+        15px auto 25px;
 
+    color:
+        var(--muted);
+
+    font-size: 13px;
+
+    line-height: 1.65;
 }
 
-.logo{
 
-width:150px;
+/* =========================================================
+   FEATURE GRID
+   ========================================================= */
 
+.feature-grid {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 10px;
+
+    margin:
+        0 auto 24px;
 }
 
-h1{
 
-font-size:38px;
+/* =========================================================
+   FEATURE CARD
+   ========================================================= */
 
+.feature {
+    min-height: 82px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    padding:
+        10px 6px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.14);
+
+    border-radius: 15px;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        border-color 0.25s ease;
 }
 
-.feature-grid{
 
-grid-template-columns:1fr;
+.feature:hover {
+    transform:
+        translateY(-4px);
 
+    background:
+        rgba(255, 255, 255, 0.14);
+
+    border-color:
+        rgba(255, 255, 255, 0.25);
 }
 
-p{
 
-font-size:5000px;
+/* =========================================================
+   FEATURE ICON
+   ========================================================= */
 
+.feature i {
+    font-size: 21px;
+
+    color:
+        #a5d6a7;
+
+    filter:
+        drop-shadow(
+            0 2px 5px
+            rgba(0, 0, 0, 0.20)
+        );
 }
 
+
+.feature:nth-child(3) i {
+    color:
+        var(--orange-light);
+}
+
+
+/* =========================================================
+   FEATURE TEXT
+   ========================================================= */
+
+.feature span {
+    color:
+        var(--white);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    line-height: 1.3;
+}
+
+
+/* =========================================================
+   LOADING SECTION
+   ========================================================= */
+
+.loading-section {
+    margin-top: 3px;
+}
+
+
+/* =========================================================
+   LOADER
+   ========================================================= */
+
+.loader {
+    width: 40px;
+    height: 40px;
+
+    margin:
+        0 auto 12px;
+
+    border:
+        3px solid
+        rgba(255, 255, 255, 0.18);
+
+    border-top-color:
+        #ffffff;
+
+    border-right-color:
+        var(--green-soft);
+
+    border-radius: 50%;
+
+    animation:
+        spinLoader
+        0.9s
+        linear
+        infinite;
+}
+
+
+@keyframes spinLoader {
+
+    to {
+        transform:
+            rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   LOADING TEXT
+   ========================================================= */
+
+.loading {
+    margin: 0;
+
+    color:
+        rgba(255, 255, 255, 0.90);
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   LOADING DOTS
+   ========================================================= */
+
+.loading-dots {
+    display: inline-flex;
+
+    margin-left: 2px;
+}
+
+
+.loading-dots span {
+    animation:
+        dotAnimation
+        1.2s
+        infinite;
+}
+
+
+.loading-dots span:nth-child(2) {
+    animation-delay:
+        0.2s;
+}
+
+
+.loading-dots span:nth-child(3) {
+    animation-delay:
+        0.4s;
+}
+
+
+@keyframes dotAnimation {
+
+    0%,
+    60%,
+    100% {
+        opacity: 0.25;
+    }
+
+    30% {
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
+   PROGRESS CONTAINER
+   ========================================================= */
+
+.progress-container {
+    width: 100%;
+
+    max-width: 300px;
+
+    height: 4px;
+
+    margin:
+        15px auto 0;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background:
+        rgba(255, 255, 255, 0.14);
+}
+
+
+/* =========================================================
+   PROGRESS BAR
+   ========================================================= */
+
+.progress-bar {
+    width: 0%;
+
+    height: 100%;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #81c784,
+            #ffffff,
+            #ffb74d
+        );
+
+    animation:
+        loadingProgress
+        3.7s
+        ease-in-out
+        forwards;
+}
+
+
+@keyframes loadingProgress {
+
+    0% {
+        width: 0%;
+    }
+
+    35% {
+        width: 35%;
+    }
+
+    70% {
+        width: 72%;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   APPLICATION FLOW
+   ========================================================= */
+
+.flow {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-top: 18px;
+
+    color:
+        rgba(255, 255, 255, 0.62);
+
+    font-size: 9px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   FLOW STEP
+   ========================================================= */
+
+.flow-step {
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    transition:
+        color 0.2s ease;
+}
+
+
+.flow-step.active {
+    color:
+        #ffffff;
+
+    text-shadow:
+        0 0 8px
+        rgba(255, 255, 255, 0.20);
+}
+
+
+/* =========================================================
+   FLOW ICON
+   ========================================================= */
+
+.flow-step i {
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   FLOW ARROW
+   ========================================================= */
+
+.flow-arrow {
+    opacity: 0.5;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer {
+    margin-top: 22px;
+
+    padding-top: 15px;
+
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.12);
+
+    color:
+        rgba(255, 255, 255, 0.60);
+
+    font-size: 9px;
+
+    line-height: 1.6;
+}
+
+
+.footer strong {
+    color:
+        rgba(255, 255, 255, 0.85);
+}
+
+
+.footer span {
+    margin:
+        0 3px;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 520px) {
+
+    body {
+        padding: 12px;
+
+        background-attachment: scroll;
+    }
+
+    .splash-wrapper {
+        width: 100%;
+    }
+
+    .glass {
+        padding:
+            28px 18px 22px;
+
+        border-radius: 24px;
+    }
+
+    .logo-container {
+        width: 90px;
+        height: 90px;
+    }
+
+    .logo {
+        width: 65px;
+        height: 65px;
+    }
+
+    .brand-title {
+        font-size: 29px;
+    }
+
+    .brand-tagline {
+        font-size: 13px;
+    }
+
+    .description {
+        font-size: 11px;
+
+        margin:
+            13px auto 20px;
+    }
+
+    .feature-grid {
+        gap: 7px;
+    }
+
+    .feature {
+        min-height: 70px;
+    }
+
+    .feature i {
+        font-size: 17px;
+    }
+
+    .feature span {
+        font-size: 8px;
+    }
+
+    .flow {
+        gap: 5px;
+
+        font-size: 8px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 350px) {
+
+    .glass {
+        padding:
+            24px 14px 18px;
+    }
+
+    .feature-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .flow {
+        flex-wrap: wrap;
+    }
+
+    .brand-title {
+        font-size: 25px;
+    }
+
+    .description {
+        font-size: 10px;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation:
+            none !important;
+
+        transition:
+            none !important;
+    }
 }

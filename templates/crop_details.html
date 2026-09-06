@@ -1,318 +1,1545 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿{% extends "base.html" %}
 
-<head>
+{% block title %}KisanVision360+ | Crop Details{% endblock %}
 
-    <meta charset="UTF-8">
+{% block head %}
+<link rel="stylesheet"
+          href="{{ url_for('static', filename='css/farmer.css') }}">
+<style>
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+        /* =====================================================
+           ROOT
+        ====================================================== */
 
-    <title>KisanVision360 | Crop Details</title>
+        :root {
+            --green-dark: #1b5e20;
+            --green: #2e7d32;
+            --green-light: #e8f5e9;
+            --green-soft: #f4faf5;
+            --orange: #fb8c00;
+            --blue: #1565c0;
+            --red: #c62828;
+            --text: #263238;
+            --muted: #78909c;
+            --border: #e1ebe3;
+            --background: #f5f8f6;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(27, 94, 32, .08);
+        }
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/sidebar.css') }}">
-
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-    <style>
+        /* =====================================================
+           RESET
+        ====================================================== */
 
         * {
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: #f4f8f4;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button,
+        input,
+        select {
+            font-family: inherit;
+        }
+
+        /* =====================================================
+           MAIN
+        ====================================================== */
+
+        .dashboard-container {
+            min-height: 100vh;
         }
 
         .main-content {
             padding: 25px;
+            min-height: 100vh;
         }
+
+        /* =====================================================
+           TOPBAR
+        ====================================================== */
 
         .topbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 20px;
             margin-bottom: 25px;
+        }
+
+        .title-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            min-width: 0;
+        }
+
+        .title-icon {
+            width: 55px;
+            height: 55px;
+            flex: 0 0 55px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 16px;
+
+            background: var(--green-light);
+            color: var(--green);
+
+            font-size: 25px;
+        }
+
+        .title-text {
+            min-width: 0;
         }
 
         .topbar h1 {
             margin: 0;
-            color: #1b5e20;
+            color: var(--green-dark);
+            font-size: 28px;
         }
 
         .topbar p {
-            color: #666;
+            margin: 5px 0 0;
+            color: var(--muted);
+            font-size: 13px;
         }
+
+        .smart-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            margin-top: 7px;
+            padding: 5px 9px;
+
+            border-radius: 20px;
+
+            background: var(--green-light);
+            color: var(--green);
+
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .smart-status i {
+            font-size: 7px;
+        }
+
+        /* =====================================================
+           TOPBAR ACTIONS
+        ====================================================== */
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .top-action {
+            position: relative;
+
+            width: 40px;
+            height: 40px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 11px;
+
+            background: #ffffff;
+            border: 1px solid var(--border);
+
+            color: var(--green-dark);
+
+            text-decoration: none;
+
+            transition: .2s ease;
+        }
+
+        .top-action:hover {
+            background: var(--green-light);
+            color: var(--green);
+            transform: translateY(-2px);
+        }
+
+        .top-action.ai {
+            width: auto;
+            padding: 0 12px;
+
+            gap: 7px;
+
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .top-action.ai i {
+            color: var(--orange);
+        }
+
+        .notification-badge {
+            position: absolute;
+
+            top: -5px;
+            right: -5px;
+
+            min-width: 17px;
+            height: 17px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 0 4px;
+
+            border-radius: 20px;
+
+            background: var(--red);
+            color: #ffffff;
+
+            border: 2px solid #ffffff;
+
+            font-size: 8px;
+            font-weight: bold;
+        }
+
+        /* =====================================================
+           PROFILE
+        ====================================================== */
 
         .profile {
             display: flex;
             align-items: center;
             gap: 10px;
+
+            margin-left: 5px;
+            padding-left: 10px;
+
+            border-left: 1px solid var(--border);
+        }
+
+        .profile-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            color: inherit;
+            text-decoration: none;
         }
 
         .profile img {
-            width: 50px;
-            height: 50px;
+            width: 46px;
+            height: 46px;
+
+            object-fit: cover;
+
             border-radius: 50%;
+
+            border: 3px solid #dcedde;
         }
 
-        .form-card,
-        .crop-card {
-            background: white;
+        .profile strong {
+            display: block;
+
+            color: var(--text);
+
+            font-size: 12px;
+        }
+
+        .profile small {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           FLASH
+        ====================================================== */
+
+        .flash {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            padding: 13px 16px;
+
+            margin-bottom: 18px;
+
+            border-radius: 12px;
+
+            background: var(--green-light);
+            border: 1px solid #cde4cf;
+
+            color: var(--green-dark);
+
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           FORM CARD
+        ====================================================== */
+
+        .form-card {
+            background: var(--white);
+
             padding: 25px;
-            border-radius: 15px;
+
+            border-radius: 20px;
+
             margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,.08);
+
+            border: 1px solid var(--border);
+
+            box-shadow: var(--shadow);
         }
 
-        .form-card h2,
-        .crop-card h2 {
-            color: #1b5e20;
+        .form-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 20px;
         }
+
+        .form-heading h2 {
+            margin: 0;
+
+            color: var(--green-dark);
+
+            font-size: 20px;
+        }
+
+        .form-heading h2 i {
+            color: var(--green);
+        }
+
+        .form-heading p {
+            margin: 5px 0 0;
+
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+        .smart-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            padding: 8px 11px;
+
+            border-radius: 20px;
+
+            background: #fff3e0;
+            color: #ef6c00;
+
+            font-size: 10px;
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+        /* =====================================================
+           FORM
+        ====================================================== */
 
         .form-grid {
             display: grid;
+
             grid-template-columns: repeat(2, 1fr);
+
             gap: 18px;
+        }
+
+        .form-group {
+            position: relative;
         }
 
         label {
             display: block;
+
             margin-bottom: 7px;
+
+            color: #37474f;
+
+            font-size: 12px;
             font-weight: bold;
+        }
+
+        label i {
+            margin-right: 5px;
+
+            color: var(--green);
         }
 
         input,
         select {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
+
+            padding: 13px 14px;
+
+            border: 1px solid #ccd8cf;
+
+            border-radius: 10px;
+
+            background: #ffffff;
+            color: var(--text);
+
+            font-size: 13px;
+
+            outline: none;
+
+            transition: .2s ease;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--green);
+
+            box-shadow:
+                0 0 0 3px rgba(46, 125, 50, .10);
+        }
+
+        .field-help {
+            display: block;
+
+            margin-top: 5px;
+
+            color: #90a4ae;
+
+            font-size: 10px;
         }
 
         .save-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
             margin-top: 20px;
-            padding: 13px 25px;
+
+            padding: 13px 24px;
+
             border: none;
-            border-radius: 8px;
-            background: #2e7d32;
+            border-radius: 10px;
+
+            background: var(--green);
             color: white;
+
             cursor: pointer;
-            font-size: 16px;
+
+            font-size: 14px;
+            font-weight: bold;
+
+            transition: .2s ease;
         }
 
         .save-btn:hover {
-            background: #1b5e20;
+            background: var(--green-dark);
+            transform: translateY(-2px);
         }
+
+        .save-btn:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* =====================================================
+           INTELLIGENCE
+        ====================================================== */
+
+        .crop-intelligence {
+            display: grid;
+
+            grid-template-columns: 1.4fr .8fr;
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+        }
+
+        .intelligence-card {
+            padding: 20px;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef8ef,
+                    #ffffff
+                );
+
+            border: 1px solid #d8ead9;
+
+            box-shadow:
+                0 8px 25px rgba(27, 94, 32, .05);
+        }
+
+        .intelligence-icon {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 12px;
+
+            border-radius: 12px;
+
+            background: var(--green);
+            color: white;
+        }
+
+        .intelligence-card h3 {
+            margin: 0 0 7px;
+
+            color: var(--green-dark);
+
+            font-size: 15px;
+        }
+
+        .intelligence-card p {
+            margin: 0;
+
+            color: #607d8b;
+
+            font-size: 11px;
+
+            line-height: 1.6;
+        }
+
+        /* =====================================================
+           CROP FLOW
+        ====================================================== */
+
+        .crop-flow {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 8px;
+
+            margin-top: 16px;
+        }
+
+        .flow-step {
+            flex: 1;
+
+            text-align: center;
+        }
+
+        .flow-step i {
+            width: 34px;
+            height: 34px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: white;
+
+            color: var(--green);
+
+            border: 1px solid #cfe3d1;
+
+            font-size: 12px;
+        }
+
+        .flow-step span {
+            display: block;
+
+            margin-top: 5px;
+
+            color: #607d8b;
+
+            font-size: 9px;
+            font-weight: bold;
+        }
+
+        .flow-line {
+            flex: 0 0 25px;
+
+            height: 2px;
+
+            background: #cfe3d1;
+        }
+
+        /* =====================================================
+           SUMMARY
+        ====================================================== */
+
+        .crop-summary {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 12px;
+        }
+
+        .summary-item {
+            padding: 13px;
+
+            border-radius: 12px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+        }
+
+        .summary-item span {
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 9px;
+
+            text-transform: uppercase;
+
+            font-weight: bold;
+        }
+
+        .summary-item strong {
+            display: block;
+
+            margin-top: 5px;
+
+            color: var(--green-dark);
+
+            font-size: 18px;
+        }
+
+        /* =====================================================
+           SECTION TITLE
+        ====================================================== */
+
+        .section-title {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: flex-end;
+
+            margin: 25px 0 15px;
+
+            gap: 15px;
+        }
+
+        .section-title h2 {
+            margin: 0;
+
+            color: var(--green-dark);
+
+            font-size: 21px;
+        }
+
+        .section-title p {
+            margin: 5px 0 0;
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+        .crop-count {
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            background: var(--green-light);
+            color: var(--green);
+
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        /* =====================================================
+           CROP GRID
+        ====================================================== */
 
         .crop-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(290px, 1fr));
+
             gap: 20px;
         }
 
         .crop-card {
-            border-left: 5px solid #43a047;
+            position: relative;
+
+            overflow: hidden;
+
+            padding: 22px;
+
+            border-radius: 20px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-left: 5px solid var(--green);
+
+            box-shadow: var(--shadow);
+
+            transition: .25s ease;
+        }
+
+        .crop-card:hover {
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 15px 35px rgba(27, 94, 32, .12);
+        }
+
+        .crop-card::after {
+            content: "";
+
+            position: absolute;
+
+            width: 100px;
+            height: 100px;
+
+            right: -50px;
+            bottom: -50px;
+
+            border-radius: 50%;
+
+            background: var(--green-light);
+
+            pointer-events: none;
+        }
+
+        /* =====================================================
+           CROP HEADER
+        ====================================================== */
+
+        .crop-header {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 16px;
+        }
+
+        .crop-title {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .crop-icon {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: var(--green-light);
+            color: var(--green);
         }
 
         .crop-card h3 {
-            color: #2e7d32;
-            margin-top: 0;
+            margin: 0;
+
+            color: var(--green-dark);
+
+            font-size: 17px;
+        }
+
+        .stage {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            padding: 6px 9px;
+
+            border-radius: 20px;
+
+            background: var(--green-light);
+            color: var(--green-dark);
+
+            font-size: 9px;
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+        /* =====================================================
+           DETAILS
+        ====================================================== */
+
+        .crop-details {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 9px;
         }
 
         .info {
-            margin: 8px 0;
-            color: #555;
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 8px;
+
+            padding: 9px 10px;
+
+            border-radius: 9px;
+
+            background: #f8faf8;
+
+            color: #607d8b;
+
+            font-size: 10px;
         }
 
-        .progress-box {
-            margin-top: 15px;
+        .info b {
+            color: #455a64;
+        }
+
+        .info span {
+            text-align: right;
+
+            color: var(--text);
+
+            font-weight: 600;
+        }
+
+        /* =====================================================
+           GROWTH
+        ====================================================== */
+
+        .growth-box {
+            margin-top: 17px;
+
+            padding-top: 15px;
+
+            border-top: 1px solid var(--border);
+        }
+
+        .growth-header {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 8px;
+        }
+
+        .growth-header span {
+            color: #607d8b;
+
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .growth-percent {
+            color: var(--green) !important;
+
+            font-size: 14px !important;
         }
 
         .progress {
             width: 100%;
-            height: 12px;
-            background: #ddd;
-            border-radius: 10px;
+
+            height: 10px;
+
             overflow: hidden;
+
+            border-radius: 20px;
+
+            background: #e1e8e2;
         }
 
         .progress-bar {
             height: 100%;
-            background: #43a047;
-        }
 
-        .stage {
-            display: inline-block;
-            padding: 7px 12px;
+            min-width: 2px;
+
             border-radius: 20px;
-            background: #e8f5e9;
-            color: #1b5e20;
-            font-weight: bold;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #43a047,
+                    #66bb6a
+                );
+
+            transition: width 1s ease;
         }
 
-        .flash {
-            padding: 12px;
-            margin-bottom: 15px;
+        .growth-note {
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-top: 7px;
+
+            color: #90a4ae;
+
+            font-size: 9px;
+        }
+
+        /* =====================================================
+           ACTION BUTTONS
+        ====================================================== */
+
+        .crop-actions {
+            position: relative;
+
+            z-index: 2;
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 7px;
+
+            margin-top: 14px;
+        }
+
+        .crop-action {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            padding: 8px 10px;
+
             border-radius: 8px;
-            background: #e8f5e9;
-            color: #1b5e20;
+
+            background: #f3f8f4;
+
+            color: var(--green);
+
+            font-size: 9px;
+            font-weight: bold;
+
+            text-decoration: none;
+
+            transition: .2s ease;
         }
 
-        @media(max-width: 700px) {
+        .crop-action:hover {
+            background: var(--green-light);
+
+            transform: translateY(-1px);
+        }
+
+        /* =====================================================
+           EMPTY STATE
+        ====================================================== */
+
+        .empty-state {
+            text-align: center;
+
+            padding: 45px 25px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 20px;
+
+            box-shadow: var(--shadow);
+        }
+
+        .empty-icon {
+            width: 65px;
+            height: 65px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin: auto;
+
+            border-radius: 20px;
+
+            background: var(--green-light);
+            color: var(--green);
+
+            font-size: 27px;
+        }
+
+        .empty-state h3 {
+            margin: 15px 0 7px;
+
+            color: var(--green-dark);
+        }
+
+        .empty-state p {
+            margin: 0;
+
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           BACK BUTTON
+        ====================================================== */
+
+        .back-area {
+            margin-top: 25px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 12px 18px;
+
+            border-radius: 10px;
+
+            background: white;
+
+            border: 1px solid #d8e4da;
+
+            color: var(--green-dark);
+
+            text-decoration: none;
+
+            font-size: 12px;
+            font-weight: bold;
+
+            transition: .2s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--green-light);
+
+            transform: translateY(-1px);
+        }
+
+        /* =====================================================
+           CHATBOT FALLBACK
+        ====================================================== */
+
+        .chatbot-fallback {
+            position: fixed;
+
+            right: 22px;
+            bottom: 22px;
+
+            z-index: 9998;
+
+            width: 54px;
+            height: 54px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: var(--green);
+            color: white;
+
+            text-decoration: none;
+
+            box-shadow:
+                0 10px 25px rgba(27, 94, 32, .25);
+
+            transition: .2s ease;
+        }
+
+        .chatbot-fallback:hover {
+            background: var(--green-dark);
+
+            transform: scale(1.05);
+        }
+
+        /* =====================================================
+           RTL
+        ====================================================== */
+
+        html[dir="rtl"] .info span {
+            text-align: left;
+        }
+
+        html[dir="rtl"] .crop-card {
+            border-left: 1px solid var(--border);
+
+            border-right: 5px solid var(--green);
+        }
+
+        html[dir="rtl"] .profile {
+            margin-left: 0;
+            margin-right: 5px;
+
+            padding-left: 0;
+            padding-right: 10px;
+
+            border-left: 0;
+            border-right: 1px solid var(--border);
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 1100px) {
+
+            .crop-intelligence {
+                grid-template-columns: 1fr;
+            }
+
+            .profile {
+                display: none;
+            }
+        }
+
+        @media (max-width: 850px) {
+
+            .topbar {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .topbar-actions {
+                width: 100%;
+
+                justify-content: flex-end;
+            }
 
             .form-grid {
                 grid-template-columns: 1fr;
             }
 
-            .topbar {
-                flex-direction: column;
+            .form-heading {
                 align-items: flex-start;
-                gap: 15px;
+
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .main-content {
+                padding: 15px;
             }
 
+            .title-icon {
+                width: 45px;
+                height: 45px;
+
+                flex-basis: 45px;
+
+                font-size: 20px;
+            }
+
+            .topbar h1 {
+                font-size: 22px;
+            }
+
+            .topbar p {
+                font-size: 11px;
+            }
+
+            .topbar-actions {
+                justify-content: flex-start;
+
+                flex-wrap: wrap;
+            }
+
+            .top-action.ai {
+                padding: 0 10px;
+            }
+
+            .crop-details {
+                grid-template-columns: 1fr;
+            }
+
+            .crop-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .crop-flow {
+                gap: 3px;
+            }
+
+            .flow-line {
+                flex-basis: 10px;
+            }
         }
 
     </style>
+{% endblock %}
 
-</head>
+{% block page_title %}Crop Details{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    
 
 
-<body>
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
 
-<div class="dashboard-container">
+    <main class="main-content">
 
-    {% include 'components/sidebar.html' %}
-
-
-    <div class="main-content">
-
-
-        <!-- TOPBAR -->
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
 
         <div class="topbar">
 
-            <div>
+            <div class="title-area">
 
-                <h1>
-                    🌱 Crop Details
-                </h1>
+                <div class="title-icon">
+                    <i class="fa-solid fa-seedling"></i>
+                </div>
 
-                <p>
-                    Track crop growth, duration and harvest date
-                </p>
+                <div class="title-text">
+
+                    <h1>
+                        Crop Details
+                    </h1>
+
+                    <p>
+                        Track crop growth, duration and harvest date
+                    </p>
+
+                    <div class="smart-status">
+
+                        <i class="fa-solid fa-circle"></i>
+
+                        KisanVision360+ Crop Intelligence
+
+                    </div>
+
+                </div>
 
             </div>
 
 
-            <div class="profile">
+            <!-- =================================================
+                 TOPBAR BUTTONS
+            ================================================== -->
 
-                <img
-                    src="{{ url_for('static', filename='images/farmer.jpg') }}"
-                    alt="Farmer">
+            <div class="topbar-actions">
 
-                <div>
+                <!-- DASHBOARD -->
 
-                    <strong>
-                        {{ name }}
-                    </strong>
+                <a href="{{ url_for('farmer.farmer') }}"
+                   class="top-action"
+                   title="Dashboard"
+                   aria-label="Dashboard">
 
-                    <small>
-                        Farmer
-                    </small>
+                    <i class="fa-solid fa-house"></i>
 
-                </div>
+                </a>
+
+
+                <!-- NOTIFICATIONS -->
+
+                <a href="{{ url_for('notifications.notifications') }}"
+                   class="top-action"
+                   title="Notifications"
+                   aria-label="Notifications">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                    {% set notification_count =
+                        notification_count|default(0, true)|int %}
+
+                    {% if notification_count > 0 %}
+
+                        <span class="notification-badge">
+
+                            {{ notification_count
+                               if notification_count < 100
+                               else '99+' }}
+
+                        </span>
+
+                    {% endif %}
+
+                </a>
+
+
+                <!-- =================================================
+                     AI CHATBOT
+                     FIXED BLUEPRINT ENDPOINT
+                ================================================== -->
+
+                <a href="{{ url_for('chatbot.chatbot') }}"
+                   class="top-action ai"
+                   title="AI Assistant"
+                   aria-label="AI Assistant">
+
+                    <i class="fa-solid fa-robot"></i>
+
+                    <span>
+                        AI Assistant
+                    </span>
+
+                </a>
+
+
+                <!-- SETTINGS -->
+
+                <a href="{{ url_for('settings.settings') }}"
+                   class="top-action"
+                   title="Settings"
+                   aria-label="Settings">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                </a>
+
+
+                <!-- PROFILE -->
+
+                <a href="{{ url_for('profile.profile') }}"
+                   class="top-action"
+                   title="Profile"
+                   aria-label="Profile">
+
+                    <i class="fa-solid fa-user"></i>
+
+                </a>
+
+
+                <!-- LOGOUT -->
+
+                <a href="{{ url_for('auth.logout') }}"
+                   class="top-action"
+                   title="Logout"
+                   aria-label="Logout"
+                   onclick="return confirm('Are you sure you want to logout?');">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                </a>
 
             </div>
 
         </div>
 
 
-        <!-- FLASH -->
+        <!-- =================================================
+             FLASH MESSAGES
+        ================================================== -->
 
         {% with messages = get_flashed_messages(with_categories=true) %}
 
-            {% for category, message in messages %}
+            {% if messages %}
 
-                <div class="flash">
-                    {{ message }}
-                </div>
+                {% for category, message in messages %}
 
-            {% endfor %}
+                    <div class="flash">
+
+                        {% if category == 'error' %}
+
+                            <i class="fa-solid fa-circle-exclamation"></i>
+
+                        {% elif category == 'warning' %}
+
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        {% else %}
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+                        {% endif %}
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
 
         {% endwith %}
 
 
-        <!-- ADD CROP -->
+        <!-- =================================================
+             ADD CROP
+        ================================================== -->
 
-        <div class="form-card">
+        <section class="form-card">
 
-            <h2>
-                <i class="fa-solid fa-seedling"></i>
-                Add Crop
-            </h2>
+            <div class="form-heading">
 
-            <form method="POST">
+                <div>
+
+                    <h2>
+
+                        <i class="fa-solid fa-plus-circle"></i>
+
+                        Add New Crop
+
+                    </h2>
+
+                    <p>
+                        Add crop information to start lifecycle tracking.
+                    </p>
+
+                </div>
+
+
+                <div class="smart-badge">
+
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                    Smart Crop Planning Ready
+
+                </div>
+
+            </div>
+
+
+            <form method="POST"
+                  id="cropForm"
+                  autocomplete="off">
 
                 <div class="form-grid">
 
 
-                    <div>
+                    <!-- CROP -->
 
-                        <label>
+                    <div class="form-group">
+
+                        <label for="crop_name">
+
+                            <i class="fa-solid fa-leaf"></i>
+
                             Crop Name
+
                         </label>
 
                         <input
                             type="text"
+                            id="crop_name"
                             name="crop_name"
                             placeholder="Example: Cotton"
+                            maxlength="100"
                             required>
+
+                        <span class="field-help">
+                            Enter the crop being cultivated.
+                        </span>
 
                     </div>
 
 
-                    <div>
+                    <!-- SOWING -->
 
-                        <label>
+                    <div class="form-group">
+
+                        <label for="sowing_date">
+
+                            <i class="fa-solid fa-calendar-days"></i>
+
                             Sowing Date
+
                         </label>
 
                         <input
                             type="date"
+                            id="sowing_date"
                             name="sowing_date"
                             required>
+
+                        <span class="field-help">
+                            Used to calculate crop age and harvest date.
+                        </span>
 
                     </div>
 
 
-                    <div>
+                    <!-- DURATION -->
 
-                        <label>
+                    <div class="form-group">
+
+                        <label for="duration_days">
+
+                            <i class="fa-solid fa-clock"></i>
+
                             Crop Duration (Days)
+
                         </label>
 
                         <input
                             type="number"
+                            id="duration_days"
                             name="duration_days"
                             placeholder="Example: 180"
                             min="1"
+                            max="2000"
                             required>
+
+                        <span class="field-help">
+                            Expected cultivation duration.
+                        </span>
 
                     </div>
 
 
-                    <div>
+                    <!-- SOIL -->
 
-                        <label>
+                    <div class="form-group">
+
+                        <label for="soil_type">
+
+                            <i class="fa-solid fa-mountain"></i>
+
                             Soil Type
+
                         </label>
 
-                        <select name="soil_type">
+                        <select
+                            name="soil_type"
+                            id="soil_type">
 
                             <option value="">
                                 Select Soil
@@ -339,13 +1566,21 @@
                     </div>
 
 
-                    <div>
+                    <!-- IRRIGATION -->
 
-                        <label>
+                    <div class="form-group">
+
+                        <label for="irrigation_method">
+
+                            <i class="fa-solid fa-droplet"></i>
+
                             Irrigation Method
+
                         </label>
 
-                        <select name="irrigation_method">
+                        <select
+                            name="irrigation_method"
+                            id="irrigation_method">
 
                             <option value="">
                                 Select Method
@@ -372,18 +1607,29 @@
                     </div>
 
 
-                    <div>
+                    <!-- FARM AREA -->
 
-                        <label>
+                    <div class="form-group">
+
+                        <label for="farm_area">
+
+                            <i class="fa-solid fa-ruler-combined"></i>
+
                             Farm Area (Acre)
+
                         </label>
 
                         <input
                             type="number"
+                            id="farm_area"
                             name="farm_area"
                             placeholder="Example: 2.5"
                             min="0"
                             step="0.1">
+
+                        <span class="field-help">
+                            Enter the cultivated area for this crop.
+                        </span>
 
                     </div>
 
@@ -392,7 +1638,8 @@
 
                 <button
                     type="submit"
-                    class="save-btn">
+                    class="save-btn"
+                    id="saveCropBtn">
 
                     <i class="fa-solid fa-plus"></i>
 
@@ -402,103 +1649,104 @@
 
             </form>
 
-        </div>
+        </section>
 
 
-        <!-- SAVED CROPS -->
+        <!-- =================================================
+             CROP INTELLIGENCE
+        ================================================== -->
 
-        <h2>
-            🌾 My Crops
-        </h2>
-
-
-        {% if crops %}
-
-        <div class="crop-grid">
+        <section class="crop-intelligence">
 
 
-            {% for crop in crops %}
+            <!-- LIFECYCLE -->
 
-            <div class="crop-card">
+            <div class="intelligence-card">
+
+                <div class="intelligence-icon">
+
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                </div>
 
                 <h3>
-                    🌱 {{ crop.crop_name }}
+                    KisanVision360+ Crop Lifecycle
                 </h3>
 
-
-                <div class="info">
-                    <b>Sowing:</b>
-                    {{ crop.sowing_date }}
-                </div>
-
-
-                <div class="info">
-                    <b>Duration:</b>
-                    {{ crop.duration_days }} days
-                </div>
+                <p>
+                    Your crop information becomes the foundation
+                    for connected crop advisory, irrigation planning,
+                    disease monitoring, market planning and harvest
+                    decisions.
+                </p>
 
 
-                <div class="info">
-                    <b>Age:</b>
-                    {{ crop.age }} days
-                </div>
+                <div class="crop-flow">
 
 
-                <div class="info">
-                    <b>Remaining:</b>
-                    {{ crop.remaining }} days
-                </div>
+                    <div class="flow-step">
+
+                        <i class="fa-solid fa-seedling"></i>
+
+                        <span>
+                            Sowing
+                        </span>
+
+                    </div>
 
 
-                <div class="info">
-                    <b>Harvest:</b>
-                    {{ crop.harvest_date }}
-                </div>
+                    <div class="flow-line"></div>
 
 
-                <div class="info">
-                    <b>Soil:</b>
-                    {{ crop.soil_type or "Not specified" }}
-                </div>
+                    <div class="flow-step">
+
+                        <i class="fa-solid fa-leaf"></i>
+
+                        <span>
+                            Growth
+                        </span>
+
+                    </div>
 
 
-                <div class="info">
-                    <b>Irrigation:</b>
-                    {{ crop.irrigation_method or "Not specified" }}
-                </div>
+                    <div class="flow-line"></div>
 
 
-                <div class="info">
-                    <b>Farm Area:</b>
-                    {{ crop.farm_area }} acre
-                </div>
+                    <div class="flow-step">
+
+                        <i class="fa-solid fa-droplet"></i>
+
+                        <span>
+                            Care
+                        </span>
+
+                    </div>
 
 
-                <br>
+                    <div class="flow-line"></div>
 
 
-                <span class="stage">
+                    <div class="flow-step">
 
-                    {{ crop.stage }}
+                        <i class="fa-solid fa-wheat-awn"></i>
 
-                </span>
+                        <span>
+                            Harvest
+                        </span>
+
+                    </div>
 
 
-                <div class="progress-box">
+                    <div class="flow-line"></div>
 
-                    <b>
-                        Growth Progress:
-                        {{ crop.progress }}%
-                    </b>
 
-                    <br><br>
+                    <div class="flow-step">
 
-                    <div class="progress">
+                        <i class="fa-solid fa-chart-line"></i>
 
-                        <div
-                            class="progress-bar"
-                            style="width: {{ crop.progress }}%;">
-                        </div>
+                        <span>
+                            Market
+                        </span>
 
                     </div>
 
@@ -506,22 +1754,448 @@
 
             </div>
 
-            {% endfor %}
 
+            <!-- TRACKING -->
+
+            <div class="intelligence-card">
+
+                <div class="intelligence-icon">
+
+                    <i class="fa-solid fa-chart-simple"></i>
+
+                </div>
+
+                <h3>
+                    Your Crop Tracking
+                </h3>
+
+
+                <div class="crop-summary">
+
+
+                    <div class="summary-item">
+
+                        <span>
+                            Total Crops
+                        </span>
+
+                        <strong>
+                            {{ crops|length if crops else 0 }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-item">
+
+                        <span>
+                            Tracking
+                        </span>
+
+                        <strong>
+                            Active
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-item">
+
+                        <span>
+                            System
+                        </span>
+
+                        <strong>
+                            Ready
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SAVED CROPS HEADER
+        ================================================== -->
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+
+                    <i class="fa-solid fa-seedling"></i>
+
+                    My Crops
+
+                </h2>
+
+                <p>
+                    Monitor crop age, growth progress and expected harvest.
+                </p>
+
+            </div>
+
+
+            {% if crops %}
+
+                <span class="crop-count">
+
+                    {{ crops|length }}
+
+                    Crop{% if crops|length != 1 %}s{% endif %}
+
+                </span>
+
+            {% endif %}
 
         </div>
 
+
+        <!-- =================================================
+             SAVED CROPS
+        ================================================== -->
+
+        {% if crops %}
+
+            <div class="crop-grid">
+
+                {% for crop in crops %}
+
+                    <article class="crop-card">
+
+
+                        <!-- HEADER -->
+
+                        <div class="crop-header">
+
+                            <div class="crop-title">
+
+                                <div class="crop-icon">
+
+                                    <i class="fa-solid fa-seedling"></i>
+
+                                </div>
+
+                                <h3>
+                                    {{ crop.crop_name }}
+                                </h3>
+
+                            </div>
+
+
+                            <span class="stage">
+
+                                <i class="fa-solid fa-circle-check"></i>
+
+                                {{ crop.stage|default('Growing', true) }}
+
+                            </span>
+
+                        </div>
+
+
+                        <!-- DETAILS -->
+
+                        <div class="crop-details">
+
+
+                            <div class="info">
+
+                                <b>
+                                    Sowing
+                                </b>
+
+                                <span>
+                                    {{ crop.sowing_date }}
+                                </span>
+
+                            </div>
+
+
+                            <div class="info">
+
+                                <b>
+                                    Duration
+                                </b>
+
+                                <span>
+                                    {{ crop.duration_days }} days
+                                </span>
+
+                            </div>
+
+
+                            <div class="info">
+
+                                <b>
+                                    Age
+                                </b>
+
+                                <span>
+                                    {{ crop.age }} days
+                                </span>
+
+                            </div>
+
+
+                            <div class="info">
+
+                                <b>
+                                    Remaining
+                                </b>
+
+                                <span>
+                                    {{ crop.remaining }} days
+                                </span>
+
+                            </div>
+
+
+                            <div class="info">
+
+                                <b>
+                                    Harvest
+                                </b>
+
+                                <span>
+                                    {{ crop.harvest_date }}
+                                </span>
+
+                            </div>
+
+
+                            <div class="info">
+
+                                <b>
+                                    Soil
+                                </b>
+
+                                <span>
+                                    {{ crop.soil_type or "Not specified" }}
+                                </span>
+
+                            </div>
+
+
+                            <div class="info">
+
+                                <b>
+                                    Irrigation
+                                </b>
+
+                                <span>
+                                    {{ crop.irrigation_method or "Not specified" }}
+                                </span>
+
+                            </div>
+
+
+                            <div class="info">
+
+                                <b>
+                                    Farm Area
+                                </b>
+
+                                <span>
+
+                                    {% if crop.farm_area %}
+
+                                        {{ crop.farm_area }} acre
+
+                                    {% else %}
+
+                                        Not specified
+
+                                    {% endif %}
+
+                                </span>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <!-- =================================================
+                             GROWTH
+                        ================================================== -->
+
+                        {% set progress =
+                            crop.progress|default(0, true)|float %}
+
+                        <div class="growth-box">
+
+                            <div class="growth-header">
+
+                                <span>
+                                    Growth Progress
+                                </span>
+
+                                <span class="growth-percent">
+
+                                    {{ progress|round(0)|int }}%
+
+                                </span>
+
+                            </div>
+
+
+                            <div class="progress">
+
+                                <div
+                                    class="progress-bar"
+                                    data-progress="{{ progress }}"
+                                    style="width: {{ progress }}%;">
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="growth-note">
+
+                                <span>
+                                    Sowing
+                                </span>
+
+                                <span>
+                                    Harvest
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             CONNECTED ACTIONS
+                        ================================================== -->
+
+                        <div class="crop-actions">
+
+
+                            <!-- IRRIGATION -->
+
+                            <a
+                                href="{{ url_for('irrigation.irrigation') }}"
+                                class="crop-action"
+                                title="Open Smart Irrigation">
+
+                                <i class="fa-solid fa-droplet"></i>
+
+                                Irrigation
+
+                            </a>
+
+
+                            <!-- DISEASE -->
+
+                            <a
+                                href="{{ url_for('disease.disease') }}"
+                                class="crop-action"
+                                title="Open Disease Detection">
+
+                                <i class="fa-solid fa-virus-slash"></i>
+
+                                Disease Check
+
+                            </a>
+
+
+                            <!-- CROP ADVISOR -->
+
+                            <a
+                                href="{{ url_for('recommendation.recommendation') }}"
+                                class="crop-action"
+                                title="Open Crop Advisor">
+
+                                <i class="fa-solid fa-lightbulb"></i>
+
+                                Crop Advisor
+
+                            </a>
+
+
+                            <!-- MARKET -->
+
+                            <a
+                                href="{{ url_for('market.market') }}"
+                                class="crop-action"
+                                title="Open Market Prices">
+
+                                <i class="fa-solid fa-chart-line"></i>
+
+                                Market
+
+                            </a>
+
+
+                            <!-- WEATHER -->
+
+                            <a
+                                href="{{ url_for('weather.weather') }}"
+                                class="crop-action"
+                                title="Open Live Weather">
+
+                                <i class="fa-solid fa-cloud-sun"></i>
+
+                                Weather
+
+                            </a>
+
+
+                            <!-- GOVERNMENT SCHEMES -->
+
+                            <a
+                                href="{{ url_for('government.government') }}"
+                                class="crop-action"
+                                title="Government Schemes">
+
+                                <i class="fa-solid fa-landmark"></i>
+
+                                Schemes
+
+                            </a>
+
+
+                        </div>
+
+                    </article>
+
+                {% endfor %}
+
+            </div>
+
+
         {% else %}
 
-            <div class="form-card">
+
+            <!-- =================================================
+                 EMPTY STATE
+            ================================================== -->
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+
+                    <i class="fa-solid fa-seedling"></i>
+
+                </div>
 
                 <h3>
-                    No crop added yet 🌱
+                    No Crop Added Yet
                 </h3>
 
                 <p>
                     Add your first crop above to start tracking
-                    its growth and harvest.
+                    growth, irrigation, disease monitoring and
+                    harvest planning.
                 </p>
 
             </div>
@@ -529,27 +2203,321 @@
         {% endif %}
 
 
-        <br>
+        <!-- =================================================
+             BACK TO DASHBOARD
+        ================================================== -->
 
+        <div class="back-area">
 
-        <a href="/farmer">
+            <a
+                href="{{ url_for('farmer.farmer') }}"
+                class="back-btn">
 
-            <button class="save-btn">
-
-                <i class="fa-solid fa-house"></i>
+                <i class="fa-solid fa-arrow-left"></i>
 
                 Back to Dashboard
 
-            </button>
+            </a>
 
-        </a>
+        </div>
+
+    </main>
+{% endblock %}
+
+{% block scripts %}
+<script
+    src="{{ url_for('static', filename='js/chatbot.js') }}"
+    defer>
+</script>
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* =====================================================
+       GLOBAL LANGUAGE
+    ===================================================== */
+
+    const language =
+        "{{ session.get('language', 'en') }}";
+
+    document.documentElement.lang = language;
 
 
-    </div>
+    /* =====================================================
+       SOWING DATE
+    ===================================================== */
 
-</div>
+    const sowingDate =
+        document.getElementById("sowing_date");
+
+    if (sowingDate) {
+
+        const today =
+            new Date()
+                .toISOString()
+                .split("T")[0];
+
+        sowingDate.max = today;
+    }
 
 
-</body>
+    /* =====================================================
+       FORM
+    ===================================================== */
 
-</html>
+    const form =
+        document.getElementById("cropForm");
+
+    const saveButton =
+        document.getElementById("saveCropBtn");
+
+
+    if (form) {
+
+        form.addEventListener(
+            "submit",
+            function (event) {
+
+                const cropName =
+                    document
+                        .getElementById("crop_name")
+                        .value
+                        .trim();
+
+
+                const duration =
+                    Number(
+                        document
+                            .getElementById("duration_days")
+                            .value
+                    );
+
+
+                const farmAreaInput =
+                    document.getElementById(
+                        "farm_area"
+                    );
+
+
+                const farmArea =
+                    farmAreaInput.value === ""
+                        ? null
+                        : Number(
+                            farmAreaInput.value
+                        );
+
+
+                /* =================================================
+                   CROP NAME VALIDATION
+                ================================================= */
+
+                if (!cropName) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please enter the crop name."
+                    );
+
+                    return;
+                }
+
+
+                /* =================================================
+                   DURATION VALIDATION
+                ================================================= */
+
+                if (
+                    !Number.isFinite(duration) ||
+                    duration < 1
+                ) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please enter a valid crop duration."
+                    );
+
+                    return;
+                }
+
+
+                /* =================================================
+                   FARM AREA VALIDATION
+                ================================================= */
+
+                if (
+                    farmArea !== null &&
+                    (
+                        !Number.isFinite(farmArea) ||
+                        farmArea < 0
+                    )
+                ) {
+
+                    event.preventDefault();
+
+                    alert(
+                        "Please enter a valid farm area."
+                    );
+
+                    return;
+                }
+
+
+                /* =================================================
+                   SUBMIT STATE
+                ================================================= */
+
+                if (saveButton) {
+
+                    saveButton.disabled = true;
+
+                    saveButton.innerHTML =
+                        '<i class="fa-solid fa-spinner fa-spin"></i> Saving Crop...';
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       PROGRESS BAR SAFETY
+    ===================================================== */
+
+    document
+        .querySelectorAll(".progress-bar")
+        .forEach(function (bar) {
+
+            let progress =
+                parseFloat(
+                    bar.dataset.progress || "0"
+                );
+
+
+            if (Number.isNaN(progress)) {
+                progress = 0;
+            }
+
+
+            progress =
+                Math.max(
+                    0,
+                    Math.min(
+                        100,
+                        progress
+                    )
+                );
+
+
+            bar.style.width =
+                progress + "%";
+
+        });
+
+
+    /* =====================================================
+       CROP CARD ANIMATION
+    ===================================================== */
+
+    document
+        .querySelectorAll(".crop-card")
+        .forEach(function (card, index) {
+
+            card.style.opacity = "0";
+
+            card.style.transform =
+                "translateY(10px)";
+
+
+            setTimeout(
+                function () {
+
+                    card.style.transition =
+                        "opacity .35s ease, transform .35s ease";
+
+                    card.style.opacity = "1";
+
+                    card.style.transform =
+                        "translateY(0)";
+
+                },
+                index * 70
+            );
+
+        });
+
+
+    /* =====================================================
+       TOP ACTION ANIMATION
+    ===================================================== */
+
+    document
+        .querySelectorAll(".top-action")
+        .forEach(function (button) {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    button.style.transform =
+                        "scale(.96)";
+
+
+                    setTimeout(
+                        function () {
+
+                            button.style.transform = "";
+
+                        },
+                        120
+                    );
+
+                }
+            );
+
+        });
+
+
+    /* =====================================================
+       CHATBOT FALLBACK ANIMATION
+    ===================================================== */
+
+    const chatbotButton =
+        document.querySelector(
+            ".chatbot-fallback"
+        );
+
+
+    if (chatbotButton) {
+
+        chatbotButton.addEventListener(
+            "click",
+            function () {
+
+                chatbotButton.style.transform =
+                    "scale(.94)";
+
+                setTimeout(
+                    function () {
+
+                        chatbotButton.style.transform =
+                            "";
+
+                    },
+                    120
+                );
+
+            }
+        );
+
+    }
+
+
+});
+
+</script>
+{% endblock %}
+
+

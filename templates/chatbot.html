@@ -1,200 +1,3033 @@
-<!-- =====================================================
-     KisanVision360 AI CHATBOT
-===================================================== -->
+﻿{% extends "base.html" %}
 
-<div
-    class="chatbot-button"
-    id="chatbotButton"
-    onclick="toggleChat()"
-    title="KisanVision360 AI Assistant">
+{% block title %}KisanVision360+ AI Assistant{% endblock %}
 
-    <i class="fa-solid fa-robot"></i>
+{% block head %}
+<link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/chatbot.css') }}"
+    >
+<style>
 
-</div>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
 
-<div
-    class="chatbot-box"
-    id="chatBox">
+            font-family:
+                Inter,
+                Arial,
+                Helvetica,
+                sans-serif;
 
-    <!-- HEADER -->
+            background: #f7f9f7;
 
-    <div class="chat-header">
+            color: #202420;
 
-        <div class="chat-user">
-
-            <div class="ai-avatar">
-                🤖
-            </div>
-
-            <div>
-
-                <h3>
-                    KisanVision360 AI
-                </h3>
-
-                <span class="status">
-                    <i class="fa-solid fa-circle"></i>
-                    Online
-                </span>
-
-            </div>
-
-        </div>
+            min-height: 100vh;
+        }
 
 
-        <button
-            type="button"
-            class="close-btn"
-            onclick="toggleChat()">
+        button,
+        textarea {
 
-            <i class="fa-solid fa-xmark"></i>
+            font-family: inherit;
 
-        </button>
-
-    </div>
+        }
 
 
-    <!-- CHAT BODY -->
+        .main-content {
 
-    <div
-        class="chat-body"
-        id="chat-box">
+            min-height: 100vh;
 
-        <div class="bot-message">
+            padding: 22px;
 
-            <div class="message-avatar">
-                🤖
-            </div>
+            display: flex;
 
-            <div class="message-content">
+            flex-direction: column;
 
-                <div class="bot">
+        }
 
-                    👋 <b>
-                        Hello {{ name|default('Farmer') }}
-                    </b>
 
-                    <br><br>
+        /* =====================================================
+           TOP BAR
+        ===================================================== */
 
-                    I am <strong>KisanVision360 AI</strong> 🌱
+        .app-topbar {
 
-                    <br><br>
+            width: 100%;
 
-                    Ask me anything related to your
-                    KisanVision360 application.
+            max-width: 1180px;
 
-                    <div class="suggestions">
+            margin: 0 auto 16px;
 
-                        <button
-                            type="button"
-                            onclick="quickQuestion('What is the live weather today?')">
-                            🌦 Weather
-                        </button>
+            display: flex;
 
-                        <button
-                            type="button"
-                            onclick="quickQuestion('What are the latest mandi prices?')">
-                            📈 Market
-                        </button>
+            justify-content: space-between;
 
-                        <button
-                            type="button"
-                            onclick="quickQuestion('Which crop should I grow?')">
-                            🌱 Crop
-                        </button>
+            align-items: center;
 
-                        <button
-                            type="button"
-                            onclick="quickQuestion('Give me irrigation advice')">
-                            💧 Irrigation
-                        </button>
+            gap: 15px;
 
-                        <button
-                            type="button"
-                            onclick="quickQuestion('How can I detect crop disease?')">
-                            🐛 Disease
-                        </button>
+        }
 
-                        <button
-                            type="button"
-                            onclick="quickQuestion('Show my orders')">
-                            📦 Orders
-                        </button>
 
-                        <button
-                            type="button"
-                            onclick="quickQuestion('What is my finance status?')">
-                            💰 Finance
-                        </button>
+        .app-title {
 
-                        <button
-                            type="button"
-                            onclick="quickQuestion('Tell me about government schemes')">
-                            🏛 Schemes
-                        </button>
+            display: flex;
 
-                    </div>
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+
+        .app-title-icon {
+
+            width: 48px;
+
+            height: 48px;
+
+            border-radius: 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #e8f5e9;
+
+            color: #1b5e20;
+
+            font-size: 21px;
+
+        }
+
+
+        .app-title h1 {
+
+            color: #1b5e20;
+
+            font-size: 23px;
+
+            margin-bottom: 3px;
+
+        }
+
+
+        .app-title p {
+
+            color: #778078;
+
+            font-size: 11px;
+
+        }
+
+
+        .ready-status {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 8px 13px;
+
+            border-radius: 20px;
+
+            background: #f1f8f1;
+
+            border: 1px solid #c8e6c9;
+
+            color: #2e7d32;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+        }
+
+
+        .ready-dot {
+
+            width: 8px;
+
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #43a047;
+
+        }
+
+
+        /* =====================================================
+           CHAT APP
+        ===================================================== */
+
+        .chat-app {
+
+            width: 100%;
+
+            max-width: 1180px;
+
+            min-height: 720px;
+
+            margin: 0 auto;
+
+            background: #ffffff;
+
+            border: 1px solid #e1e7e1;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            display: flex;
+
+            flex-direction: column;
+
+            box-shadow:
+                0 10px 35px
+                rgba(27, 94, 32, .08);
+
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .chat-header {
+
+            min-height: 70px;
+
+            padding: 12px 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            border-bottom: 1px solid #e8ece8;
+
+        }
+
+
+        .assistant-avatar {
+
+            width: 45px;
+
+            height: 45px;
+
+            border-radius: 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1b5e20,
+                    #43a047
+                );
+
+            color: white;
+
+            font-size: 19px;
+
+        }
+
+
+        .assistant-info {
+
+            flex: 1;
+
+        }
+
+
+        .assistant-name {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            font-weight: 700;
+
+            font-size: 15px;
+
+        }
+
+
+        .verified {
+
+            width: 15px;
+
+            height: 15px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #43a047;
+
+            color: white;
+
+            font-size: 8px;
+
+        }
+
+
+        .assistant-subtitle {
+
+            margin-top: 3px;
+
+            color: #7b837c;
+
+            font-size: 10px;
+
+        }
+
+
+        .header-actions {
+
+            display: flex;
+
+            gap: 6px;
+
+        }
+
+
+        .header-btn {
+
+            width: 36px;
+
+            height: 36px;
+
+            border-radius: 10px;
+
+            border: 1px solid #e0e6e0;
+
+            background: white;
+
+            color: #657067;
+
+            cursor: pointer;
+
+        }
+
+
+        .header-btn:hover {
+
+            background: #e8f5e9;
+
+            color: #1b5e20;
+
+        }
+
+
+        /* =====================================================
+           CONNECTED MODULES
+        ===================================================== */
+
+        .context-bar {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 9px 17px;
+
+            overflow-x: auto;
+
+            border-bottom: 1px solid #edf0ed;
+
+            background: #fbfcfb;
+
+        }
+
+
+        .context-label {
+
+            color: #89918a;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+
+        }
+
+
+        .module-chip {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            padding: 6px 9px;
+
+            border-radius: 18px;
+
+            white-space: nowrap;
+
+            background: #f0f7f0;
+
+            border: 1px solid #d9ead9;
+
+            color: #35683a;
+
+            font-size: 9px;
+
+            font-weight: 600;
+
+        }
+
+
+        /* =====================================================
+           CHAT BODY
+        ===================================================== */
+
+        .chat-body {
+
+            flex: 1;
+
+            height: 500px;
+
+            min-height: 450px;
+
+            overflow-y: auto;
+
+            padding: 25px 8%;
+
+        }
+
+
+        .chat-body::-webkit-scrollbar {
+
+            width: 7px;
+
+        }
+
+
+        .chat-body::-webkit-scrollbar-thumb {
+
+            background: #d6ded6;
+
+            border-radius: 20px;
+
+        }
+
+
+        /* =====================================================
+           WELCOME
+        ===================================================== */
+
+        .welcome-screen {
+
+            max-width: 800px;
+
+            margin: 15px auto 30px;
+
+            text-align: center;
+
+        }
+
+
+        .welcome-logo {
+
+            width: 62px;
+
+            height: 62px;
+
+            margin: 0 auto 14px;
+
+            border-radius: 19px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #e8f5e9;
+
+            color: #1b5e20;
+
+            font-size: 28px;
+
+        }
+
+
+        .welcome-screen h2 {
+
+            font-size: 25px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .welcome-screen h2 span {
+
+            color: #2e7d32;
+
+        }
+
+
+        .welcome-screen p {
+
+            max-width: 650px;
+
+            margin: auto;
+
+            color: #707970;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+        }
+
+
+        .welcome-user {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            margin-top: 14px;
+
+            padding: 7px 12px;
+
+            border-radius: 20px;
+
+            background: #f5f8f5;
+
+            color: #536057;
+
+            font-size: 10px;
+
+        }
+
+
+        /* =====================================================
+           FEATURE CARDS
+        ===================================================== */
+
+        .module-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 9px;
+
+            margin-top: 22px;
+
+        }
+
+
+        .module-card {
+
+            padding: 13px;
+
+            border: 1px solid #e3e9e3;
+
+            border-radius: 13px;
+
+            background: #ffffff;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            transition: .2s;
+
+        }
+
+
+        .module-card:hover {
+
+            transform: translateY(-2px);
+
+            border-color: #a5d6a7;
+
+            box-shadow:
+                0 5px 15px
+                rgba(46,125,50,.08);
+
+        }
+
+
+        .module-icon {
+
+            width: 33px;
+
+            height: 33px;
+
+            border-radius: 9px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #edf7ee;
+
+            color: #2e7d32;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .module-card strong {
+
+            display: block;
+
+            color: #374039;
+
+            font-size: 11px;
+
+            margin-bottom: 3px;
+
+        }
+
+
+        .module-card span {
+
+            display: block;
+
+            color: #89918b;
+
+            font-size: 9px;
+
+            line-height: 1.4;
+
+        }
+
+
+        /* =====================================================
+           MESSAGES
+        ===================================================== */
+
+        .message {
+
+            display: flex;
+
+            width: 100%;
+
+            margin-bottom: 20px;
+
+            animation:
+                messageIn .2s ease;
+
+        }
+
+
+        @keyframes messageIn {
+
+            from {
+
+                opacity: 0;
+
+                transform: translateY(5px);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform: translateY(0);
+
+            }
+
+        }
+
+
+        .message.bot {
+
+            justify-content: flex-start;
+
+            gap: 10px;
+
+        }
+
+
+        .message.user {
+
+            justify-content: flex-end;
+
+        }
+
+
+        .message-avatar {
+
+            width: 30px;
+
+            height: 30px;
+
+            flex-shrink: 0;
+
+            border-radius: 9px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #e8f5e9;
+
+            color: #2e7d32;
+
+            font-size: 12px;
+
+        }
+
+
+        .message-wrapper {
+
+            max-width: 76%;
+
+        }
+
+
+        .message-content {
+
+            padding: 11px 14px;
+
+            border-radius: 15px;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            overflow-wrap: anywhere;
+
+        }
+
+
+        .message.bot .message-content {
+
+            background: #f6f8f6;
+
+            border: 1px solid #e4e9e4;
+
+            color: #303631;
+
+            border-top-left-radius: 4px;
+
+        }
+
+
+        .message.user .message-content {
+
+            background: #1b5e20;
+
+            color: #ffffff;
+
+            border-top-right-radius: 4px;
+
+        }
+
+
+        .message-time {
+
+            margin-top: 5px;
+
+            color: #9aa29c;
+
+            font-size: 8px;
+
+        }
+
+
+        .message.user .message-time {
+
+            text-align: right;
+
+            color: rgba(255,255,255,.7);
+
+        }
+
+
+        /* =====================================================
+           FEATURE LINK
+        ===================================================== */
+
+        .feature-link {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            margin-top: 11px;
+
+            padding: 8px 12px;
+
+            border-radius: 9px;
+
+            text-decoration: none;
+
+            background: #1b5e20;
+
+            color: white !important;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            transition: .2s;
+
+        }
+
+
+        .feature-link:hover {
+
+            background: #2e7d32;
+
+            transform: translateY(-1px);
+
+        }
+
+
+        .feature-link i {
+
+            font-size: 9px;
+
+        }
+
+
+        /* =====================================================
+           TYPING
+        ===================================================== */
+
+        .typing {
+
+            display: none;
+
+            align-items: flex-start;
+
+            gap: 10px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .typing-bubble {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 4px;
+
+            padding: 11px 14px;
+
+            background: #f6f8f6;
+
+            border: 1px solid #e2e8e2;
+
+            border-radius: 14px;
+
+            border-top-left-radius: 4px;
+
+        }
+
+
+        .typing-bubble span {
+
+            width: 5px;
+
+            height: 5px;
+
+            border-radius: 50%;
+
+            background: #718078;
+
+            animation: typing 1.2s infinite;
+
+        }
+
+
+        .typing-bubble span:nth-child(2) {
+
+            animation-delay: .15s;
+
+        }
+
+
+        .typing-bubble span:nth-child(3) {
+
+            animation-delay: .30s;
+
+        }
+
+
+        @keyframes typing {
+
+            0%,60%,100% {
+
+                transform: translateY(0);
+
+                opacity: .35;
+
+            }
+
+            30% {
+
+                transform: translateY(-4px);
+
+                opacity: 1;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           SUGGESTIONS
+        ===================================================== */
+
+        .suggestions {
+
+            padding: 10px 18px;
+
+            border-top: 1px solid #edf0ed;
+
+            background: #fbfcfb;
+
+        }
+
+
+        .suggestion-title {
+
+            margin-bottom: 8px;
+
+            color: #747c76;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+        }
+
+
+        .suggestion-list {
+
+            display: flex;
+
+            gap: 7px;
+
+            overflow-x: auto;
+
+        }
+
+
+        .suggestion {
+
+            flex-shrink: 0;
+
+            padding: 7px 11px;
+
+            border-radius: 18px;
+
+            border: 1px solid #dce8dc;
+
+            background: white;
+
+            color: #3c6140;
+
+            font-size: 10px;
+
+            cursor: pointer;
+
+        }
+
+
+        .suggestion:hover {
+
+            background: #e8f5e9;
+
+            color: #1b5e20;
+
+        }
+
+
+        /* =====================================================
+           INPUT
+        ===================================================== */
+
+        .input-area {
+
+            padding: 13px 18px 8px;
+
+            border-top: 1px solid #e7ebe7;
+
+            background: white;
+
+        }
+
+
+        .input-row {
+
+            max-width: 900px;
+
+            margin: auto;
+
+            display: flex;
+
+            align-items: flex-end;
+
+            gap: 8px;
+
+        }
+
+
+        .input-box {
+
+            flex: 1;
+
+            display: flex;
+
+            align-items: flex-end;
+
+            border: 1px solid #dce2dc;
+
+            border-radius: 17px;
+
+            padding: 5px 7px 5px 14px;
+
+        }
+
+
+        .input-box:focus-within {
+
+            border-color: #66bb6a;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(67,160,71,.08);
+
+        }
+
+
+        #messageInput {
+
+            width: 100%;
+
+            min-height: 40px;
+
+            max-height: 120px;
+
+            resize: none;
+
+            border: none;
+
+            outline: none;
+
+            padding: 10px 4px;
+
+            background: transparent;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+
+        }
+
+
+        #messageInput::placeholder {
+
+            color: #9aa29c;
+
+        }
+
+
+        .voice-button {
+
+            width: 34px;
+
+            height: 34px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: transparent;
+
+            color: #7c877f;
+
+            cursor: pointer;
+
+        }
+
+
+        .voice-button:hover {
+
+            background: #edf7ee;
+
+            color: #2e7d32;
+
+        }
+
+
+        .voice-button.recording {
+
+            background: #ffebee;
+
+            color: #c62828;
+
+        }
+
+
+        #sendButton {
+
+            width: 46px;
+
+            height: 46px;
+
+            border: none;
+
+            border-radius: 14px;
+
+            background: #1b5e20;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-size: 15px;
+
+        }
+
+
+        #sendButton:hover {
+
+            background: #2e7d32;
+
+        }
+
+
+        #sendButton:disabled {
+
+            opacity: .45;
+
+            cursor: not-allowed;
+
+        }
+
+
+        .input-note {
+
+            max-width: 900px;
+
+            margin: 6px auto 0;
+
+            text-align: center;
+
+            color: #a0a7a1;
+
+            font-size: 8px;
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .main-content {
+
+                padding: 14px;
+
+            }
+
+            .chat-body {
+
+                padding: 20px 5%;
+
+            }
+
+            .module-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .main-content {
+
+                padding: 7px;
+
+            }
+
+            .ready-status {
+
+                display: none;
+
+            }
+
+            .chat-app {
+
+                min-height:
+                    calc(100vh - 75px);
+
+                border-radius: 14px;
+
+            }
+
+            .chat-header {
+
+                padding: 10px 12px;
+
+            }
+
+            .header-actions {
+
+                display: none;
+
+            }
+
+            .chat-body {
+
+                height: 440px;
+
+                min-height: 390px;
+
+                padding: 16px 12px;
+
+            }
+
+            .module-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+            .message-wrapper {
+
+                max-width: 88%;
+
+            }
+
+            .message-content {
+
+                font-size: 12px;
+
+            }
+
+        }
+
+    </style>
+{% endblock %}
+
+{% block page_title %}KisanVision360+ AI Assistant{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<main class="main-content">
+
+
+        <!-- =================================================
+             APP TOPBAR
+        ================================================== -->
+
+        <div class="app-topbar">
+
+            <div class="app-title">
+
+                <div class="app-title-icon">
+
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                </div>
+
+                <div>
+
+                    <h1>
+                        KisanVision360+
+                    </h1>
+
+                    <p>
+                        Intelligent farming assistant
+                    </p>
 
                 </div>
 
             </div>
 
+
+            <div class="ready-status">
+
+                <span class="ready-dot"></span>
+
+                AI Assistant Ready
+
+            </div>
+
         </div>
 
-    </div>
+
+        <!-- =================================================
+             CHAT APPLICATION
+        ================================================== -->
+
+        <section class="chat-app">
 
 
-    <!-- TYPING -->
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
 
-    <div
-        class="typing"
-        id="typingIndicator"
-        style="display:none;">
+            <header class="chat-header">
 
-        <span></span>
-        <span></span>
-        <span></span>
+                <div class="assistant-avatar">
 
-        AI is thinking...
+                    <i class="fa-solid fa-robot"></i>
 
-    </div>
+                </div>
 
 
-    <!-- INPUT -->
+                <div class="assistant-info">
 
-    <div class="chat-footer">
+                    <div class="assistant-name">
 
-        <input
-            type="text"
-            id="message"
-            autocomplete="off"
-            placeholder="Ask anything about KisanVision360...">
+                        KisanVision360+ AI
 
-        <button
-            type="button"
-            onclick="sendMessage()">
+                        <span class="verified">
 
-            <i class="fa-solid fa-paper-plane"></i>
+                            <i class="fa-solid fa-check"></i>
 
-        </button>
+                        </span>
 
-    </div>
+                    </div>
 
-</div>
+                    <div class="assistant-subtitle">
 
+                        Weather â€¢ Crops â€¢ Disease â€¢ Irrigation â€¢ Mandi â€¢ Marketplace â€¢ Finance â€¢ Schemes
 
-<link
-    rel="stylesheet"
-    href="{{ url_for(
-        'static',
-        filename='css/chatbot.css'
-    ) }}">
+                    </div>
+
+                </div>
 
 
-<script
-    src="{{ url_for(
-        'static',
-        filename='js/chatbot.js'
-    ) }}">
+                <div class="header-actions">
+
+                    <button
+                        type="button"
+                        class="header-btn"
+                        title="Latest message"
+                        onclick="scrollToBottom()"
+                    >
+
+                        <i class="fa-solid fa-arrow-down"></i>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="header-btn"
+                        title="Clear conversation"
+                        onclick="clearChat()"
+                    >
+
+                        <i class="fa-solid fa-trash-can"></i>
+
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <!-- =================================================
+                 CONNECTED MODULES
+            ================================================== -->
+
+            <div class="context-bar">
+
+                <span class="context-label">
+                    Connected:
+                </span>
+
+                <span class="module-chip">
+                    â˜ï¸ Weather
+                </span>
+
+                <span class="module-chip">
+                    ðŸŒ± Crop Advisor
+                </span>
+
+                <span class="module-chip">
+                    ðŸ©º Disease
+                </span>
+
+                <span class="module-chip">
+                    ðŸ’§ Irrigation
+                </span>
+
+                <span class="module-chip">
+                    ðŸ“ˆ Mandi
+                </span>
+
+                <span class="module-chip">
+                    ðŸ›’ Marketplace
+                </span>
+
+                <span class="module-chip">
+                    ðŸ’° Finance
+                </span>
+
+                <span class="module-chip">
+                    ðŸ›ï¸ Schemes
+                </span>
+
+            </div>
+
+
+            <!-- =================================================
+                 CHAT BODY
+            ================================================== -->
+
+            <div
+                class="chat-body"
+                id="chatBody"
+            >
+
+
+                <!-- =================================================
+                     WELCOME
+                ================================================== -->
+
+                <div
+                    class="welcome-screen"
+                    id="welcomeScreen"
+                >
+
+                    <div class="welcome-logo">
+
+                        <i class="fa-solid fa-seedling"></i>
+
+                    </div>
+
+
+                    <h2>
+
+                        Hello,
+
+                        <span>
+                            {{ session.get('name', 'Farmer') }}
+                        </span>
+
+                    </h2>
+
+
+                    <p>
+
+                        I am the KisanVision360+ AI Assistant.
+                        Ask questions about your farm and I will
+                        guide you to the right KisanVision360+
+                        feature.
+
+                    </p>
+
+
+                    <div class="welcome-user">
+
+                        <i class="fa-solid fa-user"></i>
+
+                        {{ session.get('role', 'Farmer')|title }}
+
+                        <span>â€¢</span>
+
+                        {{ session.get('language', 'en')|upper }}
+
+                    </div>
+
+
+                    <!-- =================================================
+                         FEATURE CARDS
+                    ================================================== -->
+
+                    <div class="module-grid">
+
+
+                        <button
+                            type="button"
+                            class="module-card"
+                            onclick="askQuickQuestion('What is the weather today?')"
+                        >
+
+                            <div class="module-icon">
+                                â˜ï¸
+                            </div>
+
+                            <strong>
+                                Weather
+                            </strong>
+
+                            <span>
+                                Check current weather and farming conditions
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="module-card"
+                            onclick="askQuickQuestion('Which crop is best for my farm?')"
+                        >
+
+                            <div class="module-icon">
+                                ðŸŒ±
+                            </div>
+
+                            <strong>
+                                Crop Advisor
+                            </strong>
+
+                            <span>
+                                Get crop selection guidance
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="module-card"
+                            onclick="askQuickQuestion('How can I identify crop disease?')"
+                        >
+
+                            <div class="module-icon">
+                                ðŸ©º
+                            </div>
+
+                            <strong>
+                                Disease Detection
+                            </strong>
+
+                            <span>
+                                Learn about crop disease analysis
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="module-card"
+                            onclick="askQuickQuestion('When should I irrigate my crop?')"
+                        >
+
+                            <div class="module-icon">
+                                ðŸ’§
+                            </div>
+
+                            <strong>
+                                Smart Irrigation
+                            </strong>
+
+                            <span>
+                                Get irrigation guidance
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="module-card"
+                            onclick="askQuickQuestion('What are the mandi prices today?')"
+                        >
+
+                            <div class="module-icon">
+                                ðŸ“ˆ
+                            </div>
+
+                            <strong>
+                                Mandi Prices
+                            </strong>
+
+                            <span>
+                                Check available market records
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="module-card"
+                            onclick="askQuickQuestion('What products are available in the marketplace?')"
+                        >
+
+                            <div class="module-icon">
+                                ðŸ›’
+                            </div>
+
+                            <strong>
+                                Marketplace
+                            </strong>
+
+                            <span>
+                                Browse farmer products
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="module-card"
+                            onclick="askQuickQuestion('Show my farm finance summary')"
+                        >
+
+                            <div class="module-icon">
+                                ðŸ’°
+                            </div>
+
+                            <strong>
+                                Farm Finance
+                            </strong>
+
+                            <span>
+                                Income, expenses and balance
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="module-card"
+                            onclick="askQuickQuestion('Which government schemes may help farmers?')"
+                        >
+
+                            <div class="module-icon">
+                                ðŸ›ï¸
+                            </div>
+
+                            <strong>
+                                Government Schemes
+                            </strong>
+
+                            <span>
+                                Find farmer support information
+                            </span>
+
+                        </button>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     TYPING
+                ================================================== -->
+
+                <div
+                    class="typing"
+                    id="typing"
+                >
+
+                    <div class="message-avatar">
+
+                        <i class="fa-solid fa-robot"></i>
+
+                    </div>
+
+
+                    <div class="typing-bubble">
+
+                        <span></span>
+                        <span></span>
+                        <span></span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 SUGGESTIONS
+            ================================================== -->
+
+            <div class="suggestions">
+
+                <div class="suggestion-title">
+                    Suggested questions
+                </div>
+
+
+                <div class="suggestion-list">
+
+
+                    <button
+                        type="button"
+                        class="suggestion"
+                        onclick="askQuickQuestion('What is the weather today?')"
+                    >
+                        â˜ï¸ Weather
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="suggestion"
+                        onclick="askQuickQuestion('Which crop is best for black soil?')"
+                    >
+                        ðŸŒ± Crop
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="suggestion"
+                        onclick="askQuickQuestion('How can I identify crop disease?')"
+                    >
+                        ðŸ©º Disease
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="suggestion"
+                        onclick="askQuickQuestion('When should I irrigate my crop?')"
+                    >
+                        ðŸ’§ Irrigation
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="suggestion"
+                        onclick="askQuickQuestion('What are the mandi prices today?')"
+                    >
+                        ðŸ“ˆ Mandi
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="suggestion"
+                        onclick="askQuickQuestion('Show my farm finance summary')"
+                    >
+                        ðŸ’° Finance
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="suggestion"
+                        onclick="askQuickQuestion('Which government schemes may help farmers?')"
+                    >
+                        ðŸ›ï¸ Schemes
+                    </button>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 INPUT
+            ================================================== -->
+
+            <div class="input-area">
+
+                <div class="input-row">
+
+
+                    <div class="input-box">
+
+
+                        <textarea
+                            id="messageInput"
+                            rows="1"
+                            maxlength="2000"
+                            autocomplete="off"
+                            placeholder="Ask KisanVision360+ about your farm..."
+                        ></textarea>
+
+
+                        <button
+                            type="button"
+                            class="voice-button"
+                            id="voiceButton"
+                            title="Voice input"
+                            onclick="startVoiceInput()"
+                        >
+
+                            <i class="fa-solid fa-microphone"></i>
+
+                        </button>
+
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="sendButton"
+                        title="Send message"
+                        onclick="sendMessage()"
+                    >
+
+                        <i class="fa-solid fa-paper-plane"></i>
+
+                    </button>
+
+
+                </div>
+
+
+                <div class="input-note">
+
+                    KisanVision360+ AI provides informational guidance.
+                    Verify important agricultural, financial and scheme
+                    decisions with official sources or qualified experts.
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+/* ============================================================
+   CONFIGURATION
+============================================================ */
+
+const chatbotConfig = {
+
+    endpoint:
+        "{{ url_for('chatbot.ask_chatbot') }}",
+
+    language:
+        "{{ session.get('language', 'en') }}",
+
+    role:
+        "{{ session.get('role', 'farmer') }}",
+
+    userName:
+        "{{ session.get('name', 'Farmer') }}"
+
+};
+
+
+/* ============================================================
+   ELEMENTS
+============================================================ */
+
+const messageInput =
+    document.getElementById(
+        "messageInput"
+    );
+
+const chatBody =
+    document.getElementById(
+        "chatBody"
+    );
+
+const typing =
+    document.getElementById(
+        "typing"
+    );
+
+const sendButton =
+    document.getElementById(
+        "sendButton"
+    );
+
+const voiceButton =
+    document.getElementById(
+        "voiceButton"
+    );
+
+const welcomeScreen =
+    document.getElementById(
+        "welcomeScreen"
+    );
+
+
+/* ============================================================
+   STORAGE
+============================================================ */
+
+const historyKey =
+    "kisanvision360_chat_" +
+    String(
+        chatbotConfig.userName || "user"
+    ) +
+    "_" +
+    String(
+        chatbotConfig.language || "en"
+    );
+
+let restoringHistory = false;
+
+
+/* ============================================================
+   TIME
+============================================================ */
+
+function getTime() {
+
+    return new Date().toLocaleTimeString(
+        "en-IN",
+        {
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
+
+}
+
+
+/* ============================================================
+   ESCAPE HTML
+============================================================ */
+
+function escapeHtml(text) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+    div.textContent =
+        text == null
+            ? ""
+            : String(text);
+
+    return div.innerHTML;
+
+}
+
+
+/* ============================================================
+   FORMAT BOT TEXT
+============================================================ */
+
+function formatBotResponse(text) {
+
+    let safe =
+        escapeHtml(
+            text || ""
+        );
+
+    safe =
+        safe.replace(
+            /\*\*(.*?)\*\*/g,
+            "<strong>$1</strong>"
+        );
+
+    safe =
+        safe.replace(
+            /\n/g,
+            "<br>"
+        );
+
+    return safe;
+
+}
+
+
+/* ============================================================
+   ADD MESSAGE
+============================================================ */
+
+function addMessage(
+    message,
+    sender,
+    save = true,
+    feature = null
+) {
+
+    if (!message) {
+        return null;
+    }
+
+
+    if (
+        welcomeScreen &&
+        sender === "user"
+    ) {
+
+        welcomeScreen.style.display =
+            "none";
+
+    }
+
+
+    const messageDiv =
+        document.createElement(
+            "div"
+        );
+
+    messageDiv.className =
+        "message " + sender;
+
+
+    /* --------------------------------------------------------
+       BOT AVATAR
+    -------------------------------------------------------- */
+
+    if (sender === "bot") {
+
+        const avatar =
+            document.createElement(
+                "div"
+            );
+
+        avatar.className =
+            "message-avatar";
+
+        avatar.innerHTML =
+            '<i class="fa-solid fa-robot"></i>';
+
+        messageDiv.appendChild(
+            avatar
+        );
+
+    }
+
+
+    const wrapper =
+        document.createElement(
+            "div"
+        );
+
+    wrapper.className =
+        "message-wrapper";
+
+
+    const content =
+        document.createElement(
+            "div"
+        );
+
+    content.className =
+        "message-content";
+
+
+    /* --------------------------------------------------------
+       MESSAGE TEXT
+    -------------------------------------------------------- */
+
+    if (sender === "bot") {
+
+        content.innerHTML =
+            formatBotResponse(
+                message
+            );
+
+    } else {
+
+        content.innerHTML =
+            escapeHtml(
+                message
+            ).replace(
+                /\n/g,
+                "<br>"
+            );
+
+    }
+
+
+    /* --------------------------------------------------------
+       FEATURE BUTTON
+    -------------------------------------------------------- */
+
+    if (
+        sender === "bot" &&
+        feature &&
+        feature.feature_url
+    ) {
+
+        const featureLink =
+            document.createElement(
+                "a"
+            );
+
+        featureLink.className =
+            "feature-link";
+
+        featureLink.href =
+            feature.feature_url;
+
+        featureLink.innerHTML =
+            escapeHtml(
+                feature.feature_icon ||
+                "â†’"
+            ) +
+            " " +
+            escapeHtml(
+                feature.feature_name ||
+                "Open Feature"
+            ) +
+            ' <i class="fa-solid fa-arrow-up-right-from-square"></i>';
+
+        content.appendChild(
+            featureLink
+        );
+
+    }
+
+
+    /* --------------------------------------------------------
+       TIME
+    -------------------------------------------------------- */
+
+    const time =
+        document.createElement(
+            "div"
+        );
+
+    time.className =
+        "message-time";
+
+    time.textContent =
+        sender === "bot"
+            ? "KisanVision360+ AI â€¢ " +
+              getTime()
+            : "You â€¢ " +
+              getTime();
+
+    content.appendChild(
+        time
+    );
+
+
+    wrapper.appendChild(
+        content
+    );
+
+
+    messageDiv.appendChild(
+        wrapper
+    );
+
+
+    chatBody.insertBefore(
+        messageDiv,
+        typing
+    );
+
+
+    if (
+        save &&
+        !restoringHistory
+    ) {
+
+        saveChatHistory();
+
+    }
+
+
+    scrollToBottom();
+
+
+    return messageDiv;
+
+}
+
+
+/* ============================================================
+   SCROLL
+============================================================ */
+
+function scrollToBottom() {
+
+    if (!chatBody) {
+        return;
+    }
+
+    requestAnimationFrame(
+        function() {
+
+            chatBody.scrollTop =
+                chatBody.scrollHeight;
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+   TYPING
+============================================================ */
+
+function setTyping(show) {
+
+    if (!typing) {
+        return;
+    }
+
+    typing.style.display =
+        show
+            ? "flex"
+            : "none";
+
+    if (show) {
+        scrollToBottom();
+    }
+
+}
+
+
+/* ============================================================
+   SEND MESSAGE
+============================================================ */
+
+async function sendMessage() {
+
+    const message =
+        messageInput.value.trim();
+
+
+    if (!message) {
+
+        messageInput.focus();
+
+        return;
+
+    }
+
+
+    if (sendButton.disabled) {
+
+        return;
+
+    }
+
+
+    /* --------------------------------------------------------
+       USER MESSAGE
+    -------------------------------------------------------- */
+
+    addMessage(
+        message,
+        "user"
+    );
+
+
+    messageInput.value =
+        "";
+
+    autoResize();
+
+
+    setTyping(true);
+
+    sendButton.disabled =
+        true;
+
+
+    if (voiceButton) {
+
+        voiceButton.disabled =
+            true;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                chatbotConfig.endpoint,
+                {
+
+                    method:
+                        "POST",
+
+                    credentials:
+                        "same-origin",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json",
+
+                        "Accept":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            message:
+                                message,
+
+                            language:
+                                chatbotConfig.language,
+
+                            role:
+                                chatbotConfig.role,
+
+                            user_name:
+                                chatbotConfig.userName
+
+                        })
+
+                }
+            );
+
+
+        /* ----------------------------------------------------
+           LOGIN EXPIRED
+        ---------------------------------------------------- */
+
+        if (
+            response.status ===
+            401
+        ) {
+
+            throw new Error(
+                "AUTHENTICATION_REQUIRED"
+            );
+
+        }
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "HTTP_" +
+                response.status
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        setTyping(false);
+
+
+        /* ----------------------------------------------------
+           RESPONSE
+        ---------------------------------------------------- */
+
+        const reply =
+            data.reply ||
+            data.message;
+
+
+        /* ----------------------------------------------------
+           FEATURE
+        ---------------------------------------------------- */
+
+        const feature = {
+
+            feature:
+                data.feature || "",
+
+            feature_name:
+                data.feature_name || "",
+
+            feature_url:
+                data.feature_url || "",
+
+            feature_icon:
+                data.feature_icon || ""
+
+        };
+
+
+        if (reply) {
+
+            addMessage(
+                reply,
+                "bot",
+                true,
+                feature
+            );
+
+        } else {
+
+            addMessage(
+                "I could not understand the response. Please try again.",
+                "bot"
+            );
+
+        }
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "KisanVision360+ Chatbot:",
+            error
+        );
+
+
+        setTyping(false);
+
+
+        let errorMessage =
+            "I could not connect to the KisanVision360+ AI Assistant right now. Please try again.";
+
+
+        if (
+            error.message ===
+            "AUTHENTICATION_REQUIRED"
+        ) {
+
+            errorMessage =
+                "Your login session has expired. Please log in again.";
+
+        }
+
+
+        addMessage(
+            errorMessage,
+            "bot"
+        );
+
+    }
+
+
+    sendButton.disabled =
+        false;
+
+
+    if (voiceButton) {
+
+        voiceButton.disabled =
+            false;
+
+    }
+
+
+    messageInput.focus();
+
+}
+
+
+/* ============================================================
+   QUICK QUESTION
+============================================================ */
+
+function askQuickQuestion(
+    question
+) {
+
+    messageInput.value =
+        question;
+
+    autoResize();
+
+    sendMessage();
+
+}
+
+
+/* ============================================================
+   ENTER KEY
+============================================================ */
+
+messageInput.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Enter" &&
+            !event.shiftKey
+        ) {
+
+            event.preventDefault();
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+
+/* ============================================================
+   AUTO RESIZE
+============================================================ */
+
+function autoResize() {
+
+    messageInput.style.height =
+        "auto";
+
+    messageInput.style.height =
+        Math.min(
+            messageInput.scrollHeight,
+            120
+        ) + "px";
+
+}
+
+
+messageInput.addEventListener(
+    "input",
+    autoResize
+);
+
+
+/* ============================================================
+   CLEAR CHAT
+============================================================ */
+
+function clearChat() {
+
+    const confirmed =
+        window.confirm(
+            "Clear your KisanVision360+ AI conversation?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    document
+        .querySelectorAll(
+            "#chatBody .message"
+        )
+        .forEach(
+            function(item) {
+
+                item.remove();
+
+            }
+        );
+
+
+    localStorage.removeItem(
+        historyKey
+    );
+
+
+    if (welcomeScreen) {
+
+        welcomeScreen.style.display =
+            "block";
+
+    }
+
+
+    setTyping(false);
+
+    scrollToBottom();
+
+    messageInput.focus();
+
+}
+
+
+/* ============================================================
+   VOICE INPUT
+============================================================ */
+
+function startVoiceInput() {
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+
+    if (!SpeechRecognition) {
+
+        addMessage(
+            "Voice input is not supported by this browser. Please use Chrome.",
+            "bot"
+        );
+
+        return;
+
+    }
+
+
+    const recognition =
+        new SpeechRecognition();
+
+
+    recognition.lang =
+        getSpeechLanguage(
+            chatbotConfig.language
+        );
+
+
+    recognition.interimResults =
+        false;
+
+    recognition.maxAlternatives =
+        1;
+
+
+    voiceButton.disabled =
+        true;
+
+    voiceButton.classList.add(
+        "recording"
+    );
+
+
+    voiceButton.innerHTML =
+        '<i class="fa-solid fa-microphone-lines"></i>';
+
+
+    try {
+
+        recognition.start();
+
+    }
+
+    catch (error) {
+
+        console.warn(
+            "Voice start error:",
+            error
+        );
+
+    }
+
+
+    recognition.onresult =
+        function(event) {
+
+            const transcript =
+                event
+                    .results[0][0]
+                    .transcript;
+
+
+            messageInput.value =
+                transcript;
+
+            autoResize();
+
+            messageInput.focus();
+
+        };
+
+
+    recognition.onerror =
+        function(event) {
+
+            console.warn(
+                "Voice recognition error:",
+                event.error
+            );
+
+        };
+
+
+    recognition.onend =
+        function() {
+
+            voiceButton.disabled =
+                false;
+
+            voiceButton.classList.remove(
+                "recording"
+            );
+
+            voiceButton.innerHTML =
+                '<i class="fa-solid fa-microphone"></i>';
+
+        };
+
+}
+
+
+/* ============================================================
+   SPEECH LANGUAGE
+============================================================ */
+
+function getSpeechLanguage(
+    language
+) {
+
+    const languages = {
+
+        en: "en-IN",
+
+        hi: "hi-IN",
+
+        mr: "mr-IN",
+
+        kn: "kn-IN",
+
+        te: "te-IN",
+
+        ta: "ta-IN",
+
+        ml: "ml-IN",
+
+        gu: "gu-IN",
+
+        pa: "pa-IN",
+
+        bn: "bn-IN",
+
+        as: "as-IN",
+
+        or: "or-IN",
+
+        ur: "ur-IN",
+
+        ne: "ne-NP",
+
+        sa: "hi-IN",
+
+        kok: "mr-IN",
+
+        mai: "hi-IN",
+
+        ks: "ur-IN",
+
+        sd: "sd-IN",
+
+        mni: "mni-IN"
+
+    };
+
+
+    return languages[language]
+        || "en-IN";
+
+}
+
+
+/* ============================================================
+   SAVE HISTORY
+============================================================ */
+
+function saveChatHistory() {
+
+    if (restoringHistory) {
+        return;
+    }
+
+
+    try {
+
+        const messages = [];
+
+
+        document
+            .querySelectorAll(
+                "#chatBody .message"
+            )
+            .forEach(
+                function(item) {
+
+                    const isUser =
+                        item.classList.contains(
+                            "user"
+                        );
+
+
+                    const content =
+                        item.querySelector(
+                            ".message-content"
+                        );
+
+
+                    if (!content) {
+                        return;
+                    }
+
+
+                    const clone =
+                        content.cloneNode(
+                            true
+                        );
+
+
+                    const time =
+                        clone.querySelector(
+                            ".message-time"
+                        );
+
+
+                    if (time) {
+                        time.remove();
+                    }
+
+
+                    const feature =
+                        clone.querySelector(
+                            ".feature-link"
+                        );
+
+
+                    if (feature) {
+                        feature.remove();
+                    }
+
+
+                    const text =
+                        clone.textContent.trim();
+
+
+                    if (!text) {
+                        return;
+                    }
+
+
+                    messages.push({
+
+                        sender:
+                            isUser
+                                ? "user"
+                                : "bot",
+
+                        message:
+                            text
+
+                    });
+
+                }
+            );
+
+
+        localStorage.setItem(
+
+            historyKey,
+
+            JSON.stringify(
+                messages.slice(-40)
+            )
+
+        );
+
+    }
+
+    catch (error) {
+
+        console.warn(
+            "Could not save chatbot history:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   RESTORE HISTORY
+============================================================ */
+
+function restoreChatHistory() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(
+                historyKey
+            );
+
+
+        if (!saved) {
+            return;
+        }
+
+
+        const history =
+            JSON.parse(
+                saved
+            );
+
+
+        if (
+            !Array.isArray(history) ||
+            history.length === 0
+        ) {
+
+            return;
+
+        }
+
+
+        restoringHistory =
+            true;
+
+
+        if (welcomeScreen) {
+
+            welcomeScreen.style.display =
+                "none";
+
+        }
+
+
+        history.forEach(
+            function(item) {
+
+                if (
+                    item &&
+                    item.message
+                ) {
+
+                    addMessage(
+                        item.message,
+                        item.sender === "user"
+                            ? "user"
+                            : "bot",
+                        false
+                    );
+
+                }
+
+            }
+        );
+
+
+        restoringHistory =
+            false;
+
+
+        scrollToBottom();
+
+    }
+
+    catch (error) {
+
+        restoringHistory =
+            false;
+
+        console.warn(
+            "Chat history restore failed:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   INITIALIZATION
+============================================================ */
+
+window.addEventListener(
+    "load",
+    function() {
+
+        restoreChatHistory();
+
+        scrollToBottom();
+
+        messageInput.focus();
+
+    }
+);
+
+
+/* ============================================================
+   VISIBILITY
+============================================================ */
+
+document.addEventListener(
+    "visibilitychange",
+    function() {
+
+        if (!document.hidden) {
+
+            scrollToBottom();
+
+        }
+
+    }
+);
+
+
+/* ============================================================
+   DEBUG
+============================================================ */
+
+console.log(
+    "KisanVision360+ AI Assistant initialized",
+    {
+
+        endpoint:
+            chatbotConfig.endpoint,
+
+        language:
+            chatbotConfig.language,
+
+        role:
+            chatbotConfig.role,
+
+        user:
+            chatbotConfig.userName
+
+    }
+);
+
 </script>
+{% endblock %}
+

@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 import os
 
@@ -35,3 +35,4 @@ db.commit()
 db.close()
 
 print("Database created successfully.")
+

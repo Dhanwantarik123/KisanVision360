@@ -1,135 +1,713 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿{% extends "base.html" %}
 
-<head>
+{% block title %}KisanVision360+ | Smart Farm Alerts{% endblock %}
 
-<meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<title>
-KisanVision360 | Smart Farming Alerts
-</title>
-
-
-<!-- SIDEBAR -->
-
-<link rel="stylesheet"
-      href="{{ url_for('static', filename='css/sidebar.css') }}">
-
-
-<!-- ALERTS CSS -->
-
+{% block head %}
 <link rel="stylesheet"
       href="{{ url_for('static', filename='css/alerts.css') }}">
+<style>
+
+/* =========================================================
+   KISANVISION360+ SMART ALERT CENTER
+========================================================= */
+
+.kv-alert-page {
+    max-width: 1450px;
+    margin: auto;
+    padding: 24px;
+}
 
 
-<!-- FONT AWESOME -->
+/* =========================================================
+   TOPBAR
+========================================================= */
 
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+.kv-alert-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 22px;
+}
 
-</head>
+.kv-alert-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.kv-alert-title-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    background: #e8f5e9;
+    color: #1b5e20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.kv-alert-title h1 {
+    margin: 0;
+    color: #174d24;
+    font-size: 25px;
+}
+
+.kv-alert-title p {
+    margin: 4px 0 0;
+    color: #78837b;
+    font-size: 12px;
+}
+
+.kv-alert-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.kv-alert-profile img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #dcebdc;
+}
+
+.kv-alert-profile h4 {
+    margin: 0;
+    color: #29382e;
+}
+
+.kv-alert-profile small {
+    color: #7e8881;
+}
 
 
-<body>
+/* =========================================================
+   SMART STATUS BANNER
+========================================================= */
+
+.kv-smart-banner {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 25px;
+    margin-bottom: 22px;
+    border-radius: 20px;
+    background: linear-gradient(
+        135deg,
+        #164d1e,
+        #2e7d32
+    );
+    color: white;
+}
+
+.kv-smart-banner::after {
+    content: "ðŸ””";
+    position: absolute;
+    right: 35px;
+    bottom: -45px;
+    font-size: 150px;
+    opacity: .10;
+}
+
+.kv-smart-banner-content {
+    position: relative;
+    z-index: 2;
+}
+
+.kv-smart-label {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.13);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.kv-smart-banner h2 {
+    margin: 9px 0 5px;
+    font-size: 25px;
+}
+
+.kv-smart-banner p {
+    max-width: 700px;
+    margin: 0;
+    color: #e3f2e4;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.kv-smart-state {
+    position: relative;
+    z-index: 2;
+    padding: 13px 17px;
+    border-radius: 13px;
+    background: rgba(255,255,255,.12);
+    white-space: nowrap;
+}
+
+.kv-state-dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin-right: 6px;
+    border-radius: 50%;
+    background: #81c784;
+}
 
 
-<div class="dashboard-container">
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.kv-summary {
+    display: grid;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.kv-summary-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 17px;
+    border: 1px solid #e4ebe5;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 6px 22px rgba(0,0,0,.04);
+}
+
+.kv-summary-icon {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.kv-summary-card h4 {
+    margin: 0 0 4px;
+    color: #6f7972;
+    font-size: 11px;
+}
+
+.kv-summary-card strong {
+    color: #263c2b;
+    font-size: 17px;
+}
+
+.kv-weather {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+.kv-crop {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.kv-market {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.kv-risk {
+    background: #ffebee;
+    color: #c62828;
+}
 
 
+/* =========================================================
+   CONTENT GRID
+========================================================= */
+
+.kv-alert-grid {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1.5fr)
+        minmax(280px, .7fr);
+    gap: 20px;
+}
+
+
+/* =========================================================
+   PANEL
+========================================================= */
+
+.kv-alert-panel {
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #e4ebe5;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 7px 25px rgba(0,0,0,.04);
+}
+
+.kv-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.kv-panel-header h2 {
+    margin: 0;
+    color: #285731;
+    font-size: 17px;
+}
+
+.kv-panel-header p {
+    margin: 4px 0 0;
+    color: #858e88;
+    font-size: 10px;
+}
+
+.kv-alert-counter {
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   ALERT CARD
+========================================================= */
+
+.kv-alert-card {
+    position: relative;
+    display: flex;
+    gap: 13px;
+    padding: 15px;
+    margin-bottom: 11px;
+    border: 1px solid #e7ece8;
+    border-radius: 14px;
+    background: #fcfdfc;
+    transition: .2s;
+}
+
+.kv-alert-card:last-child {
+    margin-bottom: 0;
+}
+
+.kv-alert-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 20px rgba(0,0,0,.06);
+}
+
+.kv-alert-icon {
+    width: 43px;
+    height: 43px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.kv-alert-content {
+    flex: 1;
+}
+
+.kv-alert-heading {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.kv-alert-heading h3 {
+    margin: 0;
+    color: #334137;
+    font-size: 13px;
+}
+
+.kv-alert-category {
+    padding: 4px 8px;
+    border-radius: 20px;
+    background: #f0f4f1;
+    color: #667269;
+    font-size: 8px;
+    font-weight: 800;
+}
+
+.kv-alert-content p {
+    margin: 7px 0;
+    color: #737e76;
+    font-size: 10px;
+    line-height: 1.55;
+}
+
+.kv-alert-time {
+    color: #99a19b;
+    font-size: 9px;
+}
+
+.kv-alert-time i {
+    margin-right: 4px;
+}
+
+.kv-alert-action {
+    display: inline-flex;
+    margin-top: 7px;
+    padding: 6px 9px;
+    border-radius: 7px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    text-decoration: none;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.kv-alert-status {
+    display: flex;
+    align-items: center;
+    color: #78917c;
+}
+
+
+/* Alert Types */
+
+.kv-alert-card.warning .kv-alert-icon {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+.kv-alert-card.success .kv-alert-icon {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.kv-alert-card.info .kv-alert-icon {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.kv-alert-card.danger .kv-alert-icon {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.kv-alert-card.warning {
+    border-left: 4px solid #ef6c00;
+}
+
+.kv-alert-card.success {
+    border-left: 4px solid #43a047;
+}
+
+.kv-alert-card.info {
+    border-left: 4px solid #1976d2;
+}
+
+.kv-alert-card.danger {
+    border-left: 4px solid #d32f2f;
+}
+
+
+/* =========================================================
+   SMART CONNECTIONS
+========================================================= */
+
+.kv-connection {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #edf1ee;
+}
+
+.kv-connection:last-child {
+    border-bottom: none;
+}
+
+.kv-connection-icon {
+    width: 37px;
+    height: 37px;
+    border-radius: 10px;
+    background: #f0f7f1;
+    color: #2e7d32;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.kv-connection strong {
+    display: block;
+    color: #3d4a40;
+    font-size: 11px;
+}
+
+.kv-connection small {
+    color: #8a938d;
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   SMART RECOMMENDATION
+========================================================= */
+
+.kv-ai-box {
+    padding: 16px;
+    border-radius: 14px;
+    background: linear-gradient(
+        135deg,
+        #f1f8f2,
+        #fbfdfb
+    );
+    border: 1px solid #dcebdd;
+}
+
+.kv-ai-box-header {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 8px;
+}
+
+.kv-ai-box-header i {
+    color: #2e7d32;
+}
+
+.kv-ai-box-header strong {
+    color: #285731;
+    font-size: 12px;
+}
+
+.kv-ai-box p {
+    margin: 0;
+    color: #69746d;
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   QUICK ACTIONS
+========================================================= */
+
+.kv-actions {
+    display: grid;
+    grid-template-columns:
+        repeat(2, 1fr);
+    gap: 10px;
+}
+
+.kv-action {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px;
+    border: 1px solid #e4ebe5;
+    border-radius: 12px;
+    text-decoration: none;
+    background: #fbfdfb;
+    color: #3b5340;
+    transition: .2s;
+}
+
+.kv-action:hover {
+    transform: translateY(-2px);
+    background: #f1f8f2;
+}
+
+.kv-action > i:first-child {
+    color: #2e7d32;
+    font-size: 16px;
+}
+
+.kv-action div {
+    flex: 1;
+}
+
+.kv-action h4 {
+    margin: 0;
+    font-size: 11px;
+}
+
+.kv-action p {
+    margin: 3px 0 0;
+    color: #8a938c;
+    font-size: 9px;
+}
+
+.kv-action > i:last-child {
+    color: #9ba49e;
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.kv-alert-footer {
+    padding: 25px 0 10px;
+    text-align: center;
+    color: #89928b;
+    font-size: 10px;
+}
+
+.kv-alert-footer strong {
+    color: #2e7d32;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1050px) {
+
+    .kv-summary {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .kv-alert-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .kv-alert-page {
+        padding: 15px;
+    }
+
+    .kv-alert-topbar {
+        align-items: flex-start;
+    }
+
+    .kv-alert-profile {
+        display: none;
+    }
+
+    .kv-alert-title h1 {
+        font-size: 21px;
+    }
+
+    .kv-smart-banner {
+        padding: 20px;
+    }
+
+    .kv-smart-banner h2 {
+        font-size: 21px;
+    }
+
+    .kv-smart-state {
+        display: none;
+    }
+
+    .kv-summary {
+        grid-template-columns:
+            1fr 1fr;
+        gap: 9px;
+    }
+
+    .kv-summary-card {
+        padding: 12px;
+    }
+
+    .kv-summary-card strong {
+        font-size: 14px;
+    }
+
+    .kv-actions {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+{% endblock %}
+
+{% block page_title %}Smart Farm Alerts{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
 <!-- =====================================================
      SIDEBAR
 ===================================================== -->
 
-{% include "components/sidebar.html" %}
 
 
-
-<!-- =====================================================
-     MAIN CONTENT
-===================================================== -->
 
 <div class="main-content">
 
+
+<div class="kv-alert-page">
 
 
 <!-- =====================================================
      TOPBAR
 ===================================================== -->
 
-<header class="topbar">
-
-
-    <div class="title-section">
-
-
-        <div class="title-icon">
-
-            <i class="fa-solid fa-bell"></i>
-
-        </div>
-
-
-        <div>
-
-            <h1>
-                Smart Farming Alerts
-            </h1>
-
-            <p>
-                Important updates about your farm
-            </p>
-
-        </div>
-
-
-    </div>
-
-
-
-    <div class="profile">
-
-
-        <img
-            src="{{ url_for(
-                'static',
-                filename='images/farmer.jpg'
-            ) }}"
-            alt="Farmer">
-
-
-        <div>
-
-            <h4>
-                {{ name|default('Farmer') }}
-            </h4>
-
-            <small>
-                Farmer
-            </small>
-
-        </div>
-
-
-    </div>
-
-
-</header>
 
 
 
 <!-- =====================================================
-     ALERT SUMMARY
+     SMART BANNER
 ===================================================== -->
 
-<section class="alert-summary">
+<section class="kv-smart-banner">
+
+    <div class="kv-smart-banner-content">
+
+        <span class="kv-smart-label">
+            KISANVISION360+ INTELLIGENCE
+        </span>
+
+        <h2>
+            Your Farm Alert Center ðŸ””
+        </h2>
+
+        <p>
+            Important updates related to weather, crop health,
+            irrigation, disease risk, market prices and
+            government schemes can appear here.
+        </p>
+
+    </div>
 
 
-    <div class="summary-card">
+    <div class="kv-smart-state">
 
-        <div class="summary-icon warning-icon">
+        <span class="kv-state-dot"></span>
+
+        Smart Alerts Active
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     SUMMARY
+===================================================== -->
+
+<section class="kv-summary">
+
+
+    <div class="kv-summary-card">
+
+        <div class="kv-summary-icon kv-weather">
 
             <i class="fa-solid fa-cloud-rain"></i>
 
@@ -137,12 +715,13 @@ KisanVision360 | Smart Farming Alerts
 
         <div>
 
-            <h3>
+            <h4>
                 Weather
-            </h3>
+            </h4>
 
             <strong>
-                1 Alert
+                {{ weather_alert_count|default(0, true) }}
+                Alerts
             </strong>
 
         </div>
@@ -150,10 +729,9 @@ KisanVision360 | Smart Farming Alerts
     </div>
 
 
+    <div class="kv-summary-card">
 
-    <div class="summary-card">
-
-        <div class="summary-icon success-icon">
+        <div class="kv-summary-icon kv-crop">
 
             <i class="fa-solid fa-seedling"></i>
 
@@ -161,12 +739,12 @@ KisanVision360 | Smart Farming Alerts
 
         <div>
 
-            <h3>
+            <h4>
                 Crop Health
-            </h3>
+            </h4>
 
             <strong>
-                Normal
+                {{ crop_health_status|default('Normal', true) }}
             </strong>
 
         </div>
@@ -174,10 +752,9 @@ KisanVision360 | Smart Farming Alerts
     </div>
 
 
+    <div class="kv-summary-card">
 
-    <div class="summary-card">
-
-        <div class="summary-icon info-icon">
+        <div class="kv-summary-icon kv-market">
 
             <i class="fa-solid fa-chart-line"></i>
 
@@ -185,12 +762,12 @@ KisanVision360 | Smart Farming Alerts
 
         <div>
 
-            <h3>
+            <h4>
                 Market
-            </h3>
+            </h4>
 
             <strong>
-                Updated
+                {{ market_status|default('Updated', true) }}
             </strong>
 
         </div>
@@ -198,10 +775,9 @@ KisanVision360 | Smart Farming Alerts
     </div>
 
 
+    <div class="kv-summary-card">
 
-    <div class="summary-card">
-
-        <div class="summary-icon danger-icon">
+        <div class="kv-summary-icon kv-risk">
 
             <i class="fa-solid fa-bug"></i>
 
@@ -209,12 +785,12 @@ KisanVision360 | Smart Farming Alerts
 
         <div>
 
-            <h3>
-                Pest Risk
-            </h3>
+            <h4>
+                Farm Risk
+            </h4>
 
             <strong>
-                1 Alert
+                {{ risk_status|default('Low', true) }}
             </strong>
 
         </div>
@@ -225,316 +801,268 @@ KisanVision360 | Smart Farming Alerts
 </section>
 
 
-
 <!-- =====================================================
-     ALERT HEADER
+     MAIN GRID
 ===================================================== -->
 
-<section class="alerts-section">
+<div class="kv-alert-grid">
 
 
-    <div class="section-header">
+<!-- =====================================================
+     LEFT COLUMN
+===================================================== -->
 
+<div>
+
+
+<section class="kv-alert-panel">
+
+
+    <div class="kv-panel-header">
 
         <div>
 
-            <span>
-                FARM MONITORING
-            </span>
-
             <h2>
-                Recent Alerts
+                Recent Farm Alerts
             </h2>
 
             <p>
-                Stay updated with important farming information.
+                Personalized information for your farm
             </p>
 
         </div>
 
 
-        <div class="alert-count">
+        <div class="kv-alert-counter">
 
             <i class="fa-solid fa-bell"></i>
 
-            4 Alerts
+            {{ alerts|length if alerts is defined else 0 }}
+            Alerts
 
         </div>
-
 
     </div>
 
 
-
-<!-- =====================================================
-     ALERT LIST
-===================================================== -->
-
-<div class="alert-list">
+    <div>
 
 
-
-    <!-- WEATHER -->
-
-    <div class="alert-card warning">
+    {% if alerts is defined and alerts %}
 
 
-        <div class="alert-icon">
-
-            <i class="fa-solid fa-cloud-showers-heavy"></i>
-
-        </div>
+        {% for alert in alerts %}
 
 
-        <div class="alert-content">
+        <article class="kv-alert-card
+            {{ alert.type|default('info', true) }}">
 
 
-            <div class="alert-title">
+            <div class="kv-alert-icon">
 
-                <h3>
-                    Heavy Rainfall Expected
-                </h3>
+                {% if alert.category|default('')|lower == 'weather' %}
 
-                <span>
-                    Weather
-                </span>
+                    <i class="fa-solid fa-cloud-rain"></i>
+
+                {% elif alert.category|default('')|lower == 'irrigation' %}
+
+                    <i class="fa-solid fa-droplet"></i>
+
+                {% elif alert.category|default('')|lower == 'disease' %}
+
+                    <i class="fa-solid fa-bug"></i>
+
+                {% elif alert.category|default('')|lower == 'market' %}
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                {% elif alert.category|default('')|lower == 'scheme' %}
+
+                    <i class="fa-solid fa-landmark"></i>
+
+                {% else %}
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                {% endif %}
 
             </div>
 
 
-            <p>
-                Heavy rainfall is expected.
-                Protect harvested crops and avoid
-                unnecessary field operations.
-            </p>
+            <div class="kv-alert-content">
 
 
-            <small>
+                <div class="kv-alert-heading">
 
-                <i class="fa-regular fa-clock"></i>
+                    <h3>
+                        {{ alert.title|default('Farm Update', true) }}
+                    </h3>
 
-                Today
+                    <span class="kv-alert-category">
 
-            </small>
+                        {{ alert.category|default('General', true) }}
 
+                    </span>
 
-        </div>
-
-
-        <div class="alert-status">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-        </div>
+                </div>
 
 
-    </div>
+                <p>
+                    {{ alert.message|default(
+                        'New farming information is available.',
+                        true
+                    ) }}
+                </p>
 
 
+                <small class="kv-alert-time">
 
-    <!-- CROP HEALTH -->
+                    <i class="fa-regular fa-clock"></i>
 
-    <div class="alert-card success">
+                    {{ alert.time|default(
+                        alert.date|default('Recently', true),
+                        true
+                    ) }}
 
-
-        <div class="alert-icon">
-
-            <i class="fa-solid fa-seedling"></i>
-
-        </div>
-
-
-        <div class="alert-content">
+                </small>
 
 
-            <div class="alert-title">
+                {% if alert.link %}
 
-                <h3>
-                    Crop Health Is Normal
-                </h3>
+                <br>
 
-                <span>
-                    Crop Health
-                </span>
+                <a
+                    href="{{ alert.link }}"
+                    class="kv-alert-action">
+
+                    View Details
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+                {% endif %}
+
 
             </div>
 
 
-            <p>
-                Your latest crop health information
-                indicates normal crop conditions.
-            </p>
+            <div class="kv-alert-status">
 
-
-            <small>
-
-                <i class="fa-regular fa-clock"></i>
-
-                Today
-
-            </small>
-
-
-        </div>
-
-
-        <div class="alert-status">
-
-            <i class="fa-solid fa-circle-check"></i>
-
-        </div>
-
-
-    </div>
-
-
-
-    <!-- MARKET -->
-
-    <div class="alert-card info">
-
-
-        <div class="alert-icon">
-
-            <i class="fa-solid fa-chart-line"></i>
-
-        </div>
-
-
-        <div class="alert-content">
-
-
-            <div class="alert-title">
-
-                <h3>
-                    Wheat Market Price Increased
-                </h3>
-
-                <span>
-                    Market
-                </span>
+                <i class="fa-solid fa-circle-check"></i>
 
             </div>
 
 
-            <p>
-                Wheat market prices have increased today.
-                Check current mandi prices before selling.
-            </p>
+        </article>
 
 
-            <small>
-
-                <i class="fa-regular fa-clock"></i>
-
-                Today
-
-            </small>
+        {% endfor %}
 
 
-        </div>
+    {% else %}
 
 
-        <div class="alert-status">
-
-            <i class="fa-solid fa-arrow-trend-up"></i>
-
-        </div>
+        <!-- =================================================
+             SAFE FALLBACK ALERTS
+        ================================================= -->
 
 
-    </div>
+        <article class="kv-alert-card info">
 
+            <div class="kv-alert-icon">
 
-
-    <!-- PEST -->
-
-    <div class="alert-card danger">
-
-
-        <div class="alert-icon">
-
-            <i class="fa-solid fa-bug"></i>
-
-        </div>
-
-
-        <div class="alert-content">
-
-
-            <div class="alert-title">
-
-                <h3>
-                    Pest Risk Detected
-                </h3>
-
-                <span>
-                    Disease & Pest
-                </span>
+                <i class="fa-solid fa-circle-info"></i>
 
             </div>
 
+            <div class="kv-alert-content">
 
-            <p>
-                Increased pest risk has been detected.
-                Check crop leaves and use AI Disease
-                Detection if symptoms appear.
-            </p>
+                <div class="kv-alert-heading">
+
+                    <h3>
+                        No New Alerts
+                    </h3>
+
+                    <span class="kv-alert-category">
+                        System
+                    </span>
+
+                </div>
+
+                <p>
+                    Your farm currently has no new important
+                    notifications. New alerts will appear here
+                    when available.
+                </p>
+
+                <small class="kv-alert-time">
+
+                    <i class="fa-regular fa-clock"></i>
+
+                    Just now
+
+                </small>
+
+            </div>
+
+            <div class="kv-alert-status">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+            </div>
+
+        </article>
 
 
-            <small>
-
-                <i class="fa-regular fa-clock"></i>
-
-                Today
-
-            </small>
-
-
-        </div>
-
-
-        <div class="alert-status">
-
-            <i class="fa-solid fa-circle-exclamation"></i>
-
-        </div>
+    {% endif %}
 
 
     </div>
 
-
-</div>
 
 </section>
-
 
 
 <!-- =====================================================
      QUICK ACTIONS
 ===================================================== -->
 
-<section class="quick-actions">
+<section class="kv-alert-panel">
 
 
-    <h2>
-        Quick Actions
-    </h2>
+    <div class="kv-panel-header">
+
+        <div>
+
+            <h2>
+                Quick Actions
+            </h2>
+
+            <p>
+                Investigate farm alerts
+            </p>
+
+        </div>
+
+    </div>
 
 
-    <div class="action-grid">
+    <div class="kv-actions">
 
 
         <a href="/weather"
-           class="action-card">
+           class="kv-action">
 
             <i class="fa-solid fa-cloud-sun"></i>
 
             <div>
 
-                <h3>
+                <h4>
                     Check Weather
-                </h3>
+                </h4>
 
                 <p>
-                    View live weather information
+                    Live weather & forecast
                 </p>
 
             </div>
@@ -544,20 +1072,19 @@ KisanVision360 | Smart Farming Alerts
         </a>
 
 
-
         <a href="/pest"
-           class="action-card">
+           class="kv-action">
 
             <i class="fa-solid fa-microscope"></i>
 
             <div>
 
-                <h3>
+                <h4>
                     Disease Detection
-                </h3>
+                </h4>
 
                 <p>
-                    Check your crop leaf
+                    Analyze crop leaf
                 </p>
 
             </div>
@@ -567,20 +1094,41 @@ KisanVision360 | Smart Farming Alerts
         </a>
 
 
+        <a href="/irrigation"
+           class="kv-action">
+
+            <i class="fa-solid fa-droplet"></i>
+
+            <div>
+
+                <h4>
+                    Smart Irrigation
+                </h4>
+
+                <p>
+                    Check watering recommendation
+                </p>
+
+            </div>
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+        </a>
+
 
         <a href="/market"
-           class="action-card">
+           class="kv-action">
 
             <i class="fa-solid fa-chart-line"></i>
 
             <div>
 
-                <h3>
+                <h4>
                     Market Prices
-                </h3>
+                </h4>
 
                 <p>
-                    Check latest crop prices
+                    Check crop prices
                 </p>
 
             </div>
@@ -592,34 +1140,357 @@ KisanVision360 | Smart Farming Alerts
 
     </div>
 
+</section>
+
+
+</div>
+
+
+<!-- =====================================================
+     RIGHT COLUMN
+===================================================== -->
+
+<div>
+
+
+<!-- =====================================================
+     SMART CONNECTIONS
+===================================================== -->
+
+<section class="kv-alert-panel">
+
+
+    <div class="kv-panel-header">
+
+        <div>
+
+            <h2>
+                ðŸ”— Smart Connections
+            </h2>
+
+            <p>
+                How KisanVision360+ connects farm data
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="kv-connection">
+
+        <div class="kv-connection-icon">
+
+            <i class="fa-solid fa-cloud-sun-rain"></i>
+
+        </div>
+
+        <div>
+
+            <strong>
+                Weather â†’ Irrigation
+            </strong>
+
+            <small>
+                Weather conditions can influence watering decisions.
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <div class="kv-connection">
+
+        <div class="kv-connection-icon">
+
+            <i class="fa-solid fa-cloud-rain"></i>
+
+        </div>
+
+        <div>
+
+            <strong>
+                Weather â†’ Alerts
+            </strong>
+
+            <small>
+                Important weather conditions can generate alerts.
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <div class="kv-connection">
+
+        <div class="kv-connection-icon">
+
+            <i class="fa-solid fa-leaf"></i>
+
+        </div>
+
+        <div>
+
+            <strong>
+                Disease â†’ Crop Health
+            </strong>
+
+            <small>
+                AI disease analysis can support crop monitoring.
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <div class="kv-connection">
+
+        <div class="kv-connection-icon">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+        </div>
+
+        <div>
+
+            <strong>
+                Market â†’ Selling Decision
+            </strong>
+
+            <small>
+                Price information can support selling decisions.
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <div class="kv-connection">
+
+        <div class="kv-connection-icon">
+
+            <i class="fa-solid fa-landmark"></i>
+
+        </div>
+
+        <div>
+
+            <strong>
+                Schemes â†’ Farmer Benefits
+            </strong>
+
+            <small>
+                Relevant government schemes can be highlighted.
+            </small>
+
+        </div>
+
+    </div>
+
 
 </section>
 
+
+<!-- =====================================================
+     AI FARM INSIGHT
+===================================================== -->
+
+<section class="kv-alert-panel">
+
+
+    <div class="kv-panel-header">
+
+        <div>
+
+            <h2>
+                ðŸ§  AI Farm Insight
+            </h2>
+
+            <p>
+                Context-aware farming intelligence
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="kv-ai-box">
+
+
+        <div class="kv-ai-box-header">
+
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+            <strong>
+                KisanVision360+ Recommendation
+            </strong>
+
+        </div>
+
+
+        <p>
+
+            {% if ai_insight is defined and ai_insight %}
+
+                {{ ai_insight }}
+
+            {% else %}
+
+                Keep your farm profile, crop information and
+                location updated. This allows KisanVision360+
+                to provide more useful weather, irrigation,
+                crop-health, market and scheme alerts.
+
+            {% endif %}
+
+        </p>
+
+
+    </div>
+
+
+</section>
+
+
+<!-- =====================================================
+     ALERT CATEGORIES
+===================================================== -->
+
+<section class="kv-alert-panel">
+
+
+    <div class="kv-panel-header">
+
+        <div>
+
+            <h2>
+                Alert Categories
+            </h2>
+
+            <p>
+                Farm intelligence areas
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="kv-actions">
+
+
+        <a href="/weather"
+           class="kv-action">
+
+            <i class="fa-solid fa-cloud-rain"></i>
+
+            <div>
+
+                <h4>
+                    Weather
+                </h4>
+
+                <p>
+                    Forecast alerts
+                </p>
+
+            </div>
+
+        </a>
+
+
+        <a href="/irrigation"
+           class="kv-action">
+
+            <i class="fa-solid fa-droplet"></i>
+
+            <div>
+
+                <h4>
+                    Irrigation
+                </h4>
+
+                <p>
+                    Water alerts
+                </p>
+
+            </div>
+
+        </a>
+
+
+        <a href="/pest"
+           class="kv-action">
+
+            <i class="fa-solid fa-bug"></i>
+
+            <div>
+
+                <h4>
+                    Disease
+                </h4>
+
+                <p>
+                    Crop risk
+                </p>
+
+            </div>
+
+        </a>
+
+
+        <a href="/market"
+           class="kv-action">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            <div>
+
+                <h4>
+                    Market
+                </h4>
+
+                <p>
+                    Price updates
+                </p>
+
+            </div>
+
+        </a>
+
+
+    </div>
+
+</section>
+
+
+</div>
+
+</div>
 
 
 <!-- =====================================================
      FOOTER
 ===================================================== -->
 
-<footer>
+<footer class="kv-alert-footer">
 
     <i class="fa-solid fa-leaf"></i>
 
     <strong>
-        KisanVision360
+        KisanVision360+
     </strong>
 
-    <span>
-        •
-    </span>
+    â€¢ Smart Farm Alert Center
 
-    Smart Farming Alerts
+    â€¢ AI-Powered Agriculture Platform
 
-    <span>
-        •
-    </span>
-
-    © 2026
+    â€¢ Â© 2026
 
 </footer>
 
@@ -627,8 +1498,6 @@ KisanVision360 | Smart Farming Alerts
 </div>
 
 </div>
+{% endblock %}
 
 
-</body>
-
-</html>

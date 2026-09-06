@@ -1,48 +1,1783 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿{% extends "base.html" %}
 
-<head>
+{% block title %}KisanVision360+ | AI Crop Intelligence{% endblock %}
 
-    <meta charset="UTF-8">
+{% block head %}
+<link rel="stylesheet"
+          href="{{ url_for(
+              'static',
+              filename='css/recommendation.css'
+          ) }}">
+<style>
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+        :root {
 
-    <title>
-        KisanVision360 | AI Crop Recommendation
-    </title>
+            --kv-green-dark: #1b5e20;
+            --kv-green: #2e7d32;
+            --kv-green-light: #e8f5e9;
 
+            --kv-orange: #fb8c00;
+            --kv-blue: #1976d2;
+            --kv-red: #d32f2f;
+            --kv-yellow: #f9a825;
 
-    <!-- SIDEBAR CSS -->
+            --kv-text: #263238;
+            --kv-muted: #607d8b;
 
-    <link rel="stylesheet"
-          href="{{ url_for('static',
-          filename='css/sidebar.css') }}">
+            --kv-border: #dfe8e1;
 
+            --kv-bg: #f5f9f6;
 
-    <!-- RECOMMENDATION CSS -->
+            --kv-white: #ffffff;
 
-    <link rel="stylesheet"
-          href="{{ url_for('static',
-          filename='css/recommendation.css') }}">
-
-
-    <!-- FONT AWESOME -->
-
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-</head>
-
-
-<body>
+            --kv-shadow:
+                0 10px 28px rgba(0, 0, 0, 0.06);
+        }
 
 
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 25px;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f4f9f5,
+                    #ffffff
+                );
+
+            color: var(--kv-text);
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+        }
+
+
+        .main-content {
+
+            min-height: 100vh;
+        }
+
+
+        .recommendation-page {
+
+            max-width: 1500px;
+
+            margin: auto;
+
+            padding: 0 25px 30px;
+        }
+
+
+        /* =====================================================
+           TOPBAR
+        ====================================================== */
+
+        .topbar {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 20px;
+
+            padding: 18px 3px;
+
+            flex-wrap: wrap;
+
+            border-bottom:
+                1px solid var(--kv-border);
+
+            margin-bottom: 20px;
+        }
+
+
+        .page-heading {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 5px;
+
+            flex: 1;
+        }
+
+
+        .page-heading h1 {
+
+            margin: 0;
+
+            color: var(--kv-green-dark);
+
+            font-size: 27px;
+        }
+
+
+        .page-heading h1 i {
+
+            margin-right: 8px;
+
+            color: var(--kv-green);
+        }
+
+
+        .page-heading p {
+
+            margin: 0;
+
+            color: var(--kv-muted);
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           TOPBAR RIGHT
+        ====================================================== */
+
+        .topbar-right {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .top-action {
+
+            position: relative;
+
+            width: 42px;
+
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 11px;
+
+            background: white;
+
+            color: var(--kv-green-dark);
+
+            border:
+                1px solid var(--kv-border);
+
+            text-decoration: none;
+
+            transition: 0.2s;
+
+            box-shadow:
+                0 4px 12px rgba(0,0,0,0.04);
+        }
+
+
+        .top-action:hover {
+
+            transform: translateY(-2px);
+
+            background: var(--kv-green-light);
+
+            color: var(--kv-green);
+        }
+
+
+        .notification-badge {
+
+            position: absolute;
+
+            top: -5px;
+
+            right: -5px;
+
+            min-width: 18px;
+
+            height: 18px;
+
+            padding: 0 4px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 20px;
+
+            background: var(--kv-red);
+
+            color: white;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            border: 2px solid white;
+        }
+
+
+        /* =====================================================
+           PROFILE
+        ====================================================== */
+
+        .profile {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding-left: 8px;
+        }
+
+
+        .profile img {
+
+            width: 44px;
+
+            height: 44px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            border: 2px solid #d9eadb;
+        }
+
+
+        .profile h4 {
+
+            margin: 0;
+
+            font-size: 14px;
+        }
+
+
+        .profile p {
+
+            margin: 4px 0 0;
+
+            color: var(--kv-green);
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+
+        .profile p i {
+
+            font-size: 7px;
+        }
+
+
+        /* =====================================================
+           AI STATUS BAR
+        ====================================================== */
+
+        .ai-status-bar {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 12px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .ai-status-item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px;
+
+            background: white;
+
+            border:
+                1px solid var(--kv-border);
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,0.04);
+        }
+
+
+        /* IMPORTANT:
+           STATUS CARDS ARE NOW CLICKABLE
+        */
+
+        .ai-status-link {
+
+            text-decoration: none;
+
+            color: inherit;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+
+        .ai-status-link:hover {
+
+            transform: translateY(-3px);
+
+            border-color: #a9cfad;
+
+            background: #fbfffb;
+
+            box-shadow:
+                0 10px 25px rgba(27,94,32,0.10);
+        }
+
+
+        .ai-status-link:active {
+
+            transform: scale(0.98);
+        }
+
+
+        .ai-status-link.ready {
+
+            border-color: #9ccc9f;
+
+            background: #f8fff8;
+        }
+
+
+        .ai-status-link.warning {
+
+            border-color: #efd59e;
+
+            background: #fffdf7;
+        }
+
+
+        .ai-status-icon {
+
+            width: 38px;
+
+            height: 38px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: var(--kv-green-light);
+
+            color: var(--kv-green);
+        }
+
+
+        .ai-status-item strong {
+
+            display: block;
+
+            font-size: 11px;
+
+            color: var(--kv-text);
+        }
+
+
+        .ai-status-item span {
+
+            display: block;
+
+            margin-top: 3px;
+
+            color: var(--kv-muted);
+
+            font-size: 9px;
+
+            line-height: 1.35;
+        }
+
+
+        /* =====================================================
+           AI HERO
+        ====================================================== */
+
+        .ai-banner {
+
+            position: relative;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1b5e20,
+                    #2e7d32,
+                    #43a047
+                );
+
+            border-radius: 22px;
+
+            color: white;
+
+            padding: 30px;
+
+            margin-bottom: 22px;
+
+            box-shadow:
+                0 13px 35px rgba(27,94,32,0.17);
+        }
+
+
+        .ai-banner::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 250px;
+
+            height: 250px;
+
+            border-radius: 50%;
+
+            right: -100px;
+
+            top: -120px;
+
+            background:
+                rgba(255,255,255,0.07);
+        }
+
+
+        .ai-banner::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 160px;
+
+            height: 160px;
+
+            border-radius: 50%;
+
+            right: 100px;
+
+            bottom: -120px;
+
+            background:
+                rgba(255,255,255,0.05);
+        }
+
+
+        .banner-content {
+
+            position: relative;
+
+            z-index: 2;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 18px;
+        }
+
+
+        .banner-icon {
+
+            width: 62px;
+
+            height: 62px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 17px;
+
+            background:
+                rgba(255,255,255,0.14);
+
+            font-size: 26px;
+        }
+
+
+        .ai-banner h2 {
+
+            margin: 0 0 7px;
+
+            font-size: 25px;
+        }
+
+
+        .ai-banner p {
+
+            margin: 0;
+
+            max-width: 800px;
+
+            line-height: 1.6;
+
+            font-size: 13px;
+
+            opacity: 0.94;
+        }
+
+
+        .ai-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            margin-top: 13px;
+
+            padding: 6px 10px;
+
+            border-radius: 8px;
+
+            background:
+                rgba(255,255,255,0.12);
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           INPUT CARD
+        ====================================================== */
+
+        .input-card {
+
+            background: white;
+
+            border:
+                1px solid var(--kv-border);
+
+            border-radius: 20px;
+
+            padding: 25px;
+
+            box-shadow: var(--kv-shadow);
+
+            margin-bottom: 22px;
+
+            scroll-margin-top: 25px;
+        }
+
+
+        .card-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 22px;
+        }
+
+
+        .heading-icon {
+
+            width: 45px;
+
+            height: 45px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: var(--kv-green-light);
+
+            color: var(--kv-green);
+
+            font-size: 18px;
+        }
+
+
+        .card-heading h2 {
+
+            margin: 0;
+
+            font-size: 19px;
+
+            color: var(--kv-green-dark);
+        }
+
+
+        .card-heading p {
+
+            margin: 4px 0 0;
+
+            color: var(--kv-muted);
+
+            font-size: 11px;
+        }
+
+
+        .input-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 16px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .form-group label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #40544a;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+
+        .form-group label i {
+
+            color: var(--kv-green);
+
+            margin-right: 5px;
+        }
+
+
+        .form-group input,
+        .form-group select {
+
+            width: 100%;
+
+            min-height: 45px;
+
+            border:
+                1px solid #d9e4dc;
+
+            border-radius: 10px;
+
+            padding: 0 12px;
+
+            background: #fbfdfb;
+
+            color: var(--kv-text);
+
+            font-size: 12px;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+
+        .form-group input:focus,
+        .form-group select:focus {
+
+            border-color: var(--kv-green);
+
+            box-shadow:
+                0 0 0 3px rgba(46,125,50,0.08);
+
+            background: white;
+        }
+
+
+        .recommend-btn {
+
+            width: 100%;
+
+            min-height: 50px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1b5e20,
+                    #43a047
+                );
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+            box-shadow:
+                0 8px 18px rgba(27,94,32,0.16);
+        }
+
+
+        .recommend-btn:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 12px 24px rgba(27,94,32,0.22);
+        }
+
+
+        .recommend-btn:disabled {
+
+            opacity: 0.65;
+
+            cursor: wait;
+
+            transform: none;
+        }
+
+
+        /* =====================================================
+           SUCCESS
+        ====================================================== */
+
+        .success-message {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            padding: 17px;
+
+            margin-bottom: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #edf8ee,
+                    #ffffff
+                );
+
+            border:
+                1px solid #cde4cf;
+
+            border-radius: 15px;
+        }
+
+
+        .success-icon {
+
+            width: 43px;
+
+            height: 43px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: #dff1e1;
+
+            color: var(--kv-green);
+
+            font-size: 18px;
+        }
+
+
+        .success-content h3 {
+
+            margin: 0 0 4px;
+
+            color: var(--kv-green-dark);
+
+            font-size: 14px;
+        }
+
+
+        .success-content p {
+
+            margin: 0;
+
+            color: var(--kv-muted);
+
+            font-size: 11px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           RESULTS
+        ====================================================== */
+
+        .results-heading {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 13px;
+
+            scroll-margin-top: 25px;
+        }
+
+
+        .results-heading h2 {
+
+            margin: 0;
+
+            color: var(--kv-green-dark);
+
+            font-size: 20px;
+        }
+
+
+        .results-heading h2 i {
+
+            margin-right: 6px;
+
+            color: var(--kv-green);
+        }
+
+
+        .results-heading p {
+
+            margin: 5px 0 0;
+
+            color: var(--kv-muted);
+
+            font-size: 11px;
+        }
+
+
+        .recommendation-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 16px;
+
+            margin-bottom: 22px;
+        }
+
+
+        .recommendation-card {
+
+            position: relative;
+
+            overflow: hidden;
+
+            background: white;
+
+            border:
+                1px solid var(--kv-border);
+
+            border-radius: 17px;
+
+            padding: 20px;
+
+            box-shadow:
+                0 7px 22px rgba(0,0,0,0.05);
+
+            transition: 0.2s;
+        }
+
+
+        .recommendation-card:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 12px 28px rgba(0,0,0,0.08);
+        }
+
+
+        .recommendation-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 80px;
+
+            height: 80px;
+
+            border-radius: 50%;
+
+            right: -35px;
+
+            bottom: -35px;
+
+            background: #f1f6f2;
+        }
+
+
+        .card-icon {
+
+            width: 45px;
+
+            height: 45px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: var(--kv-green-light);
+
+            color: var(--kv-green);
+
+            margin-bottom: 13px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .blue-icon {
+
+            background: #e3f2fd;
+
+            color: var(--kv-blue);
+        }
+
+
+        .orange-icon {
+
+            background: #fff3e0;
+
+            color: var(--kv-orange);
+        }
+
+
+        .red-icon {
+
+            background: #ffebee;
+
+            color: var(--kv-red);
+        }
+
+
+        .yellow-icon {
+
+            background: #fff8e1;
+
+            color: var(--kv-yellow);
+        }
+
+
+        .sky-icon {
+
+            background: #e1f5fe;
+
+            color: #0288d1;
+        }
+
+
+        .recommendation-card h3 {
+
+            margin: 0 0 7px;
+
+            color: var(--kv-muted);
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .recommendation-card h2 {
+
+            margin: 0;
+
+            color: var(--kv-green-dark);
+
+            font-size: 20px;
+
+            line-height: 1.25;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .recommendation-card p {
+
+            margin: 9px 0 13px;
+
+            color: #60736a;
+
+            font-size: 11px;
+
+            line-height: 1.55;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .confidence {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            padding: 6px 9px;
+
+            border-radius: 8px;
+
+            background: var(--kv-green-light);
+
+            color: var(--kv-green-dark);
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        /* =====================================================
+           EMPTY
+        ====================================================== */
+
+        .no-recommendation {
+
+            padding: 25px;
+
+            background: white;
+
+            border:
+                1px dashed #cbd9ce;
+
+            border-radius: 17px;
+
+            text-align: center;
+
+            color: var(--kv-muted);
+
+            margin-bottom: 22px;
+        }
+
+
+        .no-recommendation i {
+
+            font-size: 30px;
+
+            color: #9aae9e;
+
+            margin-bottom: 10px;
+        }
+
+
+        .no-recommendation h3 {
+
+            margin: 0 0 5px;
+
+            color: var(--kv-green-dark);
+
+            font-size: 15px;
+        }
+
+
+        .no-recommendation p {
+
+            margin: 0;
+
+            font-size: 11px;
+        }
+
+
+        /* =====================================================
+           ADVICE
+        ====================================================== */
+
+        .advice-card {
+
+            background: white;
+
+            border:
+                1px solid var(--kv-border);
+
+            border-radius: 19px;
+
+            padding: 23px;
+
+            box-shadow: var(--kv-shadow);
+
+            margin-bottom: 22px;
+        }
+
+
+        .advice-heading {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .advice-heading-icon {
+
+            width: 45px;
+
+            height: 45px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: #fff8e1;
+
+            color: #f9a825;
+        }
+
+
+        .advice-heading h2 {
+
+            margin: 0;
+
+            color: var(--kv-green-dark);
+
+            font-size: 18px;
+        }
+
+
+        .advice-heading p {
+
+            margin: 4px 0 0;
+
+            color: var(--kv-muted);
+
+            font-size: 11px;
+        }
+
+
+        .advice-list {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+        }
+
+
+        .advice-item {
+
+            display: flex;
+
+            gap: 11px;
+
+            padding: 14px;
+
+            background: var(--kv-bg);
+
+            border:
+                1px solid var(--kv-border);
+
+            border-radius: 12px;
+        }
+
+
+        .advice-icon {
+
+            width: 36px;
+
+            height: 36px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 9px;
+
+            background: white;
+
+            color: var(--kv-green);
+
+            border:
+                1px solid #e0e9e2;
+        }
+
+
+        .advice-item strong {
+
+            display: block;
+
+            color: var(--kv-green-dark);
+
+            font-size: 11px;
+
+            margin-bottom: 4px;
+        }
+
+
+        .advice-item p {
+
+            margin: 0;
+
+            color: var(--kv-muted);
+
+            font-size: 10px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           INTELLIGENCE
+        ====================================================== */
+
+        .intelligence-card {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ffffff,
+                    #f5faf6
+                );
+
+            border:
+                1px solid var(--kv-border);
+
+            border-radius: 19px;
+
+            padding: 22px;
+
+            margin-bottom: 22px;
+
+            box-shadow: var(--kv-shadow);
+        }
+
+
+        .intelligence-card h2 {
+
+            margin: 0 0 5px;
+
+            color: var(--kv-green-dark);
+
+            font-size: 18px;
+        }
+
+
+        .intelligence-card > p {
+
+            margin: 0 0 17px;
+
+            color: var(--kv-muted);
+
+            font-size: 11px;
+        }
+
+
+        .intelligence-flow {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(6, 1fr);
+
+            gap: 8px;
+
+            align-items: center;
+        }
+
+
+        .flow-item {
+
+            text-align: center;
+
+            padding: 12px 6px;
+
+            border-radius: 11px;
+
+            background: white;
+
+            border:
+                1px solid var(--kv-border);
+
+            transition: 0.2s;
+        }
+
+
+        .flow-item:hover {
+
+            transform: translateY(-2px);
+
+            border-color: #b9d8bd;
+        }
+
+
+        .flow-item i {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: var(--kv-green);
+
+            font-size: 17px;
+        }
+
+
+        .flow-item strong {
+
+            display: block;
+
+            font-size: 9px;
+
+            color: var(--kv-text);
+        }
+
+
+        .flow-item span {
+
+            display: block;
+
+            margin-top: 3px;
+
+            color: var(--kv-muted);
+
+            font-size: 8px;
+
+            line-height: 1.3;
+        }
+
+
+        /* =====================================================
+           ACTION BUTTONS
+        ====================================================== */
+
+        .action-buttons {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap: 10px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .btn {
+
+            min-height: 45px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 7px;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            transition: 0.2s;
+
+            cursor: pointer;
+        }
+
+
+        .btn:hover {
+
+            transform: translateY(-2px);
+        }
+
+
+        .btn.green {
+
+            background: var(--kv-green-light);
+
+            color: var(--kv-green-dark);
+
+            border:
+                1px solid #cce2cf;
+        }
+
+
+        .btn.blue {
+
+            background: #e8f3fb;
+
+            color: #1769a8;
+
+            border:
+                1px solid #cce2ef;
+        }
+
+
+        .btn.orange {
+
+            background: #fff3e0;
+
+            color: #c56d00;
+
+            border:
+                1px solid #f1d5ad;
+        }
+
+
+        .btn.gray {
+
+            background: #f2f5f3;
+
+            color: #52635a;
+
+            border:
+                1px solid #dfe6e1;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ====================================================== */
+
+        .footer {
+
+            text-align: center;
+
+            padding: 22px 10px;
+
+            color: var(--kv-muted);
+
+            font-size: 11px;
+        }
+
+
+        .footer i {
+
+            color: var(--kv-green);
+
+            margin-right: 4px;
+        }
+
+
+        .footer span {
+
+            margin: 0 6px;
+
+            color: #a8b5ad;
+        }
+
+
+        /* =====================================================
+           RTL
+        ====================================================== */
+
+        html[dir="rtl"] .page-heading,
+        html[dir="rtl"] .profile,
+        html[dir="rtl"] .banner-content,
+        html[dir="rtl"] .card-heading,
+        html[dir="rtl"] .advice-heading {
+
+            direction: rtl;
+        }
+
+
+        html[dir="rtl"] .page-heading h1 i,
+        html[dir="rtl"] .form-group label i {
+
+            margin-right: 0;
+
+            margin-left: 5px;
+        }
+
+
+        html[dir="rtl"] .topbar-right {
+
+            direction: rtl;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 1150px) {
+
+            .input-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .recommendation-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .action-buttons {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+
+
+            .intelligence-flow {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 900px) {
+
+            .ai-status-bar {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .advice-list {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .topbar-right {
+
+                width: 100%;
+
+                justify-content: flex-end;
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .recommendation-page {
+
+                padding: 0 15px 20px;
+            }
+
+
+            .topbar {
+
+                padding: 18px 2px;
+            }
+
+
+            .ai-status-bar {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .input-grid,
+            .recommendation-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .input-card,
+            .advice-card,
+            .intelligence-card {
+
+                padding: 17px;
+            }
+
+
+            .ai-banner {
+
+                padding: 22px;
+            }
+
+
+            .banner-content {
+
+                align-items: flex-start;
+            }
+
+
+            .ai-banner h2 {
+
+                font-size: 20px;
+            }
+
+
+            .action-buttons {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .intelligence-flow {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .success-message {
+
+                align-items: flex-start;
+            }
+
+
+            .profile {
+
+                padding-left: 0;
+            }
+
+        }
+
+
+        @media (max-width: 430px) {
+
+            .action-buttons {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .intelligence-flow {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .profile {
+
+                width: 100%;
+            }
+
+
+            .topbar-right {
+
+                justify-content: flex-start;
+            }
+
+
+            .top-action {
+
+                width: 40px;
+
+                height: 40px;
+            }
+
+        }
+
+    </style>
+{% endblock %}
+
+{% block page_title %}AI Crop Intelligence{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
 <!-- =====================================================
      SIDEBAR
 ===================================================== -->
 
-{% include "components/sidebar.html" %}
 
 
 
@@ -61,6 +1796,7 @@
 
         <div class="topbar">
 
+
             <div class="page-heading">
 
                 <h1>
@@ -71,41 +1807,106 @@
 
                 </h1>
 
-
                 <p>
-
-                    Smart AI recommendations for
-                    better farming decisions.
-
+                    Personalized crop intelligence
+                    for smarter farming decisions.
                 </p>
 
             </div>
 
 
-            <!-- PROFILE -->
-
-            <div class="profile">
-
-                <img
-                    src="{{ url_for('static',
-                    filename='images/farmer.jpg') }}"
-                    alt="Farmer">
+            <div class="topbar-right">
 
 
-                <div>
+                <!-- NOTIFICATIONS -->
 
-                    <h4>
+                <a
+                    href="{{ url_for('notifications.notifications') }}"
+                    class="top-action"
+                    title="Notifications"
+                    aria-label="Notifications"
+                >
 
-                        {{ name }}
+                    <i class="fa-solid fa-bell"></i>
 
-                    </h4>
+                    {% set notif_count =
+                        notification_count|default(0, true)|int
+                    %}
+
+                    {% if notif_count > 0 %}
+
+                        <span class="notification-badge">
+
+                            {{ notif_count if notif_count < 100 else '99+' }}
+
+                        </span>
+
+                    {% endif %}
+
+                </a>
 
 
-                    <p>
+                <!-- SETTINGS -->
 
-                        Farmer
+                <a
+                    href="{{ url_for('settings.settings') }}"
+                    class="top-action"
+                    title="Settings"
+                    aria-label="Settings"
+                >
 
-                    </p>
+                    <i class="fa-solid fa-gear"></i>
+
+                </a>
+
+
+                <!-- PROFILE -->
+
+                <a
+                    href="{{ url_for('profile.profile') }}"
+                    class="top-action"
+                    title="Profile"
+                    aria-label="Profile"
+                >
+
+                    <i class="fa-solid fa-user"></i>
+
+                </a>
+
+
+                <!-- USER -->
+
+                <div class="profile">
+
+                    <img
+                        src="{{ url_for(
+                            'static',
+                            filename='images/farmer.jpg'
+                        ) }}"
+                        alt="Farmer profile"
+                        onerror="
+                            this.src='{{ url_for(
+                                'static',
+                                filename='images/logo.png'
+                            ) }}';
+                        "
+                    >
+
+                    <div>
+
+                        <h4>
+                            {{ name|default('Farmer', true) }}
+                        </h4>
+
+                        <p>
+
+                            <i class="fa-solid fa-circle"></i>
+
+                            Farmer
+
+                        </p>
+
+                    </div>
 
                 </div>
 
@@ -113,6 +1914,162 @@
 
         </div>
 
+
+        <!-- =================================================
+             WORKING AI STATUS BAR
+        ================================================== -->
+
+        <div class="ai-status-bar">
+
+
+            <!-- =================================================
+                 CROP INTELLIGENCE
+            ================================================== -->
+
+            <a
+                href="{{ url_for('crop.crop_details') }}"
+                class="ai-status-item ai-status-link"
+                id="cropIntelligenceCard"
+                title="Open Crop Details"
+            >
+
+                <div class="ai-status-icon">
+                    <i class="fa-solid fa-seedling"></i>
+                </div>
+
+                <div>
+                    <strong>
+                        Crop Details
+                    </strong>
+
+                    <span>
+                        View crop information
+                    </span>
+                </div>
+
+            </a>
+
+
+            <!-- =================================================
+                 WEATHER AWARE
+            ================================================== -->
+
+            <a
+                href="{{ url_for('weather.weather') }}"
+                class="ai-status-item ai-status-link"
+                id="weatherAwareCard"
+                title="Open live weather"
+            >
+
+                <div class="ai-status-icon">
+
+                    <i class="fa-solid fa-cloud-sun"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Weather Aware
+                    </strong>
+
+                    <span id="weatherAwareStatus">
+
+                        {% if weather and weather.temperature is not none %}
+
+                            {{ weather.temperature }}Â°C
+
+                            {% if weather.description %}
+                                Â· {{ weather.description }}
+                            {% endif %}
+
+                        {% else %}
+
+                            Weather context available
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <!-- =================================================
+                 WATER PLANNING
+            ================================================== -->
+
+            <a
+                href="{{ url_for('irrigation.irrigation') }}"
+                class="ai-status-item ai-status-link"
+                id="waterPlanningCard"
+                title="Open irrigation advisor"
+            >
+
+                <div class="ai-status-icon">
+
+                    <i class="fa-solid fa-droplet"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Water Planning
+                    </strong>
+
+                    <span id="waterPlanningStatus">
+                        Irrigation availability
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <!-- =================================================
+                 FARM DECISION SUPPORT
+            ================================================== -->
+
+            <a
+                href="#recommendationResults"
+                class="ai-status-item ai-status-link"
+                id="decisionSupportCard"
+                title="View AI recommendation"
+            >
+
+                <div class="ai-status-icon">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Farm Decision Support
+                    </strong>
+
+                    <span id="decisionSupportStatus">
+
+                        {% if recommendation %}
+
+                            Recommendation ready
+
+                        {% else %}
+
+                            Personalized recommendation
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+            </a>
+
+        </div>
 
 
         <!-- =================================================
@@ -125,7 +2082,7 @@
 
                 <div class="banner-icon">
 
-                    <i class="fa-solid fa-robot"></i>
+                    <i class="fa-solid fa-brain"></i>
 
                 </div>
 
@@ -133,20 +2090,24 @@
                 <div>
 
                     <h2>
-
-                        AI-Powered Farming Assistant
-
+                        KisanVision360+ Crop Intelligence
                     </h2>
 
-
                     <p>
-
-                        Get crop, irrigation, fertilizer,
-                        pest and yield recommendations
-                        based on your farm conditions
-                        and current weather.
-
+                        Enter your farm conditions to generate
+                        a personalized crop recommendation.
+                        The recommendation can consider soil,
+                        land area, season, irrigation availability
+                        and available weather information.
                     </p>
+
+                    <span class="ai-badge">
+
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                        AI-Assisted Farm Decision Support
+
+                    </span>
 
                 </div>
 
@@ -155,13 +2116,14 @@
         </div>
 
 
-
         <!-- =================================================
              FARM CONDITIONS
         ================================================== -->
 
-        <div class="input-card">
-
+        <div
+            class="input-card"
+            id="farmConditions"
+        >
 
             <div class="card-heading">
 
@@ -171,21 +2133,15 @@
 
                 </div>
 
-
                 <div>
 
                     <h2>
-
                         Farm Conditions
-
                     </h2>
 
-
                     <p>
-
-                        Enter your farm details to generate
-                        a personalized recommendation.
-
+                        Provide basic farm information
+                        for a more relevant recommendation.
                     </p>
 
                 </div>
@@ -193,15 +2149,11 @@
             </div>
 
 
-
-            <!-- =================================================
-                 ONLY ONE FORM
-            ================================================== -->
-
             <form
-                action="{{ url_for('recommendation') }}"
-                method="POST">
-
+                action="{{ url_for('recommendation.recommendation') }}"
+                method="POST"
+                id="recommendationForm"
+            >
 
                 <div class="input-grid">
 
@@ -222,7 +2174,8 @@
                         <select
                             id="soil"
                             name="soil"
-                            required>
+                            required
+                        >
 
                             <option value="black">
                                 Black Soil
@@ -244,10 +2197,49 @@
                                 Sandy Soil
                             </option>
 
+                            <option value="clayey">
+                                Clayey Soil
+                            </option>
+
+                            <option value="silty">
+                                Silty Soil
+                            </option>
+
+                            <option value="laterite">
+                                Laterite Soil
+                            </option>
+
+                            <option value="saline">
+                                Saline Soil
+                            </option>
+
+                            <option value="alkaline">
+                                Alkaline Soil
+                            </option>
+
+                            <option value="peaty">
+                                Peaty Soil
+                            </option>
+
+                            <option value="chalky">
+                                Chalky Soil
+                            </option>
+
+                            <option value="gravelly">
+                                Gravelly Soil
+                            </option>
+
+                            <option value="red_loamy">
+                                Red Loamy Soil
+                            </option>
+
+                            <option value="black_loamy">
+                                Black Loamy Soil
+                            </option>
+
                         </select>
 
                     </div>
-
 
 
                     <!-- AREA -->
@@ -269,12 +2261,12 @@
                             name="area"
                             min="0.1"
                             step="0.1"
-                            value="5"
+                            value="{{ request.form.get('area', '5') }}"
                             placeholder="Example: 5"
-                            required>
+                            required
+                        >
 
                     </div>
-
 
 
                     <!-- SEASON -->
@@ -293,24 +2285,36 @@
                         <select
                             id="season"
                             name="season"
-                            required>
+                            required
+                        >
 
-                            <option value="kharif">
+                            <option value="kharif"
+                                {% if request.form.get('season') == 'kharif' %}
+                                    selected
+                                {% endif %}
+                            >
                                 Kharif
                             </option>
 
-                            <option value="rabi">
+                            <option value="rabi"
+                                {% if request.form.get('season') == 'rabi' %}
+                                    selected
+                                {% endif %}
+                            >
                                 Rabi
                             </option>
 
-                            <option value="summer">
+                            <option value="summer"
+                                {% if request.form.get('season') == 'summer' %}
+                                    selected
+                                {% endif %}
+                            >
                                 Zaid / Summer
                             </option>
 
                         </select>
 
                     </div>
-
 
 
                     <!-- IRRIGATION -->
@@ -329,17 +2333,30 @@
                         <select
                             id="irrigation"
                             name="irrigation"
-                            required>
+                            required
+                        >
 
-                            <option value="good">
+                            <option value="good"
+                                {% if request.form.get('irrigation', 'good') == 'good' %}
+                                    selected
+                                {% endif %}
+                            >
                                 Good
                             </option>
 
-                            <option value="medium">
+                            <option value="medium"
+                                {% if request.form.get('irrigation') == 'medium' %}
+                                    selected
+                                {% endif %}
+                            >
                                 Medium
                             </option>
 
-                            <option value="low">
+                            <option value="low"
+                                {% if request.form.get('irrigation') == 'low' %}
+                                    selected
+                                {% endif %}
+                            >
                                 Low
                             </option>
 
@@ -350,12 +2367,13 @@
                 </div>
 
 
-
-                <!-- GENERATE BUTTON -->
+                <!-- SUBMIT -->
 
                 <button
                     type="submit"
-                    class="recommend-btn">
+                    class="recommend-btn"
+                    id="recommendBtn"
+                >
 
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
 
@@ -363,11 +2381,9 @@
 
                 </button>
 
-
             </form>
 
         </div>
-
 
 
         <!-- =================================================
@@ -388,19 +2404,12 @@
             <div class="success-content">
 
                 <h3>
-
-                    AI Recommendation Generated Successfully!
-
+                    Recommendation Generated Successfully
                 </h3>
 
-
                 <p>
-
-                    Based on your soil type, land area,
-                    season and irrigation availability,
-                    your personalized farming recommendation
-                    is ready.
-
+                    Your farm conditions have been processed
+                    and the available recommendation is shown below.
                 </p>
 
             </div>
@@ -410,12 +2419,14 @@
         {% endif %}
 
 
-
         <!-- =================================================
-             RESULTS TITLE
+             RESULTS
         ================================================== -->
 
-        <div class="results-heading">
+        <div
+            class="results-heading"
+            id="recommendationResults"
+        >
 
             <div>
 
@@ -427,11 +2438,9 @@
 
                 </h2>
 
-
                 <p>
-
-                    Personalized insights for your farm
-
+                    Personalized insights for your selected
+                    farm conditions.
                 </p>
 
             </div>
@@ -439,17 +2448,12 @@
         </div>
 
 
-
-        <!-- =================================================
-             RECOMMENDATION CARDS
-        ================================================== -->
+        {% if recommendation %}
 
         <div class="recommendation-grid">
 
 
-            <!-- =================================================
-                 CROP
-            ================================================== -->
+            <!-- CROP -->
 
             <div class="recommendation-card">
 
@@ -459,31 +2463,34 @@
 
                 </div>
 
-
                 <h3>
-
                     Recommended Crop
-
                 </h3>
-
 
                 <h2>
 
-                    {{ recommendation["crop"] }}
+                    {{ recommendation["crop"]|default(
+                        "Not available",
+                        true
+                    ) }}
 
                 </h2>
 
-
                 <p>
 
-                    {{ recommendation["reason"] }}
+                    {{ recommendation["reason"]|default(
+                        "Recommendation reason is not available.",
+                        true
+                    ) }}
 
                 </p>
 
 
+                {% if recommendation["confidence"] is defined %}
+
                 <span class="confidence">
 
-                    <i class="fa-solid fa-shield-check"></i>
+                    <i class="fa-solid fa-shield-halved"></i>
 
                     Confidence:
 
@@ -491,13 +2498,12 @@
 
                 </span>
 
+                {% endif %}
+
             </div>
 
 
-
-            <!-- =================================================
-                 IRRIGATION
-            ================================================== -->
+            <!-- IRRIGATION -->
 
             <div class="recommendation-card">
 
@@ -507,35 +2513,28 @@
 
                 </div>
 
-
                 <h3>
-
                     Irrigation
-
                 </h3>
-
 
                 <h2>
 
-                    {{ recommendation["irrigation"] }}
+                    {{ recommendation["irrigation"]|default(
+                        "Not available",
+                        true
+                    ) }}
 
                 </h2>
 
-
                 <p>
-
-                    Maintain proper soil moisture
-                    and avoid over-irrigation.
-
+                    Maintain suitable soil moisture
+                    and avoid unnecessary water usage.
                 </p>
 
             </div>
 
 
-
-            <!-- =================================================
-                 FERTILIZER
-            ================================================== -->
+            <!-- FERTILIZER -->
 
             <div class="recommendation-card">
 
@@ -545,35 +2544,28 @@
 
                 </div>
 
-
                 <h3>
-
                     Fertilizer
-
                 </h3>
-
 
                 <h2>
 
-                    {{ recommendation["fertilizer"] }}
+                    {{ recommendation["fertilizer"]|default(
+                        "Not available",
+                        true
+                    ) }}
 
                 </h2>
 
-
                 <p>
-
-                    Suggested according to
-                    selected soil conditions.
-
+                    Use the recommendation as guidance
+                    and follow crop-specific application practices.
                 </p>
 
             </div>
 
 
-
-            <!-- =================================================
-                 PEST
-            ================================================== -->
+            <!-- PEST -->
 
             <div class="recommendation-card">
 
@@ -583,35 +2575,28 @@
 
                 </div>
 
-
                 <h3>
-
-                    Pest Alert
-
+                    Pest Risk
                 </h3>
-
 
                 <h2>
 
-                    {{ recommendation["pest_risk"] }}
+                    {{ recommendation["pest_risk"]|default(
+                        "Not available",
+                        true
+                    ) }}
 
                 </h2>
 
-
                 <p>
-
-                    Monitor leaves and stems
-                    regularly for pest symptoms.
-
+                    Regularly inspect leaves, stems and
+                    crop growth for early warning signs.
                 </p>
 
             </div>
 
 
-
-            <!-- =================================================
-                 YIELD
-            ================================================== -->
+            <!-- YIELD -->
 
             <div class="recommendation-card">
 
@@ -621,35 +2606,28 @@
 
                 </div>
 
-
                 <h3>
-
                     Expected Yield
-
                 </h3>
-
 
                 <h2>
 
-                    {{ recommendation["yield"] }}
+                    {{ recommendation["yield"]|default(
+                        "Not available",
+                        true
+                    ) }}
 
                 </h2>
 
-
                 <p>
-
-                    Estimated based on available
-                    farm conditions.
-
+                    This is an estimate based on the
+                    recommendation data available to the system.
                 </p>
 
             </div>
 
 
-
-            <!-- =================================================
-                 WEATHER
-            ================================================== -->
+            <!-- WEATHER -->
 
             <div class="recommendation-card">
 
@@ -659,34 +2637,32 @@
 
                 </div>
 
-
                 <h3>
-
                     Current Weather
-
                 </h3>
-
 
                 <h2>
 
-                    {% if weather %}
+                    {% if weather and weather.temperature is not none %}
 
-                        {{ weather.temperature }}°C
+                        {{ weather.temperature }}Â°C
 
                     {% else %}
 
-                        --°C
+                        --Â°C
 
                     {% endif %}
 
                 </h2>
 
-
                 <p>
 
                     {% if weather %}
 
-                        {{ weather.description }}
+                        {{ weather.description|default(
+                            "Weather data unavailable.",
+                            true
+                        ) }}
 
                     {% else %}
 
@@ -698,9 +2674,28 @@
 
             </div>
 
+        </div>
+
+
+        {% else %}
+
+        <div class="no-recommendation">
+
+            <i class="fa-solid fa-seedling"></i>
+
+            <h3>
+                Ready for Crop Analysis
+            </h3>
+
+            <p>
+                Enter your soil, land area, season and
+                irrigation details above to generate
+                your recommendation.
+            </p>
 
         </div>
 
+        {% endif %}
 
 
         <!-- =================================================
@@ -708,7 +2703,6 @@
         ================================================== -->
 
         <div class="advice-card">
-
 
             <div class="advice-heading">
 
@@ -718,21 +2712,15 @@
 
                 </div>
 
-
                 <div>
 
                     <h2>
-
                         Smart Farming Advice
-
                     </h2>
 
-
                     <p>
-
-                        Follow these recommendations
+                        General decision-support guidance
                         for better crop management.
-
                     </p>
 
                 </div>
@@ -740,11 +2728,8 @@
             </div>
 
 
-
             <div class="advice-list">
 
-
-                <!-- IRRIGATION -->
 
                 <div class="advice-item">
 
@@ -754,31 +2739,22 @@
 
                     </div>
 
-
                     <div>
 
                         <strong>
-
-                            Irrigation
-
+                            Water Management
                         </strong>
 
-
                         <p>
-
-                            Check soil moisture before
-                            irrigation and avoid unnecessary
-                            water usage.
-
+                            Check soil moisture and current
+                            weather before irrigation. Avoid
+                            unnecessary watering.
                         </p>
 
                     </div>
 
                 </div>
 
-
-
-                <!-- FERTILIZER -->
 
                 <div class="advice-item">
 
@@ -788,30 +2764,22 @@
 
                     </div>
 
-
                     <div>
 
                         <strong>
-
-                            Fertilizer
-
+                            Nutrient Management
                         </strong>
 
-
                         <p>
-
-                            Apply fertilizer according
-                            to soil condition and crop stage.
-
+                            Apply fertilizer according to
+                            soil condition, crop stage and
+                            recommended agricultural practice.
                         </p>
 
                     </div>
 
                 </div>
 
-
-
-                <!-- PEST -->
 
                 <div class="advice-item">
 
@@ -821,30 +2789,22 @@
 
                     </div>
 
-
                     <div>
 
                         <strong>
-
                             Pest Monitoring
-
                         </strong>
 
-
                         <p>
-
-                            Regularly inspect leaves and
-                            stems for early pest symptoms.
-
+                            Inspect leaves, stems and crop
+                            growth regularly so potential
+                            problems can be detected early.
                         </p>
 
                     </div>
 
                 </div>
 
-
-
-                <!-- WEATHER -->
 
                 <div class="advice-item">
 
@@ -854,44 +2814,158 @@
 
                     </div>
 
-
                     <div>
 
                         <strong>
-
-                            Weather
-
+                            Weather-Aware Farming
                         </strong>
 
-
                         <p>
-
-                            Check live weather before
-                            spraying pesticides or fertilizer.
-
+                            Check weather conditions before
+                            spraying, irrigation or other
+                            field operations.
                         </p>
 
                     </div>
 
                 </div>
 
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             CONNECTED FARM INTELLIGENCE
+        ================================================== -->
+
+        <div class="intelligence-card">
+
+            <h2>
+
+                <i class="fa-solid fa-diagram-project"></i>
+
+                Connected Farm Intelligence
+
+            </h2>
+
+            <p>
+                The recommendation module becomes more useful
+                when connected with the other KisanVision360+
+                farming modules.
+            </p>
+
+
+            <div class="intelligence-flow">
+
+
+                <div class="flow-item">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    <strong>
+                        Farm Profile
+                    </strong>
+
+                    <span>
+                        Location & farm details
+                    </span>
+
+                </div>
+
+
+                <div class="flow-item">
+
+                    <i class="fa-solid fa-mountain-sun"></i>
+
+                    <strong>
+                        Soil
+                    </strong>
+
+                    <span>
+                        Soil suitability
+                    </span>
+
+                </div>
+
+
+                <div class="flow-item">
+
+                    <i class="fa-solid fa-cloud-sun"></i>
+
+                    <strong>
+                        Weather
+                    </strong>
+
+                    <span>
+                        Current conditions
+                    </span>
+
+                </div>
+
+
+                <div class="flow-item">
+
+                    <i class="fa-solid fa-seedling"></i>
+
+                    <strong>
+                        Crop Advisor
+                    </strong>
+
+                    <span>
+                        Crop selection
+                    </span>
+
+                </div>
+
+
+                <div class="flow-item">
+
+                    <i class="fa-solid fa-chart-column"></i>
+
+                    <strong>
+                        Market
+                    </strong>
+
+                    <span>
+                        Selling opportunity
+                    </span>
+
+                </div>
+
+
+                <div class="flow-item">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    <strong>
+                        Profit
+                    </strong>
+
+                    <span>
+                        Financial decision
+                    </span>
+
+                </div>
 
             </div>
 
         </div>
 
 
-
         <!-- =================================================
-             ACTION BUTTONS
+             WORKING ACTION BUTTONS
         ================================================== -->
 
         <div class="action-buttons">
 
 
+            <!-- DISEASE -->
+
             <a
-                href="{{ url_for('disease') }}"
-                class="btn green">
+                href="{{ url_for('disease.disease') }}"
+                class="btn green"
+            >
 
                 <i class="fa-solid fa-microscope"></i>
 
@@ -900,10 +2974,12 @@
             </a>
 
 
+            <!-- WEATHER -->
 
             <a
-                href="{{ url_for('weather') }}"
-                class="btn blue">
+                href="{{ url_for('weather.weather') }}"
+                class="btn blue"
+            >
 
                 <i class="fa-solid fa-cloud-sun"></i>
 
@@ -912,10 +2988,12 @@
             </a>
 
 
+            <!-- IRRIGATION -->
 
             <a
-                href="{{ url_for('irrigation') }}"
-                class="btn blue">
+                href="{{ url_for('irrigation.irrigation') }}"
+                class="btn blue"
+            >
 
                 <i class="fa-solid fa-droplet"></i>
 
@@ -924,10 +3002,14 @@
             </a>
 
 
+            <!-- MARKETPLACE -->
 
             <a
-                href="{{ url_for('marketplace') }}"
-                class="btn orange">
+                href="{{ url_for(
+                    'marketplace.farmer_marketplace'
+                ) }}"
+                class="btn orange"
+            >
 
                 <i class="fa-solid fa-store"></i>
 
@@ -936,10 +3018,12 @@
             </a>
 
 
+            <!-- DASHBOARD -->
 
             <a
-                href="{{ url_for('farmer') }}"
-                class="btn gray">
+                href="{{ url_for('farmer.farmer') }}"
+                class="btn gray"
+            >
 
                 <i class="fa-solid fa-house"></i>
 
@@ -947,9 +3031,7 @@
 
             </a>
 
-
         </div>
-
 
 
         <!-- =================================================
@@ -960,15 +3042,17 @@
 
             <i class="fa-solid fa-leaf"></i>
 
-            KisanVision360
+            <strong>
+                KisanVision360+
+            </strong>
 
-            <span>•</span>
+            <span>â€¢</span>
 
-            AI Powered Smart Agriculture Platform
+            AI-Assisted Smart Agriculture Platform
 
-            <span>•</span>
+            <span>â€¢</span>
 
-            Made in India 🇮🇳
+            Made in India ðŸ‡®ðŸ‡³
 
         </div>
 
@@ -978,20 +3062,735 @@
 </div>
 
 
-
 <!-- =====================================================
      CHATBOT
 ===================================================== -->
 
-{% include "components/chatbot.html" %}
 
 
-<!-- CHATBOT JS -->
-
-<script src="{{ url_for('static',
-filename='js/chatbot.js') }}"></script>
 
 
-</body>
 
-</html>
+
+<!-- =====================================================
+     PAGE JAVASCRIPT
+===================================================== -->
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for(
+    'static',
+    filename='js/chatbot.js'
+) }}"></script>
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        /* =================================================
+           ELEMENTS
+        ================================================= */
+
+        const form =
+            document.getElementById(
+                "recommendationForm"
+            );
+
+
+        const button =
+            document.getElementById(
+                "recommendBtn"
+            );
+
+
+        const soilField =
+            document.getElementById(
+                "soil"
+            );
+
+
+        const seasonField =
+            document.getElementById(
+                "season"
+            );
+
+
+        const irrigationField =
+            document.getElementById(
+                "irrigation"
+            );
+
+
+        const cropStatus =
+            document.getElementById(
+                "cropIntelligenceStatus"
+            );
+
+
+        const cropCard =
+            document.getElementById(
+                "cropIntelligenceCard"
+            );
+
+
+        const weatherStatus =
+            document.getElementById(
+                "weatherAwareStatus"
+            );
+
+
+        const weatherCard =
+            document.getElementById(
+                "weatherAwareCard"
+            );
+
+
+        const waterStatus =
+            document.getElementById(
+                "waterPlanningStatus"
+            );
+
+
+        const waterCard =
+            document.getElementById(
+                "waterPlanningCard"
+            );
+
+
+        const decisionStatus =
+            document.getElementById(
+                "decisionSupportStatus"
+            );
+
+
+        const decisionCard =
+            document.getElementById(
+                "decisionSupportCard"
+            );
+
+
+        /* =================================================
+           SERVER RECOMMENDATION STATE
+        ================================================= */
+
+        const hasRecommendation =
+            {{ 'true' if recommendation else 'false' }};
+
+
+        /* =================================================
+           FORMAT TEXT
+        ================================================= */
+
+        function cleanText(value) {
+
+            if (!value) {
+                return "";
+            }
+
+            return value
+                .toString()
+                .replaceAll("_", " ")
+                .replace(/\s+/g, " ")
+                .trim();
+
+        }
+
+
+        /* =================================================
+           CROP INTELLIGENCE
+        ================================================= */
+
+        function updateCropIntelligence() {
+
+            if (!cropStatus) {
+                return;
+            }
+
+
+            const soil =
+                soilField
+                    ? cleanText(soilField.value)
+                    : "";
+
+
+            const season =
+                seasonField
+                    ? cleanText(seasonField.value)
+                    : "";
+
+
+            if (soil && season) {
+
+                cropStatus.textContent =
+                    "Ready: " +
+                    soil +
+                    " + " +
+                    season;
+
+
+                if (cropCard) {
+
+                    cropCard.classList.add(
+                        "ready"
+                    );
+
+                    cropCard.classList.remove(
+                        "warning"
+                    );
+                }
+
+            } else {
+
+                cropStatus.textContent =
+                    "Enter soil + season";
+
+
+                if (cropCard) {
+
+                    cropCard.classList.remove(
+                        "ready"
+                    );
+
+                    cropCard.classList.add(
+                        "warning"
+                    );
+                }
+
+            }
+
+        }
+
+
+        /* =================================================
+           WEATHER STATUS
+        ================================================= */
+
+        function updateWeatherStatus() {
+
+            if (!weatherStatus) {
+                return;
+            }
+
+
+            const serverWeatherAvailable =
+                {% if weather and weather.temperature is not none %}
+                    true
+                {% else %}
+                    false
+                {% endif %};
+
+
+            if (serverWeatherAvailable) {
+
+                weatherStatus.textContent =
+                    "{{ weather.temperature }}Â°C" +
+                    "{% if weather.description %}" +
+                    " Â· {{ weather.description|replace('\n', ' ') }}" +
+                    "{% endif %}";
+
+
+                if (weatherCard) {
+
+                    weatherCard.classList.add(
+                        "ready"
+                    );
+
+                    weatherCard.classList.remove(
+                        "warning"
+                    );
+                }
+
+            } else {
+
+                weatherStatus.textContent =
+                    "Open live weather";
+
+
+                if (weatherCard) {
+
+                    weatherCard.classList.remove(
+                        "ready"
+                    );
+
+                }
+
+            }
+
+        }
+
+
+        /* =================================================
+           WATER PLANNING
+        ================================================= */
+
+        function updateWaterPlanning() {
+
+            if (!waterStatus) {
+                return;
+            }
+
+
+            const irrigation =
+                irrigationField
+                    ? irrigationField.value
+                    : "";
+
+
+            if (irrigation === "good") {
+
+                waterStatus.textContent =
+                    "Good irrigation availability";
+
+
+                if (waterCard) {
+
+                    waterCard.classList.add(
+                        "ready"
+                    );
+
+                    waterCard.classList.remove(
+                        "warning"
+                    );
+                }
+
+            }
+
+            else if (irrigation === "medium") {
+
+                waterStatus.textContent =
+                    "Medium irrigation availability";
+
+
+                if (waterCard) {
+
+                    waterCard.classList.add(
+                        "ready"
+                    );
+
+                    waterCard.classList.remove(
+                        "warning"
+                    );
+                }
+
+            }
+
+            else if (irrigation === "low") {
+
+                waterStatus.textContent =
+                    "Low irrigation Â· save water";
+
+
+                if (waterCard) {
+
+                    waterCard.classList.add(
+                        "warning"
+                    );
+
+                    waterCard.classList.remove(
+                        "ready"
+                    );
+                }
+
+            }
+
+            else {
+
+                waterStatus.textContent =
+                    "Irrigation availability";
+
+            }
+
+        }
+
+
+        /* =================================================
+           DECISION SUPPORT
+        ================================================= */
+
+        function updateDecisionSupport() {
+
+            if (!decisionStatus) {
+                return;
+            }
+
+
+            if (hasRecommendation) {
+
+                decisionStatus.textContent =
+                    "Recommendation ready";
+
+
+                if (decisionCard) {
+
+                    decisionCard.classList.add(
+                        "ready"
+                    );
+
+                    decisionCard.classList.remove(
+                        "warning"
+                    );
+                }
+
+            } else {
+
+                decisionStatus.textContent =
+                    "Complete farm details";
+
+
+                if (decisionCard) {
+
+                    decisionCard.classList.remove(
+                        "ready"
+                    );
+
+                    decisionCard.classList.add(
+                        "warning"
+                    );
+                }
+
+            }
+
+        }
+
+
+        /* =================================================
+           FIELD CHANGE EVENTS
+        ================================================= */
+
+        if (soilField) {
+
+            soilField.addEventListener(
+                "change",
+                updateCropIntelligence
+            );
+
+        }
+
+
+        if (seasonField) {
+
+            seasonField.addEventListener(
+                "change",
+                updateCropIntelligence
+            );
+
+        }
+
+
+        if (irrigationField) {
+
+            irrigationField.addEventListener(
+                "change",
+                updateWaterPlanning
+            );
+
+        }
+
+
+        /* =================================================
+           INITIAL STATUS
+        ================================================= */
+
+        updateCropIntelligence();
+
+        updateWeatherStatus();
+
+        updateWaterPlanning();
+
+        updateDecisionSupport();
+
+
+        /* =================================================
+           RECOMMENDATION FORM
+        ================================================= */
+
+        if (form && button) {
+
+            form.addEventListener(
+                "submit",
+                function (event) {
+
+                    const area =
+                        document.getElementById(
+                            "area"
+                        );
+
+
+                    const areaValue =
+                        area
+                            ? parseFloat(area.value)
+                            : NaN;
+
+
+                    if (
+                        !Number.isFinite(areaValue) ||
+                        areaValue <= 0
+                    ) {
+
+                        event.preventDefault();
+
+
+                        alert(
+                            "Please enter a valid land area."
+                        );
+
+
+                        if (area) {
+
+                            area.focus();
+
+                        }
+
+                        return;
+
+                    }
+
+
+                    button.disabled = true;
+
+
+                    button.innerHTML = `
+
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+
+                        Analyzing Farm Conditions...
+
+                    `;
+
+                }
+            );
+
+        }
+
+
+        /* =================================================
+           STATUS CARD CLICK FEEDBACK
+        ================================================= */
+
+        document
+            .querySelectorAll(".ai-status-link")
+            .forEach(function (card) {
+
+                card.addEventListener(
+                    "click",
+                    function () {
+
+                        card.style.transform =
+                            "scale(0.98)";
+
+
+                        setTimeout(
+                            function () {
+
+                                card.style.transform =
+                                    "";
+
+                            },
+                            120
+                        );
+
+                    }
+                );
+
+            });
+
+
+        /* =================================================
+           TOP ACTION + BUTTON RIPPLE
+        ================================================= */
+
+        document
+            .querySelectorAll(
+                ".top-action, .btn"
+            )
+            .forEach(function (element) {
+
+                element.addEventListener(
+                    "click",
+                    function () {
+
+                        element.style.transform =
+                            "scale(0.97)";
+
+
+                        setTimeout(
+                            function () {
+
+                                element.style.transform =
+                                    "";
+
+                            },
+                            120
+                        );
+
+                    }
+                );
+
+            });
+
+
+        /* =================================================
+           PROFILE IMAGE FALLBACK
+        ================================================= */
+
+        const profileImage =
+            document.querySelector(
+                ".profile img"
+            );
+
+
+        if (profileImage) {
+
+            profileImage.addEventListener(
+                "error",
+                function () {
+
+                    this.src =
+                        "{{ url_for(
+                            'static',
+                            filename='images/logo.png'
+                        ) }}";
+
+                }
+            );
+
+        }
+
+
+        /* =================================================
+           SCROLL REVEAL
+        ================================================= */
+
+        const cards =
+            document.querySelectorAll(
+                ".recommendation-card, .advice-item, .flow-item"
+            );
+
+
+        cards.forEach(
+            function (card) {
+
+                card.style.opacity =
+                    "0";
+
+                card.style.transform =
+                    "translateY(8px)";
+
+            }
+        );
+
+
+        setTimeout(
+            function () {
+
+                cards.forEach(
+                    function (card, index) {
+
+                        setTimeout(
+                            function () {
+
+                                card.style.transition =
+                                    "opacity .35s ease, transform .35s ease";
+
+                                card.style.opacity =
+                                    "1";
+
+                                card.style.transform =
+                                    "translateY(0)";
+
+                            },
+                            index * 40
+                        );
+
+                    }
+                );
+
+            },
+            100
+        );
+
+
+        /* =================================================
+           AUTO FOCUS RESULT AFTER RECOMMENDATION
+        ================================================= */
+
+        if (hasRecommendation) {
+
+            setTimeout(
+                function () {
+
+                    const result =
+                        document.getElementById(
+                            "recommendationResults"
+                        );
+
+
+                    if (
+                        window.location.hash ===
+                        "#recommendationResults"
+                    ) {
+
+                        if (result) {
+
+                            result.scrollIntoView({
+                                behavior: "smooth",
+                                block: "start"
+                            });
+
+                        }
+
+                    }
+
+                },
+                200
+            );
+
+        }
+
+
+        /* =================================================
+           GLOBAL CHATBOT CONFIG
+        ================================================= */
+
+        window.KISAN_RECOMMENDATION_PAGE = {
+
+            language:
+                "{{ session.get('language', 'en') }}",
+
+            role:
+                "{{ session.get('role', 'farmer') }}",
+
+            userName:
+                "{{ name|default('Farmer', true) }}",
+
+            recommendation:
+                hasRecommendation,
+
+            weatherAvailable:
+                {% if weather and weather.temperature is not none %}
+                    true
+                {% else %}
+                    false
+                {% endif %},
+
+            irrigation:
+                "{{ request.form.get('irrigation', '') }}",
+
+            soil:
+                "{{ request.form.get('soil', '') }}",
+
+            season:
+                "{{ request.form.get('season', '') }}"
+
+        };
+
+
+    }
+);
+
+</script>
+{% endblock %}
+
+

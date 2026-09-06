@@ -1,37 +1,1753 @@
-body{
+/* ============================================================
+   KISANVISION360+
+   FARM MACHINERY SUBSIDY CENTER
+   File: static/css/subsidy.css
+   ============================================================ */
 
-background:#f1f8e9;
-font-family:Arial;
+:root {
+    --sub-primary: #2E7D32;
+    --sub-primary-dark: #1B5E20;
+    --sub-primary-light: #43A047;
+    --sub-green-soft: #E8F5E9;
 
+    --sub-accent: #FB8C00;
+    --sub-accent-light: #FFF3E0;
+
+    --sub-blue: #1976D2;
+    --sub-blue-soft: #E3F2FD;
+
+    --sub-success: #2E7D32;
+    --sub-warning: #F9A825;
+    --sub-danger: #D32F2F;
+
+    --sub-white: #FFFFFF;
+    --sub-bg: #F4F8F5;
+    --sub-surface: #FFFFFF;
+
+    --sub-text: #263238;
+    --sub-muted: #607D8B;
+    --sub-border: #DDE7E0;
+
+    --sub-shadow:
+        0 8px 24px rgba(0, 0, 0, .07);
+
+    --sub-shadow-lg:
+        0 18px 45px rgba(0, 0, 0, .12);
+
+    --sub-radius: 16px;
+    --sub-radius-lg: 22px;
+
+    --sub-transition: .25s ease;
 }
 
 
+/* ============================================================
+   PAGE
+   ============================================================ */
 
-.container{
+.subsidy-page {
+    width: 100%;
+    min-height: 100vh;
 
-padding:40px;
+    background:
+        linear-gradient(
+            180deg,
+            #F4F8F5 0%,
+            #FFFFFF 100%
+        );
 
+    color: var(--sub-text);
 }
 
 
+/* ============================================================
+   MAIN WRAPPER
+   ============================================================ */
 
-.scheme{
-
-background:white;
-
-padding:25px;
-
-margin:20px;
-
-border-radius:20px;
-
-box-shadow:0 5px 15px #ccc;
-
+.subsidy-container {
+    width: min(1400px, 94%);
+    margin: 0 auto;
+    padding: 28px 0 50px;
 }
 
 
-h1{
+/* ============================================================
+   TOP HEADER
+   ============================================================ */
 
-color:#166534;
+.subsidy-header {
+    position: relative;
 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 25px;
+
+    padding: 30px;
+
+    margin-bottom: 25px;
+
+    border-radius: var(--sub-radius-lg);
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--sub-primary-dark),
+            var(--sub-primary-light)
+        );
+
+    color: var(--sub-white);
+
+    box-shadow: var(--sub-shadow-lg);
 }
+
+.subsidy-header::before {
+    content: "";
+
+    position: absolute;
+
+    width: 220px;
+    height: 220px;
+
+    top: -100px;
+    right: -50px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.10);
+}
+
+.subsidy-header::after {
+    content: "";
+
+    position: absolute;
+
+    width: 140px;
+    height: 140px;
+
+    bottom: -80px;
+    left: 35%;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.07);
+}
+
+.subsidy-header-content {
+    position: relative;
+    z-index: 2;
+}
+
+.subsidy-header h1 {
+    color: var(--sub-white);
+
+    font-size: clamp(26px, 4vw, 40px);
+
+    margin-bottom: 8px;
+}
+
+.subsidy-header p {
+    max-width: 700px;
+
+    color:
+        rgba(255,255,255,.88);
+
+    font-size: 16px;
+}
+
+.subsidy-header-icon {
+    position: relative;
+    z-index: 2;
+
+    width: 90px;
+    height: 90px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 24px;
+
+    background:
+        rgba(255,255,255,.14);
+
+    border:
+        1px solid
+        rgba(255,255,255,.22);
+
+    font-size: 42px;
+}
+
+
+/* ============================================================
+   LIVE / SMART BADGE
+   ============================================================ */
+
+.subsidy-live-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 7px 13px;
+
+    margin-bottom: 14px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,.15);
+
+    border:
+        1px solid
+        rgba(255,255,255,.22);
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: .5px;
+}
+
+.subsidy-live-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #A5D6A7;
+
+    box-shadow:
+        0 0 0 5px
+        rgba(165,214,167,.12);
+}
+
+
+/* ============================================================
+   SMART FLOW
+   ============================================================ */
+
+.subsidy-flow {
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-bottom: 25px;
+}
+
+.subsidy-flow-step {
+    position: relative;
+
+    min-height: 115px;
+
+    padding: 18px 14px;
+
+    background:
+        var(--sub-white);
+
+    border:
+        1px solid
+        var(--sub-border);
+
+    border-radius:
+        var(--sub-radius);
+
+    text-align:
+        center;
+
+    box-shadow:
+        var(--sub-shadow);
+
+    transition:
+        transform var(--sub-transition),
+        border-color var(--sub-transition),
+        box-shadow var(--sub-transition);
+}
+
+.subsidy-flow-step:hover {
+    transform:
+        translateY(-4px);
+
+    border-color:
+        #A5D6A7;
+
+    box-shadow:
+        var(--sub-shadow-lg);
+}
+
+.subsidy-flow-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 10px;
+
+    border-radius: 12px;
+
+    background:
+        var(--sub-green-soft);
+
+    color:
+        var(--sub-primary);
+
+    font-size: 18px;
+}
+
+.subsidy-flow-step strong {
+    display: block;
+
+    font-size: 14px;
+
+    color:
+        var(--sub-text);
+}
+
+.subsidy-flow-step small {
+    display: block;
+
+    margin-top: 4px;
+
+    color:
+        var(--sub-muted);
+
+    font-size: 11px;
+}
+
+
+/* ============================================================
+   STATISTICS
+   ============================================================ */
+
+.subsidy-stats {
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap:
+        18px;
+
+    margin-bottom:
+        25px;
+}
+
+.subsidy-stat {
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        14px;
+
+    padding:
+        20px;
+
+    background:
+        var(--sub-white);
+
+    border:
+        1px solid
+        var(--sub-border);
+
+    border-radius:
+        var(--sub-radius);
+
+    box-shadow:
+        var(--sub-shadow);
+}
+
+.subsidy-stat-icon {
+    width:
+        50px;
+
+    height:
+        50px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    flex-shrink:
+        0;
+
+    border-radius:
+        14px;
+
+    background:
+        var(--sub-green-soft);
+
+    color:
+        var(--sub-primary);
+
+    font-size:
+        21px;
+}
+
+.subsidy-stat strong {
+    display:
+        block;
+
+    color:
+        var(--sub-text);
+
+    font-size:
+        22px;
+}
+
+.subsidy-stat span {
+    color:
+        var(--sub-muted);
+
+    font-size:
+        12px;
+}
+
+
+/* ============================================================
+   SMART DISCOVERY PANEL
+   ============================================================ */
+
+.subsidy-discovery {
+    display:
+        grid;
+
+    grid-template-columns:
+        1.5fr 1fr;
+
+    gap:
+        20px;
+
+    margin-bottom:
+        25px;
+}
+
+.subsidy-discovery-card {
+    padding:
+        25px;
+
+    border-radius:
+        var(--sub-radius-lg);
+
+    border:
+        1px solid
+        var(--sub-border);
+
+    background:
+        var(--sub-white);
+
+    box-shadow:
+        var(--sub-shadow);
+}
+
+.subsidy-discovery-card.smart {
+    background:
+        linear-gradient(
+            135deg,
+            #E8F5E9,
+            #F8FFF8
+        );
+
+    border-color:
+        #C8E6C9;
+}
+
+.subsidy-discovery-card h2 {
+    margin-bottom:
+        8px;
+
+    color:
+        var(--sub-primary-dark);
+
+    font-size:
+        21px;
+}
+
+.subsidy-discovery-card p {
+    color:
+        var(--sub-muted);
+
+    font-size:
+        14px;
+}
+
+
+/* ============================================================
+   INTELLIGENCE POINTS
+   ============================================================ */
+
+.subsidy-intelligence-list {
+    display:
+        grid;
+
+    gap:
+        11px;
+
+    margin-top:
+        18px;
+}
+
+.subsidy-intelligence-item {
+    display:
+        flex;
+
+    align-items:
+        flex-start;
+
+    gap:
+        10px;
+
+    padding:
+        11px 13px;
+
+    border-radius:
+        10px;
+
+    background:
+        rgba(255,255,255,.75);
+}
+
+.subsidy-intelligence-item i {
+    margin-top:
+        3px;
+
+    color:
+        var(--sub-primary);
+
+    flex-shrink:
+        0;
+}
+
+.subsidy-intelligence-item span {
+    color:
+        var(--sub-text);
+
+    font-size:
+        13px;
+}
+
+
+/* ============================================================
+   SEARCH
+   ============================================================ */
+
+.subsidy-search {
+    position:
+        relative;
+
+    margin-bottom:
+        20px;
+}
+
+.subsidy-search input {
+    width:
+        100%;
+
+    height:
+        52px;
+
+    padding:
+        0 50px 0 18px;
+
+    border:
+        1px solid
+        var(--sub-border);
+
+    border-radius:
+        14px;
+
+    background:
+        var(--sub-white);
+
+    font-size:
+        15px;
+
+    color:
+        var(--sub-text);
+
+    outline:
+        none;
+
+    transition:
+        border-color var(--sub-transition),
+        box-shadow var(--sub-transition);
+}
+
+.subsidy-search input:focus {
+    border-color:
+        var(--sub-primary-light);
+
+    box-shadow:
+        0 0 0 4px
+        rgba(67,160,71,.10);
+}
+
+.subsidy-search i {
+    position:
+        absolute;
+
+    right:
+        18px;
+
+    top:
+        50%;
+
+    transform:
+        translateY(-50%);
+
+    color:
+        var(--sub-muted);
+}
+
+
+/* ============================================================
+   CATEGORY FILTERS
+   ============================================================ */
+
+.subsidy-filters {
+    display:
+        flex;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        9px;
+
+    margin-bottom:
+        22px;
+}
+
+.subsidy-filter {
+    padding:
+        9px 15px;
+
+    border:
+        1px solid
+        var(--sub-border);
+
+    border-radius:
+        999px;
+
+    background:
+        var(--sub-white);
+
+    color:
+        var(--sub-muted);
+
+    font-size:
+        13px;
+
+    font-weight:
+        600;
+
+    cursor:
+        pointer;
+
+    transition:
+        all var(--sub-transition);
+}
+
+.subsidy-filter:hover,
+.subsidy-filter.active {
+    background:
+        var(--sub-primary);
+
+    border-color:
+        var(--sub-primary);
+
+    color:
+        var(--sub-white);
+}
+
+
+/* ============================================================
+   SECTION HEADER
+   ============================================================ */
+
+.subsidy-section-header {
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        15px;
+
+    margin-bottom:
+        18px;
+}
+
+.subsidy-section-header h2 {
+    margin:
+        0;
+
+    color:
+        var(--sub-primary-dark);
+
+    font-size:
+        24px;
+}
+
+.subsidy-result-count {
+    padding:
+        6px 11px;
+
+    border-radius:
+        999px;
+
+    background:
+        var(--sub-green-soft);
+
+    color:
+        var(--sub-primary-dark);
+
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+}
+
+
+/* ============================================================
+   SCHEME GRID
+   ============================================================ */
+
+.subsidy-grid {
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap:
+        20px;
+}
+
+
+/* ============================================================
+   SCHEME CARD
+   ============================================================ */
+
+.subsidy-card {
+    position:
+        relative;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    padding:
+        22px;
+
+    background:
+        var(--sub-white);
+
+    border:
+        1px solid
+        var(--sub-border);
+
+    border-radius:
+        var(--sub-radius-lg);
+
+    box-shadow:
+        var(--sub-shadow);
+
+    overflow:
+        hidden;
+
+    transition:
+        transform var(--sub-transition),
+        box-shadow var(--sub-transition),
+        border-color var(--sub-transition);
+}
+
+.subsidy-card::before {
+    content:
+        "";
+
+    position:
+        absolute;
+
+    top:
+        0;
+
+    left:
+        0;
+
+    width:
+        100%;
+
+    height:
+        4px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--sub-primary),
+            var(--sub-primary-light)
+        );
+}
+
+.subsidy-card:hover {
+    transform:
+        translateY(-5px);
+
+    box-shadow:
+        var(--sub-shadow-lg);
+
+    border-color:
+        #B7D9BA;
+}
+
+
+/* ============================================================
+   SCHEME CARD TOP
+   ============================================================ */
+
+.subsidy-card-top {
+    display:
+        flex;
+
+    align-items:
+        flex-start;
+
+    justify-content:
+        space-between;
+
+    gap:
+        15px;
+
+    margin-bottom:
+        15px;
+}
+
+.subsidy-card-icon {
+    width:
+        48px;
+
+    height:
+        48px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    flex-shrink:
+        0;
+
+    border-radius:
+        14px;
+
+    background:
+        var(--sub-green-soft);
+
+    color:
+        var(--sub-primary);
+
+    font-size:
+        20px;
+}
+
+.subsidy-card-badge {
+    padding:
+        5px 9px;
+
+    border-radius:
+        999px;
+
+    background:
+        var(--sub-blue-soft);
+
+    color:
+        var(--sub-blue);
+
+    font-size:
+        10px;
+
+    font-weight:
+        700;
+
+    white-space:
+        nowrap;
+}
+
+
+/* ============================================================
+   SCHEME CONTENT
+   ============================================================ */
+
+.subsidy-card h3 {
+    margin-bottom:
+        7px;
+
+    color:
+        var(--sub-primary-dark);
+
+    font-size:
+        19px;
+}
+
+.subsidy-card .department {
+    margin-bottom:
+        13px;
+
+    color:
+        var(--sub-accent);
+
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+}
+
+.subsidy-card p {
+    color:
+        var(--sub-muted);
+
+    font-size:
+        13px;
+
+    line-height:
+        1.6;
+}
+
+
+/* ============================================================
+   ELIGIBILITY
+   ============================================================ */
+
+.subsidy-eligibility {
+    margin-top:
+        15px;
+
+    padding:
+        13px;
+
+    border-radius:
+        11px;
+
+    background:
+        #F7FAF8;
+
+    border:
+        1px solid
+        #E5EEE7;
+}
+
+.subsidy-eligibility-title {
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        7px;
+
+    margin-bottom:
+        6px;
+
+    color:
+        var(--sub-primary-dark);
+
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+}
+
+.subsidy-eligibility-title i {
+    color:
+        var(--sub-success);
+}
+
+.subsidy-eligibility p {
+    font-size:
+        12px;
+}
+
+
+/* ============================================================
+   SCHEME ACTIONS
+   ============================================================ */
+
+.subsidy-actions {
+    display:
+        flex;
+
+    gap:
+        9px;
+
+    margin-top:
+        auto;
+
+    padding-top:
+        18px;
+}
+
+.subsidy-actions a,
+.subsidy-actions button {
+    flex:
+        1;
+
+    min-height:
+        42px;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        7px;
+
+    padding:
+        9px 12px;
+
+    border:
+        1px solid
+        transparent;
+
+    border-radius:
+        9px;
+
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+
+    cursor:
+        pointer;
+
+    transition:
+        all var(--sub-transition);
+}
+
+.subsidy-primary-action {
+    background:
+        var(--sub-primary);
+
+    color:
+        var(--sub-white);
+}
+
+.subsidy-primary-action:hover {
+    background:
+        var(--sub-primary-dark);
+
+    transform:
+        translateY(-2px);
+}
+
+.subsidy-secondary-action {
+    background:
+        var(--sub-green-soft);
+
+    color:
+        var(--sub-primary-dark);
+
+    border-color:
+        #C8E6C9 !important;
+}
+
+.subsidy-secondary-action:hover {
+    background:
+        #C8E6C9;
+}
+
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+
+.subsidy-empty {
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    min-height:
+        260px;
+
+    padding:
+        35px;
+
+    background:
+        var(--sub-white);
+
+    border:
+        2px dashed
+        var(--sub-border);
+
+    border-radius:
+        var(--sub-radius-lg);
+
+    text-align:
+        center;
+}
+
+.subsidy-empty i {
+    width:
+        65px;
+
+    height:
+        65px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    margin-bottom:
+        15px;
+
+    border-radius:
+        50%;
+
+    background:
+        var(--sub-green-soft);
+
+    color:
+        var(--sub-primary);
+
+    font-size:
+        25px;
+}
+
+.subsidy-empty h3 {
+    color:
+        var(--sub-text);
+
+    margin-bottom:
+        6px;
+}
+
+.subsidy-empty p {
+    max-width:
+        500px;
+
+    color:
+        var(--sub-muted);
+
+    font-size:
+        13px;
+}
+
+
+/* ============================================================
+   CONNECTED FARM INTELLIGENCE
+   ============================================================ */
+
+.subsidy-connected {
+    margin-top:
+        30px;
+
+    padding:
+        25px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #F1F8F2,
+            #FFFFFF
+        );
+
+    border:
+        1px solid
+        #D7E9D9;
+
+    border-radius:
+        var(--sub-radius-lg);
+
+    box-shadow:
+        var(--sub-shadow);
+}
+
+.subsidy-connected h2 {
+    color:
+        var(--sub-primary-dark);
+
+    margin-bottom:
+        8px;
+}
+
+.subsidy-connected > p {
+    color:
+        var(--sub-muted);
+
+    font-size:
+        13px;
+
+    margin-bottom:
+        20px;
+}
+
+.subsidy-connected-flow {
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(5, minmax(0,1fr));
+
+    gap:
+        10px;
+}
+
+.subsidy-connected-step {
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    min-height:
+        95px;
+
+    padding:
+        14px;
+
+    border-radius:
+        12px;
+
+    background:
+        var(--sub-white);
+
+    border:
+        1px solid
+        #DDEADE;
+
+    text-align:
+        center;
+}
+
+.subsidy-connected-step i {
+    margin-bottom:
+        8px;
+
+    color:
+        var(--sub-primary);
+
+    font-size:
+        19px;
+}
+
+.subsidy-connected-step span {
+    font-size:
+        11px;
+
+    font-weight:
+        700;
+
+    color:
+        var(--sub-text);
+}
+
+
+/* ============================================================
+   IMPORTANT NOTICE
+   ============================================================ */
+
+.subsidy-notice {
+    display:
+        flex;
+
+    align-items:
+        flex-start;
+
+    gap:
+        12px;
+
+    margin-top:
+        20px;
+
+    padding:
+        16px 18px;
+
+    border-left:
+        4px solid
+        var(--sub-accent);
+
+    border-radius:
+        10px;
+
+    background:
+        var(--sub-accent-light);
+}
+
+.subsidy-notice i {
+    color:
+        var(--sub-accent);
+
+    margin-top:
+        3px;
+}
+
+.subsidy-notice strong {
+    display:
+        block;
+
+    margin-bottom:
+        4px;
+
+    color:
+        #6D4C41;
+
+    font-size:
+        13px;
+}
+
+.subsidy-notice p {
+    color:
+        #795548;
+
+    font-size:
+        12px;
+}
+
+
+/* ============================================================
+   DARK MODE
+   ============================================================ */
+
+body.dark .subsidy-page,
+.dark .subsidy-page {
+    background:
+        #101512;
+
+    color:
+        #E8F5E9;
+}
+
+body.dark .subsidy-flow-step,
+body.dark .subsidy-stat,
+body.dark .subsidy-discovery-card,
+body.dark .subsidy-card,
+body.dark .subsidy-empty,
+body.dark .subsidy-connected,
+.dark .subsidy-flow-step,
+.dark .subsidy-stat,
+.dark .subsidy-discovery-card,
+.dark .subsidy-card,
+.dark .subsidy-empty,
+.dark .subsidy-connected {
+    background:
+        #19211B;
+
+    border-color:
+        #304034;
+
+    color:
+        #E8F5E9;
+}
+
+body.dark .subsidy-card h3,
+body.dark .subsidy-section-header h2,
+body.dark .subsidy-discovery-card h2,
+body.dark .subsidy-connected h2,
+.dark .subsidy-card h3,
+.dark .subsidy-section-header h2,
+.dark .subsidy-discovery-card h2,
+.dark .subsidy-connected h2 {
+    color:
+        #A5D6A7;
+}
+
+body.dark .subsidy-card p,
+body.dark .subsidy-discovery-card p,
+body.dark .subsidy-connected > p,
+body.dark .subsidy-stat span,
+.dark .subsidy-card p,
+.dark .subsidy-discovery-card p,
+.dark .subsidy-connected > p,
+.dark .subsidy-stat span {
+    color:
+        #A8B5AC;
+}
+
+body.dark .subsidy-search input {
+    background:
+        #202A23;
+
+    color:
+        #F1F8F3;
+
+    border-color:
+        #3A4A3D;
+}
+
+body.dark .subsidy-filter {
+    background:
+        #202A23;
+
+    color:
+        #B8C7BC;
+
+    border-color:
+        #3A4A3D;
+}
+
+body.dark .subsidy-filter.active,
+.dark .subsidy-filter.active {
+    background:
+        var(--sub-primary);
+
+    color:
+        white;
+}
+
+body.dark .subsidy-eligibility,
+.dark .subsidy-eligibility {
+    background:
+        #202A23;
+
+    border-color:
+        #344238;
+}
+
+body.dark .subsidy-connected-step,
+.dark .subsidy-connected-step {
+    background:
+        #202A23;
+
+    border-color:
+        #344238;
+}
+
+body.dark .subsidy-intelligence-item,
+.dark .subsidy-intelligence-item {
+    background:
+        rgba(255,255,255,.04);
+}
+
+
+/* ============================================================
+   RTL
+   ============================================================ */
+
+html[dir="rtl"] .subsidy-search input {
+    padding-left:
+        18px;
+
+    padding-right:
+        50px;
+}
+
+html[dir="rtl"] .subsidy-search i {
+    right:
+        auto;
+
+    left:
+        18px;
+}
+
+html[dir="rtl"] .subsidy-notice {
+    border-left:
+        none;
+
+    border-right:
+        4px solid
+        var(--sub-accent);
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 1100px) {
+
+    .subsidy-grid {
+        grid-template-columns:
+            repeat(2, minmax(0,1fr));
+    }
+
+    .subsidy-stats {
+        grid-template-columns:
+            repeat(2, minmax(0,1fr));
+    }
+
+    .subsidy-flow {
+        grid-template-columns:
+            repeat(3, minmax(0,1fr));
+    }
+
+    .subsidy-connected-flow {
+        grid-template-columns:
+            repeat(3, minmax(0,1fr));
+    }
+}
+
+
+/* ============================================================
+   TABLET / MOBILE
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+    .subsidy-container {
+        width:
+            94%;
+
+        padding:
+            18px 0 35px;
+    }
+
+    .subsidy-header {
+        flex-direction:
+            column;
+
+        align-items:
+            flex-start;
+
+        padding:
+            24px;
+
+        border-radius:
+            18px;
+    }
+
+    .subsidy-header-icon {
+        width:
+            65px;
+
+        height:
+            65px;
+
+        font-size:
+            30px;
+
+        border-radius:
+            18px;
+    }
+
+    .subsidy-discovery {
+        grid-template-columns:
+            1fr;
+    }
+
+    .subsidy-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+    .subsidy-stats {
+        grid-template-columns:
+            1fr 1fr;
+
+        gap:
+            12px;
+    }
+
+    .subsidy-flow {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .subsidy-connected-flow {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .subsidy-section-header {
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+    }
+}
+
+
+/* ============================================================
+   SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 480px) {
+
+    .subsidy-header {
+        padding:
+            20px;
+    }
+
+    .subsidy-header h1 {
+        font-size:
+            25px;
+    }
+
+    .subsidy-header p {
+        font-size:
+            13px;
+    }
+
+    .subsidy-stats {
+        grid-template-columns:
+            1fr;
+    }
+
+    .subsidy-stat {
+        padding:
+            15px;
+    }
+
+    .subsidy-stat strong {
+        font-size:
+            19px;
+    }
+
+    .subsidy-flow {
+        grid-template-columns:
+            1fr 1fr;
+
+        gap:
+            8px;
+    }
+
+    .subsidy-flow-step {
+        min-height:
+            100px;
+
+        padding:
+            13px 8px;
+    }
+
+    .subsidy-connected-flow {
+        grid-template-columns:
+            1fr;
+    }
+
+    .subsidy-card {
+        padding:
+            18px;
+    }
+
+    .subsidy-card h3 {
+        font-size:
+            17px;
+    }
+
+    .subsidy-actions {
+        flex-direction:
+            column;
+    }
+
+    .subsidy-notice {
+        padding:
+            13px;
+    }
+}
+
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+
+.subsidy-filter:focus-visible,
+.subsidy-actions a:focus-visible,
+.subsidy-actions button:focus-visible,
+.subsidy-search input:focus-visible {
+    outline:
+        3px solid
+        rgba(67,160,71,.35);
+
+    outline-offset:
+        2px;
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .subsidy-card,
+    .subsidy-flow-step,
+    .subsidy-filter,
+    .subsidy-actions a,
+    .subsidy-actions button {
+        transition:
+            none;
+    }
+}
+
+
+/* ============================================================
+   APK / SAFE AREA
+   ============================================================ */
+
+@supports (padding: env(safe-area-inset-bottom)) {
+
+    .subsidy-container {
+        padding-bottom:
+            calc(
+                35px +
+                env(safe-area-inset-bottom)
+            );
+    }
+}
+
+
+/* ============================================================
+   END
+   ============================================================ */

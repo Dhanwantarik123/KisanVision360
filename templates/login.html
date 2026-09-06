@@ -1,502 +1,878 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿{% extends "base.html" %}
 
-<head>
+{% block title %}KisanVision360+ | Login{% endblock %}
 
-<meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<title>KisanVision360 | Login</title>
-
-
-<!-- LOGIN CSS -->
-
+{% block head %}
 <link rel="stylesheet"
-      href="{{ url_for('static', filename='css/login.css') }}">
-
-
-<!-- FONT AWESOME -->
-
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-
+          href="{{ url_for('static', filename='css/login.css') }}">
 <style>
 
-/* ================= GOOGLE TRANSLATE HIDE ================= */
+        * {
+            box-sizing: border-box;
+        }
 
-#google_translate_element {
-    display: none !important;
-}
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+        }
 
-.goog-te-banner-frame,
-.goog-te-banner-frame.skiptranslate {
-    display: none !important;
-}
-
-body {
-    top: 0 !important;
-}
-
-.goog-te-gadget {
-    font-size: 0 !important;
-}
-
-.goog-logo-link {
-    display: none !important;
-}
-
-.goog-te-balloon-frame {
-    display: none !important;
-}
-
-.goog-te-menu-value {
-    display: none !important;
-}
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
 
 
-/* ================= ERROR ================= */
+        /* =====================================================
+           LANGUAGE DIRECTION
+        ===================================================== */
 
-.login-error {
+        html[dir="rtl"] {
+            direction: rtl;
+        }
 
-    background: #ff4d4d;
+        html[dir="rtl"] .input-box input {
+            text-align: right;
+            padding-left: 48px;
+            padding-right: 48px;
+        }
 
-    color: white;
+        html[dir="rtl"] .input-box > i:first-child {
+            left: auto;
+            right: 16px;
+        }
 
-    padding: 12px 15px;
-
-    border-radius: 8px;
-
-    margin-bottom: 18px;
-
-    font-size: 14px;
-
-    text-align: left;
-
-}
-
-
-/* ================= LANGUAGE ================= */
-
-.language-link {
-
-    display: inline-block;
-
-    margin-top: 5px;
-
-    text-decoration: none;
-
-    color: #2e7d32;
-
-    font-weight: 600;
-
-}
-
-.language-link:hover {
-
-    text-decoration: underline;
-
-}
-
-</style>
-
-</head>
+        html[dir="rtl"] .eye {
+            right: auto;
+            left: 16px;
+        }
 
 
-<body>
+        /* =====================================================
+           LOGIN ERROR
+        ===================================================== */
+
+        .login-error {
+
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            background: rgba(220, 53, 69, 0.95);
+            color: white;
+
+            padding: 13px 15px;
+            border-radius: 10px;
+
+            margin-bottom: 18px;
+
+            font-size: 14px;
+            line-height: 1.5;
+
+            text-align: left;
+
+            box-shadow:
+                0 6px 18px rgba(220, 53, 69, 0.20);
+
+            animation: errorSlide 0.35s ease;
+        }
+
+        @keyframes errorSlide {
+
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
 
 
+        /* =====================================================
+           GLOBAL LANGUAGE STATUS
+        ===================================================== */
+
+        .language-status {
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 7px;
+
+            margin-top: 14px;
+
+            color: #2e7d32;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .language-status i {
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           LANGUAGE CHANGE LINK
+        ===================================================== */
+
+        .language-link {
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 7px;
+
+            margin-top: 8px;
+
+            text-decoration: none;
+
+            color: #2e7d32;
+
+            font-weight: 600;
+            font-size: 14px;
+
+            transition: 0.25s;
+        }
+
+        .language-link:hover {
+
+            color: #1b5e20;
+
+            text-decoration: underline;
+        }
+
+
+        /* =====================================================
+           SMART LOGIN SECURITY
+        ===================================================== */
+
+        .security-strip {
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            gap: 16px;
+
+            flex-wrap: wrap;
+
+            margin-top: 20px;
+
+            padding: 11px 14px;
+
+            border-radius: 12px;
+
+            background: rgba(46, 125, 50, 0.07);
+
+            border: 1px solid rgba(46, 125, 50, 0.12);
+
+            color: #4a5a4b;
+
+            font-size: 11px;
+        }
+
+        .security-item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            white-space: nowrap;
+        }
+
+        .security-item i {
+            color: #2e7d32;
+        }
+
+
+        /* =====================================================
+           LOGIN BUTTON LOADING
+        ===================================================== */
+
+        .login-btn.loading {
+
+            pointer-events: none;
+
+            opacity: 0.8;
+        }
+
+        .login-btn.loading .login-icon {
+            display: none;
+        }
+
+        .login-btn .spinner {
+            display: none;
+        }
+
+        .login-btn.loading .spinner {
+            display: inline-block;
+        }
+
+
+        /* =====================================================
+           PASSWORD STRENGTH
+        ===================================================== */
+
+        .password-strength {
+
+            display: none;
+
+            margin-top: 7px;
+
+            text-align: left;
+
+            font-size: 11px;
+
+            color: #666;
+        }
+
+        .password-strength.show {
+            display: block;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 600px) {
+
+            .security-strip {
+                gap: 9px;
+            }
+
+            .security-item {
+                font-size: 10px;
+            }
+
+        }
+
+    </style>
+{% endblock %}
+
+{% block page_title %}Login{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
 <div class="overlay">
 
 
-<div class="login-box">
+    <div class="login-box">
 
 
-<!-- ================= LOGO ================= -->
+        <!-- =================================================
+             BRAND
+        ================================================= -->
 
-<img
-    src="{{ url_for(
-        'static',
-        filename='images/logo.png'
-    ) }}"
-    class="logo"
-    alt="KisanVision360 Logo">
+        <div class="brand-area">
 
-
-<!-- ================= TITLE ================= -->
-
-<h1>
-    KisanVision360
-</h1>
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='images/logo.png'
+                ) }}"
+                class="logo"
+                alt="KisanVision360 Logo"
+                onerror="this.style.display='none';">
 
 
-<p>
-    AI Powered Smart Agriculture Platform
-</p>
+            <h1>
+                KisanVision360+
+            </h1>
 
 
-<!-- ================= FEATURES ================= -->
+            <p>
+                AI Powered Smart Agriculture Platform
+            </p>
 
-<div class="ai-tag">
+        </div>
 
-    🤖 AI
 
-    <span>|</span>
+        <!-- =================================================
+             PLATFORM FEATURES
+        ================================================= -->
 
-    🌦 Weather
+        <div class="ai-tag">
 
-    <span>|</span>
+            <span>
+                <i class="fa-solid fa-robot"></i>
+                AI
+            </span>
 
-    🌾 Marketplace
+            <span>|</span>
+
+            <span>
+                <i class="fa-solid fa-cloud-sun"></i>
+                Weather
+            </span>
+
+            <span>|</span>
+
+            <span>
+                <i class="fa-solid fa-store"></i>
+                Marketplace
+            </span>
+
+            <span>|</span>
+
+            <span>
+                <i class="fa-solid fa-chart-line"></i>
+                Market Intelligence
+            </span>
+
+        </div>
+
+
+        <!-- =================================================
+             LOGIN HEADING
+        ================================================= -->
+
+        <div class="login-heading">
+
+            <h2>
+                Welcome Back ðŸ‘‹
+            </h2>
+
+            <p>
+                Login to access your smart farming dashboard
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             ERROR
+        ================================================= -->
+
+        {% if error %}
+
+        <div
+            class="login-error"
+            role="alert"
+            aria-live="polite">
+
+            <i class="fa-solid fa-circle-exclamation"></i>
+
+            <span>
+                {{ error }}
+            </span>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             LOGIN FORM
+        ================================================= -->
+
+        <form
+            action="{{ url_for('auth.login') }}"
+            method="POST"
+            id="loginForm">
+
+
+            <!-- =================================================
+                 MOBILE / EMAIL
+            ================================================= -->
+
+            <div class="form-field">
+
+                <label for="login">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    Mobile Number or Email
+
+                </label>
+
+
+                <div class="input-box">
+
+                    <i class="fas fa-user"></i>
+
+                    <input
+                        type="text"
+                        id="login"
+                        name="login"
+                        placeholder="Enter mobile number or email"
+                        autocomplete="username"
+                        spellcheck="false"
+                        required>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 PASSWORD
+            ================================================= -->
+
+            <div class="form-field">
+
+                <label for="password">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    Password
+
+                </label>
+
+
+                <div class="input-box">
+
+                    <i class="fas fa-lock"></i>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        minlength="6"
+                        required>
+
+
+                    <button
+                        type="button"
+                        class="eye"
+                        id="passwordEye"
+                        onclick="togglePassword()"
+                        aria-label="Show password"
+                        style="
+                            border:none;
+                            background:none;
+                            padding:0;
+                            cursor:pointer;
+                        ">
+
+                        <i
+                            class="fas fa-eye"
+                            id="eyeIcon">
+                        </i>
+
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="password-strength"
+                    id="passwordStrength">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    Password protection enabled
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 OPTIONS
+            ================================================= -->
+
+            <div class="options">
+
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        name="remember"
+                        value="1">
+
+                    <span>
+                        Remember Me
+                    </span>
+
+                </label>
+
+
+                <a
+                    href="{{ url_for('auth.forgot_password') }}">
+
+                    Forgot Password?
+
+                </a>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 LOGIN BUTTON
+            ================================================= -->
+
+            <button
+                type="submit"
+                class="login-btn"
+                id="loginButton">
+
+                <i
+                    class="fas fa-right-to-bracket login-icon">
+                </i>
+
+                <i
+                    class="fa-solid fa-spinner fa-spin spinner">
+                </i>
+
+                <span id="loginButtonText">
+                    Login
+                </span>
+
+            </button>
+
+
+        </form>
+
+
+        <!-- =================================================
+             DIVIDER
+        ================================================= -->
+
+        <div class="divider">
+
+            <span>
+                OR
+            </span>
+
+        </div>
+
+
+        <!-- =================================================
+             CREATE ACCOUNT
+        ================================================= -->
+
+        <a
+            href="{{ url_for('auth.signup') }}"
+            class="signup-link">
+
+            <button
+                class="signup-btn"
+                type="button">
+
+                <i class="fas fa-user-plus"></i>
+
+                Create New Account
+
+            </button>
+
+        </a>
+
+
+        <!-- =================================================
+             GLOBAL LANGUAGE
+        ================================================= -->
+
+        <div class="language-status">
+
+            <i class="fa-solid fa-globe"></i>
+
+            <span>
+
+                Language:
+
+                {{ session.get('language', 'en')|upper }}
+
+            </span>
+
+        </div>
+
+
+        <!-- =================================================
+             CHANGE GLOBAL LANGUAGE
+        ================================================= -->
+
+        <a
+            href="{{ url_for('auth.language') }}"
+            class="language-link">
+
+            <i class="fa-solid fa-language"></i>
+
+            Change Language
+
+        </a>
+
+
+        <!-- =================================================
+             SECURITY
+        ================================================= -->
+
+        <div class="security-strip">
+
+            <div class="security-item">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                Secure Login
+
+            </div>
+
+
+            <div class="security-item">
+
+                <i class="fa-solid fa-lock"></i>
+
+                Protected Account
+
+            </div>
+
+
+            <div class="security-item">
+
+                <i class="fa-solid fa-cloud"></i>
+
+                Smart Agriculture
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================= -->
+
+        <div
+            class="footer"
+            style="margin-top:18px;">
+
+            Â© 2026 KisanVision360+
+
+            <span>â€¢</span>
+
+            AI Powered Agriculture Platform
+
+            <br>
+
+            ðŸ‡®ðŸ‡³ Made for Indian Farmers
+
+        </div>
+
+
+    </div>
 
 </div>
+{% endblock %}
 
-
-<!-- ================= ERROR ================= -->
-
-{% if error %}
-
-<div class="login-error">
-
-    <i class="fa-solid fa-circle-exclamation"></i>
-
-    {{ error }}
-
-</div>
-
-{% endif %}
-
-
-<!-- ================= LOGIN FORM ================= -->
-
-<form
-    action="{{ url_for('login') }}"
-    method="POST">
-
-
-<!-- MOBILE / EMAIL -->
-
-<div class="input-box">
-
-    <i class="fas fa-user"></i>
-
-    <input
-        type="text"
-        name="login"
-        placeholder="Mobile Number or Email"
-        autocomplete="username"
-        required>
-
-</div>
-
-
-<!-- PASSWORD -->
-
-<div class="input-box">
-
-    <i class="fas fa-lock"></i>
-
-    <input
-        type="password"
-        id="password"
-        name="password"
-        placeholder="Password"
-        autocomplete="current-password"
-        required>
-
-    <i
-        class="fas fa-eye eye"
-        id="passwordEye"
-        onclick="togglePassword()">
-    </i>
-
-</div>
-
-
-<!-- ================= OPTIONS ================= -->
-
-<div class="options">
-
-
-<label>
-
-    <input
-        type="checkbox"
-        name="remember"
-        value="1">
-
-    Remember Me
-
-</label>
-
-<a href="{{ url_for('forgot_password') }}">
-
-    Forgot Password?
-
-</a>
-
-
-</div>
-
-
-<!-- ================= LOGIN ================= -->
-
-<button
-    type="submit"
-    class="login-btn">
-
-    <i class="fas fa-right-to-bracket"></i>
-
-    Login
-
-</button>
-
-
-</form>
-
-
-<!-- ================= DIVIDER ================= -->
-
-<div class="divider">
-
-    <span>OR</span>
-
-</div>
-
-
-<!-- ================= SIGNUP ================= -->
-
-<a href="/signup"
-   class="signup-link">
-
-    <button
-        class="signup-btn"
-        type="button">
-
-        <i class="fas fa-user-plus"></i>
-
-        Create New Account
-
-    </button>
-
-</a>
-
-
-<!-- ================= LANGUAGE ================= -->
-
-<a href="/language"
-   class="language-link">
-
-    🌐 Change Language
-
-</a>
-
-
-<!-- GOOGLE TRANSLATE -->
-
-<div id="google_translate_element"></div>
-
-
-</div>
-
-</div>
-
-
-
+{% block scripts %}
 <script>
 
-/* =====================================================
-   PASSWORD SHOW / HIDE
-===================================================== */
+    /* =====================================================
+       PASSWORD SHOW / HIDE
+    ===================================================== */
 
-function togglePassword() {
+    function togglePassword() {
 
-    const password =
+        const password =
+            document.getElementById("password");
+
+        const eyeIcon =
+            document.getElementById("eyeIcon");
+
+        const eyeButton =
+            document.getElementById("passwordEye");
+
+
+        if (password.type === "password") {
+
+            password.type = "text";
+
+            eyeIcon.classList.remove("fa-eye");
+
+            eyeIcon.classList.add("fa-eye-slash");
+
+            eyeButton.setAttribute(
+                "aria-label",
+                "Hide password"
+            );
+
+        } else {
+
+            password.type = "password";
+
+            eyeIcon.classList.remove("fa-eye-slash");
+
+            eyeIcon.classList.add("fa-eye");
+
+            eyeButton.setAttribute(
+                "aria-label",
+                "Show password"
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       PASSWORD ACTIVITY
+    ===================================================== */
+
+    const passwordInput =
         document.getElementById("password");
 
-    const eye =
-        document.getElementById("passwordEye");
+    const passwordStrength =
+        document.getElementById("passwordStrength");
 
 
-    if (password.type === "password") {
+    if (passwordInput) {
 
-        password.type = "text";
+        passwordInput.addEventListener(
+            "input",
+            function () {
 
-        eye.classList.remove("fa-eye");
+                if (this.value.length > 0) {
 
-        eye.classList.add("fa-eye-slash");
+                    passwordStrength.classList.add(
+                        "show"
+                    );
 
-    } else {
+                } else {
 
-        password.type = "password";
+                    passwordStrength.classList.remove(
+                        "show"
+                    );
 
-        eye.classList.remove("fa-eye-slash");
+                }
 
-        eye.classList.add("fa-eye");
-
-    }
-
-}
-
-
-/* =====================================================
-   GOOGLE TRANSLATE
-===================================================== */
-
-function googleTranslateElementInit() {
-
-    new google.translate.TranslateElement({
-
-        pageLanguage: "en",
-
-        includedLanguages:
-        "en,hi,mr,kn,te,ta,ml,gu,pa,bn",
-
-        autoDisplay: false
-
-    }, "google_translate_element");
-
-}
-
-
-/* =====================================================
-   APPLY SAVED LANGUAGE
-===================================================== */
-
-function applySavedLanguage() {
-
-    const savedLanguage =
-        localStorage.getItem(
-            "kisanvision360_language"
+            }
         );
 
+    }
 
-    /* English does not need translation */
 
-    if (
-        !savedLanguage ||
-        savedLanguage === "en"
-    ) {
+    /* =====================================================
+       LOGIN FORM
+    ===================================================== */
 
-        return;
+    const loginForm =
+        document.getElementById("loginForm");
+
+    const loginButton =
+        document.getElementById("loginButton");
+
+    const loginButtonText =
+        document.getElementById("loginButtonText");
+
+
+    if (loginForm) {
+
+        loginForm.addEventListener(
+            "submit",
+            function (event) {
+
+                /*
+                 * Allow normal Flask POST.
+                 * Only prevent accidental double submission.
+                 */
+
+                if (
+                    loginButton &&
+                    loginButton.classList.contains("loading")
+                ) {
+
+                    event.preventDefault();
+
+                    return;
+
+                }
+
+
+                if (loginButton) {
+
+                    loginButton.classList.add(
+                        "loading"
+                    );
+
+                }
+
+
+                if (loginButtonText) {
+
+                    loginButtonText.textContent =
+                        "Signing In...";
+
+                }
+
+            }
+        );
 
     }
 
 
-    let attempts = 0;
+    /* =====================================================
+       GLOBAL LANGUAGE RESTORE
+    ===================================================== */
+
+    /*
+     * Language is selected once on the main Language page.
+     *
+     * Flask session is the primary source.
+     *
+     * localStorage is only a fallback.
+     *
+     * No Google Translate is used.
+     */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            const serverLanguage =
+                "{{ session.get('language', 'en') }}";
 
 
-    const timer =
-        setInterval(function () {
-
-
-            const select =
-                document.querySelector(
-                    ".goog-te-combo"
+            const savedLanguage =
+                localStorage.getItem(
+                    "kisanvision360_language"
                 );
 
 
-            attempts++;
+            const activeLanguage =
+                serverLanguage ||
+                savedLanguage ||
+                "en";
 
 
-            if (select) {
+            document.documentElement.lang =
+                activeLanguage;
 
 
-                select.value =
-                    savedLanguage;
+            /* RTL languages */
 
+            if (
+                ["ur", "ks", "sd"]
+                .includes(activeLanguage)
+            ) {
 
-                select.dispatchEvent(
-                    new Event(
-                        "change",
-                        {
-                            bubbles: true
-                        }
-                    )
-                );
+                document.documentElement.dir =
+                    "rtl";
 
+            } else {
 
-                clearInterval(timer);
-
-            }
-
-
-            /* Stop after 20 attempts */
-
-            if (attempts >= 20) {
-
-                clearInterval(timer);
+                document.documentElement.dir =
+                    "ltr";
 
             }
 
-
-        }, 500);
-
-}
-
-
-/* =====================================================
-   GOOGLE TRANSLATE BAR REMOVAL
-===================================================== */
-
-function removeTranslateBar() {
-
-    const frames =
-        document.querySelectorAll(
-            ".goog-te-banner-frame"
-        );
-
-
-    frames.forEach(function(frame) {
-
-        frame.style.display =
-            "none";
-
-    });
-
-
-    document.body.style.top =
-        "0px";
-
-}
-
-
-/* =====================================================
-   PAGE LOAD
-===================================================== */
-
-window.addEventListener(
-    "load",
-    function() {
-
-
-        setTimeout(
-            applySavedLanguage,
-            1000
-        );
-
-
-        setInterval(
-            removeTranslateBar,
-            500
-        );
-
-
-    }
-);
+        }
+    );
 
 </script>
+{% endblock %}
 
-
-<!-- GOOGLE TRANSLATE SCRIPT -->
-
-<script
-src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
-</script>
-
-
-</body>
-
-</html>

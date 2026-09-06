@@ -1,41 +1,81 @@
-<!-- =====================================================
-     KisanVision360 AI CHATBOT
-===================================================== -->
+﻿
+<!-- =========================================================
+     KISANVISION360+ AI ASSISTANT
+     Role-Aware + 20-Language Ready
+     Integrated Farming Intelligence
+========================================================= -->
+
+{% set current_name = session.get('name', name|default('Farmer', true)) %}
+{% set current_role = session.get('role', role|default('farmer', true))|lower|trim %}
+{% set current_language = session.get('language', language|default('en', true)) %}
+
+
+<!-- =========================================================
+     FLOATING AI BUTTON
+========================================================= -->
 
 <div
     class="chatbot-button"
     id="chatbotButton"
-    onclick="toggleChat()"
-    title="KisanVision360 AI Assistant">
+    role="button"
+    tabindex="0"
+    aria-label="Open KisanVision360+ AI Assistant"
+    title="KisanVision360+ AI Assistant">
 
-    <i class="fa-solid fa-robot"></i>
+    <i class="fa-solid fa-robot" aria-hidden="true"></i>
+
+    <span
+        class="chatbot-notification-badge"
+        id="chatbotNotificationBadge"
+        style="display:none;">
+        1
+    </span>
 
 </div>
 
 
+<!-- =========================================================
+     CHATBOT WINDOW
+========================================================= -->
+
 <div
     class="chatbot-box"
-    id="chatBox">
+    id="chatBox"
+    role="dialog"
+    aria-modal="false"
+    aria-label="KisanVision360+ AI Assistant"
+    aria-hidden="true">
 
-    <!-- HEADER -->
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
 
     <div class="chat-header">
 
         <div class="chat-user">
 
-            <div class="ai-avatar">
+            <div
+                class="ai-avatar"
+                aria-hidden="true">
                 🤖
             </div>
 
-            <div>
+            <div class="chat-title">
 
-                <h3>
-                    KisanVision360 AI
-                </h3>
+                <h3>KisanVision360+ AI</h3>
 
                 <span class="status">
-                    <i class="fa-solid fa-circle"></i>
-                    Online
+
+                    <i
+                        class="fa-solid fa-circle"
+                        aria-hidden="true">
+                    </i>
+
+                    <span id="aiStatus">
+                        Online
+                    </span>
+
                 </span>
 
             </div>
@@ -43,98 +83,639 @@
         </div>
 
 
-        <button
-            type="button"
-            class="close-btn"
-            onclick="toggleChat()">
+        <div class="chat-header-actions">
 
-            <i class="fa-solid fa-xmark"></i>
+            <!-- CLEAR CHAT -->
 
-        </button>
+            <button
+                type="button"
+                class="chat-action-btn"
+                id="clearChatButton"
+                aria-label="Clear chat"
+                title="Clear chat">
+
+                <i
+                    class="fa-solid fa-trash"
+                    aria-hidden="true">
+                </i>
+
+            </button>
+
+
+            <!-- CLOSE CHAT -->
+
+            <button
+                type="button"
+                class="close-btn"
+                id="closeChatButton"
+                aria-label="Close chatbot"
+                title="Close">
+
+                <i
+                    class="fa-solid fa-xmark"
+                    aria-hidden="true">
+                </i>
+
+            </button>
+
+        </div>
 
     </div>
 
 
-    <!-- CHAT BODY -->
+    <!-- =====================================================
+         CONTEXT BAR
+    ====================================================== -->
+
+    <div class="chat-context-bar">
+
+        <span class="context-role">
+
+            <i
+                class="fa-solid fa-user"
+                aria-hidden="true">
+            </i>
+
+            <span id="chatUserRole">
+                {{ current_role|capitalize }}
+            </span>
+
+        </span>
+
+
+        <span class="context-language">
+
+            <i
+                class="fa-solid fa-language"
+                aria-hidden="true">
+            </i>
+
+            <span id="chatLanguage">
+                {{ current_language|upper }}
+            </span>
+
+        </span>
+
+    </div>
+
+
+    <!-- =====================================================
+         CHAT BODY
+    ====================================================== -->
 
     <div
         class="chat-body"
-        id="chat-box">
+        id="chatMessages"
+        aria-live="polite"
+        aria-relevant="additions">
+
+
+        <!-- =================================================
+             INITIAL AI MESSAGE
+        ================================================== -->
 
         <div class="bot-message">
 
-            <div class="message-avatar">
+            <div
+                class="message-avatar"
+                aria-hidden="true">
                 🤖
             </div>
+
 
             <div class="message-content">
 
                 <div class="bot">
 
-                    👋 <b>
-                        Hello {{ name|default('Farmer') }}
-                    </b>
+                    <div class="bot-greeting">
 
-                    <br><br>
+                        <span>👋</span>
 
-                    I am <strong>KisanVision360 AI</strong> 🌱
+                        <b>
+                            Hello {{ current_name }}
+                        </b>
 
-                    <br><br>
+                    </div>
 
-                    Ask me anything related to your
-                    KisanVision360 application.
+
+                    <p>
+                        I am
+                        <strong>KisanVision360+ AI</strong> 🌱
+                    </p>
+
+
+                    <p>
+                        I can help you with farming,
+                        marketplace, weather, crops, disease,
+                        irrigation, finance and government schemes.
+                    </p>
+
+
+                    <!-- =================================================
+                         FARMER ASSISTANT
+                    ================================================== -->
+
+                    {% if current_role == 'farmer' %}
+
+                    <div
+                        class="suggestions"
+                        id="farmerSuggestions">
+
+
+                        <!-- WEATHER -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="weather"
+                            data-question="What is the live weather and forecast for my location?">
+
+                            <span>🌦️</span>
+                            <span>Weather</span>
+
+                        </button>
+
+
+                        <!-- CROP ADVISOR -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="crop_advisor"
+                            data-question="Which crops are most suitable for my farm?">
+
+                            <span>🌱</span>
+                            <span>Crop Advisor</span>
+
+                        </button>
+
+
+                        <!-- CULTIVATION -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="cultivation"
+                            data-question="Give me a complete cultivation plan for my selected crop.">
+
+                            <span>📋</span>
+                            <span>Cultivation</span>
+
+                        </button>
+
+
+                        <!-- DISEASE -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="disease"
+                            data-question="How can I detect and manage crop disease?">
+
+                            <span>🐛</span>
+                            <span>Disease AI</span>
+
+                        </button>
+
+
+                        <!-- IRRIGATION -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="irrigation"
+                            data-question="How much irrigation does my crop need today?">
+
+                            <span>💧</span>
+                            <span>Irrigation</span>
+
+                        </button>
+
+
+                        <!-- MARKET -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="market"
+                            data-question="What are the latest mandi prices for my crop?">
+
+                            <span>📈</span>
+                            <span>Mandi Prices</span>
+
+                        </button>
+
+
+                        <!-- MARKET PREDICTION -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="market_prediction"
+                            data-question="Should I sell my crop now or wait based on market information?">
+
+                            <span>📊</span>
+                            <span>Price Intelligence</span>
+
+                        </button>
+
+
+                        <!-- GOVERNMENT SCHEMES -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="schemes"
+                            data-question="Which government schemes may be useful for me?">
+
+                            <span>🏛️</span>
+                            <span>Schemes</span>
+
+                        </button>
+
+
+                        <!-- FINANCE -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="finance"
+                            data-question="Show me my farm finance status and expenses.">
+
+                            <span>💰</span>
+                            <span>Finance</span>
+
+                        </button>
+
+
+                        <!-- MARKETPLACE -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="marketplace"
+                            data-question="Show marketplace options for selling my farm products.">
+
+                            <span>🛒</span>
+                            <span>Marketplace</span>
+
+                        </button>
+
+
+                        <!-- NOTIFICATIONS -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="notifications"
+                            data-question="Show important notifications for my farm.">
+
+                            <span>🔔</span>
+                            <span>Notifications</span>
+
+                        </button>
+
+
+                        <!-- FARM ANALYSIS -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="farm_analysis"
+                            data-question="Analyze my farm and give me important recommendations.">
+
+                            <span>🧠</span>
+                            <span>Farm Analysis</span>
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- FARMER QUICK FEATURES -->
+
+                    <div class="ai-quick-features">
+
+                        <button
+                            type="button"
+                            class="ai-feature-btn"
+                            data-question="Analyze my current farm situation and tell me what I should do today.">
+
+                            <span>🧠</span>
+
+                            <span>
+                                AI Farm Analysis
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="ai-feature-btn"
+                            data-question="Give me today's most important farming alerts.">
+
+                            <span>⚠️</span>
+
+                            <span>
+                                Today's Alerts
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="ai-feature-btn"
+                            data-question="Give me a low-water farming recommendation.">
+
+                            <span>💧</span>
+
+                            <span>
+                                Low Water Mode
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                    {% endif %}
+
+
+                    <!-- =================================================
+                         CONSUMER ASSISTANT
+                    ================================================== -->
+
+                    {% if current_role == 'consumer' %}
+
+                    <div
+                        class="suggestions"
+                        id="consumerSuggestions">
+
+
+                        <!-- MARKETPLACE -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="marketplace"
+                            data-question="Show available products in the marketplace.">
+
+                            <span>🛒</span>
+                            <span>Marketplace</span>
+
+                        </button>
+
+
+                        <!-- PRODUCT SEARCH -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="product_search"
+                            data-question="Search products available for me.">
+
+                            <span>🔎</span>
+                            <span>Search Products</span>
+
+                        </button>
+
+
+                        <!-- WISHLIST -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="wishlist"
+                            data-question="Show my wishlist.">
+
+                            <span>❤️</span>
+                            <span>Wishlist</span>
+
+                        </button>
+
+
+                        <!-- CART -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="cart"
+                            data-question="Show my cart.">
+
+                            <span>🛍️</span>
+                            <span>Cart</span>
+
+                        </button>
+
+
+                        <!-- ORDERS -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="orders"
+                            data-question="Show my orders and order status.">
+
+                            <span>📦</span>
+                            <span>My Orders</span>
+
+                        </button>
+
+
+                        <!-- REVIEWS -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="reviews"
+                            data-question="How can I review a purchased product?">
+
+                            <span>⭐</span>
+                            <span>Reviews</span>
+
+                        </button>
+
+
+                        <!-- FARM PRODUCTS -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="farm_products"
+                            data-question="Show fresh products directly from farmers.">
+
+                            <span>🌾</span>
+                            <span>Farm Products</span>
+
+                        </button>
+
+                    </div>
+
+                    {% endif %}
+
+
+                    <!-- =================================================
+                         ADMIN ASSISTANT
+                    ================================================== -->
+
+                    {% if current_role == 'admin' %}
+
+                    <div
+                        class="suggestions"
+                        id="adminSuggestions">
+
+
+                        <!-- USERS -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="users"
+                            data-question="Show user statistics.">
+
+                            <span>👥</span>
+                            <span>Users</span>
+
+                        </button>
+
+
+                        <!-- FARMERS -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="farmers"
+                            data-question="Show farmer statistics.">
+
+                            <span>🌾</span>
+                            <span>Farmers</span>
+
+                        </button>
+
+
+                        <!-- CONSUMERS -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="consumers"
+                            data-question="Show consumer statistics.">
+
+                            <span>👨‍👩‍👧‍👦</span>
+                            <span>Consumers</span>
+
+                        </button>
+
+
+                        <!-- PRODUCTS -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="products"
+                            data-question="Show marketplace product statistics.">
+
+                            <span>🛒</span>
+                            <span>Products</span>
+
+                        </button>
+
+
+                        <!-- ORDERS -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="orders"
+                            data-question="Show order statistics.">
+
+                            <span>📦</span>
+                            <span>Orders</span>
+
+                        </button>
+
+
+                        <!-- SCHEMES -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="schemes"
+                            data-question="Show government schemes.">
+
+                            <span>🏛️</span>
+                            <span>Schemes</span>
+
+                        </button>
+
+
+                        <!-- REPORTS -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="reports"
+                            data-question="Show reports and analytics.">
+
+                            <span>📊</span>
+                            <span>Analytics</span>
+
+                        </button>
+
+
+                        <!-- NOTIFICATIONS -->
+
+                        <button
+                            type="button"
+                            class="suggestion-btn"
+                            data-intent="notifications"
+                            data-question="Show system notifications.">
+
+                            <span>🔔</span>
+                            <span>Notifications</span>
+
+                        </button>
+
+                    </div>
+
+                    {% endif %}
+
+
+                    <!-- =================================================
+                         FALLBACK ROLE
+                    ================================================== -->
+
+                    {% if current_role not in ['farmer', 'consumer', 'admin'] %}
 
                     <div class="suggestions">
 
                         <button
                             type="button"
-                            onclick="quickQuestion('What is the live weather today?')">
-                            🌦 Weather
+                            class="suggestion-btn"
+                            data-intent="dashboard"
+                            data-question="Show my dashboard information.">
+
+                            <span>📊</span>
+                            <span>Dashboard</span>
+
                         </button>
+
 
                         <button
                             type="button"
-                            onclick="quickQuestion('What are the latest mandi prices?')">
-                            📈 Market
-                        </button>
+                            class="suggestion-btn"
+                            data-intent="help"
+                            data-question="Help me use KisanVision360+.">
 
-                        <button
-                            type="button"
-                            onclick="quickQuestion('Which crop should I grow?')">
-                            🌱 Crop
-                        </button>
+                            <span>🤖</span>
+                            <span>AI Help</span>
 
-                        <button
-                            type="button"
-                            onclick="quickQuestion('Give me irrigation advice')">
-                            💧 Irrigation
-                        </button>
-
-                        <button
-                            type="button"
-                            onclick="quickQuestion('How can I detect crop disease?')">
-                            🐛 Disease
-                        </button>
-
-                        <button
-                            type="button"
-                            onclick="quickQuestion('Show my orders')">
-                            📦 Orders
-                        </button>
-
-                        <button
-                            type="button"
-                            onclick="quickQuestion('What is my finance status?')">
-                            💰 Finance
-                        </button>
-
-                        <button
-                            type="button"
-                            onclick="quickQuestion('Tell me about government schemes')">
-                            🏛 Schemes
                         </button>
 
                     </div>
+
+                    {% endif %}
 
                 </div>
 
@@ -145,56 +726,235 @@
     </div>
 
 
-    <!-- TYPING -->
+    <!-- =====================================================
+         TYPING INDICATOR
+    ====================================================== -->
 
     <div
         class="typing"
         id="typingIndicator"
-        style="display:none;">
+        style="display:none;"
+        aria-hidden="true">
 
         <span></span>
         <span></span>
         <span></span>
 
-        AI is thinking...
+        <span class="typing-text">
+            AI is thinking...
+        </span>
 
     </div>
 
 
-    <!-- INPUT -->
+    <!-- =====================================================
+         INPUT AREA
+    ====================================================== -->
 
     <div class="chat-footer">
 
         <input
             type="text"
-            id="message"
+            id="chatMessageInput"
             autocomplete="off"
-            placeholder="Ask anything about KisanVision360...">
+            maxlength="1000"
+            placeholder="Ask KisanVision360+ AI anything..."
+            aria-label="Type your message">
+
 
         <button
             type="button"
-            onclick="sendMessage()">
+            id="sendChatButton"
+            aria-label="Send message"
+            title="Send">
 
-            <i class="fa-solid fa-paper-plane"></i>
+            <i
+                class="fa-solid fa-paper-plane"
+                aria-hidden="true">
+            </i>
 
         </button>
 
     </div>
 
+
+    <!-- =====================================================
+         AI DISCLAIMER
+    ====================================================== -->
+
+    <div class="chat-disclaimer">
+
+        <i
+            class="fa-solid fa-circle-info"
+            aria-hidden="true">
+        </i>
+
+        <span>
+            AI suggestions are for assistance.
+            Always verify critical farming decisions
+            with reliable sources.
+        </span>
+
+    </div>
+
 </div>
 
+<!-- =========================================================
+     FLOATING AI BUTTON
+========================================================= -->
+
+<button
+    type="button"
+    class="chatbot-button"
+    id="chatbotButton"
+    aria-label="Open KisanVision360+ AI Assistant"
+    title="KisanVision360+ AI Assistant">
+
+    <i class="fa-solid fa-robot" aria-hidden="true"></i>
+
+    <span
+        class="chatbot-notification-badge"
+        id="chatbotNotificationBadge"
+        style="display:none;">
+        1
+    </span>
+
+</button>
+<!-- =========================================================
+     CHATBOT CSS
+========================================================= -->
 
 <link
     rel="stylesheet"
-    href="{{ url_for(
-        'static',
-        filename='css/chatbot.css'
-    ) }}">
+    href="{{ url_for('static', filename='css/c_chatbot.css') }}">
 
+
+<!-- =========================================================
+     CHATBOT JAVASCRIPT
+========================================================= -->
 
 <script
-    src="{{ url_for(
-        'static',
-        filename='js/chatbot.js'
-    ) }}">
+    src="{{ url_for('static', filename='js/c_chatbot.js') }}">
+</script>
+
+
+<!-- =========================================================
+     KISANVISION360+ CHATBOT CONFIGURATION
+========================================================= -->
+
+<script>
+
+window.KISAN_CHATBOT_CONFIG = {
+
+    /* USER CONTEXT */
+
+    userName: {{ current_name|tojson }},
+
+    role: {{ current_role|tojson }},
+
+    language: {{ current_language|tojson }},
+
+
+    /* API ENDPOINT */
+
+    chatbotUrl: "{{ url_for('chatbot.ask_chatbot') }}",
+
+
+    /* APPLICATION */
+
+    application: "KisanVision360+",
+
+    version: "2.0",
+
+
+    /* FEATURES */
+
+    features: {
+
+        weather: true,
+        tenDayForecast: true,
+
+        cropAdvisor: true,
+        cropRanking: true,
+        cropSuitability: true,
+        cultivationPlan: true,
+        cropRotation: true,
+
+        lowWaterMode: true,
+
+        budgetRecommendation: true,
+        goalRecommendation: true,
+
+        cropComparison: true,
+        riskAnalysis: true,
+
+        diseaseDetection: true,
+        irrigation: true,
+
+        mandiPrices: true,
+        marketIntelligence: true,
+
+        marketplace: true,
+        finance: true,
+
+        governmentSchemes: true,
+        notifications: true,
+
+        farmProfile: true,
+
+        multilingual: true
+
+    },
+
+
+    /* =====================================================
+       20 SUPPORTED LANGUAGES
+    ====================================================== */
+
+    supportedLanguages: [
+
+        "en",
+        "hi",
+        "mr",
+        "kn",
+        "te",
+        "ta",
+        "ml",
+        "gu",
+        "pa",
+        "bn",
+        "as",
+        "or",
+        "ur",
+        "ne",
+        "sa",
+        "kok",
+        "mai",
+        "ks",
+        "sd",
+        "mni"
+
+    ],
+
+
+    /* RTL LANGUAGES */
+
+    rtlLanguages: [
+
+        "ur",
+        "ks",
+        "sd"
+
+    ]
+
+};
+
+
+/* DEBUG */
+
+console.log(
+    "KisanVision360+ AI initialized:",
+    window.KISAN_CHATBOT_CONFIG
+);
+
 </script>

@@ -1,318 +1,1247 @@
-// ================================
-// KisanVision360 Smart Irrigation
-// ================================
+// =========================================================
+// KISANVISION360+ SMART IRRIGATION
+// Weather-Aware • Soil-Aware • Crop-Aware
+// =========================================================
 
-document.addEventListener("DOMContentLoaded", function () {
+"use strict";
+
+
+// =========================================================
+// CONFIGURATION
+// =========================================================
+
+const IRRIGATION_CONFIG = {
+
+    maxCropLength: 100,
+
+    maxRainfall: 10000,
+
+    animationDuration: 600,
+
+    language:
+        document.documentElement.lang ||
+        localStorage.getItem("kisanvision360_language") ||
+        "en"
+
+};
+
+
+// =========================================================
+// DOM READY
+// =========================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        initializeIrrigation();
+
+    }
+);
+
+
+// =========================================================
+// INITIALIZE
+// =========================================================
+
+function initializeIrrigation() {
 
     animateCards();
 
+    setupFormValidation();
+
+    setupIrrigationInputs();
+
+    initializeProgressBars();
+
+    setupLoadingButton();
+
+    initializeClock();
+
+    initializeWeatherAwareness();
+
+    initializeSmoothScroll();
+
     calculateSuggestion();
 
-});
+    console.log(
+        "💧 KisanVision360+ Smart Irrigation loaded."
+    );
 
-// ================================
-// Card Animation
-// ================================
+}
+
+
+// =========================================================
+// CARD ANIMATION
+// =========================================================
 
 function animateCards() {
 
-    const cards = document.querySelectorAll(".card,.form-card,.ai-card,.result-card");
+    const cards =
+        document.querySelectorAll(
+            ".card, .form-card, .ai-card, .result-card, .irrigation-card"
+        );
 
-    cards.forEach((card, index) => {
 
-        card.style.opacity = "0";
-        card.style.transform = "translateY(40px)";
+    cards.forEach(
+        function (card, index) {
 
-        setTimeout(() => {
+            card.classList.add(
+                "irrigation-card-ready"
+            );
 
-            card.style.transition = ".6s ease";
-            card.style.opacity = "1";
-            card.style.transform = "translateY(0px)";
 
-        }, index * 150);
+            card.style.animationDelay =
+                `${index * 100}ms`;
 
-    });
-
-}
-
-// ================================
-// Form Validation
-// ================================
-
-const form = document.querySelector("form");
-
-if(form){
-
-form.addEventListener("submit",function(e){
-
-let crop=document.querySelector("input[name='crop']").value.trim();
-
-let rainfall=document.querySelector("input[name='rainfall']").value;
-
-if(crop===""){
-
-alert("Please enter crop name.");
-e.preventDefault();
-return;
+        }
+    );
 
 }
 
-if(rainfall<0){
 
-alert("Rainfall cannot be negative.");
-e.preventDefault();
+// =========================================================
+// FORM VALIDATION
+// =========================================================
 
-}
+function setupFormValidation() {
 
-});
+    const form =
+        document.querySelector(
+            "form"
+        );
 
-}
 
-// ================================
-// AI Suggestion
-// ================================
+    if (!form) {
+        return;
+    }
 
-function calculateSuggestion(){
 
-const crop=document.querySelector("input[name='crop']");
-const soil=document.querySelector("select[name='soil']");
-const rain=document.querySelector("input[name='rainfall']");
+    form.addEventListener(
+        "submit",
+        function (event) {
 
-if(!crop) return;
+            const crop =
+                document.querySelector(
+                    "input[name='crop']"
+                );
 
-[crop,soil,rain].forEach(el=>{
 
-el.addEventListener("input",updateRecommendation);
+            const rainfall =
+                document.querySelector(
+                    "input[name='rainfall']"
+                );
 
-});
 
-}
+            if (
+                crop &&
+                crop.value.trim() === ""
+            ) {
 
-function updateRecommendation(){
+                event.preventDefault();
 
-const soil=document.querySelector("select[name='soil']").value;
+                showIrrigationMessage(
+                    "Please enter the crop name.",
+                    "error"
+                );
 
-const rainfall=parseFloat(document.querySelector("input[name='rainfall']").value)||0;
+                crop.focus();
 
-let message="";
-let duration="";
-let water="";
+                return;
 
-if(rainfall>50){
+            }
 
-message="No irrigation required today.";
-duration="0 Minutes";
-water="Very Low";
 
-}
+            if (
+                crop &&
+                crop.value.trim().length >
+                IRRIGATION_CONFIG.maxCropLength
+            ) {
 
-else if(soil==="dry"){
+                event.preventDefault();
 
-message="Immediate irrigation recommended.";
-duration="35 Minutes";
-water="High";
+                showIrrigationMessage(
+                    "Crop name is too long.",
+                    "error"
+                );
 
-}
+                crop.focus();
 
-else if(soil==="normal"){
+                return;
 
-message="Moderate irrigation required.";
-duration="20 Minutes";
-water="Medium";
+            }
 
-}
 
-else{
+            if (rainfall) {
 
-message="No immediate irrigation.";
-duration="10 Minutes";
-water="Low";
+                const value =
+                    parseFloat(
+                        rainfall.value
+                    );
 
-}
 
-const recommend=document.querySelectorAll(".recommend");
+                if (
+                    Number.isNaN(value) ||
+                    value < 0
+                ) {
 
-if(recommend.length>=3){
+                    event.preventDefault();
 
-recommend[0].innerHTML="<strong>Recommendation</strong><br>"+message;
+                    showIrrigationMessage(
+                        "Rainfall cannot be negative.",
+                        "error"
+                    );
 
-recommend[1].innerHTML="<strong>Duration</strong><br>"+duration;
+                    rainfall.focus();
 
-recommend[2].innerHTML="<strong>Water Requirement</strong><br>"+water;
+                    return;
 
-}
+                }
 
-}
 
-// ================================
-// Progress Animation
-// ================================
+                if (
+                    value >
+                    IRRIGATION_CONFIG.maxRainfall
+                ) {
 
-const statValues=document.querySelectorAll(".card h2");
+                    event.preventDefault();
 
-statValues.forEach(stat=>{
+                    showIrrigationMessage(
+                        "Please enter a valid rainfall value.",
+                        "error"
+                    );
 
-let text=stat.innerText;
+                    rainfall.focus();
 
-if(text.includes("%")){
+                    return;
 
-let target=parseInt(text);
+                }
 
-let count=0;
+            }
 
-let timer=setInterval(()=>{
-
-count++;
-
-stat.innerHTML=count+"%";
-
-if(count>=target){
-
-clearInterval(timer);
-
-}
-
-},20);
-
-}
-
-});
-
-// ================================
-// Loading Button
-// ================================
-
-const submitBtn=document.querySelector("button[type='submit']");
-
-if(submitBtn){
-
-submitBtn.addEventListener("click",()=>{
-
-submitBtn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
-
-});
+        }
+    );
 
 }
 
-// ================================
-// Chatbot
-// ================================
 
-function toggleChat(){
+// =========================================================
+// INPUT LISTENERS
+// =========================================================
 
-const box=document.getElementById("chatBox");
+function setupIrrigationInputs() {
 
-if(!box) return;
+    const crop =
+        document.querySelector(
+            "input[name='crop']"
+        );
 
-if(box.style.display==="block"){
 
-box.style.display="none";
+    const soil =
+        document.querySelector(
+            "select[name='soil']"
+        );
 
-}else{
 
-box.style.display="block";
+    const rainfall =
+        document.querySelector(
+            "input[name='rainfall']"
+        );
 
-}
 
-}
+    const inputs = [
+        crop,
+        soil,
+        rainfall
+    ];
 
-function sendMessage(){
 
-const input=document.getElementById("userMessage");
+    inputs.forEach(
+        function (element) {
 
-const body=document.getElementById("chatBody");
+            if (!element) {
+                return;
+            }
 
-if(!input||!body) return;
 
-let msg=input.value.trim();
+            element.addEventListener(
+                "input",
+                calculateSuggestion
+            );
 
-if(msg==="") return;
 
-body.innerHTML+=`
-<div style="text-align:right;margin:10px;">
-<div style="display:inline-block;background:#18a74b;color:white;padding:10px 15px;border-radius:15px;">
-${msg}
-</div>
-</div>
-`;
+            element.addEventListener(
+                "change",
+                calculateSuggestion
+            );
 
-setTimeout(()=>{
-
-body.innerHTML+=`
-<div style="margin:10px;">
-<div style="display:inline-block;background:#eef7ef;padding:10px 15px;border-radius:15px;">
-💧 AI Recommendation:<br>
-Check soil moisture before irrigation. Early morning watering is recommended.
-</div>
-</div>
-`;
-
-body.scrollTop=body.scrollHeight;
-
-},700);
-
-input.value="";
+        }
+    );
 
 }
 
-// ================================
-// Live Clock
-// ================================
 
-setInterval(()=>{
+// =========================================================
+// AI / SMART IRRIGATION SUGGESTION
+// =========================================================
 
-const clock=document.getElementById("liveClock");
+function calculateSuggestion() {
 
-if(clock){
+    const crop =
+        document.querySelector(
+            "input[name='crop']"
+        );
 
-const d=new Date();
 
-clock.innerHTML=d.toLocaleTimeString();
+    const soil =
+        document.querySelector(
+            "select[name='soil']"
+        );
 
-}
 
-},1000);
+    const rain =
+        document.querySelector(
+            "input[name='rainfall']"
+        );
 
-// ================================
-// Weather Color Change
-// ================================
 
-const hero=document.querySelector(".hero");
+    if (!crop) {
+        return;
+    }
 
-if(hero){
 
-const hour=new Date().getHours();
-
-if(hour>=18){
-
-hero.style.background="linear-gradient(135deg,#0d5b2d,#063b1b)";
-
-}
+    updateRecommendation();
 
 }
 
-// ================================
-// Smooth Scroll
-// ================================
 
-document.querySelectorAll("a").forEach(anchor=>{
+// =========================================================
+// UPDATE RECOMMENDATION
+// =========================================================
 
-anchor.addEventListener("click",function(e){
+function updateRecommendation() {
 
-let href=this.getAttribute("href");
+    const soilElement =
+        document.querySelector(
+            "select[name='soil']"
+        );
 
-if(href && href.startsWith("#")){
 
-e.preventDefault();
+    const rainElement =
+        document.querySelector(
+            "input[name='rainfall']"
+        );
 
-document.querySelector(href).scrollIntoView({
 
-behavior:"smooth"
+    const cropElement =
+        document.querySelector(
+            "input[name='crop']"
+        );
 
-});
+
+    const soil =
+        soilElement
+            ? soilElement.value
+                .toLowerCase()
+                .trim()
+            : "normal";
+
+
+    const rainfall =
+        rainElement
+            ? parseFloat(
+                rainElement.value
+            ) || 0
+            : 0;
+
+
+    const crop =
+        cropElement
+            ? cropElement.value
+                .trim()
+            : "";
+
+
+    // -------------------------------------------------
+    // IMPORTANT:
+    // This is a FRONTEND advisory heuristic.
+    // Actual irrigation recommendation should come
+    // from backend/weather/farm data.
+    // -------------------------------------------------
+
+    let message =
+        "Enter farm information to generate an irrigation advisory.";
+
+    let duration =
+        "Not calculated";
+
+    let water =
+        "Unknown";
+
+    let level =
+        "normal";
+
+    let score =
+        50;
+
+
+    // -------------------------------------------------
+    // RAINFALL INTELLIGENCE
+    // -------------------------------------------------
+
+    if (rainfall > 50) {
+
+        message =
+            "Recent rainfall is high. Irrigation may not be required immediately.";
+
+        duration =
+            "0 min";
+
+        water =
+            "Very Low";
+
+        level =
+            "low";
+
+        score =
+            15;
+
+    }
+
+    else if (rainfall >= 20) {
+
+        message =
+            "Moderate rainfall detected. Check soil moisture before irrigation.";
+
+        duration =
+            "10–15 min*";
+
+        water =
+            "Low";
+
+        level =
+            "low";
+
+        score =
+            30;
+
+    }
+
+    // -------------------------------------------------
+    // SOIL INTELLIGENCE
+    // -------------------------------------------------
+
+    else if (
+        soil === "dry" ||
+        soil === "very dry"
+    ) {
+
+        message =
+            "Soil appears dry. Irrigation may be required soon.";
+
+        duration =
+            "25–35 min*";
+
+        water =
+            "High";
+
+        level =
+            "high";
+
+        score =
+            80;
+
+    }
+
+    else if (
+        soil === "normal" ||
+        soil === "moist"
+    ) {
+
+        message =
+            "Soil condition appears suitable. Use moderate irrigation if crop moisture is low.";
+
+        duration =
+            "15–20 min*";
+
+        water =
+            "Medium";
+
+        level =
+            "medium";
+
+        score =
+            55;
+
+    }
+
+    else if (
+        soil === "wet"
+    ) {
+
+        message =
+            "Soil appears wet. Avoid unnecessary irrigation and monitor moisture.";
+
+        duration =
+            "0–10 min*";
+
+        water =
+            "Low";
+
+        level =
+            "low";
+
+        score =
+            25;
+
+    }
+
+
+    // -------------------------------------------------
+    // NO CROP
+    // -------------------------------------------------
+
+    if (!crop) {
+
+        message =
+            "Enter the crop name for a more relevant irrigation advisory.";
+
+    }
+
+
+    updateRecommendationCards(
+        message,
+        duration,
+        water,
+        score,
+        level
+    );
+
+
+    updateIrrigationInsight(
+        rainfall,
+        soil,
+        crop
+    );
 
 }
 
-});
 
-});
+// =========================================================
+// UPDATE RECOMMENDATION CARDS
+// =========================================================
+
+function updateRecommendationCards(
+    message,
+    duration,
+    water,
+    score,
+    level
+) {
+
+    const recommend =
+        document.querySelectorAll(
+            ".recommend"
+        );
+
+
+    if (recommend.length >= 1) {
+
+        recommend[0].innerHTML = `
+
+            <strong>
+                Recommendation
+            </strong>
+
+            <br>
+
+            ${escapeHTML(message)}
+
+        `;
+
+    }
+
+
+    if (recommend.length >= 2) {
+
+        recommend[1].innerHTML = `
+
+            <strong>
+                Advisory Duration
+            </strong>
+
+            <br>
+
+            ${escapeHTML(duration)}
+
+        `;
+
+    }
+
+
+    if (recommend.length >= 3) {
+
+        recommend[2].innerHTML = `
+
+            <strong>
+                Water Requirement
+            </strong>
+
+            <br>
+
+            ${escapeHTML(water)}
+
+        `;
+
+    }
+
+
+    // Optional additional elements
+
+    const scoreElement =
+        document.querySelector(
+            "[data-irrigation-score]"
+        );
+
+
+    if (scoreElement) {
+
+        scoreElement.textContent =
+            `${Math.round(score)}%`;
+
+    }
+
+
+    const levelElement =
+        document.querySelector(
+            "[data-irrigation-level]"
+        );
+
+
+    if (levelElement) {
+
+        levelElement.textContent =
+            formatLevel(level);
+
+        levelElement.dataset.level =
+            level;
+
+    }
+
+}
+
+
+// =========================================================
+// FARM IRRIGATION INSIGHT
+// =========================================================
+
+function updateIrrigationInsight(
+    rainfall,
+    soil,
+    crop
+) {
+
+    const insight =
+        document.querySelector(
+            "[data-irrigation-insight]"
+        );
+
+
+    if (!insight) {
+        return;
+    }
+
+
+    let text =
+        "Monitor soil moisture and weather conditions before irrigation.";
+
+
+    if (rainfall > 50) {
+
+        text =
+            "🌧️ Rainfall is significant. Check field moisture before adding more water.";
+
+    }
+
+    else if (
+        soil === "dry" ||
+        soil === "very dry"
+    ) {
+
+        text =
+            "💧 Soil is dry. Inspect crop moisture and irrigation infrastructure before watering.";
+
+    }
+
+    else if (
+        soil === "wet"
+    ) {
+
+        text =
+            "🌱 Soil is wet. Avoid unnecessary watering to reduce waterlogging risk.";
+
+    }
+
+    else if (crop) {
+
+        text =
+            `🌾 Monitor ${crop} moisture regularly and adjust irrigation according to actual field conditions.`;
+
+    }
+
+
+    insight.textContent =
+        text;
+
+}
+
+
+// =========================================================
+// FORMAT LEVEL
+// =========================================================
+
+function formatLevel(level) {
+
+    const levels = {
+
+        low:
+            "Low",
+
+        medium:
+            "Medium",
+
+        high:
+            "High",
+
+        normal:
+            "Normal"
+
+    };
+
+
+    return (
+        levels[level] ||
+        "Normal"
+    );
+
+}
+
+
+// =========================================================
+// PROGRESS ANIMATION
+// =========================================================
+
+function initializeProgressBars() {
+
+    const statValues =
+        document.querySelectorAll(
+            ".card h2, [data-progress]"
+        );
+
+
+    statValues.forEach(
+        function (stat) {
+
+            const rawText =
+                stat.textContent.trim();
+
+
+            if (
+                !rawText.includes("%")
+            ) {
+
+                return;
+
+            }
+
+
+            const target =
+                parseFloat(
+                    rawText.replace(
+                        /[^0-9.-]/g,
+                        ""
+                    )
+                );
+
+
+            if (
+                Number.isNaN(target) ||
+                target < 0 ||
+                target > 100
+            ) {
+
+                return;
+
+            }
+
+
+            stat.textContent =
+                "0%";
+
+
+            animatePercentage(
+                stat,
+                target
+            );
+
+        }
+    );
+
+}
+
+
+// =========================================================
+// ANIMATE PERCENTAGE
+// =========================================================
+
+function animatePercentage(
+    element,
+    target
+) {
+
+    const duration =
+        1000;
+
+
+    const startTime =
+        performance.now();
+
+
+    function update(
+        currentTime
+    ) {
+
+        const progress =
+            Math.min(
+                (
+                    currentTime -
+                    startTime
+                ) /
+                duration,
+                1
+            );
+
+
+        const eased =
+            1 -
+            Math.pow(
+                1 - progress,
+                3
+            );
+
+
+        const value =
+            Math.round(
+                target *
+                eased
+            );
+
+
+        element.textContent =
+            `${value}%`;
+
+
+        if (
+            progress < 1
+        ) {
+
+            requestAnimationFrame(
+                update
+            );
+
+        }
+
+    }
+
+
+    requestAnimationFrame(
+        update
+    );
+
+}
+
+
+// =========================================================
+// SUBMIT BUTTON
+// =========================================================
+
+function setupLoadingButton() {
+
+    const form =
+        document.querySelector(
+            "form"
+        );
+
+
+    if (!form) {
+        return;
+    }
+
+
+    const submitBtn =
+        form.querySelector(
+            "button[type='submit'], input[type='submit']"
+        );
+
+
+    if (!submitBtn) {
+        return;
+    }
+
+
+    form.addEventListener(
+        "submit",
+        function () {
+
+            // Do not block submission.
+            // Only change UI.
+
+            submitBtn.disabled =
+                true;
+
+
+            if (
+                submitBtn.tagName
+                    .toLowerCase() ===
+                "button"
+            ) {
+
+                submitBtn.innerHTML =
+                    '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+
+            }
+
+            else {
+
+                submitBtn.value =
+                    "Processing...";
+
+            }
+
+        }
+    );
+
+}
+
+
+// =========================================================
+// LIVE CLOCK
+// =========================================================
+
+function initializeClock() {
+
+    updateIrrigationClock();
+
+
+    setInterval(
+        updateIrrigationClock,
+        1000
+    );
+
+}
+
+
+function updateIrrigationClock() {
+
+    const clock =
+        document.getElementById(
+            "liveClock"
+        );
+
+
+    if (!clock) {
+        return;
+    }
+
+
+    const date =
+        new Date();
+
+
+    try {
+
+        clock.textContent =
+            date.toLocaleTimeString(
+                "en-IN",
+                {
+                    hour:
+                        "2-digit",
+
+                    minute:
+                        "2-digit",
+
+                    second:
+                        "2-digit"
+                }
+            );
+
+    }
+
+    catch (error) {
+
+        clock.textContent =
+            date.toLocaleTimeString();
+
+    }
+
+}
+
+
+// =========================================================
+// WEATHER AWARENESS
+// =========================================================
+
+function initializeWeatherAwareness() {
+
+    const hero =
+        document.querySelector(
+            ".hero"
+        );
+
+
+    if (!hero) {
+        return;
+    }
+
+
+    const hour =
+        new Date().getHours();
+
+
+    // Do not overwrite CSS background.
+    // Add a class instead.
+
+    if (
+        hour >= 18 ||
+        hour < 6
+    ) {
+
+        hero.classList.add(
+            "irrigation-night"
+        );
+
+    }
+
+    else {
+
+        hero.classList.add(
+            "irrigation-day"
+        );
+
+    }
+
+}
+
+
+// =========================================================
+// SMOOTH SCROLL
+// =========================================================
+
+function initializeSmoothScroll() {
+
+    document
+        .querySelectorAll(
+            "a[href^='#']"
+        )
+        .forEach(
+            function (anchor) {
+
+                anchor.addEventListener(
+                    "click",
+                    function (event) {
+
+                        const href =
+                            this.getAttribute(
+                                "href"
+                            );
+
+
+                        if (
+                            !href ||
+                            href === "#"
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        const target =
+                            document.querySelector(
+                                href
+                            );
+
+
+                        if (!target) {
+                            return;
+                        }
+
+
+                        event.preventDefault();
+
+
+                        target.scrollIntoView(
+                            {
+                                behavior:
+                                    "smooth",
+                                block:
+                                    "start"
+                            }
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+}
+
+
+// =========================================================
+// NOTIFICATION / MESSAGE
+// =========================================================
+
+function showIrrigationMessage(
+    message,
+    type = "info"
+) {
+
+    // Use existing dashboard notification
+    // if available.
+
+    if (
+        typeof window
+            .KisanVisionDashboard
+            ?.showNotification ===
+        "function"
+    ) {
+
+        window.KisanVisionDashboard
+            .showNotification(
+                message,
+                type
+            );
+
+        return;
+
+    }
+
+
+    // Fallback
+
+    console[type === "error"
+        ? "error"
+        : "log"](
+        message
+    );
+
+
+    // Do not use unsafe innerHTML.
+
+    const existing =
+        document.getElementById(
+            "irrigationMessage"
+        );
+
+
+    if (existing) {
+
+        existing.textContent =
+            message;
+
+        existing.classList.add(
+            "show"
+        );
+
+        return;
+
+    }
+
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.id =
+        "irrigationMessage";
+
+
+    div.className =
+        `irrigation-message ${type}`;
+
+
+    div.textContent =
+        message;
+
+
+    document.body.appendChild(
+        div
+    );
+
+
+    setTimeout(
+        function () {
+
+            div.classList.remove(
+                "show"
+            );
+
+        },
+        3500
+    );
+
+}
+
+
+// =========================================================
+// HTML ESCAPE
+// =========================================================
+
+function escapeHTML(value) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        String(value ?? "");
+
+
+    return div.innerHTML;
+
+}
+
+
+// =========================================================
+// PUBLIC API
+// =========================================================
+
+window.KisanVisionIrrigation = {
+
+    calculateSuggestion:
+        calculateSuggestion,
+
+    updateRecommendation:
+        updateRecommendation,
+
+    refresh:
+        calculateSuggestion,
+
+    showMessage:
+        showIrrigationMessage
+
+};
+
+
+// =========================================================
+// END
+// =========================================================
+
+console.log(
+    "💧 KisanVision360+ Smart Irrigation JS ready."
+);

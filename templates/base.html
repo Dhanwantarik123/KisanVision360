@@ -1,0 +1,3029 @@
+﻿<!DOCTYPE html>
+<html
+    lang="{{ session.get('language', 'en') }}"
+    dir="{% if session.get('language') in ['ur', 'ks', 'sd'] %}rtl{% else %}ltr{% endif %}"
+    data-theme="light"
+>
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta name="theme-color" content="#1b5e20">
+
+    <meta
+        name="application-name"
+        content="KisanVision360+"
+    >
+
+    <meta
+        name="description"
+        content="KisanVision360+ AI-Powered Smart Farming Platform"
+    >
+
+    <meta
+        name="mobile-web-app-capable"
+        content="yes"
+    >
+
+    <meta
+        name="apple-mobile-web-app-capable"
+        content="yes"
+    >
+
+    <title>
+        {% block title %}
+        KisanVision360+
+        {% endblock %}
+    </title>
+
+
+    <!-- =====================================================
+         GOOGLE FONT
+    ====================================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         FONT AWESOME
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
+    {% block head %}
+    {% endblock %}
+
+
+    <!-- =====================================================
+         RESPONSIVE MASTER CSS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/responsive_master.css') }}"
+    >
+
+
+    <!-- =====================================================
+         COMPLETE GLOBAL CSS
+    ====================================================== -->
+
+    <style>
+
+        /* =====================================================
+           ROOT
+        ====================================================== */
+
+        :root {
+            --kv-primary: #1b5e20;
+            --kv-primary-2: #2e7d32;
+            --kv-green: #43a047;
+            --kv-orange: #fb8c00;
+
+            --kv-bg: #f4f8f4;
+            --kv-card: #ffffff;
+
+            --kv-text: #193b24;
+            --kv-muted: #718078;
+            --kv-border: #dfe9e1;
+
+            --kv-sidebar-width: 265px;
+            --kv-topbar-height: 72px;
+
+            --kv-radius: 18px;
+
+            --kv-shadow:
+                0 10px 30px rgba(25,80,40,.08);
+
+            --kv-transition: .22s ease;
+        }
+
+
+        /* =====================================================
+           RESET
+        ====================================================== */
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Inter, Arial, sans-serif;
+            background: var(--kv-bg);
+            color: var(--kv-text);
+            overflow-x: hidden;
+        }
+
+        body.no-scroll {
+            overflow: hidden !important;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+
+        /* =====================================================
+           APP
+        ====================================================== */
+
+        .kv-app {
+            width: 100%;
+            min-height: 100vh;
+        }
+
+
+        /* =====================================================
+           SIDEBAR
+        ====================================================== */
+
+        .kv-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+
+            width: var(--kv-sidebar-width);
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #123d19 0%,
+                    #1b5e20 55%,
+                    #164d1b 100%
+                );
+
+            color: #fff;
+
+            z-index: 2000;
+
+            display: flex;
+            flex-direction: column;
+
+            box-shadow:
+                5px 0 25px rgba(0,0,0,.10);
+
+            transition:
+                transform .25s ease;
+
+            overflow: hidden;
+        }
+
+        [dir="rtl"] .kv-sidebar {
+            left: auto;
+            right: 0;
+        }
+
+
+        /* =====================================================
+           SIDEBAR HEADER
+        ====================================================== */
+
+        .kv-sidebar-header {
+            height: var(--kv-topbar-height);
+            min-height: var(--kv-topbar-height);
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 20px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,.12);
+        }
+
+        .kv-brand {
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+
+            width: 100%;
+            min-width: 0;
+
+            color: #fff;
+
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .kv-brand-logo {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+
+            border-radius: 12px;
+
+            background:
+                rgba(255,255,255,.13);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            overflow: hidden;
+        }
+
+        .kv-brand-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .kv-brand-logo i {
+            font-size: 19px;
+        }
+
+        .kv-brand-plus {
+            color: #ffb74d;
+        }
+
+
+        /* =====================================================
+           SIDEBAR USER
+        ====================================================== */
+
+        .kv-sidebar-user {
+            margin: 15px;
+            padding: 13px;
+
+            border-radius: 15px;
+
+            background:
+                rgba(255,255,255,.08);
+
+            border:
+                1px solid rgba(255,255,255,.08);
+
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            min-width: 0;
+        }
+
+        .kv-sidebar-avatar {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+
+            border-radius: 50%;
+
+            overflow: hidden;
+
+            background: #dceddf;
+        }
+
+        .kv-sidebar-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .kv-sidebar-user-info {
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .kv-sidebar-user-name {
+            font-size: 13px;
+            font-weight: 700;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .kv-sidebar-user-role {
+            font-size: 10px;
+            opacity: .72;
+
+            margin-top: 2px;
+
+            text-transform: capitalize;
+        }
+
+
+        /* =====================================================
+           SIDEBAR NAV
+        ====================================================== */
+
+        .kv-sidebar-nav {
+            flex: 1;
+            min-height: 0;
+
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            padding: 4px 12px 18px;
+        }
+
+        .kv-sidebar-nav::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .kv-sidebar-nav::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,.25);
+            border-radius: 10px;
+        }
+
+        .kv-nav-title {
+            font-size: 9px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+            opacity: .55;
+
+            padding: 14px 9px 7px;
+        }
+
+        .kv-nav-link {
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+
+            width: 100%;
+            min-width: 0;
+
+            padding: 11px 12px;
+            margin: 2px 0;
+
+            border-radius: 11px;
+
+            color:
+                rgba(255,255,255,.82);
+
+            font-size: 12px;
+
+            transition: var(--kv-transition);
+        }
+
+        .kv-nav-link:hover {
+            color: #fff;
+
+            background:
+                rgba(255,255,255,.10);
+
+            transform:
+                translateX(2px);
+        }
+
+        [dir="rtl"] .kv-nav-link:hover {
+            transform:
+                translateX(-2px);
+        }
+
+        .kv-nav-link.active {
+            color: #fff;
+
+            background:
+                rgba(255,255,255,.16);
+
+            box-shadow:
+                inset 3px 0 #ffb74d;
+        }
+
+        [dir="rtl"] .kv-nav-link.active {
+            box-shadow:
+                inset -3px 0 #ffb74d;
+        }
+
+        .kv-nav-icon {
+            width: 22px;
+            min-width: 22px;
+
+            text-align: center;
+
+            font-size: 14px;
+        }
+
+        .kv-nav-text {
+            flex: 1;
+            min-width: 0;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
+        }
+
+        .kv-nav-badge {
+            min-width: 19px;
+            height: 19px;
+
+            padding: 0 5px;
+
+            border-radius: 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                var(--kv-orange);
+
+            color: #fff;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            flex-shrink: 0;
+        }
+
+
+        /* =====================================================
+           SIDEBAR FOOTER
+        ====================================================== */
+
+        .kv-sidebar-footer {
+            padding: 12px;
+
+            border-top:
+                1px solid rgba(255,255,255,.10);
+        }
+
+        .kv-logout {
+            color: #ffdddd;
+        }
+
+        .kv-logout:hover {
+            background:
+                rgba(211,47,47,.20);
+
+            color: #fff;
+        }
+
+
+        /* =====================================================
+           MAIN
+        ====================================================== */
+
+        .kv-main {
+            width:
+                calc(100% - var(--kv-sidebar-width));
+
+            min-height: 100vh;
+
+            margin-left:
+                var(--kv-sidebar-width);
+
+            min-width: 0;
+
+            transition:
+                margin .25s ease,
+                width .25s ease;
+        }
+
+        [dir="rtl"] .kv-main {
+            margin-left: 0;
+            margin-right:
+                var(--kv-sidebar-width);
+        }
+
+
+        /* =====================================================
+           TOPBAR
+        ====================================================== */
+
+        .kv-topbar {
+            width: 100%;
+
+            height: var(--kv-topbar-height);
+            min-height: var(--kv-topbar-height);
+
+            position: sticky;
+            top: 0;
+
+            z-index: 1500;
+
+            background:
+                rgba(255,255,255,.96);
+
+            backdrop-filter:
+                blur(14px);
+
+            -webkit-backdrop-filter:
+                blur(14px);
+
+            border-bottom:
+                1px solid var(--kv-border);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 0 25px;
+
+            min-width: 0;
+        }
+
+        .kv-topbar-left {
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+
+            min-width: 0;
+            flex: 1;
+        }
+
+
+        /* =====================================================
+           HAMBURGER BUTTON
+        ====================================================== */
+
+        .kv-menu-button {
+            display: none;
+
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+
+            border:
+                1px solid var(--kv-border);
+
+            border-radius: 11px;
+
+            background: #fff;
+
+            color: var(--kv-text);
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 0;
+
+            position: relative;
+
+            z-index: 3000;
+
+            font-size: 17px;
+
+            transition:
+                .2s ease;
+        }
+
+        .kv-menu-button:hover {
+            color: var(--kv-primary);
+
+            border-color:
+                #9bc3a0;
+
+            transform:
+                translateY(-1px);
+        }
+
+        .kv-menu-button:active {
+            transform:
+                scale(.94);
+        }
+
+        .kv-menu-button:focus-visible {
+            outline:
+                3px solid rgba(67,160,71,.25);
+
+            outline-offset: 2px;
+        }
+
+
+        /* =====================================================
+           PAGE HEADING
+        ====================================================== */
+
+        .kv-page-heading {
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .kv-page-title {
+            margin: 0;
+
+            font-size: 18px;
+            font-weight: 800;
+
+            color: var(--kv-text);
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+        }
+
+        .kv-page-subtitle {
+            margin: 3px 0 0;
+
+            color: var(--kv-muted);
+
+            font-size: 10px;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+        }
+
+
+        /* =====================================================
+           TOPBAR ACTIONS
+        ====================================================== */
+
+        .kv-topbar-actions {
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+
+            flex-shrink: 0;
+        }
+
+        .kv-icon-button {
+            width: 39px;
+            height: 39px;
+            min-width: 39px;
+
+            border:
+                1px solid var(--kv-border);
+
+            border-radius: 11px;
+
+            background: #fff;
+
+            color: var(--kv-text);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            position: relative;
+
+            transition:
+                var(--kv-transition);
+        }
+
+        .kv-icon-button:hover {
+            border-color: #a9c9ad;
+
+            color: var(--kv-primary);
+
+            transform:
+                translateY(-1px);
+        }
+
+        .kv-notification-dot {
+            position: absolute;
+
+            top: 5px;
+            right: 5px;
+
+            min-width: 15px;
+            height: 15px;
+
+            padding: 0 3px;
+
+            border-radius: 20px;
+
+            background: #e53935;
+
+            color: #fff;
+
+            font-size: 8px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 2px solid #fff;
+        }
+
+        [dir="rtl"] .kv-notification-dot {
+            right: auto;
+            left: 5px;
+        }
+
+
+        /* =====================================================
+           PROFILE
+        ====================================================== */
+
+        .kv-top-profile {
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+
+            padding-left: 5px;
+
+            min-width: 0;
+        }
+
+        [dir="rtl"] .kv-top-profile {
+            padding-left: 0;
+            padding-right: 5px;
+        }
+
+        .kv-top-profile img {
+            width: 37px;
+            height: 37px;
+            min-width: 37px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            border:
+                2px solid #dcebdd;
+        }
+
+        .kv-top-profile-info {
+            display: none;
+
+            min-width: 0;
+        }
+
+        .kv-top-profile-name {
+            font-size: 11px;
+            font-weight: 700;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            max-width: 130px;
+        }
+
+        .kv-top-profile-role {
+            font-size: 9px;
+
+            color: var(--kv-muted);
+
+            text-transform: capitalize;
+        }
+
+
+        /* =====================================================
+           CONTENT
+        ====================================================== */
+
+        .kv-content {
+            width: 100%;
+
+            padding: 25px;
+
+            max-width: 1600px;
+
+            margin: 0 auto;
+
+            min-width: 0;
+
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           CARD
+        ====================================================== */
+
+        .kv-card {
+            background: var(--kv-card);
+
+            border:
+                1px solid var(--kv-border);
+
+            border-radius:
+                var(--kv-radius);
+
+            box-shadow:
+                var(--kv-shadow);
+
+            min-width: 0;
+        }
+
+
+        /* =====================================================
+           BUTTON
+        ====================================================== */
+
+        .kv-btn {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            min-height: 42px;
+
+            padding: 0 17px;
+
+            border: 0;
+
+            border-radius: 11px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            transition:
+                var(--kv-transition);
+        }
+
+        .kv-btn:hover {
+            transform:
+                translateY(-1px);
+        }
+
+        .kv-btn-primary {
+            background:
+                var(--kv-primary);
+
+            color: #fff;
+        }
+
+        .kv-btn-primary:hover {
+            background:
+                var(--kv-primary-2);
+        }
+
+        .kv-btn-secondary {
+            background:
+                #eaf6ec;
+
+            color:
+                var(--kv-primary);
+        }
+
+        .kv-btn-orange {
+            background:
+                var(--kv-orange);
+
+            color: #fff;
+        }
+
+
+        /* =====================================================
+           FLASH
+        ====================================================== */
+
+        .kv-flash-container {
+            position: fixed;
+
+            top: 82px;
+            right: 22px;
+
+            width:
+                min(370px,calc(100vw - 44px));
+
+            z-index: 5000;
+        }
+
+        [dir="rtl"] .kv-flash-container {
+            right: auto;
+            left: 22px;
+        }
+
+        .kv-flash {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 13px 15px;
+
+            margin-bottom: 9px;
+
+            border-radius: 13px;
+
+            background: #fff;
+
+            border:
+                1px solid var(--kv-border);
+
+            box-shadow:
+                0 12px 30px rgba(0,0,0,.12);
+
+            font-size: 12px;
+
+            min-width: 0;
+        }
+
+        .kv-flash span {
+            flex: 1;
+            min-width: 0;
+
+            overflow-wrap: anywhere;
+        }
+
+        .kv-flash-close {
+            margin-left: auto;
+
+            border: 0;
+
+            background: transparent;
+
+            color: var(--kv-muted);
+
+            flex-shrink: 0;
+        }
+
+        [dir="rtl"] .kv-flash-close {
+            margin-left: 0;
+            margin-right: auto;
+        }
+
+
+        /* =====================================================
+           SIDEBAR OVERLAY
+        ====================================================== */
+
+        .kv-sidebar-overlay {
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                rgba(0,0,0,.48);
+
+            z-index: 1900;
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           CHATBOT
+        ====================================================== */
+
+        .kv-chatbot-float {
+            position: fixed;
+
+            right: 22px;
+            bottom: 22px;
+
+            width: 58px;
+            height: 58px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1b5e20,
+                    #43a047
+                );
+
+            color: #fff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            box-shadow:
+                0 12px 30px rgba(27,94,32,.30);
+
+            z-index: 9999;
+        }
+
+        [dir="rtl"] .kv-chatbot-float {
+            right: auto;
+            left: 22px;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ====================================================== */
+
+        .kv-footer {
+            padding:
+                20px 25px 30px;
+
+            text-align: center;
+
+            color: var(--kv-muted);
+
+            font-size: 10px;
+        }
+
+        .kv-footer i {
+            color: var(--kv-green);
+
+            margin-right: 4px;
+        }
+
+
+        /* =====================================================
+           GOOGLE TRANSLATE
+        ====================================================== */
+
+        #google_translate_element {
+            position: fixed !important;
+
+            left: -9999px !important;
+            top: -9999px !important;
+
+            width: 1px !important;
+            height: 1px !important;
+
+            overflow: hidden !important;
+
+            opacity: 0 !important;
+
+            pointer-events: none !important;
+        }
+
+        .goog-te-banner-frame.skiptranslate {
+            display: none !important;
+        }
+
+        body {
+            top: 0 !important;
+        }
+
+        .goog-tooltip,
+        .goog-te-balloon-frame {
+            display: none !important;
+        }
+
+        .goog-text-highlight {
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .goog-te-gadget {
+            font-size: 0 !important;
+        }
+
+
+        /* =====================================================
+           DESKTOP PROFILE
+        ====================================================== */
+
+        @media (min-width: 1100px) {
+
+            .kv-top-profile-info {
+                display: block;
+            }
+        }
+
+
+        /* =====================================================
+           RESPONSIVE SIDEBAR
+        ====================================================== */
+
+        @media (max-width: 900px) {
+
+            :root {
+                --kv-sidebar-width: 245px;
+            }
+
+            .kv-sidebar {
+                transform:
+                    translateX(-110%);
+
+                visibility: hidden;
+
+                pointer-events: none;
+
+                box-shadow:
+                    10px 0 35px rgba(0,0,0,.25);
+            }
+
+            [dir="rtl"] .kv-sidebar {
+                transform:
+                    translateX(110%);
+            }
+
+            .kv-sidebar.open {
+                transform:
+                    translateX(0);
+
+                visibility: visible;
+
+                pointer-events: auto;
+            }
+
+            [dir="rtl"] .kv-sidebar.open {
+                transform:
+                    translateX(0);
+            }
+
+            .kv-sidebar-overlay.active {
+                display: block;
+            }
+
+            .kv-main,
+            [dir="rtl"] .kv-main {
+
+                width: 100%;
+
+                margin-left: 0;
+
+                margin-right: 0;
+            }
+
+            .kv-menu-button {
+                display: flex;
+            }
+
+            .kv-content {
+                padding: 20px;
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 600px) {
+
+            .kv-topbar {
+                padding: 0 14px;
+                gap: 8px;
+            }
+
+            .kv-page-title {
+                font-size: 15px;
+            }
+
+            .kv-page-subtitle {
+                display: none;
+            }
+
+            .kv-content {
+                padding: 17px 13px;
+            }
+
+            .kv-topbar-actions {
+                gap: 5px;
+            }
+
+            .kv-icon-button {
+                width: 36px;
+                height: 36px;
+                min-width: 36px;
+            }
+
+            .kv-top-profile img {
+                width: 34px;
+                height: 34px;
+                min-width: 34px;
+            }
+
+            .kv-chatbot-float {
+                right: 14px;
+                bottom: 14px;
+
+                width: 54px;
+                height: 54px;
+            }
+
+            [dir="rtl"] .kv-chatbot-float {
+                right: auto;
+                left: 14px;
+            }
+
+            .kv-flash-container {
+                top: 76px;
+                right: 12px;
+
+                width:
+                    calc(100vw - 24px);
+            }
+
+            [dir="rtl"] .kv-flash-container {
+                right: auto;
+                left: 12px;
+            }
+        }
+
+
+        /* =====================================================
+           VERY SMALL
+        ====================================================== */
+
+        @media (max-width: 420px) {
+
+            .kv-topbar-left {
+                gap: 8px;
+            }
+
+            .kv-menu-button {
+                width: 38px;
+                height: 38px;
+                min-width: 38px;
+            }
+
+            .kv-top-profile {
+                padding: 0;
+            }
+
+            .kv-top-profile img {
+                width: 32px;
+                height: 32px;
+                min-width: 32px;
+            }
+
+            .kv-content {
+                padding: 14px 10px;
+            }
+        }
+
+
+        /* =====================================================
+           PRINT
+        ====================================================== */
+
+        @media print {
+
+            .kv-sidebar,
+            .kv-topbar,
+            .kv-chatbot-float,
+            .kv-sidebar-overlay,
+            .kv-flash-container {
+                display: none !important;
+            }
+
+            .kv-main,
+            [dir="rtl"] .kv-main {
+                width: 100% !important;
+                margin: 0 !important;
+            }
+
+            .kv-content {
+                padding: 0 !important;
+                max-width: none !important;
+            }
+
+            body {
+                background: #fff !important;
+            }
+        }
+
+
+        /* =====================================================
+           PUBLIC PAGES
+        ====================================================== */
+
+        body.kv-public-page .kv-sidebar,
+        body.kv-public-page .kv-sidebar-overlay,
+        body.kv-public-page .kv-topbar {
+            display: none !important;
+        }
+
+        body.kv-public-page .kv-main {
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            min-height: 100vh;
+        }
+
+        body.kv-public-page .kv-content {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+    </style>
+
+</head>
+
+
+<body
+    class="{% if request.endpoint in [
+        'auth.login',
+        'auth.signup',
+        'auth.forgot_password',
+        'auth.reset_password',
+        'auth.language',
+        'splash',
+        'index'
+    ] %}kv-public-page{% endif %}"
+>
+
+
+{% set current_role =
+    session.get('role', '')|lower|trim
+%}
+
+{% set current_name =
+    session.get('name', 'User')
+%}
+
+{% set current_language =
+    session.get('language', 'en')|lower|trim
+%}
+
+
+<div class="kv-app">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        class="kv-sidebar"
+        id="kvSidebar"
+    >
+
+        <!-- SIDEBAR HEADER -->
+
+        <div class="kv-sidebar-header">
+
+            <a
+                class="kv-brand"
+                href="{% if current_role == 'farmer' %}{{ url_for('farmer.farmer') }}{% elif current_role == 'consumer' %}{{ url_for('consumer.consumer') }}{% elif current_role == 'admin' %}{{ url_for('admin.admin') }}{% else %}/{% endif %}"
+            >
+
+                <div class="kv-brand-logo">
+
+                    <img
+                        src="{{ url_for('static', filename='images/logo.png') }}"
+                        alt="KisanVision360+"
+                        onerror="this.style.display='none';this.nextElementSibling.style.display='block';"
+                    >
+
+                    <i
+                        class="fa-solid fa-leaf"
+                        style="display:none;"
+                    ></i>
+
+                </div>
+
+                <span>
+                    KisanVision
+                    <span class="kv-brand-plus">360+</span>
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- SIDEBAR USER -->
+
+        <div class="kv-sidebar-user">
+
+            <div class="kv-sidebar-avatar">
+
+                <img
+                    src="{{ url_for('static', filename='images/farmer.jpg') }}"
+                    alt="Profile"
+                    onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/farmer.png') }}';"
+                >
+
+            </div>
+
+            <div class="kv-sidebar-user-info">
+
+                <div class="kv-sidebar-user-name">
+                    {{ current_name }}
+                </div>
+
+                <div class="kv-sidebar-user-role">
+                    {{ current_role or 'Guest' }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             NAVIGATION
+        ================================================== -->
+
+        <nav class="kv-sidebar-nav">
+
+
+            {% if current_role == 'farmer' %}
+
+                <div class="kv-nav-title">
+                    Main Menu
+                </div>
+
+
+                <a
+                    href="{{ url_for('farmer.farmer') }}"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-house"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Dashboard
+                    </span>
+                </a>
+
+
+                <a
+                    href="{{ url_for('weather.weather') }}"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-cloud-sun"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Weather
+                    </span>
+                </a>
+
+
+                <a
+                    href="{{ url_for('recommendation.recommendation') }}"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-seedling"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Crop Advisor
+                    </span>
+                </a>
+
+
+                <a
+                    href="{{ url_for('irrigation.irrigation') }}"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-droplet"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Smart Irrigation
+                    </span>
+                </a>
+
+
+                <!-- =================================================
+                     DISEASE DETECTION
+                     FIXED ENDPOINT
+                ================================================== -->
+
+                <a
+                    href="{{ url_for('disease.disease') }}"
+                    class="kv-nav-link"
+                >
+
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-microscope"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Disease Detection
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{{ url_for('market.market') }}"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Market Intelligence
+                    </span>
+                </a>
+
+
+                <div class="kv-nav-title">
+                    Farm Management
+                </div>
+
+
+                <a
+                    href="{{ url_for('finance.finance') }}"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-wallet"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Finance
+                    </span>
+                </a>
+
+
+                <a
+                    href="{{ url_for('government.government') }}"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-building-columns"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Government Schemes
+                    </span>
+                </a>
+
+
+                <a
+                    href="/notifications"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-bell"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Notifications
+                    </span>
+
+                    {% if notification_count|default(0)|int > 0 %}
+
+                        <span class="kv-nav-badge">
+                            {{ notification_count }}
+                        </span>
+
+                    {% endif %}
+
+                </a>
+
+
+                <a
+                    href="/reports"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Reports
+                    </span>
+                </a>
+
+
+                <div class="kv-nav-title">
+                    Marketplace
+                </div>
+
+
+                <a
+                    href="{{ url_for('marketplace.farmer_marketplace') }}"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-store"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        My Marketplace
+                    </span>
+                </a>
+
+
+                <a
+                    href="/marketplace/add-product"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-circle-plus"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Sell Product
+                    </span>
+                </a>
+
+
+                <a
+                    href="/orders"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-box"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Orders
+                    </span>
+                </a>
+
+
+                <a
+                    href="/chatbot"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-robot"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        AI Assistant
+                    </span>
+                </a>
+
+
+            {% elif current_role == 'consumer' %}
+
+
+                <div class="kv-nav-title">
+                    Main Menu
+                </div>
+
+
+                <a
+                    href="{{ url_for('consumer.consumer') }}"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-house"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Dashboard
+                    </span>
+                </a>
+
+
+                <a
+                    href="{{ url_for('marketplace.consumer_marketplace') }}"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-store"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Marketplace
+                    </span>
+                </a>
+
+
+                <a
+                    href="{{ url_for('marketplace.wishlist') }}"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-heart"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Wishlist
+                    </span>
+                </a>
+
+
+                <a
+                    href="{{ url_for('marketplace.cart') }}"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Cart
+                    </span>
+                </a>
+
+
+                <a
+                    href="{{ url_for('marketplace.consumer_orders') }}"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-box-open"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        My Orders
+                    </span>
+                </a>
+
+
+                <div class="kv-nav-title">
+                    Support
+                </div>
+
+
+                <a
+                    href="/chatbot"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-robot"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        AI Assistant
+                    </span>
+                </a>
+
+
+                <a
+                    href="{{ url_for('consumer.consumer_notifications') }}"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-bell"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Notifications
+                    </span>
+                </a>
+
+
+            {% elif current_role == 'admin' %}
+
+
+                <div class="kv-nav-title">
+                    Administration
+                </div>
+
+
+                <a
+                    href="{{ url_for('admin.admin') }}"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-gauge-high"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Admin Dashboard
+                    </span>
+                </a>
+
+
+                <a
+                    href="{{ url_for('market.market') }}"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Market Monitor
+                    </span>
+                </a>
+
+
+                <a
+                    href="/notifications"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-bell"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Notifications
+                    </span>
+                </a>
+
+
+                <a
+                    href="/reports"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Reports
+                    </span>
+                </a>
+
+
+            {% else %}
+
+
+                <div class="kv-nav-title">
+                    Welcome
+                </div>
+
+
+                <a
+                    href="/login"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Login
+                    </span>
+                </a>
+
+
+                <a
+                    href="/signup"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Create Account
+                    </span>
+                </a>
+
+
+            {% endif %}
+
+
+            <!-- =================================================
+                 COMMON ACCOUNT
+            ================================================== -->
+
+            {% if current_role in ['farmer','consumer','admin'] %}
+
+
+                <div class="kv-nav-title">
+                    Account
+                </div>
+
+
+                <a
+                    href="{{ url_for('profile.profile') }}"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-user"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Profile
+                    </span>
+                </a>
+
+
+                <a
+                    href="{{ url_for('settings.settings') }}"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-gear"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Settings
+                    </span>
+                </a>
+
+
+                <a
+                    href="{{ url_for('help.help_page') }}"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-circle-question"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Help & Support
+                    </span>
+                </a>
+
+
+            {% endif %}
+
+        </nav>
+
+
+        <!-- =====================================================
+             LOGOUT
+        ====================================================== -->
+
+        <div class="kv-sidebar-footer">
+
+            {% if current_role in ['farmer','consumer','admin'] %}
+
+                <a
+                    href="{{ url_for('auth.logout') }}"
+                    class="kv-nav-link kv-logout"
+                    onclick="return confirm('Are you sure you want to logout?');"
+                >
+
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Logout
+                    </span>
+
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         SIDEBAR OVERLAY
+    ====================================================== -->
+
+    <div
+        class="kv-sidebar-overlay"
+        id="kvSidebarOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="kv-main">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+        <header class="kv-topbar">
+
+            <div class="kv-topbar-left">
+
+
+                <!-- HAMBURGER -->
+
+                <button
+                    type="button"
+                    class="kv-menu-button"
+                    id="kvMenuButton"
+                    aria-label="Open menu"
+                    aria-expanded="false"
+                    aria-controls="kvSidebar"
+                >
+
+                    <i
+                        class="fa-solid fa-bars"
+                        id="kvMenuIcon"
+                    ></i>
+
+                </button>
+
+
+                <!-- PAGE HEADING -->
+
+                <div class="kv-page-heading">
+
+                    <h1 class="kv-page-title">
+
+                        {% block page_title %}
+                        KisanVision360+
+                        {% endblock %}
+
+                    </h1>
+
+                    <p class="kv-page-subtitle">
+
+                        {% block page_subtitle %}
+                        AI-Powered Smart Farming Platform
+                        {% endblock %}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- TOPBAR ACTIONS -->
+
+            <div class="kv-topbar-actions">
+
+
+                <!-- LANGUAGE -->
+
+                <a
+                    href="{{ url_for('auth.language') }}"
+                    class="kv-icon-button"
+                    title="Language"
+                    aria-label="Language"
+                >
+
+                    <i class="fa-solid fa-language"></i>
+
+                </a>
+
+
+                <!-- NOTIFICATIONS -->
+
+                {% if current_role == 'consumer' %}
+
+                    <a
+                        href="{{ url_for('consumer.consumer_notifications') }}"
+                        class="kv-icon-button"
+                        title="Notifications"
+                        aria-label="Notifications"
+                    >
+
+                        <i class="fa-solid fa-bell"></i>
+
+                        {% if notification_count|default(0)|int > 0 %}
+
+                            <span class="kv-notification-dot">
+                                {{ notification_count }}
+                            </span>
+
+                        {% endif %}
+
+                    </a>
+
+
+                {% elif current_role in ['farmer','admin'] %}
+
+                    <a
+                        href="/notifications"
+                        class="kv-icon-button"
+                        title="Notifications"
+                        aria-label="Notifications"
+                    >
+
+                        <i class="fa-solid fa-bell"></i>
+
+                        {% if notification_count|default(0)|int > 0 %}
+
+                            <span class="kv-notification-dot">
+                                {{ notification_count }}
+                            </span>
+
+                        {% endif %}
+
+                    </a>
+
+                {% endif %}
+
+
+                <!-- PROFILE -->
+
+                {% if current_role in ['farmer','consumer','admin'] %}
+
+                    <a
+                        href="{{ url_for('profile.profile') }}"
+                        class="kv-top-profile"
+                    >
+
+                        <img
+                            src="{{ url_for('static', filename='images/farmer.jpg') }}"
+                            alt="Profile"
+                            onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/farmer.png') }}';"
+                        >
+
+                        <div class="kv-top-profile-info">
+
+                            <div class="kv-top-profile-name">
+                                {{ current_name }}
+                            </div>
+
+                            <div class="kv-top-profile-role">
+                                {{ current_role }}
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        </header>
+
+
+        <!-- =====================================================
+             FLASH MESSAGES
+        ====================================================== -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                <div
+                    class="kv-flash-container"
+                    id="kvFlashContainer"
+                >
+
+                    {% for category,message in messages %}
+
+                        <div
+                            class="kv-flash {{ category|default('info') }}"
+                        >
+
+                            {% if category == 'success' %}
+
+                                <i class="fa-solid fa-circle-check"></i>
+
+                            {% elif category in ['error','danger'] %}
+
+                                <i class="fa-solid fa-circle-xmark"></i>
+
+                            {% elif category == 'warning' %}
+
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                            {% else %}
+
+                                <i class="fa-solid fa-circle-info"></i>
+
+                            {% endif %}
+
+                            <span>
+                                {{ message }}
+                            </span>
+
+                            <button
+                                type="button"
+                                class="kv-flash-close"
+                                onclick="this.parentElement.remove();"
+                                aria-label="Close"
+                            >
+
+                                <i class="fa-solid fa-xmark"></i>
+
+                            </button>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <!-- =====================================================
+             CONTENT
+        ====================================================== -->
+
+        <section class="kv-content">
+
+            {% block content %}
+            {% endblock %}
+
+        </section>
+
+
+        <!-- =====================================================
+             FOOTER
+        ====================================================== -->
+
+        <footer class="kv-footer">
+
+            <i class="fa-solid fa-leaf"></i>
+
+            KisanVision360+
+
+            <span>â€¢</span>
+
+            AI-Powered Smart Farming Platform
+
+            <span>â€¢</span>
+
+            {{ current_role|capitalize if current_role else 'Guest' }}
+
+        </footer>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     GLOBAL AI CHATBOT
+========================================================= -->
+
+{% if current_role in ['farmer','consumer','admin']
+      and request.path != '/chatbot' %}
+
+    {% include "components/chatbot.html" %}
+
+{% endif %}
+
+
+<!-- =========================================================
+     GOOGLE TRANSLATE
+========================================================= -->
+
+<div
+    id="google_translate_element"
+    aria-hidden="true"
+></div>
+
+
+<!-- =========================================================
+     LANGUAGE JAVASCRIPT
+========================================================= -->
+
+<script>
+
+(function () {
+
+    "use strict";
+
+    const LANGUAGES = [
+        "en",
+        "hi",
+        "mr",
+        "kn",
+        "te",
+        "ta",
+        "ml",
+        "gu",
+        "pa",
+        "bn",
+        "as",
+        "or",
+        "ur",
+        "ne",
+        "sa",
+        "kok",
+        "mai",
+        "ks",
+        "sd",
+        "mni"
+    ];
+
+    const RTL_LANGUAGES = [
+        "ur",
+        "ks",
+        "sd"
+    ];
+
+
+    function setDirection(language) {
+
+        language =
+            String(language || "en")
+                .toLowerCase()
+                .trim();
+
+        document.documentElement.lang =
+            language;
+
+        document.documentElement.dir =
+            RTL_LANGUAGES.includes(language)
+                ? "rtl"
+                : "ltr";
+    }
+
+
+    function getLanguage() {
+
+        const localLanguage =
+            localStorage.getItem(
+                "kisanvision360_language"
+            );
+
+        const oldLanguage =
+            localStorage.getItem("language");
+
+        const htmlLanguage =
+            document.documentElement.lang;
+
+        return (
+            localLanguage ||
+            oldLanguage ||
+            htmlLanguage ||
+            "en"
+        )
+        .toLowerCase()
+        .trim();
+    }
+
+
+    function applyGoogleLanguage(language) {
+
+        language =
+            String(language || "en")
+                .toLowerCase()
+                .trim();
+
+        if (!LANGUAGES.includes(language)) {
+            language = "en";
+        }
+
+        setDirection(language);
+
+        if (language === "en") {
+            return;
+        }
+
+        const select =
+            document.querySelector(
+                ".goog-te-combo"
+            );
+
+        if (!select) {
+
+            setTimeout(
+                function () {
+                    applyGoogleLanguage(language);
+                },
+                500
+            );
+
+            return;
+        }
+
+        select.value = language;
+
+        select.dispatchEvent(
+            new Event(
+                "change",
+                {
+                    bubbles: true
+                }
+            )
+        );
+    }
+
+
+    window.googleTranslateElementInit =
+        function () {
+
+            if (
+                !window.google ||
+                !window.google.translate
+            ) {
+                return;
+            }
+
+            new google.translate.TranslateElement(
+                {
+                    pageLanguage: "en",
+                    includedLanguages:
+                        LANGUAGES.join(","),
+                    autoDisplay: false
+                },
+                "google_translate_element"
+            );
+
+            setTimeout(
+                function () {
+
+                    applyGoogleLanguage(
+                        getLanguage()
+                    );
+
+                },
+                1200
+            );
+        };
+
+
+    window.setKisanLanguage =
+        function (language) {
+
+            language =
+                String(language || "")
+                    .toLowerCase()
+                    .trim();
+
+            if (!LANGUAGES.includes(language)) {
+
+                console.warn(
+                    "Unsupported language:",
+                    language
+                );
+
+                return;
+            }
+
+            localStorage.setItem(
+                "kisanvision360_language",
+                language
+            );
+
+            localStorage.setItem(
+                "language",
+                language
+            );
+
+            setDirection(language);
+
+            fetch(
+                "/set-language",
+                {
+                    method: "POST",
+
+                    credentials:
+                        "same-origin",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+
+                        "Accept":
+                            "application/json",
+
+                        "X-Requested-With":
+                            "XMLHttpRequest"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            language: language
+                        })
+                }
+            )
+            .then(
+                function (response) {
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            "Language save failed: " +
+                            response.status
+                        );
+                    }
+
+                    return response
+                        .json()
+                        .catch(
+                            function () {
+                                return {};
+                            }
+                        );
+                }
+            )
+            .then(
+                function () {
+
+                    if (language === "en") {
+
+                        window.location.reload();
+
+                        return;
+                    }
+
+                    applyGoogleLanguage(
+                        language
+                    );
+                }
+            )
+            .catch(
+                function (error) {
+
+                    console.warn(
+                        "Language session save error:",
+                        error
+                    );
+
+                    if (language === "en") {
+
+                        window.location.reload();
+
+                    } else {
+
+                        applyGoogleLanguage(
+                            language
+                        );
+                    }
+                }
+            );
+        };
+
+
+    window.KisanVision360Language = {
+
+        languages: LANGUAGES,
+
+        rtlLanguages:
+            RTL_LANGUAGES,
+
+        setLanguage:
+            window.setKisanLanguage,
+
+        applyGoogleLanguage:
+            applyGoogleLanguage,
+
+        getLanguage:
+            getLanguage
+    };
+
+
+    setDirection(
+        getLanguage()
+    );
+
+})();
+
+</script>
+
+
+<!-- =========================================================
+     GOOGLE TRANSLATE SCRIPT
+========================================================= -->
+
+<script
+    src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+    async
+></script>
+
+
+<!-- =========================================================
+     SIDEBAR + GLOBAL JAVASCRIPT
+
+     IMPORTANT:
+     SIDEBAR JS IS ONLY HERE.
+     responsive.js MUST NOT contain sidebar JS.
+========================================================= -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        "use strict";
+
+
+        /* =================================================
+           ELEMENTS
+        ================================================== */
+
+        const sidebar =
+            document.getElementById(
+                "kvSidebar"
+            );
+
+        const menuButton =
+            document.getElementById(
+                "kvMenuButton"
+            );
+
+        const overlay =
+            document.getElementById(
+                "kvSidebarOverlay"
+            );
+
+        const menuIcon =
+            document.getElementById(
+                "kvMenuIcon"
+            );
+
+
+        /* =================================================
+           CHECK
+        ================================================== */
+
+        if (!sidebar || !menuButton) {
+
+            console.warn(
+                "KisanVision360+: Sidebar elements not found."
+            );
+
+            return;
+        }
+
+
+        /* =================================================
+           OPEN SIDEBAR
+        ================================================== */
+
+        function openSidebar() {
+
+            sidebar.classList.add("open");
+
+            if (overlay) {
+                overlay.classList.add("active");
+            }
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+            menuButton.setAttribute(
+                "aria-label",
+                "Close menu"
+            );
+
+            if (menuIcon) {
+
+                menuIcon.classList.remove(
+                    "fa-bars"
+                );
+
+                menuIcon.classList.add(
+                    "fa-xmark"
+                );
+            }
+
+            if (window.innerWidth <= 900) {
+
+                document.body.classList.add(
+                    "no-scroll"
+                );
+            }
+        }
+
+
+        /* =================================================
+           CLOSE SIDEBAR
+        ================================================== */
+
+        function closeSidebar() {
+
+            sidebar.classList.remove("open");
+
+            if (overlay) {
+                overlay.classList.remove("active");
+            }
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+            menuButton.setAttribute(
+                "aria-label",
+                "Open menu"
+            );
+
+            if (menuIcon) {
+
+                menuIcon.classList.remove(
+                    "fa-xmark"
+                );
+
+                menuIcon.classList.add(
+                    "fa-bars"
+                );
+            }
+
+            document.body.classList.remove(
+                "no-scroll"
+            );
+        }
+
+
+        /* =================================================
+           TOGGLE
+        ================================================== */
+
+        function toggleSidebar() {
+
+            if (
+                sidebar.classList.contains("open")
+            ) {
+
+                closeSidebar();
+
+            } else {
+
+                openSidebar();
+
+            }
+        }
+
+
+        /* =================================================
+           HAMBURGER CLICK
+        ================================================== */
+
+        menuButton.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+                toggleSidebar();
+
+            }
+        );
+
+
+        /* =================================================
+           OVERLAY CLICK
+        ================================================== */
+
+        if (overlay) {
+
+            overlay.addEventListener(
+                "click",
+                function () {
+
+                    closeSidebar();
+
+                }
+            );
+        }
+
+
+        /* =================================================
+           NAVIGATION
+        ================================================== */
+
+        const currentPath =
+            window.location.pathname;
+
+
+        document
+            .querySelectorAll(".kv-nav-link")
+            .forEach(
+                function (link) {
+
+                    try {
+
+                        const url =
+                            new URL(
+                                link.href,
+                                window.location.origin
+                            );
+
+                        if (
+                            url.pathname ===
+                                currentPath &&
+                            !link.classList.contains(
+                                "kv-logout"
+                            )
+                        ) {
+
+                            link.classList.add(
+                                "active"
+                            );
+                        }
+
+                    }
+                    catch (error) {
+
+                        console.warn(
+                            "Navigation error:",
+                            error
+                        );
+                    }
+
+
+                    /* Mobile close */
+
+                    link.addEventListener(
+                        "click",
+                        function () {
+
+                            if (
+                                window.innerWidth <= 900
+                            ) {
+
+                                closeSidebar();
+
+                            }
+
+                        }
+                    );
+
+                }
+            );
+
+
+        /* =================================================
+           ESC KEY
+        ================================================== */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Escape"
+                ) {
+
+                    closeSidebar();
+
+                }
+
+
+                /* Alt + M */
+
+                if (
+                    event.altKey &&
+                    event.key.toLowerCase() === "m"
+                ) {
+
+                    toggleSidebar();
+
+                }
+
+            }
+        );
+
+
+        /* =================================================
+           RESIZE
+        ================================================== */
+
+        window.addEventListener(
+            "resize",
+            function () {
+
+                if (
+                    window.innerWidth > 900
+                ) {
+
+                    closeSidebar();
+
+                }
+
+            }
+        );
+
+
+        /* =================================================
+           FLASH AUTO CLOSE
+        ================================================== */
+
+        setTimeout(
+            function () {
+
+                document
+                    .querySelectorAll(".kv-flash")
+                    .forEach(
+                        function (flash) {
+
+                            flash.style.opacity =
+                                "0";
+
+                            flash.style.transform =
+                                "translateY(-5px)";
+
+                            flash.style.transition =
+                                ".3s ease";
+
+
+                            setTimeout(
+                                function () {
+
+                                    if (
+                                        flash &&
+                                        flash.parentNode
+                                    ) {
+
+                                        flash.remove();
+
+                                    }
+
+                                },
+                                300
+                            );
+
+                        }
+                    );
+
+            },
+            5000
+        );
+
+
+        /* =================================================
+           GLOBAL CONFIG
+        ================================================== */
+
+        window.KISANVISION360 =
+            window.KISANVISION360 || {};
+
+        window.KISANVISION360.config = {
+
+            application:
+                "KisanVision360+",
+
+            version:
+                "2.0",
+
+            role:
+                "{{ current_role }}",
+
+            language:
+                document.documentElement.lang,
+
+            rtl:
+                document.documentElement.dir === "rtl",
+
+            notificationCount:
+                Number(
+                    "{{ notification_count|default(0) }}"
+                )
+        };
+
+
+        console.log(
+            "%cKisanVision360+",
+            "font-size:20px;font-weight:800;color:#1b5e20;"
+        );
+
+        console.log(
+            "Sidebar initialized successfully."
+        );
+
+    }
+);
+
+</script>
+
+
+<!-- =========================================================
+     CHILD SCRIPTS
+========================================================= -->
+
+{% block scripts %}
+{% endblock %}
+
+
+<!-- =========================================================
+     RESPONSIVE JS
+========================================================= -->
+
+<script
+    src="{{ url_for('static', filename='js/responsive.js') }}"
+    defer
+></script>
+
+
+</body>
+</html>
+

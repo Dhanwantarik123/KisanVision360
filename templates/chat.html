@@ -1,704 +1,2281 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿{% extends "base.html" %}
 
-<head>
+{% block title %}KisanVision360+ | Messages{% endblock %}
 
-<meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<title>
-KisanVision360 | Farmer Consumer Chat
-</title>
-
-
-<!-- SIDEBAR CSS -->
-
+{% block head %}
 <link rel="stylesheet"
-      href="{{ url_for('static', filename='css/sidebar.css') }}">
+          href="{{ url_for('static', filename='css/chat.css') }}">
+<style>
 
+/* =========================================================
+   KISANVISION360+ MESSAGES
+========================================================= */
 
-<!-- CHAT CSS -->
+:root {
+    --kv-green: #2e7d32;
+    --kv-dark-green: #1b5e20;
+    --kv-light-green: #e8f5e9;
+    --kv-orange: #fb8c00;
+    --kv-bg: #f6faf7;
+    --kv-border: #e1e9e2;
+    --kv-text: #26352a;
+    --kv-muted: #7d897f;
+}
 
-<link rel="stylesheet"
-      href="{{ url_for('static', filename='css/chat.css') }}">
 
+/* =========================================================
+   CHAT PAGE
+========================================================= */
 
-<!-- FONT AWESOME -->
+.chat-page {
+    min-height: 100vh;
+    background: var(--kv-bg);
+}
 
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-</head>
+/* =========================================================
+   MAIN CHAT
+========================================================= */
 
+.chat-main {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 
-<body>
 
+/* =========================================================
+   TOPBAR
+========================================================= */
 
-<div class="dashboard-container">
+.chat-topbar {
+    min-height: 72px;
+    padding: 12px 25px;
+    box-sizing: border-box;
 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-<!-- =====================================================
-     SIDEBAR
-===================================================== -->
+    background: #ffffff;
+    border-bottom: 1px solid var(--kv-border);
+}
 
-{% include "components/sidebar.html" %}
 
+.page-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
 
-<!-- =====================================================
-     MAIN CONTENT
-===================================================== -->
+.title-icon {
+    width: 44px;
+    height: 44px;
 
-<div class="main-content">
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+    border-radius: 13px;
+    background: var(--kv-light-green);
+    color: var(--kv-green);
+}
 
 
-<!-- =====================================================
-     TOPBAR
-===================================================== -->
+.page-title h1 {
+    margin: 0;
+    font-size: 19px;
+    color: var(--kv-text);
+}
 
-<header class="topbar">
 
+.page-title p {
+    margin: 4px 0 0;
+    color: var(--kv-muted);
+    font-size: 9px;
+}
 
-    <div class="title-section">
 
+.top-actions {
+    display: flex;
+    gap: 8px;
+}
 
-        <div class="title-icon">
 
-            <i class="fa-solid fa-comments"></i>
+.icon-button {
+    position: relative;
 
-        </div>
+    width: 38px;
+    height: 38px;
 
+    border: 1px solid var(--kv-border);
+    border-radius: 10px;
 
-        <div>
+    background: #ffffff;
+    color: #637067;
 
-            <h1>
-                Farmer & Consumer Chat
-            </h1>
+    cursor: pointer;
+}
 
-            <p>
-                Communicate directly and manage crop orders
-            </p>
 
-        </div>
+.icon-button:hover {
+    background: var(--kv-light-green);
+    color: var(--kv-green);
+}
 
 
-    </div>
+.notification-dot {
+    position: absolute;
+    top: 7px;
+    right: 7px;
 
+    width: 6px;
+    height: 6px;
 
+    border-radius: 50%;
+    background: var(--kv-orange);
+}
 
-    <div class="profile">
 
+/* =========================================================
+   CHAT CONTAINER
+========================================================= */
 
-        <img
-            src="{{ url_for(
-                'static',
-                filename='images/farmer.jpg'
-            ) }}"
-            alt="Profile">
+.chat-container {
+    flex: 1;
 
+    margin: 18px;
+    min-height: 0;
 
-        <div>
+    display: grid;
+    grid-template-columns: 320px minmax(0, 1fr);
 
-            <h4>
-                {{ name|default('User') }}
-            </h4>
+    overflow: hidden;
 
-            <small>
-                {{ role|default('Consumer') }}
-            </small>
+    border: 1px solid var(--kv-border);
+    border-radius: 18px;
 
-        </div>
+    background: #ffffff;
 
+    box-shadow: 0 8px 30px rgba(0, 0, 0, .04);
+}
 
-    </div>
 
+/* =========================================================
+   CONVERSATION PANEL
+========================================================= */
 
-</header>
+.conversation-panel {
+    min-width: 0;
 
+    display: flex;
+    flex-direction: column;
 
+    border-right: 1px solid var(--kv-border);
+}
 
-<!-- =====================================================
-     CHAT AREA
-===================================================== -->
 
-<section class="chat-layout">
+.conversation-header {
+    padding: 17px;
 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
+    border-bottom: 1px solid var(--kv-border);
+}
 
-<!-- =====================================================
-     CONTACT LIST
-===================================================== -->
 
-<aside class="contacts-card">
+.conversation-header h2 {
+    margin: 0;
 
+    font-size: 15px;
+    color: var(--kv-text);
+}
 
-    <div class="contacts-header">
 
-        <h2>
-            <i class="fa-solid fa-users"></i>
-            Conversations
-        </h2>
+.conversation-header span {
+    display: block;
 
-    </div>
+    margin-top: 4px;
 
+    font-size: 8px;
+    color: var(--kv-muted);
+}
 
 
-    <div class="contact active">
+.new-chat-btn {
+    width: 35px;
+    height: 35px;
 
+    border: none;
+    border-radius: 9px;
 
-        <div class="contact-avatar">
-            👨‍🌾
-        </div>
+    background: var(--kv-green);
+    color: #ffffff;
 
+    cursor: pointer;
+}
 
-        <div class="contact-info">
 
-            <h3>
-                Farmer
-            </h3>
+.new-chat-btn:hover {
+    background: var(--kv-dark-green);
+}
 
-            <p>
-                Wheat available
-            </p>
 
-        </div>
+/* =========================================================
+   SEARCH
+========================================================= */
 
+.chat-search {
+    margin: 13px;
 
-        <span class="online-dot"></span>
+    height: 38px;
 
+    display: flex;
+    align-items: center;
+    gap: 8px;
 
-    </div>
+    padding: 0 11px;
 
+    border: 1px solid var(--kv-border);
+    border-radius: 9px;
 
+    background: #fafcfb;
+}
 
-    <div class="contact">
 
+.chat-search i {
+    color: #8b968e;
+    font-size: 11px;
+}
 
-        <div class="contact-avatar">
-            👨‍🌾
-        </div>
 
+.chat-search input {
+    width: 100%;
 
-        <div class="contact-info">
+    border: none;
+    outline: none;
 
-            <h3>
-                Local Farmer
-            </h3>
+    background: transparent;
 
-            <p>
-                Rice available
-            </p>
+    color: var(--kv-text);
+    font-size: 9px;
+}
 
-        </div>
 
+/* =========================================================
+   FILTERS
+========================================================= */
 
-    </div>
+.chat-filters {
+    display: flex;
+    gap: 6px;
 
+    padding: 0 13px 12px;
+}
 
 
-    <div class="contact">
+.filter {
+    padding: 6px 10px;
 
+    border: 1px solid var(--kv-border);
+    border-radius: 20px;
 
-        <div class="contact-avatar">
-            👨‍🌾
-        </div>
+    background: #ffffff;
+    color: #718078;
 
+    font-size: 8px;
+    cursor: pointer;
+}
 
-        <div class="contact-info">
 
-            <h3>
-                Farm Supplier
-            </h3>
+.filter:hover,
+.filter.active {
+    background: var(--kv-light-green);
+    border-color: #b9dabb;
+    color: var(--kv-green);
+    font-weight: 700;
+}
 
-            <p>
-                New message
-            </p>
 
-        </div>
+/* =========================================================
+   CONVERSATION LIST
+========================================================= */
 
+.conversation-list {
+    flex: 1;
 
-    </div>
+    overflow-y: auto;
+}
 
 
-</aside>
+.conversation-item {
+    position: relative;
 
+    display: flex;
+    gap: 10px;
 
+    padding: 12px 14px;
 
-<!-- =====================================================
-     CHAT PANEL
-===================================================== -->
+    border-bottom: 1px solid #f0f3f0;
 
-<div class="chat-panel">
+    cursor: pointer;
+}
 
 
+.conversation-item:hover {
+    background: #f8fbf8;
+}
 
-<!-- CHAT HEADER -->
 
-<div class="chat-panel-header">
+.conversation-item.active {
+    background: var(--kv-light-green);
+}
 
 
-    <div class="chat-person">
+.conversation-item.active::before {
+    content: "";
 
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
 
-        <div class="person-avatar">
-            👨‍🌾
-        </div>
+    width: 3px;
 
+    background: var(--kv-green);
+}
 
-        <div>
 
-            <h2>
-                Farmer
-            </h2>
+/* =========================================================
+   AVATAR
+========================================================= */
 
-            <span>
-                <i class="fa-solid fa-circle"></i>
-                Online
-            </span>
+.conversation-avatar,
+.active-avatar,
+.message-avatar {
+    position: relative;
 
-        </div>
+    flex-shrink: 0;
 
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    </div>
+    border-radius: 50%;
 
+    background: #dcedde;
+    color: var(--kv-dark-green);
 
-    <div class="chat-actions">
+    font-weight: 800;
+}
 
 
-        <button
-            type="button"
-            title="Call">
+.conversation-avatar {
+    width: 39px;
+    height: 39px;
 
-            <i class="fa-solid fa-phone"></i>
+    font-size: 10px;
+}
 
-        </button>
 
+.online-dot {
+    position: absolute;
 
-        <button
-            type="button"
-            title="More">
+    width: 9px;
+    height: 9px;
 
-            <i class="fa-solid fa-ellipsis-vertical"></i>
+    right: -1px;
+    bottom: 1px;
 
-        </button>
+    border: 2px solid #ffffff;
+    border-radius: 50%;
 
+    background: #43a047;
+}
 
-    </div>
 
+/* =========================================================
+   CONVERSATION INFO
+========================================================= */
+
+.conversation-info {
+    min-width: 0;
+    flex: 1;
+}
+
+
+.conversation-name {
+    display: flex;
+    justify-content: space-between;
+    gap: 7px;
+}
+
+
+.conversation-name strong {
+    overflow: hidden;
+
+    color: var(--kv-text);
+    font-size: 9px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+.conversation-name span {
+    flex-shrink: 0;
+
+    color: #99a39c;
+    font-size: 7px;
+}
+
+
+.conversation-preview {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    margin-top: 4px;
+}
+
+
+.conversation-preview p {
+    flex: 1;
+
+    overflow: hidden;
+
+    margin: 0;
+
+    color: #7b867e;
+    font-size: 8px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+.unread-count {
+    min-width: 17px;
+    height: 17px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--kv-green);
+    color: #ffffff;
+
+    font-size: 7px;
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   MESSAGE PANEL
+========================================================= */
+
+.message-panel {
+    min-width: 0;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =========================================================
+   MESSAGE HEADER
+========================================================= */
+
+.message-header {
+    min-height: 66px;
+
+    padding: 10px 17px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 1px solid var(--kv-border);
+}
+
+
+.active-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.active-avatar {
+    width: 40px;
+    height: 40px;
+
+    font-size: 10px;
+}
+
+
+.active-user h2 {
+    margin: 0;
+
+    font-size: 12px;
+    color: var(--kv-text);
+}
+
+
+.user-status {
+    margin-top: 4px;
+
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    color: #7c887f;
+    font-size: 8px;
+}
+
+
+.status-circle {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+    background: #43a047;
+}
+
+
+.message-actions {
+    display: flex;
+    gap: 5px;
+}
+
+
+.message-actions button {
+    width: 32px;
+    height: 32px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: transparent;
+    color: #748078;
+
+    cursor: pointer;
+}
+
+
+.message-actions button:hover {
+    background: var(--kv-light-green);
+    color: var(--kv-green);
+}
+
+
+/* =========================================================
+   ORDER CONTEXT
+========================================================= */
+
+.order-banner {
+    margin: 12px 17px;
+
+    padding: 10px 12px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    border: 1px solid #dcebdc;
+    border-radius: 11px;
+
+    background: #f5faf5;
+}
+
+
+.order-icon {
+    width: 35px;
+    height: 35px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: #e0f0e1;
+    color: var(--kv-green);
+}
+
+
+.order-info {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+
+.order-info strong {
+    color: var(--kv-text);
+    font-size: 9px;
+}
+
+
+.order-info span {
+    color: var(--kv-muted);
+    font-size: 8px;
+}
+
+
+.order-banner button {
+    padding: 7px 10px;
+
+    border: 1px solid #c7dfc9;
+    border-radius: 8px;
+
+    background: #ffffff;
+    color: var(--kv-green);
+
+    font-size: 8px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   CHAT DATE
+========================================================= */
+
+.chat-date {
+    text-align: center;
+    padding: 3px 0 10px;
+}
+
+
+.chat-date span {
+    padding: 5px 10px;
+
+    border-radius: 20px;
+
+    background: #f0f4f1;
+
+    color: #8a948d;
+    font-size: 7px;
+}
+
+
+/* =========================================================
+   MESSAGES
+========================================================= */
+
+.messages {
+    flex: 1;
+
+    min-height: 0;
+
+    overflow-y: auto;
+
+    padding: 10px 20px 15px;
+
+    scroll-behavior: smooth;
+}
+
+
+.message {
+    display: flex;
+
+    margin-bottom: 13px;
+}
+
+
+.message.received {
+    justify-content: flex-start;
+}
+
+
+.message.sent {
+    justify-content: flex-end;
+}
+
+
+.message-avatar {
+    width: 27px;
+    height: 27px;
+
+    margin-right: 7px;
+
+    font-size: 7px;
+}
+
+
+.message-content {
+    max-width: min(70%, 480px);
+}
+
+
+.message-bubble {
+    padding: 9px 12px;
+
+    border-radius: 12px;
+
+    font-size: 9px;
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+}
+
+
+.received .message-bubble {
+    border-top-left-radius: 4px;
+
+    background: #f0f4f1;
+    color: #435047;
+}
+
+
+.sent .message-bubble {
+    border-top-right-radius: 4px;
+
+    background: var(--kv-green);
+    color: #ffffff;
+}
+
+
+.message-time {
+    margin-top: 4px;
+
+    color: #99a29c;
+    font-size: 7px;
+}
+
+
+.sent .message-time {
+    text-align: right;
+}
+
+
+.read-status {
+    margin-left: 4px;
+
+    color: #43a047;
+}
+
+
+/* =========================================================
+   TYPING
+========================================================= */
+
+.typing {
+    display: none;
+    align-items: center;
+
+    margin-bottom: 10px;
+}
+
+
+.typing-avatar {
+    width: 27px;
+    height: 27px;
+
+    margin-right: 7px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #dcedde;
+    color: var(--kv-dark-green);
+
+    font-size: 7px;
+    font-weight: 800;
+}
+
+
+.typing-bubble {
+    padding: 9px 12px;
+
+    display: flex;
+    gap: 3px;
+
+    border-radius: 11px;
+
+    background: #f0f4f1;
+}
+
+
+.typing-bubble span {
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+    background: #9aa49d;
+
+    animation: typingAnimation 1.2s infinite;
+}
+
+
+.typing-bubble span:nth-child(2) {
+    animation-delay: .15s;
+}
+
+
+.typing-bubble span:nth-child(3) {
+    animation-delay: .3s;
+}
+
+
+@keyframes typingAnimation {
+
+    0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: .5;
+    }
+
+    30% {
+        transform: translateY(-4px);
+        opacity: 1;
+    }
+
+}
+
+
+/* =========================================================
+   QUICK REPLIES
+========================================================= */
+
+.quick-replies {
+    display: flex;
+    gap: 7px;
+
+    padding: 8px 17px;
+
+    overflow-x: auto;
+
+    border-top: 1px solid #f0f3f0;
+}
+
+
+.quick-replies button {
+    flex-shrink: 0;
+
+    padding: 6px 9px;
+
+    border: 1px solid #dbe6dc;
+    border-radius: 20px;
+
+    background: #ffffff;
+    color: var(--kv-green);
+
+    font-size: 7px;
+
+    cursor: pointer;
+}
+
+
+.quick-replies button:hover {
+    background: var(--kv-light-green);
+}
+
+
+/* =========================================================
+   COMPOSER
+========================================================= */
+
+.message-composer {
+    margin: 8px 17px 0;
+
+    min-height: 48px;
+
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+
+    padding: 5px 6px;
+
+    border: 1px solid var(--kv-border);
+    border-radius: 12px;
+
+    background: #ffffff;
+}
+
+
+.message-composer textarea {
+    flex: 1;
+
+    min-height: 32px;
+    max-height: 120px;
+
+    resize: none;
+
+    border: none;
+    outline: none;
+
+    padding: 8px 5px;
+
+    background: transparent;
+
+    color: var(--kv-text);
+
+    font-family: inherit;
+    font-size: 9px;
+}
+
+
+.attach-btn,
+.emoji-btn,
+.send-btn {
+    flex-shrink: 0;
+
+    width: 34px;
+    height: 34px;
+
+    border: none;
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+
+.attach-btn,
+.emoji-btn {
+    background: transparent;
+    color: #77837a;
+}
+
+
+.attach-btn:hover,
+.emoji-btn:hover {
+    background: var(--kv-light-green);
+    color: var(--kv-green);
+}
+
+
+.send-btn {
+    background: var(--kv-green);
+    color: #ffffff;
+}
+
+
+.send-btn:hover {
+    background: var(--kv-dark-green);
+}
+
+
+/* =========================================================
+   ENCRYPTION
+========================================================= */
+
+.encryption-note {
+    padding: 8px;
+
+    text-align: center;
+
+    color: #98a19b;
+    font-size: 7px;
+}
+
+
+.encryption-note i {
+    margin-right: 3px;
+    color: var(--kv-green);
+}
+
+
+/* =========================================================
+   EMPTY CONVERSATION
+========================================================= */
+
+.no-conversations {
+    padding: 35px 15px;
+
+    text-align: center;
+
+    color: #89938c;
+    font-size: 9px;
+}
+
+
+.no-conversations i {
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: #b5c0b7;
+    font-size: 25px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 850px) {
+
+    .chat-container {
+        grid-template-columns: 250px minmax(0, 1fr);
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .chat-topbar {
+        padding: 10px 14px;
+    }
+
+
+    .page-title p {
+        display: none;
+    }
+
+
+    .chat-container {
+        margin: 8px;
+
+        grid-template-columns: 1fr;
+
+        min-height: calc(100vh - 100px);
+    }
+
+
+    .conversation-panel {
+        display: none;
+    }
+
+
+    .message-content {
+        max-width: 82%;
+    }
+
+
+    .order-banner {
+        margin: 8px 10px;
+    }
+
+
+    .order-banner button {
+        display: none;
+    }
+
+
+    .messages {
+        padding: 8px 12px;
+    }
+
+}
+
+    </style>
+{% endblock %}
+
+{% block page_title %}Messages{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<div class="chat-page">
+
+
+    <!-- =================================================
+         SIDEBAR
+    ================================================== -->
+
+    
+
+
+    <!-- =================================================
+         MAIN
+    ================================================== -->
+
+    <main class="chat-main">
+
+
+        <!-- =================================================
+             TOP HEADER
+        ================================================== -->
+
+        
+
+
+        <!-- =================================================
+             CHAT CONTAINER
+        ================================================== -->
+
+        <section class="chat-container">
+
+
+            <!-- =================================================
+                 CONVERSATIONS
+            ================================================== -->
+
+            <aside class="conversation-panel">
+
+
+                <div class="conversation-header">
+
+                    <div>
+
+                        <h2>
+                            Chats
+                        </h2>
+
+                        <span>
+                            {{ conversations|length }}
+                            conversation{% if conversations|length != 1 %}s{% endif %}
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        class="new-chat-btn"
+                        id="newChatBtn"
+                        title="Start new chat">
+
+                        <i class="fa-solid fa-pen-to-square"></i>
+
+                    </button>
+
+                </div>
+
+
+                <!-- SEARCH -->
+
+                <div class="chat-search">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="text"
+                        id="conversationSearch"
+                        placeholder="Search chats..."
+                        autocomplete="off">
+
+                </div>
+
+
+                <!-- FILTERS -->
+
+                <div class="chat-filters">
+
+                    <button
+                        class="filter active"
+                        data-filter="all">
+
+                        All
+
+                    </button>
+
+
+                    <button
+                        class="filter"
+                        data-filter="unread">
+
+                        Unread
+
+                    </button>
+
+
+                    <button
+                        class="filter"
+                        data-filter="online">
+
+                        Online
+
+                    </button>
+
+                </div>
+
+
+                <!-- CONVERSATIONS -->
+
+                <div
+                    class="conversation-list"
+                    id="conversationList">
+
+
+                    {% if conversations %}
+
+                        {% for conversation in conversations %}
+
+                        <div
+                            class="conversation-item {% if loop.first %}active{% endif %}"
+                            data-name="{{ conversation.name|lower }}"
+                            data-unread="{{ conversation.unread|default(0) }}"
+                            data-online="{{ 'true' if conversation.online else 'false' }}"
+                            data-conversation-id="{{ conversation.id|default('') }}">
+
+
+                            <div class="conversation-avatar">
+
+                                {{ conversation.avatar }}
+
+                                {% if conversation.online %}
+
+                                <span class="online-dot"></span>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="conversation-info">
+
+                                <div class="conversation-name">
+
+                                    <strong>
+                                        {{ conversation.name }}
+                                    </strong>
+
+                                    <span>
+                                        {{ conversation.time }}
+                                    </span>
+
+                                </div>
+
+
+                                <div class="conversation-preview">
+
+                                    <p>
+                                        {{ conversation.last_message }}
+                                    </p>
+
+
+                                    {% if conversation.unread|default(0) > 0 %}
+
+                                    <span class="unread-count">
+
+                                        {{ conversation.unread }}
+
+                                    </span>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <div class="no-conversations">
+
+                            <i class="fa-regular fa-comments"></i>
+
+                            No conversations yet.
+
+                        </div>
+
+                    {% endif %}
+
+
+                </div>
+
+            </aside>
+
+
+            <!-- =================================================
+                 ACTIVE MESSAGE PANEL
+            ================================================== -->
+
+            <section class="message-panel">
+
+
+                <!-- CHAT HEADER -->
+
+                <header class="message-header">
+
+
+                    <div class="active-user">
+
+
+                        <div class="active-avatar">
+
+                            RP
+
+                            <span class="online-dot"></span>
+
+                        </div>
+
+
+                        <div>
+
+                            <h2 id="activeUserName">
+                                Rahul Patil
+                            </h2>
+
+
+                            <div class="user-status">
+
+                                <span class="status-circle"></span>
+
+                                <span id="activeUserStatus">
+                                    Online
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="message-actions">
+
+                        <button
+                            type="button"
+                            title="Voice call"
+                            onclick="showFeatureMessage('Voice calling will be connected in the communication module.')">
+
+                            <i class="fa-solid fa-phone"></i>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            title="Video call"
+                            onclick="showFeatureMessage('Video calling will be connected in the communication module.')">
+
+                            <i class="fa-solid fa-video"></i>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            title="More options"
+                            onclick="showChatOptions()">
+
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+
+                        </button>
+
+                    </div>
+
+                </header>
+
+
+                <!-- =================================================
+                     ORDER CONTEXT
+                ================================================== -->
+
+                <div class="order-banner">
+
+                    <div class="order-icon">
+
+                        <i class="fa-solid fa-wheat-awn"></i>
+
+                    </div>
+
+
+                    <div class="order-info">
+
+                        <strong>
+                            Soybean Order
+                        </strong>
+
+                        <span>
+                            500 kg â€¢ â‚¹24,500
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        onclick="viewOrder()">
+
+                        View Order
+
+                    </button>
+
+                </div>
+
+
+                <!-- DATE -->
+
+                <div class="chat-date">
+
+                    <span>
+                        Today
+                    </span>
+
+                </div>
+
+
+                <!-- =================================================
+                     MESSAGES
+                ================================================== -->
+
+                <div
+                    class="messages"
+                    id="messages">
+
+
+                    {% if chats %}
+
+                        {% for chat in chats %}
+
+
+                            {% if chat.type == "received" %}
+
+                            <!-- RECEIVED -->
+
+                            <div class="message received">
+
+
+                                <div class="message-avatar">
+                                    RP
+                                </div>
+
+
+                                <div class="message-content">
+
+                                    <div class="message-bubble">
+                                        {{ chat.message }}
+                                    </div>
+
+
+                                    <div class="message-time">
+                                        {{ chat.time }}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            {% else %}
+
+                            <!-- SENT -->
+
+                            <div class="message sent">
+
+                                <div class="message-content">
+
+                                    <div class="message-bubble">
+                                        {{ chat.message }}
+                                    </div>
+
+
+                                    <div class="message-time">
+
+                                        {{ chat.time }}
+
+                                        <span class="read-status">
+
+                                            {% if chat.read %}
+                                                âœ“âœ“
+                                            {% else %}
+                                                âœ“
+                                            {% endif %}
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            {% endif %}
+
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <div
+                            class="no-conversations"
+                            id="emptyMessage">
+
+                            <i class="fa-regular fa-message"></i>
+
+                            Start a conversation with this buyer.
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <!-- TYPING -->
+
+                    <div
+                        class="typing"
+                        id="typing">
+
+
+                        <div class="typing-avatar">
+                            RP
+                        </div>
+
+
+                        <div class="typing-bubble">
+
+                            <span></span>
+                            <span></span>
+                            <span></span>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- =================================================
+                     QUICK REPLIES
+                ================================================== -->
+
+                <div class="quick-replies">
+
+
+                    <button
+                        type="button"
+                        onclick="quickMessage('Yes, it is available.')">
+
+                        Yes, available
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        onclick="quickMessage('I can deliver tomorrow.')">
+
+                        Delivery tomorrow
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        onclick="quickMessage('I will confirm the price.')">
+
+                        Confirm price
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        onclick="quickMessage('Thank you for your interest.')">
+
+                        Thank you
+
+                    </button>
+
+                </div>
+
+
+                <!-- =================================================
+                     MESSAGE COMPOSER
+                ================================================== -->
+
+                <div class="message-composer">
+
+
+                    <button
+                        type="button"
+                        class="attach-btn"
+                        title="Attach file"
+                        onclick="showFeatureMessage('File attachment will be connected with the marketplace messaging backend.')">
+
+                        <i class="fa-solid fa-paperclip"></i>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="emoji-btn"
+                        onclick="addEmoji()"
+                        title="Add emoji">
+
+                        <i class="fa-regular fa-face-smile"></i>
+
+                    </button>
+
+
+                    <textarea
+                        id="messageInput"
+                        placeholder="Type a message..."
+                        rows="1"
+                        maxlength="2000"></textarea>
+
+
+                    <button
+                        type="button"
+                        class="send-btn"
+                        onclick="sendMessage()"
+                        title="Send message">
+
+                        <i class="fa-solid fa-paper-plane"></i>
+
+                    </button>
+
+                </div>
+
+
+                <div class="encryption-note">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    Private account-to-account messaging
+
+                </div>
+
+
+            </section>
+
+        </section>
+
+    </main>
 
 </div>
 
 
-
-<!-- =====================================================
-     MESSAGES
-===================================================== -->
-
-<div
-    class="messages"
-    id="messages">
-
-
-    <!-- CONSUMER -->
-
-    <div class="message-row sent">
-
-
-        <div class="message sent-message">
-
-            <p>
-                I need 500 Kg Wheat.
-            </p>
-
-            <span>
-                10:30 AM
-                <i class="fa-solid fa-check-double"></i>
-            </span>
-
-        </div>
-
-
-    </div>
-
-
-
-    <!-- FARMER -->
-
-    <div class="message-row received">
-
-
-        <div class="message received-message">
-
-            <p>
-                Wheat is available.
-                Price is ₹17,500 for 500 Kg.
-            </p>
-
-            <span>
-                10:32 AM
-            </span>
-
-        </div>
-
-
-    </div>
-
-
-
-    <!-- CONSUMER -->
-
-    <div class="message-row sent">
-
-
-        <div class="message sent-message">
-
-            <p>
-                Can you deliver it in 3 days?
-            </p>
-
-            <span>
-                10:35 AM
-                <i class="fa-solid fa-check-double"></i>
-            </span>
-
-        </div>
-
-
-    </div>
-
-
-
-    <!-- FARMER -->
-
-    <div class="message-row received">
-
-
-        <div class="message received-message">
-
-            <p>
-                Yes, delivery in 3 days is possible.
-            </p>
-
-            <span>
-                10:36 AM
-            </span>
-
-        </div>
-
-
-    </div>
-
-
-</div>
-
-
-
-<!-- =====================================================
-     MESSAGE INPUT
-===================================================== -->
-
-<form
-    class="message-form"
-    id="messageForm">
-
-
-    <button
-        type="button"
-        class="attachment-btn"
-        title="Attach File">
-
-        <i class="fa-solid fa-paperclip"></i>
-
-    </button>
-
-
-    <input
-        type="text"
-        id="messageInput"
-        name="message"
-        placeholder="Type your message..."
-        autocomplete="off"
-        required>
-
-
-    <button
-        type="submit"
-        class="send-btn"
-        title="Send Message">
-
-        <i class="fa-solid fa-paper-plane"></i>
-
-    </button>
-
-
-</form>
-
-
-</div>
-
-
-</section>
-
-
-
-<!-- =====================================================
-     ORDER SUMMARY
-===================================================== -->
-
-<section class="order-card">
-
-
-    <div class="order-title">
-
-
-        <div class="order-icon">
-
-            <i class="fa-solid fa-basket-shopping"></i>
-
-        </div>
-
-
-        <div>
-
-            <h2>
-                Current Crop Order
-            </h2>
-
-            <p>
-                Confirm the details before placing the order.
-            </p>
-
-        </div>
-
-
-    </div>
-
-
-
-    <div class="order-details">
-
-
-        <div>
-
-            <span>
-                Crop
-            </span>
-
-            <strong>
-                Wheat
-            </strong>
-
-        </div>
-
-
-        <div>
-
-            <span>
-                Quantity
-            </span>
-
-            <strong>
-                500 Kg
-            </strong>
-
-        </div>
-
-
-        <div>
-
-            <span>
-                Total Price
-            </span>
-
-            <strong>
-                ₹17,500
-            </strong>
-
-        </div>
-
-
-        <div>
-
-            <span>
-                Delivery
-            </span>
-
-            <strong>
-                3 Days
-            </strong>
-
-        </div>
-
-
-    </div>
-
-
-
-    <div class="order-actions">
-
-
-        <a
-            href="/notifications"
-            class="confirm-btn">
-
-            <i class="fa-solid fa-circle-check"></i>
-
-            Confirm Order
-
-        </a>
-
-
-        <a
-            href="/marketplace"
-            class="back-btn">
-
-            <i class="fa-solid fa-store"></i>
-
-            Marketplace
-
-        </a>
-
-
-    </div>
-
-
-</section>
-
-
-
-<!-- =====================================================
-     FOOTER
-===================================================== -->
-
-<footer>
-
-    <i class="fa-solid fa-leaf"></i>
-
-    <strong>
-        KisanVision360
-    </strong>
-
-    <span>
-        •
-    </span>
-
-    Farmer & Consumer Communication
-
-    <span>
-        •
-    </span>
-
-    © 2026
-
-</footer>
-
-
-</div>
-
-</div>
-
-
-
-<!-- =====================================================
+<!-- =========================================================
      JAVASCRIPT
-===================================================== -->
+========================================================= -->
+{% endblock %}
 
+{% block scripts %}
 <script>
 
-const messageForm =
-    document.getElementById("messageForm");
-
-const messageInput =
+const input =
     document.getElementById("messageInput");
+
 
 const messages =
     document.getElementById("messages");
 
 
-messageForm.addEventListener(
-    "submit",
+const typing =
+    document.getElementById("typing");
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showFeatureMessage(message) {
+
+    let toast =
+        document.getElementById("chatFeatureToast");
+
+
+    if (!toast) {
+
+        toast =
+            document.createElement("div");
+
+        toast.id =
+            "chatFeatureToast";
+
+        toast.style.position =
+            "fixed";
+
+        toast.style.right =
+            "20px";
+
+        toast.style.bottom =
+            "20px";
+
+        toast.style.zIndex =
+            "9999";
+
+        toast.style.padding =
+            "12px 15px";
+
+        toast.style.borderRadius =
+            "10px";
+
+        toast.style.background =
+            "#1b5e20";
+
+        toast.style.color =
+            "#ffffff";
+
+        toast.style.fontSize =
+            "11px";
+
+        toast.style.maxWidth =
+            "320px";
+
+        toast.style.boxShadow =
+            "0 8px 25px rgba(0,0,0,.18)";
+
+        document.body.appendChild(toast);
+
+    }
+
+
+    toast.textContent =
+        message;
+
+
+    toast.style.display =
+        "block";
+
+
+    clearTimeout(
+        window.chatToastTimer
+    );
+
+
+    window.chatToastTimer =
+        setTimeout(function() {
+
+            toast.style.display =
+                "none";
+
+        }, 3000);
+
+}
+
+
+/* =========================================================
+   SEND MESSAGE
+========================================================= */
+
+async function sendMessage() {
+
+    const text =
+        input.value.trim();
+
+
+    if (!text) {
+        return;
+    }
+
+
+    /*
+       IMPORTANT:
+
+       This creates the message in the UI immediately.
+
+       When the Flask/PostgreSQL messaging endpoint
+       is integrated, the same function can POST the
+       message to the backend.
+
+       We intentionally do NOT generate a fake reply.
+    */
+
+
+    const message =
+        document.createElement("div");
+
+
+    message.className =
+        "message sent";
+
+
+    const now =
+        new Date();
+
+
+    const time =
+        now.toLocaleTimeString(
+            [],
+            {
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+
+
+    message.innerHTML = `
+
+        <div class="message-content">
+
+            <div class="message-bubble">
+                ${escapeHTML(text)}
+            </div>
+
+            <div class="message-time">
+
+                ${time}
+
+                <span class="read-status">
+                    âœ“
+                </span>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    if (typing) {
+
+        messages.insertBefore(
+            message,
+            typing
+        );
+
+    } else {
+
+        messages.appendChild(
+            message
+        );
+
+    }
+
+
+    input.value = "";
+
+
+    input.style.height =
+        "auto";
+
+
+    scrollToBottom();
+
+
+    /*
+       Future PostgreSQL integration:
+
+       fetch('/messages/send', {
+           method: 'POST',
+           headers: {
+               'Content-Type': 'application/json'
+           },
+           body: JSON.stringify({
+               receiver_id: ...,
+               message: text
+           })
+       });
+
+       app.py will be connected later.
+    */
+
+}
+
+
+/* =========================================================
+   QUICK MESSAGE
+========================================================= */
+
+function quickMessage(text) {
+
+    input.value =
+        text;
+
+
+    sendMessage();
+
+}
+
+
+/* =========================================================
+   EMOJI
+========================================================= */
+
+function addEmoji() {
+
+    input.value +=
+        " ðŸ˜Š";
+
+
+    input.focus();
+
+}
+
+
+/* =========================================================
+   ENTER TO SEND
+========================================================= */
+
+input.addEventListener(
+    "keydown",
     function(event) {
 
-        event.preventDefault();
+        if (
+            event.key === "Enter" &&
+            !event.shiftKey
+        ) {
 
+            event.preventDefault();
 
-        const text =
-            messageInput.value.trim();
+            sendMessage();
 
-
-        if (!text) {
-            return;
         }
-
-
-        const row =
-            document.createElement("div");
-
-        row.className =
-            "message-row sent";
-
-
-        const message =
-            document.createElement("div");
-
-        message.className =
-            "message sent-message";
-
-
-        const paragraph =
-            document.createElement("p");
-
-        paragraph.textContent =
-            text;
-
-
-        const time =
-            document.createElement("span");
-
-        const now =
-            new Date();
-
-
-        time.innerHTML =
-            now.toLocaleTimeString(
-                "en-IN",
-                {
-                    hour: "2-digit",
-                    minute: "2-digit"
-                }
-            )
-            +
-            ' <i class="fa-solid fa-check"></i>';
-
-
-        message.appendChild(paragraph);
-
-        message.appendChild(time);
-
-        row.appendChild(message);
-
-        messages.appendChild(row);
-
-
-        messageInput.value = "";
-
-
-        messages.scrollTop =
-            messages.scrollHeight;
 
     }
 );
 
 
-messages.scrollTop =
-    messages.scrollHeight;
+/* =========================================================
+   AUTO RESIZE
+========================================================= */
+
+input.addEventListener(
+    "input",
+    function() {
+
+        this.style.height =
+            "auto";
+
+
+        this.style.height =
+            Math.min(
+                this.scrollHeight,
+                120
+            ) + "px";
+
+    }
+);
+
+
+/* =========================================================
+   SEARCH CONVERSATIONS
+========================================================= */
+
+const conversationSearch =
+    document.getElementById(
+        "conversationSearch"
+    );
+
+
+conversationSearch.addEventListener(
+    "input",
+    function() {
+
+        const search =
+            this.value
+                .trim()
+                .toLowerCase();
+
+
+        document
+            .querySelectorAll(
+                ".conversation-item"
+            )
+            .forEach(function(item) {
+
+                const name =
+                    item.dataset.name || "";
+
+
+                item.style.display =
+                    name.includes(search)
+                    ? "flex"
+                    : "none";
+
+            });
+
+    }
+);
+
+
+/* =========================================================
+   TOP SEARCH BUTTON
+========================================================= */
+
+const focusSearchBtn =
+    document.getElementById(
+        "focusSearchBtn"
+    );
+
+
+if (focusSearchBtn) {
+
+    focusSearchBtn.addEventListener(
+        "click",
+        function() {
+
+            conversationSearch.focus();
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   FILTERS
+========================================================= */
+
+document
+    .querySelectorAll(".filter")
+    .forEach(function(button) {
+
+        button.addEventListener(
+            "click",
+            function() {
+
+
+                document
+                    .querySelectorAll(
+                        ".filter"
+                    )
+                    .forEach(function(btn) {
+
+                        btn.classList.remove(
+                            "active"
+                        );
+
+                    });
+
+
+                this.classList.add(
+                    "active"
+                );
+
+
+                const filter =
+                    this.dataset.filter;
+
+
+                document
+                    .querySelectorAll(
+                        ".conversation-item"
+                    )
+                    .forEach(function(item) {
+
+
+                        let visible =
+                            true;
+
+
+                        if (
+                            filter ===
+                            "unread"
+                        ) {
+
+                            visible =
+                                parseInt(
+                                    item.dataset.unread ||
+                                    "0"
+                                ) > 0;
+
+                        }
+
+
+                        if (
+                            filter ===
+                            "online"
+                        ) {
+
+                            visible =
+                                item.dataset.online ===
+                                "true";
+
+                        }
+
+
+                        item.style.display =
+                            visible
+                            ? "flex"
+                            : "none";
+
+                    });
+
+            }
+
+        );
+
+    });
+
+
+/* =========================================================
+   CONVERSATION SELECTION
+========================================================= */
+
+document
+    .querySelectorAll(".conversation-item")
+    .forEach(function(item) {
+
+        item.addEventListener(
+            "click",
+            function() {
+
+
+                document
+                    .querySelectorAll(
+                        ".conversation-item"
+                    )
+                    .forEach(function(
+                        conversation
+                    ) {
+
+                        conversation.classList.remove(
+                            "active"
+                        );
+
+                    });
+
+
+                this.classList.add(
+                    "active"
+                );
+
+
+                const nameElement =
+                    this.querySelector(
+                        ".conversation-name strong"
+                    );
+
+
+                const statusElement =
+                    this.querySelector(
+                        ".online-dot"
+                    );
+
+
+                if (nameElement) {
+
+                    document
+                        .getElementById(
+                            "activeUserName"
+                        )
+                        .textContent =
+                        nameElement.textContent.trim();
+
+                }
+
+
+                const status =
+                    statusElement
+                    ? "Online"
+                    : "Offline";
+
+
+                document
+                    .getElementById(
+                        "activeUserStatus"
+                    )
+                    .textContent =
+                    status;
+
+            }
+
+        );
+
+    });
+
+
+/* =========================================================
+   NEW CHAT
+========================================================= */
+
+const newChatBtn =
+    document.getElementById(
+        "newChatBtn"
+    );
+
+
+if (newChatBtn) {
+
+    newChatBtn.addEventListener(
+        "click",
+        function() {
+
+            showFeatureMessage(
+                "New conversation creation will be connected to the PostgreSQL messaging system."
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   VIEW ORDER
+========================================================= */
+
+function viewOrder() {
+
+    /*
+       Kept frontend-safe.
+
+       Later this can be replaced with:
+       url_for('marketplace.consumer_orders')
+       or an order-specific route.
+    */
+
+    window.location.href =
+        "/orders";
+
+}
+
+
+/* =========================================================
+   CHAT OPTIONS
+========================================================= */
+
+function showChatOptions() {
+
+    showFeatureMessage(
+        "Chat options: report, mute and conversation management will be connected to the messaging backend."
+    );
+
+}
+
+
+/* =========================================================
+   HTML SECURITY
+========================================================= */
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+
+    div.textContent =
+        text;
+
+
+    return div.innerHTML;
+
+}
+
+
+/* =========================================================
+   SCROLL
+========================================================= */
+
+function scrollToBottom() {
+
+    if (!messages) {
+        return;
+    }
+
+
+    messages.scrollTop =
+        messages.scrollHeight;
+
+}
+
+
+/* =========================================================
+   INITIAL
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        scrollToBottom();
+
+    }
+);
 
 </script>
+{% endblock %}
 
-
-</body>
-
-</html>

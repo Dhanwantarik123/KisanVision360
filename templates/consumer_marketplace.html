@@ -1,0 +1,2541 @@
+﻿{% extends "base.html" %}
+
+{% block title %}KisanVision360+ | Consumer Marketplace{% endblock %}
+
+{% block head %}
+<link rel="stylesheet"
+          href="{{ url_for('static', filename='css/consumer_marketplace.css') }}">
+{% endblock %}
+
+{% block page_title %}Consumer Marketplace{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+{% set current_language = session.get('language', 'en') %}
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+
+
+
+
+<!-- =========================================================
+     MAIN CONTENT
+========================================================= -->
+
+<main class="main-content">
+
+
+    <!-- =====================================================
+         TOPBAR
+    ====================================================== -->
+
+    
+
+
+
+    <!-- =====================================================
+         FLASH MESSAGES
+    ====================================================== -->
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            <div class="flash-container">
+
+                {% for category, message in messages %}
+
+                    <div class="flash-message {{ category }}">
+
+
+                        <i class="
+
+                            {% if category == 'success' %}
+
+                                fa-solid fa-circle-check
+
+                            {% elif category == 'danger'
+                               or category == 'error' %}
+
+                                fa-solid fa-circle-xmark
+
+                            {% elif category == 'warning' %}
+
+                                fa-solid fa-triangle-exclamation
+
+                            {% else %}
+
+                                fa-solid fa-circle-info
+
+                            {% endif %}
+
+                        "></i>
+
+
+                        <span>
+
+                            {{ message }}
+
+                        </span>
+
+
+                        <button
+                            type="button"
+                            onclick="this.parentElement.remove()">
+
+                            &times;
+
+                        </button>
+
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    {% endwith %}
+
+
+
+    <!-- =====================================================
+         MARKETPLACE BANNER
+    ====================================================== -->
+
+    <section class="marketplace-banner">
+
+
+        <div class="banner-content">
+
+
+            <span class="banner-label">
+
+                <i class="fa-solid fa-leaf"></i>
+
+                FARM FRESH MARKET
+
+            </span>
+
+
+            <h2>
+
+                Fresh Products,
+                Directly From Farmers
+
+            </h2>
+
+
+            <p>
+
+                Discover fresh agricultural products
+                directly from local farmers.
+                Support farmers and enjoy quality
+                farm-fresh products.
+
+            </p>
+
+
+            <div class="banner-actions">
+
+
+                <a href="#products"
+                   class="primary-banner-btn">
+
+                    <i class="fa-solid fa-basket-shopping"></i>
+
+                    Shop Now
+
+                </a>
+
+
+                <a href="{{ url_for('marketplace.wishlist') }}"
+                   class="secondary-banner-btn">
+
+                    <i class="fa-regular fa-heart"></i>
+
+                    My Wishlist
+
+                </a>
+
+
+            </div>
+
+        </div>
+
+
+
+        <div class="banner-visual">
+
+
+            <div class="banner-circle">
+
+                <i class="fa-solid fa-seedling"></i>
+
+            </div>
+
+
+            <div class="banner-circle small">
+
+                <i class="fa-solid fa-wheat-awn"></i>
+
+            </div>
+
+
+            <div class="banner-circle tiny">
+
+                <i class="fa-solid fa-apple-whole"></i>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FEATURES
+    ====================================================== -->
+
+    <section class="feature-row">
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+
+                <i class="fa-solid fa-tractor"></i>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Direct From Farmers
+                </strong>
+
+                <span>
+                    Buy directly from local farmers
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+
+                <i class="fa-solid fa-leaf"></i>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Fresh Products
+                </strong>
+
+                <span>
+                    Quality and farm-fresh products
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Secure Shopping
+                </strong>
+
+                <span>
+                    Safe and reliable ordering
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+
+                <i class="fa-solid fa-truck-fast"></i>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Easy Delivery
+                </strong>
+
+                <span>
+                    Simple and convenient delivery
+                </span>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         SHOPPING TOOLBAR
+    ====================================================== -->
+
+    <section class="shopping-toolbar">
+
+
+        <!-- CATEGORY -->
+
+        <div class="filter-group">
+
+            <label>
+
+                <i class="fa-solid fa-layer-group"></i>
+
+                Category
+
+            </label>
+
+
+            <select id="categoryFilter">
+
+
+                <option value="all">
+                    All Categories
+                </option>
+
+
+                {% set categories = products
+                    |map(attribute='category')
+                    |unique
+                    |list %}
+
+
+                {% for category in categories %}
+
+                    {% if category %}
+
+                        <option value="{{ category|lower }}">
+
+                            {{ category }}
+
+                        </option>
+
+                    {% endif %}
+
+                {% endfor %}
+
+
+            </select>
+
+        </div>
+
+
+
+        <!-- PRICE -->
+
+        <div class="filter-group">
+
+            <label>
+
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                Price
+
+            </label>
+
+
+            <select id="priceFilter">
+
+
+                <option value="all">
+                    All Prices
+                </option>
+
+
+                <option value="0-100">
+                    Under â‚¹100
+                </option>
+
+
+                <option value="100-500">
+                    â‚¹100 - â‚¹500
+                </option>
+
+
+                <option value="500-1000">
+                    â‚¹500 - â‚¹1000
+                </option>
+
+
+                <option value="1000+">
+                    Above â‚¹1000
+                </option>
+
+
+            </select>
+
+        </div>
+
+
+
+        <!-- SORT -->
+
+        <div class="filter-group">
+
+            <label>
+
+                <i class="fa-solid fa-arrow-down-wide-short"></i>
+
+                Sort By
+
+            </label>
+
+
+            <select id="sortFilter">
+
+
+                <option value="default">
+                    Recommended
+                </option>
+
+
+                <option value="price-low">
+                    Price: Low to High
+                </option>
+
+
+                <option value="price-high">
+                    Price: High to Low
+                </option>
+
+
+                <option value="name">
+                    Name A-Z
+                </option>
+
+
+            </select>
+
+        </div>
+
+
+
+        <!-- RESET -->
+
+        <button
+            type="button"
+            class="reset-filter"
+            onclick="resetFilters()">
+
+            <i class="fa-solid fa-rotate-left"></i>
+
+            Reset
+
+        </button>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         PRODUCTS HEADER
+    ====================================================== -->
+
+    <section class="products-header"
+             id="products">
+
+
+        <div>
+
+            <h2>
+
+                <i class="fa-solid fa-basket-shopping"></i>
+
+                Available Products
+
+            </h2>
+
+
+            <p>
+
+                Fresh products available from farmers
+
+            </p>
+
+        </div>
+
+
+        <div class="product-summary">
+
+            <strong id="productCount">
+
+                {{ products|length }}
+
+            </strong>
+
+
+            <span>
+                Products
+            </span>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         PRODUCT GRID
+    ====================================================== -->
+
+    <section class="product-grid"
+             id="productGrid">
+
+
+        {% if products %}
+
+
+            {% for product in products %}
+
+
+                <article
+                    class="product-card"
+
+                    data-name="{{ product.product_name|default('')|lower }}"
+
+                    data-category="{{ product.category|default('')|lower }}"
+
+                    data-price="{{ product.price|default(0)|float }}"
+
+                    data-id="{{ product.id }}">
+
+
+
+                    <!-- =====================================
+                         PRODUCT IMAGE
+                    ====================================== -->
+
+                    <div class="product-image">
+
+
+                        {% if product.image %}
+
+
+                            <img
+                                src="{{ url_for(
+                                    'static',
+                                    filename='uploads/products/' ~ product.image
+                                ) }}"
+
+                                alt="{{ product.product_name }}"
+
+                                loading="lazy"
+
+                                onerror="
+                                    this.style.display='none';
+                                    this.nextElementSibling.style.display='flex';
+                                ">
+
+
+                            <div
+                                class="no-image"
+                                style="display:none;">
+
+                                <i class="fa-solid fa-image"></i>
+
+                            </div>
+
+
+                        {% else %}
+
+
+                            <div class="no-image">
+
+                                <i class="fa-solid fa-seedling"></i>
+
+                            </div>
+
+
+                        {% endif %}
+
+
+
+                        <!-- STOCK -->
+
+                        {% if product.quantity|default(0)|float > 0 %}
+
+
+                            <span class="stock-badge available">
+
+                                <i class="fa-solid fa-circle"></i>
+
+                                In Stock
+
+                            </span>
+
+
+                        {% else %}
+
+
+                            <span class="stock-badge out">
+
+                                <i class="fa-solid fa-circle"></i>
+
+                                Out of Stock
+
+                            </span>
+
+
+                        {% endif %}
+
+
+
+                        <!-- WISHLIST -->
+
+                        <button
+                            type="button"
+                            class="wishlist-btn"
+
+                            onclick="
+                                addToWishlist(
+                                    {{ product.id }},
+                                    this
+                                )
+                            "
+
+                            title="Add to Wishlist"
+                            aria-label="Add to Wishlist">
+
+                            <i class="fa-regular fa-heart"></i>
+
+                        </button>
+
+
+                    </div>
+
+
+
+                    <!-- =====================================
+                         PRODUCT CONTENT
+                    ====================================== -->
+
+                    <div class="product-content">
+
+
+                        <span class="product-category">
+
+                            {{ product.category|default('Agriculture') }}
+
+                        </span>
+
+
+                        <h3>
+
+                            {{ product.product_name|default('Product') }}
+
+                        </h3>
+
+
+
+                        <!-- FARMER -->
+
+                        <div class="farmer-info">
+
+
+                            <div class="farmer-avatar">
+
+                                <i class="fa-solid fa-user"></i>
+
+                            </div>
+
+
+                            <div>
+
+                                <strong>
+                                    Local Farmer
+                                </strong>
+
+
+                                <span>
+
+                                    <i class="fa-solid fa-circle-check"></i>
+
+                                    Verified Seller
+
+                                </span>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- RATING -->
+
+                        <div class="rating-row">
+
+                            <span class="stars">
+                                â˜…â˜…â˜…â˜…â˜…
+                            </span>
+
+
+                            <span class="rating-text">
+                                4.8
+                            </span>
+
+
+                            <span class="review-count">
+                                (12 reviews)
+                            </span>
+
+                        </div>
+
+
+
+                        <!-- LOCATION -->
+
+                        <div class="location-row">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+
+                            <span>
+
+                                {{ product.location|default('Maharashtra') }}
+
+                            </span>
+
+                        </div>
+
+
+
+                        <!-- PRICE -->
+
+                        <div class="price-section">
+
+
+                            <div>
+
+                                <span class="price-label">
+                                    Price
+                                </span>
+
+
+                                <strong class="product-price">
+
+                                    â‚¹{{ "%.2f"|format(
+                                        product.price|default(0)|float
+                                    ) }}
+
+                                </strong>
+
+
+                                <span class="unit">
+
+                                    / {{ product.unit|default('Kg') }}
+
+                                </span>
+
+                            </div>
+
+
+
+                            <div class="
+                                available-quantity
+
+                                {% if product.quantity|default(0)|float <= 0 %}
+                                    sold
+                                {% endif %}
+                            ">
+
+
+                                {% if product.quantity|default(0)|float > 0 %}
+
+
+                                    {{ product.quantity|float|int }}
+
+                                    {{ product.unit|default('Kg') }}
+
+                                    available
+
+
+                                {% else %}
+
+
+                                    Out of stock
+
+
+                                {% endif %}
+
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- ACTIONS -->
+
+                        {% if product.quantity|default(0)|float > 0 %}
+
+
+                            <div class="product-actions">
+
+
+                                <!-- DETAILS -->
+
+                                <a
+                                    href="{{ url_for(
+                                        'marketplace.product_details',
+                                        product_id=product.id
+                                    ) }}"
+
+                                    class="details-btn">
+
+                                    <i class="fa-solid fa-eye"></i>
+
+                                    Details
+
+                                </a>
+
+
+
+                                <!-- CART -->
+
+                                <button
+                                    type="button"
+                                    class="cart-btn"
+
+                                    onclick="
+                                        addToCart(
+                                            {{ product.id }},
+                                            this
+                                        )
+                                    ">
+
+                                    <i class="fa-solid fa-cart-plus"></i>
+
+                                    Cart
+
+                                </button>
+
+
+
+                                <!-- BUY NOW -->
+
+                                <button
+                                    type="button"
+                                    class="buy-now-btn"
+
+                                    onclick="
+                                        openBuyModal(
+                                            {{ product.id }},
+                                            '{{ product.product_name|default("Product")|replace("'", "\\'") }}',
+                                            {{ product.price|default(0)|float }},
+                                            {{ product.quantity|default(0)|float }},
+                                            '{{ product.unit|default("Kg") }}',
+                                            '{{ url_for(
+                                                "static",
+                                                filename="uploads/products/" ~ product.image
+                                            ) if product.image else "" }}'
+                                        )
+                                    ">
+
+                                    <i class="fa-solid fa-bolt"></i>
+
+                                    Buy Now
+
+                                </button>
+
+
+                            </div>
+
+
+                        {% else %}
+
+
+                            <button
+                                type="button"
+                                class="disabled-buy"
+                                disabled>
+
+                                <i class="fa-solid fa-ban"></i>
+
+                                Out of Stock
+
+                            </button>
+
+
+                        {% endif %}
+
+
+                    </div>
+
+
+                </article>
+
+
+
+                <!-- =================================================
+                     BUY MODAL
+                ================================================== -->
+
+                <div
+                    class="buy-modal"
+                    id="buyModal-{{ product.id }}"
+                    aria-hidden="true">
+
+
+                    <!-- OVERLAY -->
+
+                    <div
+                        class="buy-modal-overlay"
+
+                        onclick="
+                            closeBuyModal(
+                                {{ product.id }}
+                            )
+                        ">
+                    </div>
+
+
+
+                    <!-- MODAL -->
+
+                    <div class="buy-modal-box">
+
+
+                        <!-- CLOSE -->
+
+                        <button
+                            type="button"
+                            class="buy-modal-close"
+
+                            onclick="
+                                closeBuyModal(
+                                    {{ product.id }}
+                                )
+                            "
+
+                            aria-label="Close">
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                        </button>
+
+
+
+                        <!-- IMAGE -->
+
+                        <div class="buy-modal-image">
+
+
+                            {% if product.image %}
+
+
+                                <img
+                                    src="{{ url_for(
+                                        'static',
+                                        filename='uploads/products/' ~ product.image
+                                    ) }}"
+
+                                    alt="{{ product.product_name }}">
+
+
+                            {% else %}
+
+
+                                <i class="fa-solid fa-seedling"></i>
+
+
+                            {% endif %}
+
+
+                        </div>
+
+
+
+                        <!-- CONTENT -->
+
+                        <div class="buy-modal-content">
+
+
+                            <h2>
+
+                                {{ product.product_name }}
+
+                            </h2>
+
+
+
+                            <!-- PRICE -->
+
+                            <div class="buy-price">
+
+                                â‚¹{{ "%.2f"|format(
+                                    product.price|default(0)|float
+                                ) }}
+
+
+                                <span>
+
+                                    / {{ product.unit|default('Kg') }}
+
+                                </span>
+
+                            </div>
+
+
+
+                            <!-- STOCK -->
+
+                            <div class="stock-info">
+
+                                <i class="fa-solid fa-circle-check"></i>
+
+                                {{ product.quantity|float|int }}
+
+                                {{ product.unit|default('Kg') }}
+
+                                available
+
+                            </div>
+
+
+
+                            <!-- QUANTITY LABEL -->
+
+                            <label
+                                class="quantity-label"
+
+                                for="buyQuantity-{{ product.id }}">
+
+                                Select Quantity
+
+                            </label>
+
+
+
+                            <!-- QUANTITY -->
+
+                            <div class="quantity-selector">
+
+
+                                <button
+                                    type="button"
+
+                                    onclick="
+                                        changeBuyQuantity(
+                                            {{ product.id }},
+                                            -1,
+                                            {{ product.price|default(0)|float }},
+                                            {{ product.quantity|default(0)|float }}
+                                        )
+                                    ">
+
+                                    <i class="fa-solid fa-minus"></i>
+
+                                </button>
+
+
+                                <input
+                                    type="number"
+
+                                    id="buyQuantity-{{ product.id }}"
+
+                                    value="1"
+
+                                    min="1"
+
+                                    max="{{ product.quantity|float|int }}"
+
+                                    step="1"
+
+                                    onchange="
+                                        updateBuyTotal(
+                                            {{ product.id }},
+                                            {{ product.price|default(0)|float }},
+                                            {{ product.quantity|default(0)|float }}
+                                        )
+                                    ">
+
+
+                                <button
+                                    type="button"
+
+                                    onclick="
+                                        changeBuyQuantity(
+                                            {{ product.id }},
+                                            1,
+                                            {{ product.price|default(0)|float }},
+                                            {{ product.quantity|default(0)|float }}
+                                        )
+                                    ">
+
+                                    <i class="fa-solid fa-plus"></i>
+
+                                </button>
+
+
+                            </div>
+
+
+
+                            <!-- TOTAL -->
+
+                            <div class="buy-total-box">
+
+
+                                <span>
+                                    Total Amount
+                                </span>
+
+
+                                <strong
+                                    id="buyTotal-{{ product.id }}">
+
+                                    â‚¹{{ "%.2f"|format(
+                                        product.price|default(0)|float
+                                    ) }}
+
+                                </strong>
+
+
+                            </div>
+
+
+
+                            <!-- FORM -->
+
+                            <form
+                                method="POST"
+                                id="buyForm-{{ product.id }}">
+
+
+                                <input
+                                    type="hidden"
+
+                                    name="quantity"
+
+                                    id="buyFormQuantity-{{ product.id }}"
+
+                                    value="1">
+
+
+                                <button
+                                    type="submit"
+                                    class="continue-buy-btn">
+
+
+                                    <span>
+
+                                        <i class="fa-solid fa-cart-shopping"></i>
+
+                                        Continue to Checkout
+
+                                    </span>
+
+
+                                    <i class="fa-solid fa-arrow-right"></i>
+
+
+                                </button>
+
+
+                            </form>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            {% endfor %}
+
+
+
+        {% else %}
+
+
+            <!-- EMPTY MARKETPLACE -->
+
+            <div class="empty-marketplace">
+
+
+                <div class="empty-icon">
+
+                    <i class="fa-solid fa-store-slash"></i>
+
+                </div>
+
+
+                <h2>
+
+                    No Products Available
+
+                </h2>
+
+
+                <p>
+
+                    There are currently no products available
+                    in the marketplace.
+
+                </p>
+
+
+            </div>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         NO SEARCH RESULT
+    ====================================================== -->
+
+    <div
+        class="no-search-result"
+        id="noSearchResult"
+        style="display:none;">
+
+
+        <div>
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+        </div>
+
+
+        <h2>
+            No Products Found
+        </h2>
+
+
+        <p>
+
+            Try another search or change your filters.
+
+        </p>
+
+
+        <button
+            type="button"
+            onclick="resetFilters()">
+
+            Reset Filters
+
+        </button>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         CUSTOMER SUPPORT
+    ====================================================== -->
+
+    <section class="customer-help">
+
+
+        <div class="help-icon">
+
+            <i class="fa-solid fa-headset"></i>
+
+        </div>
+
+
+        <div class="help-content">
+
+            <h3>
+
+                Need Help?
+
+            </h3>
+
+
+            <p>
+
+                Contact us if you need assistance with
+                products, orders or delivery.
+
+            </p>
+
+
+        </div>
+
+
+
+        <!-- CONSUMER NOTIFICATION / SUPPORT -->
+
+        <a
+            href="{{ url_for('consumer.consumer_notifications') }}"
+            class="help-btn">
+
+            <i class="fa-solid fa-comments"></i>
+
+            Contact Support
+
+        </a>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="marketplace-footer">
+
+
+        <div>
+
+            <i class="fa-solid fa-leaf"></i>
+
+
+            <strong>
+
+                KisanVision360+
+
+            </strong>
+
+
+            <span>
+
+                AI Powered Smart Agriculture Platform
+
+            </span>
+
+
+        </div>
+
+
+        <div>
+
+            Â© 2026 KisanVision360
+
+        </div>
+
+
+    </footer>
+
+
+</main>
+
+
+
+<!-- =========================================================
+     TOAST
+========================================================= -->
+
+<div
+    class="toast"
+    id="toast">
+
+
+    <i class="fa-solid fa-circle-check"></i>
+
+
+    <span id="toastMessage">
+
+        Success
+
+    </span>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+
+/* =========================================================
+   GLOBAL APP
+========================================================= */
+
+window.KISANVISION360 = {
+
+    language: "{{ session.get('language', 'en') }}",
+
+    role: "{{ session.get('role', 'consumer') }}",
+
+    version: "KisanVision360+"
+
+};
+
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const searchInput =
+    document.getElementById("productSearch");
+
+const categoryFilter =
+    document.getElementById("categoryFilter");
+
+const priceFilter =
+    document.getElementById("priceFilter");
+
+const sortFilter =
+    document.getElementById("sortFilter");
+
+const productGrid =
+    document.getElementById("productGrid");
+
+const noSearchResult =
+    document.getElementById("noSearchResult");
+
+const productCount =
+    document.getElementById("productCount");
+
+
+
+/* =========================================================
+   FILTER PRODUCTS
+========================================================= */
+
+function filterProducts() {
+
+
+    const search =
+        (searchInput?.value || "")
+        .toLowerCase()
+        .trim();
+
+
+    const category =
+        (categoryFilter?.value || "all")
+        .toLowerCase();
+
+
+    const price =
+        priceFilter?.value || "all";
+
+
+    const cards =
+        Array.from(
+            document.querySelectorAll(
+                ".product-card"
+            )
+        );
+
+
+    let visibleCards = [];
+
+
+    cards.forEach(function(card) {
+
+
+        const name =
+            card.dataset.name || "";
+
+
+        const cardCategory =
+            card.dataset.category || "";
+
+
+        const cardPrice =
+            parseFloat(
+                card.dataset.price || 0
+            );
+
+
+        /* SEARCH */
+
+        const matchesSearch =
+            !search ||
+            name.includes(search) ||
+            cardCategory.includes(search);
+
+
+        /* CATEGORY */
+
+        const matchesCategory =
+            category === "all" ||
+            cardCategory === category;
+
+
+        /* PRICE */
+
+        let matchesPrice = true;
+
+
+        if (price === "0-100") {
+
+            matchesPrice =
+                cardPrice < 100;
+
+        }
+
+
+        else if (price === "100-500") {
+
+            matchesPrice =
+                cardPrice >= 100 &&
+                cardPrice <= 500;
+
+        }
+
+
+        else if (price === "500-1000") {
+
+            matchesPrice =
+                cardPrice > 500 &&
+                cardPrice <= 1000;
+
+        }
+
+
+        else if (price === "1000+") {
+
+            matchesPrice =
+                cardPrice > 1000;
+
+        }
+
+
+        /* FINAL */
+
+        const visible =
+            matchesSearch &&
+            matchesCategory &&
+            matchesPrice;
+
+
+        if (visible) {
+
+            card.style.display = "";
+
+            visibleCards.push(card);
+
+        }
+
+        else {
+
+            card.style.display = "none";
+
+        }
+
+
+    });
+
+
+    sortProducts(
+        visibleCards
+    );
+
+
+    /* COUNT */
+
+    if (productCount) {
+
+        productCount.textContent =
+            visibleCards.length;
+
+    }
+
+
+    /* EMPTY SEARCH */
+
+    if (noSearchResult) {
+
+        noSearchResult.style.display =
+            visibleCards.length === 0
+                ? "block"
+                : "none";
+
+    }
+
+}
+
+
+
+/* =========================================================
+   SORT
+========================================================= */
+
+function sortProducts(cards) {
+
+
+    if (!productGrid ||
+        !cards.length) {
+
+        return;
+
+    }
+
+
+    const sort =
+        sortFilter?.value || "default";
+
+
+    cards.sort(function(a, b) {
+
+
+        const priceA =
+            parseFloat(
+                a.dataset.price || 0
+            );
+
+
+        const priceB =
+            parseFloat(
+                b.dataset.price || 0
+            );
+
+
+        const nameA =
+            a.dataset.name || "";
+
+
+        const nameB =
+            b.dataset.name || "";
+
+
+        if (sort === "price-low") {
+
+            return priceA - priceB;
+
+        }
+
+
+        if (sort === "price-high") {
+
+            return priceB - priceA;
+
+        }
+
+
+        if (sort === "name") {
+
+            return nameA.localeCompare(
+                nameB
+            );
+
+        }
+
+
+        return 0;
+
+    });
+
+
+    cards.forEach(function(card) {
+
+        productGrid.appendChild(card);
+
+    });
+
+}
+
+
+
+/* =========================================================
+   RESET FILTERS
+========================================================= */
+
+function resetFilters() {
+
+
+    if (searchInput) {
+
+        searchInput.value = "";
+
+    }
+
+
+    if (categoryFilter) {
+
+        categoryFilter.value =
+            "all";
+
+    }
+
+
+    if (priceFilter) {
+
+        priceFilter.value =
+            "all";
+
+    }
+
+
+    if (sortFilter) {
+
+        sortFilter.value =
+            "default";
+
+    }
+
+
+    filterProducts();
+
+}
+
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(message) {
+
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    const toastMessage =
+        document.getElementById(
+            "toastMessage"
+        );
+
+
+    if (!toast ||
+        !toastMessage) {
+
+        return;
+
+    }
+
+
+    toastMessage.textContent =
+        message;
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    setTimeout(function() {
+
+        toast.classList.remove(
+            "show"
+        );
+
+    }, 2500);
+
+}
+
+
+
+/* =========================================================
+   ADD TO CART
+========================================================= */
+
+function addToCart(
+    productId,
+    button
+) {
+
+
+    if (button) {
+
+        button.disabled = true;
+
+    }
+
+
+    fetch(
+        "{{ url_for('marketplace.add_to_cart') }}",
+        {
+
+            method: "POST",
+
+            headers: {
+
+                "Content-Type":
+                    "application/json",
+
+                "X-Requested-With":
+                    "XMLHttpRequest"
+
+            },
+
+            body: JSON.stringify({
+
+                product_id:
+                    productId,
+
+                quantity:
+                    1
+
+            })
+
+        }
+    )
+
+
+    .then(function(response) {
+
+        return response.json();
+
+    })
+
+
+    .then(function(data) {
+
+
+        if (data.success) {
+
+
+            showToast(
+                data.message ||
+                "Product added to cart"
+            );
+
+
+            updateCartCount(
+                data.cart_count
+            );
+
+
+        }
+
+        else {
+
+
+            showToast(
+                data.message ||
+                "Unable to add product"
+            );
+
+
+        }
+
+    })
+
+
+    .catch(function() {
+
+
+        showToast(
+            "Something went wrong."
+        );
+
+
+    })
+
+
+    .finally(function() {
+
+
+        if (button) {
+
+            button.disabled = false;
+
+        }
+
+    });
+
+
+}
+
+
+
+/* =========================================================
+   UPDATE CART COUNT
+========================================================= */
+
+function updateCartCount(count) {
+
+
+    const cartLink =
+        document.querySelector(
+            'a[href="{{ url_for("marketplace.cart") }}"]'
+        );
+
+
+    if (!cartLink) {
+
+        return;
+
+    }
+
+
+    let badge =
+        cartLink.querySelector(
+            ".action-count"
+        );
+
+
+    if (!count ||
+        count <= 0) {
+
+
+        if (badge) {
+
+            badge.remove();
+
+        }
+
+
+        return;
+
+    }
+
+
+    if (!badge) {
+
+
+        badge =
+            document.createElement(
+                "span"
+            );
+
+
+        badge.className =
+            "action-count";
+
+
+        cartLink.appendChild(
+            badge
+        );
+
+    }
+
+
+    badge.textContent =
+        count;
+
+}
+
+
+
+/* =========================================================
+   ADD TO WISHLIST
+========================================================= */
+
+function addToWishlist(
+    productId,
+    button
+) {
+
+
+    if (button) {
+
+        button.disabled = true;
+
+    }
+
+
+    fetch(
+        "{{ url_for('marketplace.add_to_wishlist') }}",
+        {
+
+            method: "POST",
+
+            headers: {
+
+                "Content-Type":
+                    "application/json",
+
+                "X-Requested-With":
+                    "XMLHttpRequest"
+
+            },
+
+            body: JSON.stringify({
+
+                product_id:
+                    productId
+
+            })
+
+        }
+    )
+
+
+    .then(function(response) {
+
+        return response.json();
+
+    })
+
+
+    .then(function(data) {
+
+
+        if (data.success) {
+
+
+            showToast(
+                data.message ||
+                "Added to wishlist"
+            );
+
+
+            if (button) {
+
+
+                button.classList.add(
+                    "active"
+                );
+
+
+                const icon =
+                    button.querySelector(
+                        "i"
+                    );
+
+
+                if (icon) {
+
+                    icon.className =
+                        "fa-solid fa-heart";
+
+                }
+
+
+            }
+
+
+        }
+
+        else {
+
+
+            showToast(
+                data.message ||
+                "Unable to add to wishlist"
+            );
+
+
+        }
+
+    })
+
+
+    .catch(function() {
+
+
+        showToast(
+            "Something went wrong."
+        );
+
+
+    })
+
+
+    .finally(function() {
+
+
+        if (button) {
+
+            button.disabled = false;
+
+        }
+
+    });
+
+
+}
+
+
+
+/* =========================================================
+   OPEN BUY MODAL
+========================================================= */
+
+function openBuyModal(
+    productId,
+    productName,
+    price,
+    stock,
+    unit,
+    image
+) {
+
+
+    const modal =
+        document.getElementById(
+            "buyModal-" + productId
+        );
+
+
+    if (!modal) {
+
+        return;
+
+    }
+
+
+    const input =
+        document.getElementById(
+            "buyQuantity-" + productId
+        );
+
+
+    if (input) {
+
+        input.value = 1;
+
+    }
+
+
+    updateBuyTotal(
+        productId,
+        price,
+        stock
+    );
+
+
+    modal.style.display =
+        "flex";
+
+
+    modal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+
+    document.body.classList.add(
+        "modal-open"
+    );
+
+
+}
+
+
+
+/* =========================================================
+   CLOSE BUY MODAL
+========================================================= */
+
+function closeBuyModal(
+    productId
+) {
+
+
+    const modal =
+        document.getElementById(
+            "buyModal-" + productId
+        );
+
+
+    if (!modal) {
+
+        return;
+
+    }
+
+
+    modal.style.display =
+        "none";
+
+
+    modal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+
+    document.body.classList.remove(
+        "modal-open"
+    );
+
+
+}
+
+
+
+/* =========================================================
+   CHANGE BUY QUANTITY
+========================================================= */
+
+function changeBuyQuantity(
+    productId,
+    change,
+    price,
+    stock
+) {
+
+
+    const input =
+        document.getElementById(
+            "buyQuantity-" + productId
+        );
+
+
+    if (!input) {
+
+        return;
+
+    }
+
+
+    let quantity =
+        parseInt(
+            input.value
+        ) || 1;
+
+
+    quantity += change;
+
+
+    const max =
+        Math.floor(
+            parseFloat(stock)
+        );
+
+
+    quantity =
+        Math.max(
+            1,
+            Math.min(
+                quantity,
+                max
+            )
+        );
+
+
+    input.value =
+        quantity;
+
+
+    updateBuyTotal(
+        productId,
+        price,
+        stock
+    );
+
+}
+
+
+
+/* =========================================================
+   UPDATE BUY TOTAL
+========================================================= */
+
+function updateBuyTotal(
+    productId,
+    price,
+    stock
+) {
+
+
+    const input =
+        document.getElementById(
+            "buyQuantity-" + productId
+        );
+
+
+    const totalElement =
+        document.getElementById(
+            "buyTotal-" + productId
+        );
+
+
+    const hiddenQuantity =
+        document.getElementById(
+            "buyFormQuantity-" + productId
+        );
+
+
+    if (!input) {
+
+        return;
+
+    }
+
+
+    let quantity =
+        parseInt(
+            input.value
+        ) || 1;
+
+
+    const max =
+        Math.floor(
+            parseFloat(stock)
+        );
+
+
+    quantity =
+        Math.max(
+            1,
+            Math.min(
+                quantity,
+                max
+            )
+        );
+
+
+    input.value =
+        quantity;
+
+
+    if (hiddenQuantity) {
+
+        hiddenQuantity.value =
+            quantity;
+
+    }
+
+
+    const total =
+        parseFloat(price) *
+        quantity;
+
+
+    if (totalElement) {
+
+        totalElement.textContent =
+            "â‚¹" +
+            total.toFixed(2);
+
+    }
+
+}
+
+
+
+/* =========================================================
+   BUY FORM
+========================================================= */
+
+document.querySelectorAll(
+    ".buy-modal form"
+).forEach(function(form) {
+
+
+    const modal =
+        form.closest(
+            ".buy-modal"
+        );
+
+
+    if (!modal) {
+
+        return;
+
+    }
+
+
+    const productId =
+        modal.id.replace(
+            "buyModal-",
+            ""
+        );
+
+
+    form.addEventListener(
+        "submit",
+        function() {
+
+
+            const baseUrl =
+                "{{ url_for(
+                    'marketplace.buy_now',
+                    product_id=0
+                ) }}";
+
+
+            form.action =
+                baseUrl.replace(
+                    /\/0$/,
+                    "/" + productId
+                );
+
+
+        }
+    );
+
+
+});
+
+
+
+/* =========================================================
+   SEARCH EVENT
+========================================================= */
+
+if (searchInput) {
+
+    searchInput.addEventListener(
+        "input",
+        filterProducts
+    );
+
+}
+
+
+
+/* =========================================================
+   CATEGORY EVENT
+========================================================= */
+
+if (categoryFilter) {
+
+    categoryFilter.addEventListener(
+        "change",
+        filterProducts
+    );
+
+}
+
+
+
+/* =========================================================
+   PRICE EVENT
+========================================================= */
+
+if (priceFilter) {
+
+    priceFilter.addEventListener(
+        "change",
+        filterProducts
+    );
+
+}
+
+
+
+/* =========================================================
+   SORT EVENT
+========================================================= */
+
+if (sortFilter) {
+
+    sortFilter.addEventListener(
+        "change",
+        filterProducts
+    );
+
+}
+
+
+
+/* =========================================================
+   ESCAPE KEY
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+
+        if (event.key !== "Escape") {
+
+            return;
+
+        }
+
+
+        document
+            .querySelectorAll(
+                ".buy-modal"
+            )
+            .forEach(function(modal) {
+
+
+                if (
+                    modal.style.display ===
+                    "flex"
+                ) {
+
+
+                    modal.style.display =
+                        "none";
+
+
+                    modal.setAttribute(
+                        "aria-hidden",
+                        "true"
+                    );
+
+
+                }
+
+            });
+
+
+        document.body.classList.remove(
+            "modal-open"
+        );
+
+
+    }
+);
+
+
+
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
+
+window.addEventListener(
+    "load",
+    function() {
+
+        filterProducts();
+
+    }
+);
+
+
+</script>
+{% endblock %}
+

@@ -1,161 +1,1119 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿{% extends "base.html" %}
 
-<head>
+{% block title %}Create Account - KisanVision360+{% endblock %}
 
-<meta charset="UTF-8">
+{% block head %}
+<link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/signup.css') }}"
+    >
+<link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+{% endblock %}
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+{% block page_title %}Create Account - KisanVision360+{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
 
-<title>KisanVision360 | Sign Up</title>
+{% block content %}
+<!-- =====================================================
+         BACKGROUND
+    ====================================================== -->
 
-<link rel="stylesheet"
-href="{{ url_for('static', filename='css/style.css') }}">
+    <div class="signup-background"></div>
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-</head>
-
-<body>
-
-<div class="container">
-
-<img src="{{ url_for('static', filename='images/logo.png') }}"
-class="logo">
-
-
-<h1 style="color:#FFD54F;">KisanVision360</h1>
-
-<h2 style="color:#FFFFFF;">Create New Account</h2>
+    <div class="signup-overlay"></div>
 
 
+    <!-- =====================================================
+         MAIN CONTAINER
+    ====================================================== -->
 
-{% if error %}
+    <main class="signup-wrapper">
 
-<div class="error">
+        <section class="signup-box">
 
-{{ error }}
 
-</div>
+            <!-- =================================================
+                 BRAND
+            ================================================== -->
 
-{% endif %}
+            <div class="brand-section">
 
-<form method="POST">
+                <div class="brand-logo">
 
-<div class="input-box">
+                    <img
+                        src="{{ url_for('static', filename='images/logo.png') }}"
+                        alt="KisanVision360+ Logo"
+                        onerror="this.style.display='none';"
+                    >
 
-<i class="fas fa-user"></i>
+                    <div class="logo-fallback">
+                        <i class="fas fa-seedling"></i>
+                    </div>
 
-<input
-type="text"
-name="fullname"
-placeholder="Full Name"
-required>
+                </div>
 
-</div>
 
-<div class="input-box">
+                <h1>
+                    KisanVision360+
+                </h1>
 
-<i class="fas fa-phone"></i>
+                <p>
+                    AI-Powered Smart Farming Platform
+                </p>
 
-<input
-type="text"
-name="mobile"
-placeholder="Mobile Number"
-required>
+            </div>
 
-</div>
 
-<div class="input-box">
+            <!-- =================================================
+                 HEADING
+            ================================================== -->
 
-<i class="fas fa-envelope"></i>
+            <div class="signup-heading">
 
-<input
-type="email"
-name="email"
-placeholder="Email Address"
-required>
+                <h2>
+                    Create Your Account
+                </h2>
 
-</div>
+                <p>
+                    Join KisanVision360+ and manage your farming
+                    journey smarter.
+                </p>
 
-<div class="input-box">
+            </div>
 
-<i class="fas fa-lock"></i>
 
-<input
-type="password"
-id="password"
-name="password"
-placeholder="Password"
-required>
+            <!-- =================================================
+                 FLASH MESSAGES
+            ================================================== -->
 
-<i class="fas fa-eye toggle-password"
-onclick="togglePassword()"></i>
+            {% with messages = get_flashed_messages(
+                with_categories=true
+            ) %}
 
-</div>
+                {% if messages %}
 
-<div class="input-box">
+                    <div class="flash-container">
 
-<i class="fas fa-users"></i>
+                        {% for category, message in messages %}
 
-<select name="role">
+                            <div
+                                class="flash-message {{ category }}"
+                            >
 
-<option value="Farmer">👨‍🌾 Farmer</option>
+                                <i
+                                    class="
+                                    fas
+                                    {% if category == 'success' %}
+                                        fa-circle-check
+                                    {% elif category == 'error' %}
+                                        fa-circle-exclamation
+                                    {% else %}
+                                        fa-circle-info
+                                    {% endif %}
+                                    "
+                                ></i>
 
-<option value="Consumer">🛒 Consumer</option>
+                                <span>
+                                    {{ message }}
+                                </span>
 
-</select>
+                            </div>
 
-</div>
+                        {% endfor %}
 
-<br>
+                    </div>
 
-<button type="submit">
+                {% endif %}
 
-<i class="fas fa-user-plus"></i>
+            {% endwith %}
 
-Create Account
 
-</button>
+            <!-- =================================================
+                 SIGNUP FORM
+            ================================================== -->
 
-</form>
+            <form
+                method="POST"
+                action="{{ url_for('auth.signup') }}"
+                id="signupForm"
+                class="signup-form"
+                novalidate
+            >
 
-<br>
 
-<p style="color:white;">
+                <!-- =============================================
+                     FULL NAME
+                ============================================== -->
 
-Already have an account?
+                <div class="form-group">
 
-<a href="/login">
+                    <label for="fullname">
 
-<b>Login Here</b>
+                        <i class="fas fa-user"></i>
 
-</a>
+                        Full Name
 
-</p>
+                    </label>
 
-</div>
 
+                    <div class="input-wrapper">
+
+                        <i
+                            class="fas fa-user input-icon"
+                        ></i>
+
+                        <input
+                            type="text"
+                            id="fullname"
+                            name="fullname"
+                            placeholder="Enter your full name"
+                            autocomplete="name"
+                            maxlength="100"
+                            required
+                        >
+
+                    </div>
+
+                    <small
+                        class="field-error"
+                        id="fullnameError"
+                    ></small>
+
+                </div>
+
+
+                <!-- =============================================
+                     MOBILE NUMBER
+                ============================================== -->
+
+                <div class="form-group">
+
+                    <label for="mobile">
+
+                        <i class="fas fa-phone"></i>
+
+                        Mobile Number
+
+                    </label>
+
+
+                    <div class="input-wrapper mobile-wrapper">
+
+                        <span class="country-code">
+                            +91
+                        </span>
+
+                        <input
+                            type="tel"
+                            id="mobile"
+                            name="mobile"
+                            placeholder="Enter 10 digit mobile number"
+                            inputmode="numeric"
+                            autocomplete="tel"
+                            maxlength="10"
+                            minlength="10"
+                            pattern="[6-9][0-9]{9}"
+                            required
+                        >
+
+                    </div>
+
+                    <small
+                        class="field-error"
+                        id="mobileError"
+                    ></small>
+
+                </div>
+
+
+                <!-- =============================================
+                     EMAIL
+                ============================================== -->
+
+                <div class="form-group">
+
+                    <label for="email">
+
+                        <i class="fas fa-envelope"></i>
+
+                        Email Address
+
+                    </label>
+
+
+                    <div class="input-wrapper">
+
+                        <i
+                            class="fas fa-envelope input-icon"
+                        ></i>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email address"
+                            autocomplete="email"
+                            maxlength="150"
+                            required
+                        >
+
+                    </div>
+
+                    <small
+                        class="field-error"
+                        id="emailError"
+                    ></small>
+
+                </div>
+
+
+                <!-- =============================================
+                     PASSWORD
+                ============================================== -->
+
+                <div class="form-group">
+
+                    <label for="password">
+
+                        <i class="fas fa-lock"></i>
+
+                        Password
+
+                    </label>
+
+
+                    <div class="input-wrapper">
+
+                        <i
+                            class="fas fa-lock input-icon"
+                        ></i>
+
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Create a password"
+                            autocomplete="new-password"
+                            minlength="6"
+                            maxlength="100"
+                            required
+                        >
+
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            id="passwordToggle"
+                            aria-label="Show password"
+                        >
+
+                            <i
+                                class="fas fa-eye"
+                                id="passwordIcon"
+                            ></i>
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- PASSWORD STRENGTH -->
+
+                    <div
+                        class="password-strength"
+                        id="passwordStrength"
+                    >
+
+                        <div class="strength-bar">
+
+                            <span
+                                id="strengthProgress"
+                            ></span>
+
+                        </div>
+
+                        <small
+                            id="strengthText"
+                        >
+                            Minimum 6 characters
+                        </small>
+
+                    </div>
+
+
+                    <small
+                        class="field-error"
+                        id="passwordError"
+                    ></small>
+
+                </div>
+
+
+                <!-- =============================================
+                     ROLE
+                ============================================== -->
+
+                <div class="form-group">
+
+                    <label for="role">
+
+                        <i class="fas fa-users"></i>
+
+                        Select Role
+
+                    </label>
+
+
+                    <div class="role-options">
+
+
+                        <!-- FARMER -->
+
+                        <label
+                            class="role-card"
+                            for="farmerRole"
+                        >
+
+                            <input
+                                type="radio"
+                                id="farmerRole"
+                                name="role"
+                                value="Farmer"
+                                checked
+                            >
+
+                            <span class="role-content">
+
+                                <span class="role-icon">
+
+                                    <i
+                                        class="fas fa-tractor"
+                                    ></i>
+
+                                </span>
+
+                                <span class="role-text">
+
+                                    <strong>
+                                        Farmer
+                                    </strong>
+
+                                    <small>
+                                        Farming & crop management
+                                    </small>
+
+                                </span>
+
+                            </span>
+
+                        </label>
+
+
+                        <!-- CONSUMER -->
+
+                        <label
+                            class="role-card"
+                            for="consumerRole"
+                        >
+
+                            <input
+                                type="radio"
+                                id="consumerRole"
+                                name="role"
+                                value="Consumer"
+                            >
+
+                            <span class="role-content">
+
+                                <span class="role-icon">
+
+                                    <i
+                                        class="fas fa-shopping-basket"
+                                    ></i>
+
+                                </span>
+
+                                <span class="role-text">
+
+                                    <strong>
+                                        Consumer
+                                    </strong>
+
+                                    <small>
+                                        Buy fresh farm products
+                                    </small>
+
+                                </span>
+
+                            </span>
+
+                        </label>
+
+                    </div>
+
+
+                    <small
+                        class="field-error"
+                        id="roleError"
+                    ></small>
+
+                </div>
+
+
+                <!-- =============================================
+                     TERMS
+                ============================================== -->
+
+                <div class="terms-section">
+
+                    <label class="checkbox-label">
+
+                        <input
+                            type="checkbox"
+                            id="terms"
+                            name="terms"
+                            required
+                        >
+
+                        <span class="custom-checkbox"></span>
+
+                        <span class="terms-text">
+
+                            I agree to the
+                            <a
+                                href="#"
+                                onclick="return false;"
+                            >
+                                Terms & Conditions
+                            </a>
+                            and
+                            <a
+                                href="#"
+                                onclick="return false;"
+                            >
+                                Privacy Policy
+                            </a>.
+
+                        </span>
+
+                    </label>
+
+                    <small
+                        class="field-error"
+                        id="termsError"
+                    ></small>
+
+                </div>
+
+
+                <!-- =============================================
+                     SUBMIT BUTTON
+                ============================================== -->
+
+                <button
+                    type="submit"
+                    id="signupButton"
+                    class="signup-button"
+                >
+
+                    <span
+                        id="signupButtonText"
+                    >
+
+                        <i class="fas fa-user-plus"></i>
+
+                        Create Account
+
+                    </span>
+
+
+                    <span
+                        id="signupLoader"
+                        class="signup-loader"
+                        style="display:none;"
+                    >
+
+                        <i
+                            class="fas fa-spinner fa-spin"
+                        ></i>
+
+                        Creating Account...
+
+                    </span>
+
+                </button>
+
+
+            </form>
+
+
+            <!-- =================================================
+                 LOGIN LINK
+            ================================================== -->
+
+            <div class="login-link">
+
+                <span>
+                    Already have an account?
+                </span>
+
+                <a
+                    href="{{ url_for('auth.login') }}"
+                >
+                    Login
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 GLOBAL LANGUAGE
+            ================================================== -->
+
+            <div class="global-language-info">
+
+                <i class="fas fa-globe"></i>
+
+                <span>
+                    Language is managed globally
+                </span>
+
+                <a
+                    href="{{ url_for('auth.language') }}"
+                >
+                    Change Language
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 SECURITY
+            ================================================== -->
+
+            <div class="security-info">
+
+                <i class="fas fa-shield-halved"></i>
+
+                <span>
+                    Your information is securely stored.
+                </span>
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
+{% endblock %}
+
+{% block scripts %}
 <script>
 
-function togglePassword(){
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
 
-var x=document.getElementById("password");
+                const form =
+                    document.getElementById(
+                        "signupForm"
+                    );
 
-if(x.type==="password")
+                const fullname =
+                    document.getElementById(
+                        "fullname"
+                    );
 
-x.type="text";
+                const mobile =
+                    document.getElementById(
+                        "mobile"
+                    );
 
-else
+                const email =
+                    document.getElementById(
+                        "email"
+                    );
 
-x.type="password";
+                const password =
+                    document.getElementById(
+                        "password"
+                    );
 
-}
+                const terms =
+                    document.getElementById(
+                        "terms"
+                    );
 
-</script>
+                const signupButton =
+                    document.getElementById(
+                        "signupButton"
+                    );
 
-</body>
+                const buttonText =
+                    document.getElementById(
+                        "signupButtonText"
+                    );
 
-</html>
+                const loader =
+                    document.getElementById(
+                        "signupLoader"
+                    );
+
+                const passwordToggle =
+                    document.getElementById(
+                        "passwordToggle"
+                    );
+
+                const passwordIcon =
+                    document.getElementById(
+                        "passwordIcon"
+                    );
+
+
+                // =================================================
+                // MOBILE NUMBER
+                // =================================================
+
+                if (mobile) {
+
+                    mobile.addEventListener(
+                        "input",
+                        function () {
+
+                            // Only digits
+                            this.value =
+                                this.value
+                                .replace(
+                                    /\D/g,
+                                    ""
+                                )
+                                .slice(
+                                    0,
+                                    10
+                                );
+
+                        }
+                    );
+
+
+                    mobile.addEventListener(
+                        "keypress",
+                        function (event) {
+
+                            if (
+                                !/[0-9]/.test(
+                                    event.key
+                                )
+                            ) {
+
+                                event.preventDefault();
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                // =================================================
+                // PASSWORD SHOW / HIDE
+                // =================================================
+
+                if (passwordToggle) {
+
+                    passwordToggle.addEventListener(
+                        "click",
+                        function () {
+
+                            if (
+                                password.type ===
+                                "password"
+                            ) {
+
+                                password.type =
+                                    "text";
+
+                                passwordIcon.className =
+                                    "fas fa-eye-slash";
+
+                                this.setAttribute(
+                                    "aria-label",
+                                    "Hide password"
+                                );
+
+                            } else {
+
+                                password.type =
+                                    "password";
+
+                                passwordIcon.className =
+                                    "fas fa-eye";
+
+                                this.setAttribute(
+                                    "aria-label",
+                                    "Show password"
+                                );
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                // =================================================
+                // PASSWORD STRENGTH
+                // =================================================
+
+                if (password) {
+
+                    password.addEventListener(
+                        "input",
+                        function () {
+
+                            const value =
+                                this.value;
+
+                            const progress =
+                                document.getElementById(
+                                    "strengthProgress"
+                                );
+
+                            const text =
+                                document.getElementById(
+                                    "strengthText"
+                                );
+
+                            if (!value) {
+
+                                progress.style.width =
+                                    "0%";
+
+                                text.textContent =
+                                    "Minimum 6 characters";
+
+                                return;
+
+                            }
+
+
+                            let score = 0;
+
+
+                            if (
+                                value.length >= 6
+                            ) {
+                                score++;
+                            }
+
+                            if (
+                                value.length >= 8
+                            ) {
+                                score++;
+                            }
+
+                            if (
+                                /[A-Z]/.test(value)
+                            ) {
+                                score++;
+                            }
+
+                            if (
+                                /[0-9]/.test(value)
+                            ) {
+                                score++;
+                            }
+
+                            if (
+                                /[^A-Za-z0-9]/.test(value)
+                            ) {
+                                score++;
+                            }
+
+
+                            const percentage =
+                                Math.min(
+                                    score * 20,
+                                    100
+                                );
+
+
+                            progress.style.width =
+                                percentage + "%";
+
+
+                            if (
+                                score <= 1
+                            ) {
+
+                                text.textContent =
+                                    "Weak password";
+
+                            } else if (
+                                score <= 3
+                            ) {
+
+                                text.textContent =
+                                    "Medium password";
+
+                            } else {
+
+                                text.textContent =
+                                    "Strong password";
+
+                            }
+
+                        }
+                    );
+
+                }
+
+
+                // =================================================
+                // ERROR HELPERS
+                // =================================================
+
+                function showError(
+                    id,
+                    message
+                ) {
+
+                    const element =
+                        document.getElementById(
+                            id
+                        );
+
+                    if (element) {
+
+                        element.textContent =
+                            message;
+
+                    }
+
+                }
+
+
+                function clearErrors() {
+
+                    document
+                        .querySelectorAll(
+                            ".field-error"
+                        )
+                        .forEach(
+                            function (element) {
+
+                                element.textContent =
+                                    "";
+
+                            }
+                        );
+
+                }
+
+
+                // =================================================
+                // FORM VALIDATION
+                // =================================================
+
+                if (form) {
+
+                    form.addEventListener(
+                        "submit",
+                        function (event) {
+
+                            clearErrors();
+
+                            let valid = true;
+
+
+                            // -----------------------------------------
+                            // NAME
+                            // -----------------------------------------
+
+                            const nameValue =
+                                fullname.value.trim();
+
+                            if (
+                                nameValue.length < 2
+                            ) {
+
+                                showError(
+                                    "fullnameError",
+                                    "Please enter your full name."
+                                );
+
+                                valid = false;
+
+                            }
+
+
+                            // -----------------------------------------
+                            // MOBILE
+                            // -----------------------------------------
+
+                            const mobileValue =
+                                mobile.value.trim();
+
+                            const mobilePattern =
+                                /^[6-9][0-9]{9}$/;
+
+                            if (
+                                !mobilePattern.test(
+                                    mobileValue
+                                )
+                            ) {
+
+                                showError(
+                                    "mobileError",
+                                    "Enter a valid 10 digit Indian mobile number."
+                                );
+
+                                valid = false;
+
+                            }
+
+
+                            // -----------------------------------------
+                            // EMAIL
+                            // -----------------------------------------
+
+                            const emailValue =
+                                email.value.trim();
+
+                            const emailPattern =
+                                /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                            if (
+                                !emailPattern.test(
+                                    emailValue
+                                )
+                            ) {
+
+                                showError(
+                                    "emailError",
+                                    "Please enter a valid email address."
+                                );
+
+                                valid = false;
+
+                            }
+
+
+                            // -----------------------------------------
+                            // PASSWORD
+                            // -----------------------------------------
+
+                            if (
+                                password.value.length < 6
+                            ) {
+
+                                showError(
+                                    "passwordError",
+                                    "Password must contain at least 6 characters."
+                                );
+
+                                valid = false;
+
+                            }
+
+
+                            // -----------------------------------------
+                            // TERMS
+                            // -----------------------------------------
+
+                            if (
+                                !terms.checked
+                            ) {
+
+                                showError(
+                                    "termsError",
+                                    "Please accept the Terms & Conditions."
+                                );
+
+                                valid = false;
+
+                            }
+
+
+                            // -----------------------------------------
+                            // STOP IF INVALID
+                            // -----------------------------------------
+
+                            if (!valid) {
+
+                                event.preventDefault();
+
+                                return;
+
+                            }
+
+
+                            // -----------------------------------------
+                            // SUBMITTING
+                            // -----------------------------------------
+
+                            signupButton.disabled =
+                                true;
+
+                            buttonText.style.display =
+                                "none";
+
+                            loader.style.display =
+                                "inline-flex";
+
+                        }
+                    );
+
+                }
+
+
+                // =================================================
+                // GLOBAL LANGUAGE
+                // =================================================
+
+                const savedLanguage =
+                    localStorage.getItem(
+                        "kisanvision360_language"
+                    );
+
+
+                /*
+                 * Language is NOT changed here.
+                 *
+                 * It is selected once on the
+                 * Language Selection page.
+                 *
+                 * This only keeps localStorage
+                 * synchronized with the current
+                 * Flask session value.
+                 */
+
+                if (
+                    !savedLanguage
+                ) {
+
+                    localStorage.setItem(
+                        "kisanvision360_language",
+                        "{{ session.get('language', 'en') }}"
+                    );
+
+                }
+
+
+            }
+        );
+
+    </script>
+{% endblock %}
+

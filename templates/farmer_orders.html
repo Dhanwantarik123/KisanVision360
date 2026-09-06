@@ -1,0 +1,2456 @@
+﻿{% extends "base.html" %}
+
+{% block title %}KisanVision360+ | Customer Orders{% endblock %}
+
+{% block head %}
+<link rel="stylesheet"
+          href="{{ url_for('static', filename='css/farmer_orders.css') }}">
+<style>
+
+        /* =====================================================
+           KISANVISION360+ FARMER ORDERS
+        ===================================================== */
+
+        :root {
+            --kv-green: #1b5e20;
+            --kv-green-2: #2e7d32;
+            --kv-light-green: #e8f5e9;
+            --kv-orange: #fb8c00;
+            --kv-blue: #1976d2;
+            --kv-red: #d32f2f;
+            --kv-purple: #6a1b9a;
+            --kv-dark: #17351b;
+            --kv-text: #263238;
+            --kv-muted: #6b7280;
+            --kv-border: #e5e7eb;
+            --kv-bg: #f5f7f6;
+            --kv-white: #ffffff;
+            --kv-shadow: 0 10px 30px rgba(27, 94, 32, 0.08);
+            --kv-radius: 18px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--kv-bg);
+            color: var(--kv-text);
+            font-family: Inter, Arial, Helvetica, sans-serif;
+        }
+
+        .main-content {
+            padding-bottom: 50px;
+        }
+
+        /* =====================================================
+           TOPBAR
+        ===================================================== */
+
+        .kv-page-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 24px 28px;
+            background: #fff;
+            border-bottom: 1px solid var(--kv-border);
+        }
+
+        .kv-title-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .kv-title-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 16px;
+            background: var(--kv-light-green);
+            color: var(--kv-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+            flex-shrink: 0;
+        }
+
+        .kv-title-area h1 {
+            margin: 0 0 5px;
+            font-size: 27px;
+            color: var(--kv-dark);
+        }
+
+        .kv-title-area p {
+            margin: 0;
+            color: var(--kv-muted);
+            font-size: 14px;
+        }
+
+        .kv-top-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .kv-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 17px;
+            border-radius: 12px;
+            text-decoration: none;
+            background: var(--kv-green);
+            color: white;
+            font-weight: 700;
+            transition: .2s ease;
+        }
+
+        .kv-back-btn:hover {
+            transform: translateY(-2px);
+            background: var(--kv-green-2);
+        }
+
+        /* =====================================================
+           FLASH
+        ===================================================== */
+
+        .flash-container {
+            padding: 18px 28px 0;
+        }
+
+        .flash {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 16px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            background: #fff;
+            border: 1px solid var(--kv-border);
+            box-shadow: 0 5px 15px rgba(0,0,0,.04);
+        }
+
+        .flash.success {
+            border-left: 4px solid #2e7d32;
+        }
+
+        .flash.warning {
+            border-left: 4px solid var(--kv-orange);
+        }
+
+        .flash.danger,
+        .flash.error {
+            border-left: 4px solid var(--kv-red);
+        }
+
+        /* =====================================================
+           PAGE INTRO
+        ===================================================== */
+
+        .kv-order-intro {
+            margin: 22px 28px 0;
+            padding: 24px;
+            border-radius: var(--kv-radius);
+            background: linear-gradient(135deg, #1b5e20, #388e3c);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            box-shadow: var(--kv-shadow);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .kv-order-intro::after {
+            content: "";
+            position: absolute;
+            width: 190px;
+            height: 190px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.08);
+            right: -60px;
+            top: -80px;
+        }
+
+        .kv-order-intro-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .kv-order-intro-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            opacity: .9;
+            margin-bottom: 8px;
+        }
+
+        .kv-order-intro h2 {
+            margin: 0 0 7px;
+            font-size: 24px;
+        }
+
+        .kv-order-intro p {
+            margin: 0;
+            opacity: .9;
+            max-width: 700px;
+            line-height: 1.6;
+        }
+
+        .kv-order-intro-icon {
+            width: 90px;
+            height: 90px;
+            border-radius: 25px;
+            background: rgba(255,255,255,.13);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* =====================================================
+           SUMMARY
+        ===================================================== */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin: 22px 28px;
+        }
+
+        .summary-card {
+            background: var(--kv-white);
+            border: 1px solid var(--kv-border);
+            border-radius: 17px;
+            padding: 19px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 6px 20px rgba(0,0,0,.035);
+            transition: .2s ease;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--kv-shadow);
+        }
+
+        .summary-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            background: var(--kv-light-green);
+            color: var(--kv-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .summary-card:nth-child(2) .summary-icon {
+            background: #fff4df;
+            color: var(--kv-orange);
+        }
+
+        .summary-card:nth-child(3) .summary-icon {
+            background: #e8f1ff;
+            color: var(--kv-blue);
+        }
+
+        .summary-card:nth-child(4) .summary-icon {
+            background: #f3e9f8;
+            color: var(--kv-purple);
+        }
+
+        .summary-card span {
+            display: block;
+            color: var(--kv-muted);
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .summary-card strong {
+            display: block;
+            font-size: 23px;
+            color: var(--kv-dark);
+        }
+
+        /* =====================================================
+           INTELLIGENCE CARD
+        ===================================================== */
+
+        .kv-intelligence {
+            margin: 0 28px 22px;
+            background: white;
+            border: 1px solid var(--kv-border);
+            border-radius: var(--kv-radius);
+            padding: 22px;
+            box-shadow: 0 6px 20px rgba(0,0,0,.035);
+        }
+
+        .kv-intelligence-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .kv-intelligence-header h2 {
+            margin: 0 0 5px;
+            font-size: 18px;
+            color: var(--kv-dark);
+        }
+
+        .kv-intelligence-header p {
+            margin: 0;
+            color: var(--kv-muted);
+            font-size: 13px;
+        }
+
+        .kv-ai-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--kv-light-green);
+            color: var(--kv-green);
+            padding: 8px 12px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .kv-insight-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .kv-insight {
+            border: 1px solid var(--kv-border);
+            border-radius: 14px;
+            padding: 15px;
+            background: #fafcfb;
+        }
+
+        .kv-insight i {
+            color: var(--kv-green);
+            font-size: 18px;
+            margin-bottom: 9px;
+        }
+
+        .kv-insight strong {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .kv-insight span {
+            display: block;
+            color: var(--kv-muted);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        /* =====================================================
+           FILTER
+        ===================================================== */
+
+        .filter-box {
+            margin: 0 28px 22px;
+            padding: 18px;
+            background: white;
+            border: 1px solid var(--kv-border);
+            border-radius: var(--kv-radius);
+            box-shadow: 0 6px 20px rgba(0,0,0,.03);
+        }
+
+        .filter-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 14px;
+        }
+
+        .filter-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--kv-dark);
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .filter-title i {
+            color: var(--kv-green);
+        }
+
+        .kv-search {
+            width: min(340px, 100%);
+            position: relative;
+        }
+
+        .kv-search i {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .kv-search input {
+            width: 100%;
+            border: 1px solid var(--kv-border);
+            border-radius: 11px;
+            padding: 11px 13px 11px 38px;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .kv-search input:focus {
+            border-color: var(--kv-green);
+            box-shadow: 0 0 0 3px rgba(46,125,50,.09);
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            border: 1px solid var(--kv-border);
+            background: #fff;
+            color: #4b5563;
+            border-radius: 10px;
+            padding: 9px 13px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 12px;
+            transition: .2s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--kv-green);
+            color: white;
+            border-color: var(--kv-green);
+        }
+
+        .filter-count {
+            font-size: 12px;
+            color: var(--kv-muted);
+            margin-top: 11px;
+        }
+
+        /* =====================================================
+           ORDER CARD
+        ===================================================== */
+
+        .orders-list {
+            margin: 0 28px;
+            display: grid;
+            gap: 18px;
+        }
+
+        .order-card {
+            background: white;
+            border: 1px solid var(--kv-border);
+            border-radius: var(--kv-radius);
+            overflow: hidden;
+            box-shadow: 0 7px 24px rgba(0,0,0,.04);
+            transition: .2s ease;
+        }
+
+        .order-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--kv-shadow);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 19px 21px;
+            border-bottom: 1px solid var(--kv-border);
+            background: #fcfdfc;
+        }
+
+        .order-label {
+            display: block;
+            color: var(--kv-muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .6px;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+
+        .order-header h2 {
+            margin: 0;
+            font-size: 21px;
+            color: var(--kv-green);
+        }
+
+        .order-date {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--kv-muted);
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           ORDER BODY GRID
+        ===================================================== */
+
+        .order-body {
+            display: grid;
+            grid-template-columns: 1.2fr 1.2fr .8fr;
+            gap: 0;
+        }
+
+        .order-section {
+            padding: 20px;
+            border-right: 1px solid var(--kv-border);
+        }
+
+        .order-section:last-child {
+            border-right: 0;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--kv-dark);
+            font-weight: 800;
+            font-size: 13px;
+            margin-bottom: 13px;
+        }
+
+        .section-heading i {
+            color: var(--kv-green);
+        }
+
+        .customer-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .customer-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 13px;
+            background: #e8f1ff;
+            color: var(--kv-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .customer-box strong {
+            display: block;
+            color: var(--kv-dark);
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .customer-box small {
+            display: block;
+            color: var(--kv-muted);
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        .delivery-text {
+            color: #4b5563;
+            line-height: 1.55;
+            font-size: 13px;
+        }
+
+        .delivery-text p {
+            margin: 0 0 6px;
+        }
+
+        .payment-box {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: #374151;
+            font-size: 13px;
+        }
+
+        .payment-box i {
+            color: var(--kv-green);
+        }
+
+        .total-box {
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px dashed var(--kv-border);
+        }
+
+        .total-box span {
+            color: var(--kv-muted);
+            font-size: 11px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .total-box strong {
+            color: var(--kv-green);
+            font-size: 21px;
+        }
+
+        /* =====================================================
+           STATUS AREA
+        ===================================================== */
+
+        .status-area {
+            padding: 20px;
+            border-top: 1px solid var(--kv-border);
+            background: #fcfdfc;
+        }
+
+        .status-area-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .status-current {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-current-label {
+            color: var(--kv-muted);
+            font-size: 11px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 11px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .status-badge.pending {
+            background: #fff4df;
+            color: #b76a00;
+        }
+
+        .status-badge.confirmed {
+            background: #e8f1ff;
+            color: #1565c0;
+        }
+
+        .status-badge.shipped {
+            background: #f0e8ff;
+            color: #6a1b9a;
+        }
+
+        .status-badge.delivered {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-badge.cancelled {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        /* =====================================================
+           TRACKING
+        ===================================================== */
+
+        .tracking {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            position: relative;
+            gap: 10px;
+        }
+
+        .tracking::before {
+            content: "";
+            position: absolute;
+            left: 10%;
+            right: 10%;
+            top: 16px;
+            height: 2px;
+            background: #dfe5e1;
+            z-index: 0;
+        }
+
+        .tracking-step {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tracking-dot {
+            width: 34px;
+            height: 34px;
+            margin: 0 auto 8px;
+            border-radius: 50%;
+            background: #eef1ef;
+            color: #8a948c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid #fff;
+            box-shadow: 0 0 0 1px #dfe5e1;
+        }
+
+        .tracking-step.done .tracking-dot,
+        .tracking-step.current .tracking-dot {
+            background: var(--kv-green);
+            color: white;
+            box-shadow: 0 0 0 1px var(--kv-green);
+        }
+
+        .tracking-step.current .tracking-dot {
+            box-shadow:
+                0 0 0 1px var(--kv-green),
+                0 0 0 5px rgba(46,125,50,.10);
+        }
+
+        .tracking-step strong {
+            display: block;
+            font-size: 11px;
+            color: #374151;
+        }
+
+        .tracking-step small {
+            display: block;
+            color: var(--kv-muted);
+            font-size: 10px;
+            margin-top: 3px;
+        }
+
+        .cancelled-message {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            background: #fff4f4;
+            color: #b71c1c;
+            border: 1px solid #ffd7d7;
+            border-radius: 11px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           STATUS FORM
+        ===================================================== */
+
+        .status-form {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .status-form label {
+            color: var(--kv-muted);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .status-form select {
+            min-width: 155px;
+            border: 1px solid var(--kv-border);
+            border-radius: 10px;
+            padding: 9px 11px;
+            background: white;
+            color: #374151;
+            outline: none;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .status-form select:focus {
+            border-color: var(--kv-green);
+            box-shadow: 0 0 0 3px rgba(46,125,50,.08);
+        }
+
+        /* =====================================================
+           EMPTY
+        ===================================================== */
+
+        .empty-state {
+            margin: 0 28px;
+            background: white;
+            border: 1px solid var(--kv-border);
+            border-radius: var(--kv-radius);
+            padding: 60px 25px;
+            text-align: center;
+            box-shadow: var(--kv-shadow);
+        }
+
+        .empty-icon {
+            width: 78px;
+            height: 78px;
+            margin: 0 auto 18px;
+            border-radius: 22px;
+            background: var(--kv-light-green);
+            color: var(--kv-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 31px;
+        }
+
+        .empty-state h2 {
+            margin: 0 0 8px;
+            color: var(--kv-dark);
+        }
+
+        .empty-state p {
+            margin: 0 auto 22px;
+            max-width: 500px;
+            color: var(--kv-muted);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .add-product-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 18px;
+            border-radius: 11px;
+            text-decoration: none;
+            background: var(--kv-green);
+            color: white;
+            font-weight: 800;
+        }
+
+        /* =====================================================
+           NO SEARCH RESULT
+        ===================================================== */
+
+        .no-search-result {
+            display: none;
+            margin: 18px 28px;
+            padding: 35px;
+            background: white;
+            border-radius: var(--kv-radius);
+            text-align: center;
+            border: 1px solid var(--kv-border);
+        }
+
+        .no-search-result i {
+            color: var(--kv-muted);
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .no-search-result h3 {
+            margin: 0 0 5px;
+        }
+
+        .no-search-result p {
+            color: var(--kv-muted);
+            margin: 0;
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           RTL
+        ===================================================== */
+
+        html[dir="rtl"] .kv-search i {
+            left: auto;
+            right: 13px;
+        }
+
+        html[dir="rtl"] .kv-search input {
+            padding-left: 13px;
+            padding-right: 38px;
+        }
+
+        html[dir="rtl"] .order-section {
+            border-right: 0;
+            border-left: 1px solid var(--kv-border);
+        }
+
+        html[dir="rtl"] .order-section:last-child {
+            border-left: 0;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1100px) {
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .order-body {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .order-section:last-child {
+                grid-column: 1 / -1;
+                border-top: 1px solid var(--kv-border);
+                border-right: 0;
+            }
+
+            html[dir="rtl"] .order-section:last-child {
+                border-left: 0;
+            }
+
+            .kv-insight-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+
+            .kv-page-topbar {
+                padding: 18px;
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .kv-order-intro,
+            .summary-grid,
+            .filter-box,
+            .kv-intelligence,
+            .orders-list,
+            .empty-state,
+            .no-search-result {
+                margin-left: 15px;
+                margin-right: 15px;
+            }
+
+            .kv-order-intro {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .kv-order-intro-icon {
+                display: none;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .summary-card {
+                padding: 14px;
+            }
+
+            .summary-card strong {
+                font-size: 19px;
+            }
+
+            .filter-top {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .kv-search {
+                width: 100%;
+            }
+
+            .kv-insight-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .order-body {
+                grid-template-columns: 1fr;
+            }
+
+            .order-section {
+                border-right: 0;
+                border-bottom: 1px solid var(--kv-border);
+            }
+
+            .order-section:last-child {
+                grid-column: auto;
+                border-bottom: 0;
+            }
+
+            html[dir="rtl"] .order-section {
+                border-left: 0;
+            }
+
+            .status-area-top {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .status-form {
+                width: 100%;
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .status-form select {
+                width: 100%;
+            }
+
+            .tracking-step strong {
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .kv-title-area h1 {
+                font-size: 21px;
+            }
+
+            .kv-title-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+
+            .order-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .tracking {
+                gap: 2px;
+            }
+
+            .tracking::before {
+                left: 7%;
+                right: 7%;
+            }
+
+            .tracking-dot {
+                width: 29px;
+                height: 29px;
+                font-size: 10px;
+            }
+
+            .tracking-step small {
+                display: none;
+            }
+        }
+
+    </style>
+{% endblock %}
+
+{% block page_title %}Customer Orders{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+
+
+
+<main class="main-content">
+
+
+    <!-- =====================================================
+         TOP BAR
+    ====================================================== -->
+
+    
+
+
+    <!-- =====================================================
+         FLASH MESSAGES
+    ====================================================== -->
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            <div class="flash-container">
+
+                {% for category, message in messages %}
+
+                    <div class="flash {{ category|default('info') }}">
+
+                        {% if category == 'success' %}
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+                        {% elif category == 'danger' or category == 'error' %}
+
+                            <i class="fa-solid fa-circle-exclamation"></i>
+
+                        {% elif category == 'warning' %}
+
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        {% else %}
+
+                            <i class="fa-solid fa-circle-info"></i>
+
+                        {% endif %}
+
+                        <span>
+                            {{ message }}
+                        </span>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    <!-- =====================================================
+         INTRO
+    ====================================================== -->
+
+    <section class="kv-order-intro">
+
+        <div class="kv-order-intro-content">
+
+            <span class="kv-order-intro-label">
+
+                <i class="fa-solid fa-brain"></i>
+
+                KISANVISION360+ ORDER INTELLIGENCE
+
+            </span>
+
+            <h2>
+                Manage Your Farm Sales Smarter
+            </h2>
+
+            <p>
+                Track customer orders, update delivery status,
+                monitor sales and keep your marketplace activity
+                organized from one place.
+            </p>
+
+        </div>
+
+
+        <div class="kv-order-intro-icon">
+
+            <i class="fa-solid fa-truck-fast"></i>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SUMMARY
+    ====================================================== -->
+
+    {% set total_orders = orders|length if orders else 0 %}
+
+    {% set pending_orders = namespace(value=0) %}
+    {% set completed_orders = namespace(value=0) %}
+    {% set cancelled_orders = namespace(value=0) %}
+    {% set total_sales = namespace(value=0) %}
+
+    {% if orders %}
+
+        {% for summary_order in orders %}
+
+            {% set summary_status =
+                (summary_order.status or 'Pending')|lower|trim
+            %}
+
+            {% if summary_status == 'pending' %}
+
+                {% set pending_orders.value =
+                    pending_orders.value + 1
+                %}
+
+            {% endif %}
+
+
+            {% if summary_status == 'delivered' %}
+
+                {% set completed_orders.value =
+                    completed_orders.value + 1
+                %}
+
+            {% endif %}
+
+
+            {% if summary_status == 'cancelled' %}
+
+                {% set cancelled_orders.value =
+                    cancelled_orders.value + 1
+                %}
+
+            {% endif %}
+
+
+            {% set total_sales.value =
+                total_sales.value + (summary_order.total_amount|default(0)|float)
+            %}
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    <section class="summary-grid">
+
+
+        <!-- TOTAL -->
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+
+                <i class="fa-solid fa-box"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    Total Orders
+                </span>
+
+                <strong>
+                    {{ total_orders }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- PENDING -->
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+
+                <i class="fa-solid fa-clock"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    Pending
+                </span>
+
+                <strong>
+                    {{ pending_orders.value }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- COMPLETED -->
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    Completed
+                </span>
+
+                <strong>
+                    {{ completed_orders.value }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- SALES -->
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    Total Sales
+                </span>
+
+                <strong>
+                    â‚¹{{ "%.2f"|format(total_sales.value) }}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         ORDER INTELLIGENCE
+    ====================================================== -->
+
+    <section class="kv-intelligence">
+
+        <div class="kv-intelligence-header">
+
+            <div>
+
+                <h2>
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    Smart Order Insights
+                </h2>
+
+                <p>
+                    Quick overview of your current marketplace activity.
+                </p>
+
+            </div>
+
+            <span class="kv-ai-badge">
+
+                <i class="fa-solid fa-microchip"></i>
+
+                KisanVision360+
+
+            </span>
+
+        </div>
+
+
+        <div class="kv-insight-grid">
+
+
+            <div class="kv-insight">
+
+                <i class="fa-solid fa-hourglass-half"></i>
+
+                <strong>
+                    Pending Action
+                </strong>
+
+                <span>
+                    {% if pending_orders.value > 0 %}
+
+                        You have {{ pending_orders.value }}
+                        pending order{% if pending_orders.value != 1 %}s{% endif %}.
+                        Review and confirm them quickly.
+
+                    {% else %}
+
+                        No pending orders currently require action.
+
+                    {% endif %}
+                </span>
+
+            </div>
+
+
+            <div class="kv-insight">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                <strong>
+                    Sales Overview
+                </strong>
+
+                <span>
+
+                    {% if total_orders > 0 %}
+
+                        Your marketplace has generated
+                        â‚¹{{ "%.2f"|format(total_sales.value) }}
+                        across {{ total_orders }} order{% if total_orders != 1 %}s{% endif %}.
+
+                    {% else %}
+
+                        Start listing products to begin tracking sales.
+
+                    {% endif %}
+
+                </span>
+
+            </div>
+
+
+            <div class="kv-insight">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                <strong>
+                    Delivery Progress
+                </strong>
+
+                <span>
+
+                    {% if completed_orders.value > 0 %}
+
+                        {{ completed_orders.value }}
+                        order{% if completed_orders.value != 1 %}s{% endif %}
+                        successfully delivered.
+
+                    {% else %}
+
+                        Delivered-order history will appear here.
+
+                    {% endif %}
+
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         FILTER
+    ====================================================== -->
+
+    <section class="filter-box">
+
+
+        <div class="filter-top">
+
+            <div class="filter-title">
+
+                <i class="fa-solid fa-filter"></i>
+
+                Filter & Search Orders
+
+            </div>
+
+
+            <div class="kv-search">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="search"
+                    id="orderSearch"
+                    placeholder="Search order ID, customer or city..."
+                    autocomplete="off">
+
+            </div>
+
+        </div>
+
+
+        <div class="filter-buttons">
+
+
+            <button
+                type="button"
+                class="filter-btn active"
+                data-filter="all"
+                onclick="filterOrders('all', this)">
+
+                All
+                <span class="button-count">
+                    ({{ total_orders }})
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="filter-btn"
+                data-filter="Pending"
+                onclick="filterOrders('Pending', this)">
+
+                Pending
+                <span class="button-count">
+                    ({{ pending_orders.value }})
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="filter-btn"
+                data-filter="Confirmed"
+                onclick="filterOrders('Confirmed', this)">
+
+                Confirmed
+
+            </button>
+
+
+            <button
+                type="button"
+                class="filter-btn"
+                data-filter="Shipped"
+                onclick="filterOrders('Shipped', this)">
+
+                Shipped
+
+            </button>
+
+
+            <button
+                type="button"
+                class="filter-btn"
+                data-filter="Delivered"
+                onclick="filterOrders('Delivered', this)">
+
+                Delivered
+                <span class="button-count">
+                    ({{ completed_orders.value }})
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="filter-btn"
+                data-filter="Cancelled"
+                onclick="filterOrders('Cancelled', this)">
+
+                Cancelled
+                <span class="button-count">
+                    ({{ cancelled_orders.value }})
+                </span>
+
+            </button>
+
+
+        </div>
+
+
+        <div class="filter-count">
+
+            Showing
+            <strong id="visibleOrderCount">
+                {{ total_orders }}
+            </strong>
+            of {{ total_orders }} orders
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         ORDERS
+    ====================================================== -->
+
+    {% if orders %}
+
+        <section class="orders-list"
+                 id="ordersList">
+
+
+            {% for order in orders %}
+
+                {% set order_status =
+                    order.status|default('Pending', true)
+                %}
+
+                {% set normalized_status =
+                    order_status|lower|trim
+                %}
+
+
+                <article
+                    class="order-card"
+                    data-status="{{ order_status }}"
+                    data-search="
+                        {{ order.id }}
+                        {{ order.consumer_name|default('Consumer', true) }}
+                        {{ order.city|default('', true) }}
+                        {{ order.delivery_address|default('', true) }}
+                    ">
+
+
+                    <!-- =================================================
+                         ORDER HEADER
+                    ================================================== -->
+
+                    <div class="order-header">
+
+                        <div>
+
+                            <span class="order-label">
+                                Order ID
+                            </span>
+
+                            <h2>
+                                #{{ order.id }}
+                            </h2>
+
+                        </div>
+
+
+                        <div class="order-date">
+
+                            <i class="fa-regular fa-calendar"></i>
+
+                            {{ order.created_at|default('Date unavailable', true) }}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         ORDER BODY
+                    ================================================== -->
+
+                    <div class="order-body">
+
+
+                        <!-- CUSTOMER -->
+
+                        <div class="order-section">
+
+                            <div class="section-heading">
+
+                                <i class="fa-solid fa-user"></i>
+
+                                Customer Information
+
+                            </div>
+
+
+                            <div class="customer-box">
+
+                                <div class="customer-icon">
+
+                                    <i class="fa-solid fa-user"></i>
+
+                                </div>
+
+
+                                <div>
+
+                                    <strong>
+                                        {{ order.consumer_name|default('Consumer', true) }}
+                                    </strong>
+
+
+                                    {% if order.consumer_mobile %}
+
+                                        <small>
+
+                                            <i class="fa-solid fa-phone"></i>
+
+                                            {{ order.consumer_mobile }}
+
+                                        </small>
+
+                                    {% endif %}
+
+
+                                    <small>
+
+                                        <i class="fa-solid fa-handshake"></i>
+
+                                        Marketplace Customer
+
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- DELIVERY -->
+
+                        <div class="order-section">
+
+                            <div class="section-heading">
+
+                                <i class="fa-solid fa-location-dot"></i>
+
+                                Delivery Details
+
+                            </div>
+
+
+                            <div class="delivery-text">
+
+                                <p>
+                                    {{ order.delivery_address|default('Address not available', true) }}
+                                </p>
+
+
+                                {% if order.city %}
+
+                                    <p>
+
+                                        <strong>
+                                            City:
+                                        </strong>
+
+                                        {{ order.city }}
+
+                                    </p>
+
+                                {% endif %}
+
+
+                                {% if order.pincode %}
+
+                                    <p>
+
+                                        <strong>
+                                            PIN:
+                                        </strong>
+
+                                        {{ order.pincode }}
+
+                                    </p>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- PAYMENT -->
+
+                        <div class="order-section">
+
+                            <div class="section-heading">
+
+                                <i class="fa-solid fa-wallet"></i>
+
+                                Payment
+
+                            </div>
+
+
+                            <div class="payment-box">
+
+                                <i class="fa-solid fa-credit-card"></i>
+
+                                <strong>
+                                    {{ order.payment_method|default('Cash on Delivery', true) }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="total-box">
+
+                                <span>
+                                    Order Total
+                                </span>
+
+                                <strong>
+
+                                    â‚¹{{ "%.2f"|format(
+                                        order.total_amount|default(0, true)|float
+                                    ) }}
+
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- =================================================
+                         STATUS AREA
+                    ================================================== -->
+
+                    <div class="status-area">
+
+
+                        <div class="status-area-top">
+
+
+                            <div class="status-current">
+
+                                <div>
+
+                                    <span class="status-current-label">
+                                        Current Status
+                                    </span>
+
+
+                                    <span class="status-badge
+                                        {% if normalized_status == 'pending' %}
+                                            pending
+                                        {% elif normalized_status == 'confirmed' %}
+                                            confirmed
+                                        {% elif normalized_status == 'shipped' %}
+                                            shipped
+                                        {% elif normalized_status == 'delivered' %}
+                                            delivered
+                                        {% elif normalized_status == 'cancelled' %}
+                                            cancelled
+                                        {% endif %}
+                                    ">
+
+
+                                        {% if normalized_status == 'pending' %}
+
+                                            <i class="fa-solid fa-clock"></i>
+
+                                        {% elif normalized_status == 'confirmed' %}
+
+                                            <i class="fa-solid fa-circle-check"></i>
+
+                                        {% elif normalized_status == 'shipped' %}
+
+                                            <i class="fa-solid fa-truck"></i>
+
+                                        {% elif normalized_status == 'delivered' %}
+
+                                            <i class="fa-solid fa-check-double"></i>
+
+                                        {% elif normalized_status == 'cancelled' %}
+
+                                            <i class="fa-solid fa-xmark"></i>
+
+                                        {% else %}
+
+                                            <i class="fa-solid fa-circle-info"></i>
+
+                                        {% endif %}
+
+
+                                        {{ order_status }}
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- UPDATE STATUS -->
+
+                            {% if normalized_status != 'cancelled'
+                                  and normalized_status != 'delivered' %}
+
+
+                                <form
+                                    action="{{ url_for(
+                                        'marketplace.update_order_status',
+                                        order_id=order.id
+                                    ) }}"
+                                    method="POST"
+                                    class="status-form"
+                                    onsubmit="return confirmStatusUpdate(this);">
+
+
+                                    <label>
+                                        Update Status
+                                    </label>
+
+
+                                    <select
+                                        name="status"
+                                        onchange="this.form.dataset.changed='true';">
+
+
+                                        <option value="">
+                                            Select Status
+                                        </option>
+
+
+                                        <option
+                                            value="Confirmed"
+                                            {% if normalized_status == 'confirmed' %}
+                                                selected
+                                            {% endif %}
+                                        >
+
+                                            Confirmed
+
+                                        </option>
+
+
+                                        <option
+                                            value="Shipped"
+                                            {% if normalized_status == 'shipped' %}
+                                                selected
+                                            {% endif %}
+                                        >
+
+                                            Shipped
+
+                                        </option>
+
+
+                                        <option
+                                            value="Delivered"
+                                            {% if normalized_status == 'delivered' %}
+                                                selected
+                                            {% endif %}
+                                        >
+
+                                            Delivered
+
+                                        </option>
+
+
+                                        <option
+                                            value="Cancelled"
+                                            {% if normalized_status == 'cancelled' %}
+                                                selected
+                                            {% endif %}
+                                        >
+
+                                            Cancelled
+
+                                        </option>
+
+
+                                    </select>
+
+                                </form>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- =================================================
+                             TRACKING
+                        ================================================== -->
+
+                        {% if normalized_status == 'cancelled' %}
+
+
+                            <div class="cancelled-message">
+
+                                <i class="fa-solid fa-circle-xmark"></i>
+
+                                This order has been cancelled and is no longer
+                                moving through the delivery workflow.
+
+                            </div>
+
+
+                        {% else %}
+
+
+                            <div class="tracking">
+
+
+                                <!-- PLACED -->
+
+                                <div class="tracking-step
+                                    {% if normalized_status in [
+                                        'pending',
+                                        'confirmed',
+                                        'shipped',
+                                        'delivered'
+                                    ] %}
+                                        done
+                                    {% endif %}
+                                ">
+
+                                    <div class="tracking-dot">
+
+                                        <i class="fa-solid fa-receipt"></i>
+
+                                    </div>
+
+                                    <strong>
+                                        Placed
+                                    </strong>
+
+                                    <small>
+                                        Order received
+                                    </small>
+
+                                </div>
+
+
+                                <!-- CONFIRMED -->
+
+                                <div class="tracking-step
+                                    {% if normalized_status in [
+                                        'confirmed',
+                                        'shipped',
+                                        'delivered'
+                                    ] %}
+                                        done
+                                    {% elif normalized_status == 'pending' %}
+                                        current
+                                    {% endif %}
+                                ">
+
+                                    <div class="tracking-dot">
+
+                                        <i class="fa-solid fa-circle-check"></i>
+
+                                    </div>
+
+                                    <strong>
+                                        Confirmed
+                                    </strong>
+
+                                    <small>
+                                        Farmer accepted
+                                    </small>
+
+                                </div>
+
+
+                                <!-- SHIPPED -->
+
+                                <div class="tracking-step
+                                    {% if normalized_status in [
+                                        'shipped',
+                                        'delivered'
+                                    ] %}
+                                        done
+                                    {% elif normalized_status == 'confirmed' %}
+                                        current
+                                    {% endif %}
+                                ">
+
+                                    <div class="tracking-dot">
+
+                                        <i class="fa-solid fa-truck"></i>
+
+                                    </div>
+
+                                    <strong>
+                                        Shipped
+                                    </strong>
+
+                                    <small>
+                                        On the way
+                                    </small>
+
+                                </div>
+
+
+                                <!-- DELIVERED -->
+
+                                <div class="tracking-step
+                                    {% if normalized_status == 'delivered' %}
+                                        done
+                                        current
+                                    {% elif normalized_status == 'shipped' %}
+                                        current
+                                    {% endif %}
+                                ">
+
+                                    <div class="tracking-dot">
+
+                                        <i class="fa-solid fa-check-double"></i>
+
+                                    </div>
+
+                                    <strong>
+                                        Delivered
+                                    </strong>
+
+                                    <small>
+                                        Order completed
+                                    </small>
+
+                                </div>
+
+
+                            </div>
+
+                        {% endif %}
+
+
+                    </div>
+
+
+                </article>
+
+            {% endfor %}
+
+
+        </section>
+
+
+        <!-- NO SEARCH RESULT -->
+
+        <section
+            class="no-search-result"
+            id="noSearchResult">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <h3>
+                No matching orders
+            </h3>
+
+            <p>
+                Try searching with another order ID, customer name or city.
+            </p>
+
+        </section>
+
+
+    {% else %}
+
+
+        <!-- =================================================
+             EMPTY STATE
+        ================================================== -->
+
+        <section class="empty-state">
+
+            <div class="empty-icon">
+
+                <i class="fa-solid fa-box-open"></i>
+
+            </div>
+
+
+            <h2>
+                No Orders Yet
+            </h2>
+
+
+            <p>
+                When consumers purchase your products,
+                their orders will appear here. Add products
+                to your marketplace to start receiving orders.
+            </p>
+
+
+            <a
+                href="{{ url_for('marketplace.farmer_marketplace') }}"
+                class="add-product-btn">
+
+                <i class="fa-solid fa-store"></i>
+
+                Go to Marketplace
+
+            </a>
+
+        </section>
+
+    {% endif %}
+
+
+</main>
+
+
+<!-- =========================================================
+     CHATBOT
+========================================================= -->
+
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for(
+    'static',
+    filename='js/chatbot.js'
+) }}"></script>
+<script>
+
+    /* =========================================================
+       CURRENT FILTER
+    ========================================================= */
+
+    let currentFilter = "all";
+
+
+    /* =========================================================
+       FILTER ORDERS
+    ========================================================= */
+
+    function filterOrders(status, button) {
+
+        currentFilter = status;
+
+        const cards =
+            document.querySelectorAll(".order-card");
+
+        const buttons =
+            document.querySelectorAll(".filter-btn");
+
+        buttons.forEach(function(btn) {
+
+            btn.classList.remove("active");
+
+        });
+
+
+        if (button) {
+
+            button.classList.add("active");
+
+        }
+
+
+        applyOrderFilters();
+
+    }
+
+
+    /* =========================================================
+       SEARCH + FILTER
+    ========================================================= */
+
+    function applyOrderFilters() {
+
+        const cards =
+            document.querySelectorAll(".order-card");
+
+        const searchInput =
+            document.getElementById("orderSearch");
+
+        const searchTerm =
+            searchInput
+                ? searchInput.value.toLowerCase().trim()
+                : "";
+
+
+        let visibleCount = 0;
+
+
+        cards.forEach(function(card) {
+
+
+            const cardStatus =
+                (card.dataset.status || "").toLowerCase().trim();
+
+
+            const cardSearch =
+                (card.dataset.search || "").toLowerCase();
+
+
+            const statusMatches =
+                currentFilter === "all" ||
+                cardStatus === currentFilter.toLowerCase();
+
+
+            const searchMatches =
+                !searchTerm ||
+                cardSearch.includes(searchTerm);
+
+
+            if (statusMatches && searchMatches) {
+
+                card.style.display = "";
+
+                visibleCount++;
+
+            } else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+
+        const visibleCounter =
+            document.getElementById("visibleOrderCount");
+
+
+        if (visibleCounter) {
+
+            visibleCounter.textContent =
+                visibleCount;
+
+        }
+
+
+        const noResult =
+            document.getElementById("noSearchResult");
+
+
+        if (noResult) {
+
+            noResult.style.display =
+                visibleCount === 0 ? "block" : "none";
+
+        }
+
+    }
+
+
+    /* =========================================================
+       SEARCH EVENT
+    ========================================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            const searchInput =
+                document.getElementById("orderSearch");
+
+
+            if (searchInput) {
+
+                searchInput.addEventListener(
+                    "input",
+                    function() {
+
+                        applyOrderFilters();
+
+                    }
+                );
+
+            }
+
+
+            applyOrderFilters();
+
+        }
+    );
+
+
+    /* =========================================================
+       STATUS UPDATE CONFIRMATION
+    ========================================================= */
+
+    function confirmStatusUpdate(form) {
+
+        const select =
+            form.querySelector("select[name='status']");
+
+
+        if (!select || !select.value) {
+
+            alert(
+                "Please select a new order status."
+            );
+
+            return false;
+
+        }
+
+
+        const selectedStatus =
+            select.value;
+
+
+        if (selectedStatus === "Cancelled") {
+
+            return confirm(
+                "Are you sure you want to cancel this order?"
+            );
+
+        }
+
+
+        return confirm(
+            "Update this order status to " +
+            selectedStatus +
+            "?"
+        );
+
+    }
+
+
+    /* =========================================================
+       FLASH MESSAGE AUTO HIDE
+    ========================================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            const flashes =
+                document.querySelectorAll(".flash");
+
+
+            flashes.forEach(function(flash) {
+
+                setTimeout(function() {
+
+                    if (flash && flash.parentElement) {
+
+                        flash.style.opacity = "0";
+
+                        flash.style.transform =
+                            "translateY(-5px)";
+
+                        flash.style.transition =
+                            "all .3s ease";
+
+
+                        setTimeout(function() {
+
+                            if (flash.parentElement) {
+
+                                flash.remove();
+
+                            }
+
+                        }, 300);
+
+                    }
+
+                }, 5000);
+
+            });
+
+        }
+    );
+
+</script>
+{% endblock %}
+

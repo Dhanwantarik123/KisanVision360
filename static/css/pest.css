@@ -1,99 +1,2015 @@
-body{
+/* =========================================================
+   KISANVISION360+
+   AI PEST & CROP HEALTH CENTER
+   File: static/css/pest.css
 
-background:#f1f8e9;
+   Supports:
+   - Pest monitoring
+   - Crop health
+   - Weather-linked pest risk
+   - Disease integration
+   - Prevention & treatment
+   - Pest search/filter
+   - Risk indicators
+   - Smart farming recommendations
+   - Dark mode
+   - RTL
+   - Responsive / APK Ready
+========================================================= */
 
-font-family:'Segoe UI';
 
+/* =========================================================
+   ROOT
+========================================================= */
+
+:root {
+
+    --pest-green-dark: #1B5E20;
+    --pest-green: #2E7D32;
+    --pest-green-light: #43A047;
+    --pest-green-soft: #E8F5E9;
+
+    --pest-orange: #FB8C00;
+    --pest-orange-soft: #FFF3E0;
+
+    --pest-red: #D32F2F;
+    --pest-red-soft: #FFEBEE;
+
+    --pest-yellow: #F9A825;
+    --pest-yellow-soft: #FFF8E1;
+
+    --pest-blue: #1976D2;
+    --pest-blue-soft: #E3F2FD;
+
+    --pest-purple: #7B1FA2;
+    --pest-purple-soft: #F3E5F5;
+
+    --pest-cyan: #00838F;
+    --pest-cyan-soft: #E0F7FA;
+
+    --pest-text: #17351D;
+    --pest-muted: #68776D;
+    --pest-border: #DCE7DE;
+
+    --pest-bg: #F5F8F5;
+    --pest-white: #FFFFFF;
+
+    --pest-shadow:
+        0 12px 30px rgba(27,94,32,.08);
+
+    --pest-transition: .25s ease;
 }
 
 
+/* =========================================================
+   RESET
+========================================================= */
 
-.container{
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-width:600px;
+html {
+    scroll-behavior: smooth;
+}
 
-margin:50px auto;
+body {
 
-background:white;
+    font-family:
+        "Segoe UI",
+        "Noto Sans",
+        Arial,
+        sans-serif;
 
-padding:35px;
+    color:
+        var(--pest-text);
 
-border-radius:25px;
+    background:
+        var(--pest-bg);
 
-text-align:center;
-
-box-shadow:0 10px 30px rgba(0,0,0,.15);
-
+    overflow-x: hidden;
 }
 
 
+/* =========================================================
+   PAGE
+========================================================= */
 
-h1{
+.pest-page {
 
-color:#14532d;
+    width: 100%;
 
+    min-height: 100vh;
+
+    padding: 24px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #F8FBF8 0%,
+            #F2F7F2 100%
+        );
+}
+
+.pest-container {
+
+    width: 100%;
+
+    max-width: 1400px;
+
+    margin: 0 auto;
 }
 
 
+/* =========================================================
+   HERO
+========================================================= */
 
-input{
+.pest-hero {
 
-padding:15px;
+    position: relative;
 
-margin:20px;
+    display: flex;
 
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 24px;
+
+    min-height: 195px;
+
+    margin-bottom: 18px;
+
+    padding: 31px;
+
+    overflow: hidden;
+
+    border-radius: 24px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1B5E20,
+            #2E7D32
+        );
+
+    color:
+        #FFFFFF;
+
+    box-shadow:
+        0 18px 45px
+        rgba(27,94,32,.20);
+}
+
+.pest-hero::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 390px;
+    height: 390px;
+
+    right: -180px;
+    top: -220px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.07);
+}
+
+.pest-hero::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 250px;
+    height: 250px;
+
+    left: -130px;
+    bottom: -180px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.05);
+}
+
+.pest-hero-content {
+
+    position: relative;
+
+    z-index: 2;
+
+    max-width: 760px;
+}
+
+.pest-eyebrow {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-bottom: 10px;
+
+    padding: 7px 12px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.18);
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,.11);
+
+    font-size: 7px;
+
+    font-weight: 900;
+
+    text-transform: uppercase;
+
+    letter-spacing: .5px;
+}
+
+.pest-hero h1 {
+
+    margin-bottom: 9px;
+
+    font-size:
+        clamp(27px,4vw,42px);
+
+    line-height: 1.08;
+
+    font-weight: 950;
+
+    letter-spacing: -.6px;
+}
+
+.pest-hero p {
+
+    max-width: 650px;
+
+    color:
+        rgba(255,255,255,.82);
+
+    font-size: 9px;
+
+    line-height: 1.8;
 }
 
 
+/* =========================================================
+   HERO ACTIONS
+========================================================= */
 
-button{
+.pest-hero-actions {
 
-background:#198754;
+    position: relative;
 
-color:white;
+    z-index: 3;
 
-border:none;
+    display: flex;
 
-padding:14px 35px;
+    flex-wrap: wrap;
 
-border-radius:25px;
+    justify-content: flex-end;
 
-cursor:pointer;
+    gap: 8px;
+}
 
-font-size:18px;
+.pest-hero-btn {
 
+    min-height: 40px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 9px 13px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.18);
+
+    border-radius: 10px;
+
+    background:
+        rgba(255,255,255,.11);
+
+    color:
+        #FFFFFF;
+
+    font-family: inherit;
+
+    font-size: 6.5px;
+
+    font-weight: 900;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        var(--pest-transition);
+}
+
+.pest-hero-btn:hover {
+
+    transform:
+        translateY(-2px);
+
+    background:
+        rgba(255,255,255,.19);
+}
+
+.pest-hero-btn.primary {
+
+    background:
+        #FFFFFF;
+
+    color:
+        var(--pest-green-dark);
+
+    border-color:
+        #FFFFFF;
 }
 
 
+/* =========================================================
+   STATUS BAR
+========================================================= */
 
-button:hover{
+.pest-status {
 
-background:#075e32;
+    display: flex;
 
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 18px;
+
+    padding: 10px 13px;
+
+    border:
+        1px solid
+        var(--pest-border);
+
+    border-radius: 11px;
+
+    background:
+        var(--pest-white);
+
+    box-shadow:
+        0 5px 16px
+        rgba(27,94,32,.04);
+}
+
+.pest-status-left {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+.pest-status-dot {
+
+    width: 8px;
+    height: 8px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background:
+        var(--pest-green-light);
+
+    box-shadow:
+        0 0 0 4px
+        rgba(67,160,71,.10);
+}
+
+.pest-status strong {
+
+    font-size: 7px;
+}
+
+.pest-status span {
+
+    color:
+        var(--pest-muted);
+
+    font-size: 6px;
 }
 
 
+/* =========================================================
+   KPI GRID
+========================================================= */
 
-img{
+.pest-kpis {
 
-width:300px;
+    display: grid;
 
-margin-top:25px;
+    grid-template-columns:
+        repeat(5,minmax(0,1fr));
 
-border-radius:15px;
+    gap: 11px;
 
+    margin-bottom: 18px;
+}
+
+.pest-kpi {
+
+    padding: 15px;
+
+    border:
+        1px solid
+        var(--pest-border);
+
+    border-radius: 15px;
+
+    background:
+        var(--pest-white);
+
+    box-shadow:
+        var(--pest-shadow);
+
+    transition:
+        var(--pest-transition);
+}
+
+.pest-kpi:hover {
+
+    transform:
+        translateY(-3px);
+}
+
+.pest-kpi-icon {
+
+    width: 35px;
+    height: 35px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 8px;
+
+    border-radius: 10px;
+
+    background:
+        var(--pest-green-soft);
+
+    color:
+        var(--pest-green);
+
+    font-size: 10px;
+}
+
+.pest-kpi.warning
+.pest-kpi-icon {
+
+    background:
+        var(--pest-orange-soft);
+
+    color:
+        var(--pest-orange);
+}
+
+.pest-kpi.high
+.pest-kpi-icon {
+
+    background:
+        var(--pest-red-soft);
+
+    color:
+        var(--pest-red);
+}
+
+.pest-kpi.weather
+.pest-kpi-icon {
+
+    background:
+        var(--pest-blue-soft);
+
+    color:
+        var(--pest-blue);
+}
+
+.pest-kpi.ai
+.pest-kpi-icon {
+
+    background:
+        var(--pest-purple-soft);
+
+    color:
+        var(--pest-purple);
+}
+
+.pest-kpi-value {
+
+    display: block;
+
+    margin-bottom: 2px;
+
+    font-size: 19px;
+
+    font-weight: 950;
+}
+
+.pest-kpi-label {
+
+    display: block;
+
+    color:
+        var(--pest-muted);
+
+    font-size: 5.8px;
+
+    font-weight: 700;
 }
 
 
+/* =========================================================
+   SMART INTELLIGENCE
+========================================================= */
 
-.result{
+.pest-intelligence {
 
-margin-top:25px;
+    display: flex;
 
-padding:20px;
+    align-items: flex-start;
 
-background:#e8f5e9;
+    gap: 11px;
 
-border-radius:15px;
+    margin-bottom: 18px;
 
+    padding: 15px 17px;
+
+    border:
+        1px solid
+        #C8E6C9;
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #F1FAF2,
+            #E8F5E9
+        );
+}
+
+.pest-intelligence-icon {
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 11px;
+
+    background:
+        var(--pest-green);
+
+    color:
+        #FFFFFF;
+
+    font-size: 11px;
+}
+
+.pest-intelligence h3 {
+
+    margin-bottom: 4px;
+
+    color:
+        var(--pest-green-dark);
+
+    font-size: 9px;
+
+    font-weight: 950;
+}
+
+.pest-intelligence p {
+
+    color:
+        #527058;
+
+    font-size: 6.2px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   SEARCH + FILTER
+========================================================= */
+
+.pest-toolbar {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 16px;
+
+    padding: 12px;
+
+    border:
+        1px solid
+        var(--pest-border);
+
+    border-radius: 15px;
+
+    background:
+        var(--pest-white);
+
+    box-shadow:
+        var(--pest-shadow);
+}
+
+.pest-search {
+
+    position: relative;
+
+    flex: 1;
+
+    min-width: 200px;
+}
+
+.pest-search i {
+
+    position: absolute;
+
+    left: 12px;
+    top: 50%;
+
+    transform:
+        translateY(-50%);
+
+    color:
+        var(--pest-green);
+
+    font-size: 9px;
+
+    pointer-events: none;
+}
+
+.pest-search input {
+
+    width: 100%;
+
+    min-height: 42px;
+
+    padding:
+        9px
+        12px
+        9px
+        34px;
+
+    border:
+        1px solid
+        var(--pest-border);
+
+    border-radius: 10px;
+
+    outline: none;
+
+    background:
+        #FAFCFA;
+
+    color:
+        var(--pest-text);
+
+    font-family: inherit;
+
+    font-size: 7px;
+
+    transition:
+        var(--pest-transition);
+}
+
+.pest-search input:focus {
+
+    border-color:
+        var(--pest-green-light);
+
+    background:
+        #FFFFFF;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(67,160,71,.10);
+}
+
+.pest-filters {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 6px;
+}
+
+.pest-filter {
+
+    min-height: 34px;
+
+    padding: 7px 10px;
+
+    border:
+        1px solid
+        var(--pest-border);
+
+    border-radius: 9px;
+
+    background:
+        #FFFFFF;
+
+    color:
+        var(--pest-muted);
+
+    font-family: inherit;
+
+    font-size: 5.8px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        var(--pest-transition);
+}
+
+.pest-filter:hover,
+.pest-filter.active {
+
+    border-color:
+        var(--pest-green);
+
+    background:
+        var(--pest-green-soft);
+
+    color:
+        var(--pest-green-dark);
+}
+
+
+/* =========================================================
+   MAIN GRID
+========================================================= */
+
+.pest-main-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0,1fr)
+        280px;
+
+    gap: 18px;
+
+    align-items: start;
+}
+
+
+/* =========================================================
+   PEST GRID
+========================================================= */
+
+.pest-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+    gap: 11px;
+}
+
+
+/* =========================================================
+   PEST CARD
+========================================================= */
+
+.pest-card {
+
+    position: relative;
+
+    padding: 15px;
+
+    border:
+        1px solid
+        var(--pest-border);
+
+    border-radius: 16px;
+
+    background:
+        var(--pest-white);
+
+    box-shadow:
+        0 7px 22px
+        rgba(27,94,32,.05);
+
+    transition:
+        var(--pest-transition);
+}
+
+.pest-card:hover {
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 14px 30px
+        rgba(27,94,32,.09);
+}
+
+.pest-card-header {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-bottom: 11px;
+}
+
+.pest-card-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    min-width: 0;
+}
+
+.pest-card-icon {
+
+    width: 37px;
+    height: 37px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background:
+        var(--pest-green-soft);
+
+    color:
+        var(--pest-green);
+
+    font-size: 10px;
+}
+
+.pest-card-title h3 {
+
+    font-size: 8.5px;
+
+    font-weight: 950;
+
+    line-height: 1.3;
+}
+
+.pest-card-title span {
+
+    display: block;
+
+    margin-top: 2px;
+
+    color:
+        var(--pest-muted);
+
+    font-size: 5px;
+}
+
+.pest-risk {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 4px;
+
+    flex-shrink: 0;
+
+    padding: 5px 7px;
+
+    border-radius: 999px;
+
+    font-size: 4.8px;
+
+    font-weight: 900;
+
+    text-transform: uppercase;
+}
+
+.pest-risk.low {
+
+    background:
+        var(--pest-green-soft);
+
+    color:
+        var(--pest-green-dark);
+}
+
+.pest-risk.medium {
+
+    background:
+        var(--pest-yellow-soft);
+
+    color:
+        #856404;
+}
+
+.pest-risk.high {
+
+    background:
+        var(--pest-orange-soft);
+
+    color:
+        #8A4B00;
+}
+
+.pest-risk.critical {
+
+    background:
+        var(--pest-red-soft);
+
+    color:
+        var(--pest-red);
+}
+
+
+/* =========================================================
+   PEST DETAILS
+========================================================= */
+
+.pest-description {
+
+    margin-bottom: 10px;
+
+    color:
+        var(--pest-muted);
+
+    font-size: 6px;
+
+    line-height: 1.7;
+}
+
+.pest-meta {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 6px;
+
+    margin-bottom: 10px;
+}
+
+.pest-meta-item {
+
+    padding: 8px;
+
+    border-radius: 9px;
+
+    background:
+        #F8FAF8;
+}
+
+.pest-meta-item span {
+
+    display: block;
+
+    margin-bottom: 3px;
+
+    color:
+        var(--pest-muted);
+
+    font-size: 4.7px;
+}
+
+.pest-meta-item strong {
+
+    display: block;
+
+    color:
+        var(--pest-text);
+
+    font-size: 5.8px;
+}
+
+
+/* =========================================================
+   RISK BAR
+========================================================= */
+
+.pest-risk-bar {
+
+    margin-bottom: 11px;
+}
+
+.pest-risk-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 4px;
+}
+
+.pest-risk-header span {
+
+    color:
+        var(--pest-muted);
+
+    font-size: 5px;
+
+    font-weight: 700;
+}
+
+.pest-risk-header strong {
+
+    font-size: 5.5px;
+}
+
+.pest-risk-track {
+
+    width: 100%;
+
+    height: 6px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background:
+        #E8EDE8;
+}
+
+.pest-risk-progress {
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    background:
+        var(--pest-green-light);
+
+    transition:
+        width .5s ease;
+}
+
+.pest-risk-progress.medium {
+
+    background:
+        var(--pest-yellow);
+}
+
+.pest-risk-progress.high {
+
+    background:
+        var(--pest-orange);
+}
+
+.pest-risk-progress.critical {
+
+    background:
+        var(--pest-red);
+}
+
+
+/* =========================================================
+   PEST ACTIONS
+========================================================= */
+
+.pest-card-actions {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 6px;
+
+    padding-top: 10px;
+
+    border-top:
+        1px solid
+        #EDF1ED;
+}
+
+.pest-btn {
+
+    min-height: 31px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    flex: 1;
+
+    padding: 7px 9px;
+
+    border:
+        1px solid
+        var(--pest-border);
+
+    border-radius: 8px;
+
+    background:
+        #FFFFFF;
+
+    color:
+        var(--pest-muted);
+
+    font-family: inherit;
+
+    font-size: 5.2px;
+
+    font-weight: 900;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        var(--pest-transition);
+}
+
+.pest-btn:hover {
+
+    border-color:
+        var(--pest-green);
+
+    background:
+        var(--pest-green-soft);
+
+    color:
+        var(--pest-green-dark);
+}
+
+.pest-btn.primary {
+
+    border-color:
+        var(--pest-green);
+
+    background:
+        var(--pest-green);
+
+    color:
+        #FFFFFF;
+}
+
+.pest-btn.primary:hover {
+
+    background:
+        var(--pest-green-dark);
+}
+
+
+/* =========================================================
+   SIDE PANEL
+========================================================= */
+
+.pest-side-panel {
+
+    position: sticky;
+
+    top: 18px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+.pest-side-card {
+
+    padding: 16px;
+
+    border:
+        1px solid
+        var(--pest-border);
+
+    border-radius: 16px;
+
+    background:
+        var(--pest-white);
+
+    box-shadow:
+        var(--pest-shadow);
+}
+
+.pest-side-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 12px;
+}
+
+.pest-side-icon {
+
+    width: 35px;
+    height: 35px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background:
+        var(--pest-green-soft);
+
+    color:
+        var(--pest-green);
+
+    font-size: 10px;
+}
+
+.pest-side-header h3 {
+
+    font-size: 9px;
+
+    font-weight: 950;
+}
+
+.pest-side-header p {
+
+    margin-top: 2px;
+
+    color:
+        var(--pest-muted);
+
+    font-size: 5px;
+}
+
+
+/* =========================================================
+   WEATHER CONNECTION
+========================================================= */
+
+.pest-weather-card {
+
+    padding: 12px;
+
+    border:
+        1px solid
+        #BBDEFB;
+
+    border-radius: 11px;
+
+    background:
+        #F3F9FF;
+}
+
+.pest-weather-row {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 8px;
+
+    margin-bottom: 7px;
+}
+
+.pest-weather-row:last-child {
+
+    margin-bottom: 0;
+}
+
+.pest-weather-row span {
+
+    color:
+        #55708A;
+
+    font-size: 5.5px;
+}
+
+.pest-weather-row strong {
+
+    color:
+        #145A9E;
+
+    font-size: 6px;
+}
+
+
+/* =========================================================
+   PREVENTION LIST
+========================================================= */
+
+.pest-prevention-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.pest-prevention-item {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 7px;
+
+    padding: 8px;
+
+    border:
+        1px solid
+        #E5ECE5;
+
+    border-radius: 9px;
+
+    background:
+        #FAFCFA;
+}
+
+.pest-prevention-item i {
+
+    margin-top: 1px;
+
+    color:
+        var(--pest-green);
+
+    font-size: 7px;
+}
+
+.pest-prevention-item span {
+
+    color:
+        var(--pest-muted);
+
+    font-size: 5.3px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   CONNECTED FLOW
+========================================================= */
+
+.pest-flow {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.pest-flow-step {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 8px;
+
+    border:
+        1px solid
+        #E5ECE5;
+
+    border-radius: 9px;
+
+    background:
+        #FAFCFA;
+}
+
+.pest-flow-number {
+
+    width: 23px;
+    height: 23px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 7px;
+
+    background:
+        var(--pest-green-soft);
+
+    color:
+        var(--pest-green-dark);
+
+    font-size: 6px;
+
+    font-weight: 950;
+}
+
+.pest-flow-step strong {
+
+    display: block;
+
+    font-size: 5.8px;
+}
+
+.pest-flow-step span {
+
+    display: block;
+
+    margin-top: 1px;
+
+    color:
+        var(--pest-muted);
+
+    font-size: 4.8px;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.pest-empty {
+
+    min-height: 300px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 30px;
+
+    border:
+        1px dashed
+        var(--pest-border);
+
+    border-radius: 16px;
+
+    background:
+        var(--pest-white);
+
+    text-align: center;
+}
+
+.pest-empty-icon {
+
+    width: 65px;
+    height: 65px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 12px;
+
+    border-radius: 19px;
+
+    background:
+        var(--pest-green-soft);
+
+    color:
+        var(--pest-green);
+
+    font-size: 23px;
+}
+
+.pest-empty h3 {
+
+    margin-bottom: 5px;
+
+    font-size: 12px;
+
+    font-weight: 950;
+}
+
+.pest-empty p {
+
+    max-width: 430px;
+
+    color:
+        var(--pest-muted);
+
+    font-size: 6.5px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   ALERT
+========================================================= */
+
+.pest-alert {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 8px;
+
+    margin-bottom: 12px;
+
+    padding: 10px 12px;
+
+    border-radius: 10px;
+
+    font-size: 6px;
+
+    line-height: 1.6;
+}
+
+.pest-alert.success {
+
+    background:
+        var(--pest-green-soft);
+
+    color:
+        var(--pest-green-dark);
+
+    border:
+        1px solid
+        #C8E6C9;
+}
+
+.pest-alert.warning {
+
+    background:
+        var(--pest-orange-soft);
+
+    color:
+        #8A4B00;
+
+    border:
+        1px solid
+        #FFE0B2;
+}
+
+.pest-alert.error {
+
+    background:
+        var(--pest-red-soft);
+
+    color:
+        var(--pest-red);
+
+    border:
+        1px solid
+        #FFCDD2;
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+html.dark .pest-page,
+body.dark-mode .pest-page,
+html[data-theme="dark"] .pest-page,
+body[data-theme="dark"] .pest-page {
+
+    background:
+        #0D150F;
+
+    color:
+        #E8F5E9;
+}
+
+html.dark .pest-status,
+body.dark-mode .pest-status,
+html[data-theme="dark"] .pest-status,
+body[data-theme="dark"] .pest-status,
+
+html.dark .pest-kpi,
+body.dark-mode .pest-kpi,
+html[data-theme="dark"] .pest-kpi,
+body[data-theme="dark"] .pest-kpi,
+
+html.dark .pest-toolbar,
+body.dark-mode .pest-toolbar,
+html[data-theme="dark"] .pest-toolbar,
+body[data-theme="dark"] .pest-toolbar,
+
+html.dark .pest-card,
+body.dark-mode .pest-card,
+html[data-theme="dark"] .pest-card,
+body[data-theme="dark"] .pest-card,
+
+html.dark .pest-side-card,
+body.dark-mode .pest-side-card,
+html[data-theme="dark"] .pest-side-card,
+body[data-theme="dark"] .pest-side-card,
+
+html.dark .pest-empty,
+body.dark-mode .pest-empty,
+html[data-theme="dark"] .pest-empty,
+body[data-theme="dark"] .pest-empty {
+
+    background:
+        #111B13;
+
+    border-color:
+        #304A35;
+}
+
+html.dark .pest-search input,
+body.dark-mode .pest-search input,
+html[data-theme="dark"] .pest-search input,
+body[data-theme="dark"] .pest-search input {
+
+    background:
+        #0D150F;
+
+    color:
+        #E8F5E9;
+
+    border-color:
+        #304A35;
+}
+
+html.dark .pest-filter,
+body.dark-mode .pest-filter,
+html[data-theme="dark"] .pest-filter,
+body[data-theme="dark"] .pest-filter {
+
+    background:
+        #111B13;
+
+    color:
+        #B8C5BA;
+
+    border-color:
+        #304A35;
+}
+
+html.dark .pest-btn,
+body.dark-mode .pest-btn,
+html[data-theme="dark"] .pest-btn,
+body[data-theme="dark"] .pest-btn {
+
+    background:
+        #111B13;
+
+    color:
+        #B8C5BA;
+
+    border-color:
+        #304A35;
+}
+
+html.dark .pest-meta-item,
+body.dark-mode .pest-meta-item,
+html[data-theme="dark"] .pest-meta-item,
+body[data-theme="dark"] .pest-meta-item {
+
+    background:
+        #0F1811;
+}
+
+html.dark .pest-prevention-item,
+body.dark-mode .pest-prevention-item,
+html[data-theme="dark"] .pest-prevention-item,
+body[data-theme="dark"] .pest-prevention-item,
+
+html.dark .pest-flow-step,
+body.dark-mode .pest-flow-step,
+html[data-theme="dark"] .pest-flow-step,
+body[data-theme="dark"] .pest-flow-step {
+
+    background:
+        #0F1811;
+
+    border-color:
+        #2D452F;
+}
+
+html.dark .pest-intelligence,
+body.dark-mode .pest-intelligence,
+html[data-theme="dark"] .pest-intelligence,
+body[data-theme="dark"] .pest-intelligence {
+
+    background:
+        #122018;
+
+    border-color:
+        #315637;
+}
+
+
+/* =========================================================
+   RTL
+========================================================= */
+
+html[dir="rtl"] .pest-page,
+body[dir="rtl"] .pest-page {
+
+    direction: rtl;
+}
+
+html[dir="rtl"] .pest-search i,
+body[dir="rtl"] .pest-search i {
+
+    left: auto;
+
+    right: 12px;
+}
+
+html[dir="rtl"] .pest-search input,
+body[dir="rtl"] .pest-search input {
+
+    padding-left: 12px;
+
+    padding-right: 34px;
+}
+
+
+/* =========================================================
+   LARGE TABLET
+========================================================= */
+
+@media(max-width: 1100px) {
+
+    .pest-main-grid {
+
+        grid-template-columns:
+            1fr;
+    }
+
+    .pest-side-panel {
+
+        position: static;
+
+        display: grid;
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .pest-kpis {
+
+        grid-template-columns:
+            repeat(3,minmax(0,1fr));
+    }
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media(max-width: 850px) {
+
+    .pest-page {
+
+        padding: 17px;
+    }
+
+    .pest-hero {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        padding: 25px;
+    }
+
+    .pest-hero-actions {
+
+        justify-content: flex-start;
+    }
+
+    .pest-toolbar {
+
+        align-items: stretch;
+
+        flex-direction: column;
+    }
+
+    .pest-search {
+
+        width: 100%;
+    }
+
+    .pest-side-panel {
+
+        grid-template-columns:
+            1fr;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width: 600px) {
+
+    .pest-page {
+
+        padding: 10px;
+    }
+
+    .pest-hero {
+
+        padding: 21px;
+
+        border-radius: 18px;
+    }
+
+    .pest-hero h1 {
+
+        font-size: 27px;
+    }
+
+    .pest-hero-actions {
+
+        width: 100%;
+
+        flex-direction: column;
+    }
+
+    .pest-hero-btn {
+
+        width: 100%;
+    }
+
+    .pest-status {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .pest-kpis {
+
+        grid-template-columns:
+            1fr 1fr;
+
+        gap: 8px;
+    }
+
+    .pest-grid {
+
+        grid-template-columns:
+            1fr;
+    }
+
+    .pest-card {
+
+        padding: 13px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media(max-width: 420px) {
+
+    .pest-kpis {
+
+        grid-template-columns:
+            1fr;
+    }
+
+    .pest-filters {
+
+        display: grid;
+
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .pest-filter {
+
+        width: 100%;
+    }
+
+    .pest-card-header {
+
+        flex-direction: column;
+    }
+
+    .pest-risk {
+
+        align-self: flex-start;
+    }
+
+    .pest-meta {
+
+        grid-template-columns:
+            1fr;
+    }
+
+    .pest-card-actions {
+
+        flex-direction: column;
+    }
+
+    .pest-btn {
+
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+.pest-filter:focus-visible,
+.pest-search input:focus-visible,
+.pest-btn:focus-visible,
+.pest-hero-btn:focus-visible {
+
+    outline:
+        3px solid
+        rgba(67,160,71,.25);
+
+    outline-offset:
+        3px;
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media(prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration:
+            .01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        transition-duration:
+            .01ms !important;
+
+        scroll-behavior:
+            auto !important;
+    }
 }

@@ -1,0 +1,2303 @@
+﻿{% extends "base.html" %}
+
+{% block title %}KisanVision360+ | Smart Checkout{% endblock %}
+
+{% block head %}
+<link rel="stylesheet"
+          href="{{ url_for('static', filename='css/checkout.css') }}">
+<style>
+
+        /* =====================================================
+           KISANVISION360+ CHECKOUT ENHANCEMENTS
+        ===================================================== */
+
+        .smart-checkout-banner {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1b5e20,
+                    #2e7d32,
+                    #43a047
+                );
+
+            color: white;
+
+            border-radius: 18px;
+
+            padding: 18px 22px;
+
+            margin-bottom: 22px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            box-shadow:
+                0 8px 25px rgba(27,94,32,0.18);
+
+        }
+
+
+        .smart-banner-icon {
+
+            width: 50px;
+            height: 50px;
+
+            border-radius: 14px;
+
+            background: rgba(255,255,255,0.16);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 22px;
+
+            flex-shrink: 0;
+
+        }
+
+
+        .smart-checkout-banner h3 {
+
+            margin: 0 0 4px;
+
+            font-size: 17px;
+
+        }
+
+
+        .smart-checkout-banner p {
+
+            margin: 0;
+
+            font-size: 13px;
+
+            opacity: 0.9;
+
+        }
+
+
+        .checkout-progress {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            margin-bottom: 25px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .progress-step {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            font-size: 12px;
+
+            color: #777;
+
+            font-weight: 600;
+
+        }
+
+
+        .progress-number {
+
+            width: 28px;
+
+            height: 28px;
+
+            border-radius: 50%;
+
+            background: #e8f5e9;
+
+            color: #2e7d32;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+
+        .progress-step.active {
+
+            color: #1b5e20;
+
+        }
+
+
+        .progress-step.active .progress-number {
+
+            background: #2e7d32;
+
+            color: white;
+
+        }
+
+
+        .progress-line {
+
+            width: 45px;
+
+            height: 2px;
+
+            background: #c8e6c9;
+
+        }
+
+
+        /* =====================================================
+           FORM ENHANCEMENTS
+        ===================================================== */
+
+        .field-status {
+
+            display: block;
+
+            font-size: 11px;
+
+            margin-top: 5px;
+
+            color: #777;
+
+        }
+
+
+        .field-status.success {
+
+            color: #2e7d32;
+
+        }
+
+
+        .field-status.warning {
+
+            color: #e65100;
+
+        }
+
+
+        .address-tools {
+
+            display: flex;
+
+            gap: 8px;
+
+            flex-wrap: wrap;
+
+            margin-top: 8px;
+
+        }
+
+
+        .address-tool {
+
+            border: 1px solid #c8e6c9;
+
+            background: #f4fbf4;
+
+            color: #2e7d32;
+
+            border-radius: 8px;
+
+            padding: 7px 10px;
+
+            font-size: 11px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+        }
+
+
+        .address-tool:hover {
+
+            background: #2e7d32;
+
+            color: white;
+
+        }
+
+
+        /* =====================================================
+           PAYMENT CARDS
+        ===================================================== */
+
+        .payment-option {
+
+            transition: 0.2s;
+
+        }
+
+
+        .payment-option:not(.disabled):hover {
+
+            border-color: #43a047;
+
+            background: #f7fcf7;
+
+        }
+
+
+        .payment-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            font-size: 10px;
+
+            padding: 4px 8px;
+
+            border-radius: 10px;
+
+            background: #e8f5e9;
+
+            color: #2e7d32;
+
+            margin-left: 5px;
+
+        }
+
+
+        /* =====================================================
+           ORDER INTELLIGENCE
+        ===================================================== */
+
+        .order-intelligence {
+
+            margin-top: 18px;
+
+            padding: 15px;
+
+            border-radius: 14px;
+
+            background: #f8fbf8;
+
+            border: 1px solid #e1eee2;
+
+        }
+
+
+        .order-intelligence-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            color: #1b5e20;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .intelligence-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 9px;
+
+        }
+
+
+        .intelligence-item {
+
+            background: white;
+
+            border-radius: 10px;
+
+            padding: 10px;
+
+            border: 1px solid #edf2ed;
+
+        }
+
+
+        .intelligence-item i {
+
+            color: #43a047;
+
+            margin-right: 5px;
+
+        }
+
+
+        .intelligence-item strong {
+
+            display: block;
+
+            font-size: 12px;
+
+            color: #333;
+
+            margin-top: 4px;
+
+        }
+
+
+        .intelligence-item span {
+
+            font-size: 10px;
+
+            color: #777;
+
+        }
+
+
+        /* =====================================================
+           SUMMARY ENHANCEMENTS
+        ===================================================== */
+
+        .summary-stat {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            background: #f8fbf8;
+
+            border-radius: 10px;
+
+            padding: 10px 12px;
+
+            margin-bottom: 12px;
+
+            font-size: 12px;
+
+        }
+
+
+        .summary-stat span {
+
+            color: #666;
+
+        }
+
+
+        .summary-stat strong {
+
+            color: #1b5e20;
+
+        }
+
+
+        .delivery-estimate {
+
+            display: flex;
+
+            gap: 10px;
+
+            align-items: center;
+
+            background: #fff8e1;
+
+            border: 1px solid #ffecb3;
+
+            padding: 12px;
+
+            border-radius: 12px;
+
+            margin-top: 14px;
+
+        }
+
+
+        .delivery-estimate i {
+
+            color: #f57c00;
+
+            font-size: 18px;
+
+        }
+
+
+        .delivery-estimate strong {
+
+            display: block;
+
+            font-size: 12px;
+
+            color: #333;
+
+        }
+
+
+        .delivery-estimate span {
+
+            display: block;
+
+            font-size: 10px;
+
+            color: #777;
+
+            margin-top: 3px;
+
+        }
+
+
+        .checkout-protection {
+
+            margin-top: 12px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 7px;
+
+        }
+
+
+        .protection-item {
+
+            text-align: center;
+
+            background: #f7faf7;
+
+            border-radius: 9px;
+
+            padding: 9px 5px;
+
+            font-size: 9px;
+
+            color: #666;
+
+        }
+
+
+        .protection-item i {
+
+            display: block;
+
+            color: #2e7d32;
+
+            margin-bottom: 4px;
+
+            font-size: 13px;
+
+        }
+
+
+        /* =====================================================
+           VALIDATION
+        ===================================================== */
+
+        .input-valid {
+
+            border-color: #43a047 !important;
+
+            background: #f8fff8 !important;
+
+        }
+
+
+        .input-invalid {
+
+            border-color: #e53935 !important;
+
+        }
+
+
+        .validation-message {
+
+            color: #d32f2f;
+
+            font-size: 11px;
+
+            margin-top: 5px;
+
+            display: none;
+
+        }
+
+
+        .validation-message.show {
+
+            display: block;
+
+        }
+
+
+        .place-order-btn.loading {
+
+            opacity: 0.7;
+
+            pointer-events: none;
+
+        }
+
+
+        /* =====================================================
+           EMPTY STATE
+        ===================================================== */
+
+        .checkout-note {
+
+            margin-top: 15px;
+
+            text-align: center;
+
+            font-size: 11px;
+
+            color: #777;
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 768px) {
+
+            .smart-checkout-banner {
+
+                padding: 15px;
+
+            }
+
+
+            .checkout-progress {
+
+                justify-content: flex-start;
+
+            }
+
+
+            .progress-line {
+
+                width: 20px;
+
+            }
+
+
+            .intelligence-grid {
+
+                grid-template-columns:
+                    1fr 1fr;
+
+            }
+
+
+            .checkout-protection {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .smart-checkout-banner {
+
+                align-items: flex-start;
+
+            }
+
+
+            .smart-banner-icon {
+
+                width: 42px;
+                height: 42px;
+
+            }
+
+
+            .smart-checkout-banner h3 {
+
+                font-size: 15px;
+
+            }
+
+
+            .smart-checkout-banner p {
+
+                font-size: 11px;
+
+            }
+
+
+            .progress-step {
+
+                font-size: 10px;
+
+            }
+
+
+            .progress-number {
+
+                width: 24px;
+                height: 24px;
+
+            }
+
+
+            .progress-line {
+
+                width: 10px;
+
+            }
+
+
+            .intelligence-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .checkout-protection {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+    </style>
+{% endblock %}
+
+{% block page_title %}Smart Checkout{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<div class="checkout-page">
+
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <div class="checkout-header">
+
+            <div class="header-icon">
+
+                <i class="fa-solid fa-bag-shopping"></i>
+
+            </div>
+
+            <div>
+
+                <h1>Smart Checkout</h1>
+
+                <p>
+                    Complete your details and place your KisanVision360+ order securely.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SMART BANNER
+        ================================================== -->
+
+        <div class="smart-checkout-banner">
+
+            <div class="smart-banner-icon">
+
+                <i class="fa-solid fa-shield-heart"></i>
+
+            </div>
+
+            <div>
+
+                <h3>
+                    KisanVision360+ Secure Purchase
+                </h3>
+
+                <p>
+                    Your order details, delivery information and payment preference
+                    are handled securely.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             CHECKOUT PROGRESS
+        ================================================== -->
+
+        <div class="checkout-progress">
+
+            <div class="progress-step active">
+
+                <span class="progress-number">
+                    1
+                </span>
+
+                Delivery
+
+            </div>
+
+
+            <span class="progress-line"></span>
+
+
+            <div class="progress-step active">
+
+                <span class="progress-number">
+                    2
+                </span>
+
+                Payment
+
+            </div>
+
+
+            <span class="progress-line"></span>
+
+
+            <div class="progress-step">
+
+                <span class="progress-number">
+                    3
+                </span>
+
+                Confirmation
+
+            </div>
+
+        </div>
+
+
+        {% if buy_now_product %}
+
+        <!-- =================================================
+             BUY NOW CHECKOUT
+        ================================================== -->
+
+        <div class="checkout-layout">
+
+
+            <!-- ================= LEFT ================= -->
+
+            <section class="checkout-form-section">
+
+                <div class="checkout-card">
+
+
+                    <div class="card-title">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        <div>
+
+                            <h2>Delivery Address</h2>
+
+                            <p>
+                                Enter the address where you want your order delivered.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <form method="POST"
+                          action="{{ url_for('marketplace.place_order', product_id=buy_now_product.id) }}"
+                          id="checkoutForm">
+
+
+                        <!-- ADDRESS -->
+
+                        <div class="form-group">
+
+                            <label for="delivery_address">
+
+                                Delivery Address
+
+                                <span>*</span>
+
+                            </label>
+
+
+                            <textarea
+                                id="delivery_address"
+                                name="delivery_address"
+                                rows="5"
+                                placeholder="House / Street / Village / Area..."
+                                minlength="10"
+                                required></textarea>
+
+
+                            <span class="field-status"
+                                  id="addressStatus">
+
+                                Minimum 10 characters required.
+
+                            </span>
+
+
+                            <div class="address-tools">
+
+                                <button type="button"
+                                        class="address-tool"
+                                        onclick="insertAddressHint('Village / Town, Taluka, District, Maharashtra')">
+
+                                    <i class="fa-solid fa-location-crosshairs"></i>
+
+                                    Address format
+
+                                </button>
+
+                                <button type="button"
+                                        class="address-tool"
+                                        onclick="clearAddress()">
+
+                                    <i class="fa-solid fa-eraser"></i>
+
+                                    Clear
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- CITY / PIN -->
+
+                        <div class="form-row">
+
+
+                            <div class="form-group">
+
+                                <label for="city">
+
+                                    City
+
+                                </label>
+
+                                <input type="text"
+                                       id="city"
+                                       name="city"
+                                       placeholder="Enter city"
+                                       maxlength="80">
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="pincode">
+
+                                    PIN Code
+
+                                </label>
+
+                                <input type="text"
+                                       id="pincode"
+                                       name="pincode"
+                                       maxlength="6"
+                                       inputmode="numeric"
+                                       pattern="[0-9]{6}"
+                                       placeholder="6 digit PIN">
+
+                                <span class="field-status"
+                                      id="pinStatus">
+
+                                    Enter 6-digit PIN for delivery.
+
+                                </span>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <!-- PAYMENT -->
+
+                        <div class="payment-method">
+
+                            <h3>
+
+                                <i class="fa-solid fa-wallet"></i>
+
+                                Payment Method
+
+                            </h3>
+
+
+                            <label class="payment-option">
+
+                                <input type="radio"
+                                       name="payment_method"
+                                       value="Cash on Delivery"
+                                       checked>
+
+                                <div>
+
+                                    <strong>
+
+                                        Cash on Delivery
+
+                                        <span class="payment-badge">
+                                            <i class="fa-solid fa-check"></i>
+                                            Available
+                                        </span>
+
+                                    </strong>
+
+                                    <span>
+                                        Pay when your order is delivered.
+                                    </span>
+
+                                </div>
+
+                            </label>
+
+
+                            <label class="payment-option disabled">
+
+                                <input type="radio"
+                                       name="payment_method"
+                                       value="Online Payment"
+                                       disabled>
+
+                                <div>
+
+                                    <strong>
+                                        Online Payment
+                                    </strong>
+
+                                    <span>
+                                        Coming soon
+                                    </span>
+
+                                </div>
+
+                            </label>
+
+                        </div>
+
+
+                        <!-- ORDER INTELLIGENCE -->
+
+                        <div class="order-intelligence">
+
+                            <div class="order-intelligence-title">
+
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                                Smart Order Check
+
+                            </div>
+
+
+                            <div class="intelligence-grid">
+
+
+                                <div class="intelligence-item">
+
+                                    <i class="fa-solid fa-box"></i>
+
+                                    <span>Order Type</span>
+
+                                    <strong>
+                                        Buy Now
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="intelligence-item">
+
+                                    <i class="fa-solid fa-truck-fast"></i>
+
+                                    <span>Delivery</span>
+
+                                    <strong>
+                                        FREE
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="intelligence-item">
+
+                                    <i class="fa-solid fa-money-bill"></i>
+
+                                    <span>Payment</span>
+
+                                    <strong>
+                                        COD
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="intelligence-item">
+
+                                    <i class="fa-solid fa-shield-halved"></i>
+
+                                    <span>Protection</span>
+
+                                    <strong>
+                                        Secure
+                                    </strong>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- PLACE ORDER -->
+
+                        <button type="submit"
+                                class="place-order-btn"
+                                id="placeOrderBtn">
+
+                            <i class="fa-solid fa-lock"></i>
+
+                            Place Secure Order
+
+                        </button>
+
+
+                        <p class="checkout-note">
+
+                            By placing this order, you confirm that the delivery
+                            information provided is correct.
+
+                        </p>
+
+
+                    </form>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= RIGHT ================= -->
+
+            <aside class="checkout-summary">
+
+                <div class="summary-card">
+
+
+                    <div class="summary-title">
+
+                        <i class="fa-solid fa-receipt"></i>
+
+                        <h2>Order Summary</h2>
+
+                    </div>
+
+
+                    <div class="summary-stat">
+
+                        <span>Items</span>
+
+                        <strong>
+                            1
+                        </strong>
+
+                    </div>
+
+
+                    <!-- PRODUCT -->
+
+                    <div class="checkout-product">
+
+
+                        <div class="checkout-product-image">
+
+                            {% if buy_now_product.image %}
+
+                            <img
+                                src="{{ url_for('static', filename='uploads/products/' ~ buy_now_product.image) }}"
+                                alt="{{ buy_now_product.product_name }}"
+                                onerror="this.style.display='none';">
+
+                            {% else %}
+
+                            <i class="fa-solid fa-seedling"></i>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="checkout-product-info">
+
+                            <h3>
+                                {{ buy_now_product.product_name }}
+                            </h3>
+
+
+                            {% if buy_now_product.category %}
+
+                            <span>
+                                {{ buy_now_product.category }}
+                            </span>
+
+                            {% endif %}
+
+
+                            <p>
+                                Quantity: 1
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="summary-line">
+
+                        <span>Product Price</span>
+
+                        <strong>
+
+                            â‚¹{{ "%.2f"|format(
+                                buy_now_product.price|float
+                            ) }}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-line">
+
+                        <span>Delivery</span>
+
+                        <strong class="free">
+                            FREE
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-line">
+
+                        <span>Platform Fee</span>
+
+                        <strong>
+                            â‚¹0.00
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-divider"></div>
+
+
+                    <div class="summary-total">
+
+                        <span>Total Amount</span>
+
+                        <strong>
+
+                            â‚¹{{ "%.2f"|format(
+                                buy_now_product.price|float
+                            ) }}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="delivery-estimate">
+
+                        <i class="fa-solid fa-truck-fast"></i>
+
+                        <div>
+
+                            <strong>
+                                Delivery estimate
+                            </strong>
+
+                            <span>
+                                Delivery timing will depend on seller location and logistics.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="secure-box">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                        <div>
+
+                            <strong>
+                                Secure Order
+                            </strong>
+
+                            <p>
+                                Your order information is protected.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="checkout-protection">
+
+                        <div class="protection-item">
+
+                            <i class="fa-solid fa-lock"></i>
+
+                            Secure
+
+                        </div>
+
+
+                        <div class="protection-item">
+
+                            <i class="fa-solid fa-truck"></i>
+
+                            Delivery
+
+                        </div>
+
+
+                        <div class="protection-item">
+
+                            <i class="fa-solid fa-headset"></i>
+
+                            Support
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </aside>
+
+
+        </div>
+
+
+        {% elif cart %}
+
+        <!-- =================================================
+             CART CHECKOUT
+        ================================================== -->
+
+        <div class="checkout-layout">
+
+
+            <!-- ================= LEFT ================= -->
+
+            <section class="checkout-form-section">
+
+                <div class="checkout-card">
+
+
+                    <div class="card-title">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        <div>
+
+                            <h2>Delivery Address</h2>
+
+                            <p>
+                                Enter the address where you want your order delivered.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <form method="POST"
+                          action="{{ url_for('marketplace.checkout') }}"
+                          id="checkoutForm">
+
+
+                        <!-- ADDRESS -->
+
+                        <div class="form-group">
+
+                            <label for="delivery_address">
+
+                                Delivery Address
+
+                                <span>*</span>
+
+                            </label>
+
+
+                            <textarea
+                                id="delivery_address"
+                                name="delivery_address"
+                                rows="5"
+                                placeholder="House / Street / Village / Area..."
+                                minlength="10"
+                                required></textarea>
+
+
+                            <span class="field-status"
+                                  id="addressStatus">
+
+                                Minimum 10 characters required.
+
+                            </span>
+
+
+                            <div class="address-tools">
+
+                                <button type="button"
+                                        class="address-tool"
+                                        onclick="insertAddressHint('Village / Town, Taluka, District, Maharashtra')">
+
+                                    <i class="fa-solid fa-location-crosshairs"></i>
+
+                                    Address format
+
+                                </button>
+
+
+                                <button type="button"
+                                        class="address-tool"
+                                        onclick="clearAddress()">
+
+                                    <i class="fa-solid fa-eraser"></i>
+
+                                    Clear
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- CITY / PIN -->
+
+                        <div class="form-row">
+
+
+                            <div class="form-group">
+
+                                <label for="city">
+
+                                    City
+
+                                </label>
+
+                                <input type="text"
+                                       id="city"
+                                       name="city"
+                                       placeholder="Enter city"
+                                       maxlength="80">
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="pincode">
+
+                                    PIN Code
+
+                                </label>
+
+                                <input type="text"
+                                       id="pincode"
+                                       name="pincode"
+                                       maxlength="6"
+                                       inputmode="numeric"
+                                       pattern="[0-9]{6}"
+                                       placeholder="6 digit PIN">
+
+                                <span class="field-status"
+                                      id="pinStatus">
+
+                                    Enter 6-digit PIN for delivery.
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- PAYMENT -->
+
+                        <div class="payment-method">
+
+                            <h3>
+
+                                <i class="fa-solid fa-wallet"></i>
+
+                                Payment Method
+
+                            </h3>
+
+
+                            <label class="payment-option">
+
+                                <input type="radio"
+                                       name="payment_method"
+                                       value="Cash on Delivery"
+                                       checked>
+
+                                <div>
+
+                                    <strong>
+
+                                        Cash on Delivery
+
+                                        <span class="payment-badge">
+
+                                            <i class="fa-solid fa-check"></i>
+
+                                            Available
+
+                                        </span>
+
+                                    </strong>
+
+                                    <span>
+                                        Pay when your order is delivered.
+                                    </span>
+
+                                </div>
+
+                            </label>
+
+
+                            <label class="payment-option disabled">
+
+                                <input type="radio"
+                                       name="payment_method"
+                                       value="Online Payment"
+                                       disabled>
+
+                                <div>
+
+                                    <strong>
+                                        Online Payment
+                                    </strong>
+
+                                    <span>
+                                        Coming soon
+                                    </span>
+
+                                </div>
+
+                            </label>
+
+                        </div>
+
+
+                        <!-- SMART ORDER CHECK -->
+
+                        <div class="order-intelligence">
+
+                            <div class="order-intelligence-title">
+
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                                Smart Order Check
+
+                            </div>
+
+
+                            <div class="intelligence-grid">
+
+
+                                <div class="intelligence-item">
+
+                                    <i class="fa-solid fa-boxes-stacked"></i>
+
+                                    <span>Items</span>
+
+                                    <strong>
+                                        {{ cart|length }}
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="intelligence-item">
+
+                                    <i class="fa-solid fa-truck-fast"></i>
+
+                                    <span>Delivery</span>
+
+                                    <strong>
+                                        FREE
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="intelligence-item">
+
+                                    <i class="fa-solid fa-money-bill"></i>
+
+                                    <span>Payment</span>
+
+                                    <strong>
+                                        COD
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="intelligence-item">
+
+                                    <i class="fa-solid fa-shield-halved"></i>
+
+                                    <span>Protection</span>
+
+                                    <strong>
+                                        Secure
+                                    </strong>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- PLACE ORDER -->
+
+                        <button type="submit"
+                                class="place-order-btn"
+                                id="placeOrderBtn">
+
+                            <i class="fa-solid fa-lock"></i>
+
+                            Place Secure Order
+
+                        </button>
+
+
+                        <p class="checkout-note">
+
+                            By placing this order, you confirm that the delivery
+                            information provided is correct.
+
+                        </p>
+
+
+                    </form>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= RIGHT ================= -->
+
+            <aside class="checkout-summary">
+
+
+                <div class="summary-card">
+
+
+                    <div class="summary-title">
+
+                        <i class="fa-solid fa-receipt"></i>
+
+                        <h2>Order Summary</h2>
+
+                    </div>
+
+
+                    <div class="summary-stat">
+
+                        <span>Items</span>
+
+                        <strong>
+                            {{ cart|length }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- CART PRODUCTS -->
+
+                    {% for item in cart %}
+
+                    <div class="checkout-product">
+
+
+                        <div class="checkout-product-image">
+
+                            {% if item.image %}
+
+                            <img
+                                src="{{ url_for('static', filename='uploads/products/' ~ item.image) }}"
+                                alt="{{ item.name }}"
+                                onerror="this.style.display='none';">
+
+                            {% else %}
+
+                            <i class="fa-solid fa-seedling"></i>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="checkout-product-info">
+
+                            <h3>
+                                {{ item.name }}
+                            </h3>
+
+
+                            <span>
+                                {{ item.category or "Agricultural Product" }}
+                            </span>
+
+
+                            <p>
+                                Qty: {{ item.quantity }}
+                            </p>
+
+                        </div>
+
+
+                        <strong class="product-price">
+
+                            â‚¹{{ "%.2f"|format(
+                                (item.price|float) *
+                                (item.quantity|int)
+                            ) }}
+
+                        </strong>
+
+                    </div>
+
+                    {% endfor %}
+
+
+                    <div class="summary-line">
+
+                        <span>Subtotal</span>
+
+                        <strong>
+
+                            â‚¹{{ "%.2f"|format(total|float) }}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-line">
+
+                        <span>Delivery</span>
+
+                        <strong class="free">
+                            FREE
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-line">
+
+                        <span>Platform Fee</span>
+
+                        <strong>
+                            â‚¹0.00
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-divider"></div>
+
+
+                    <div class="summary-total">
+
+                        <span>Total Amount</span>
+
+                        <strong>
+
+                            â‚¹{{ "%.2f"|format(total|float) }}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="delivery-estimate">
+
+                        <i class="fa-solid fa-truck-fast"></i>
+
+                        <div>
+
+                            <strong>
+                                Delivery estimate
+                            </strong>
+
+                            <span>
+                                Delivery timing depends on seller location and logistics.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="secure-box">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                        <div>
+
+                            <strong>
+                                Secure Order
+                            </strong>
+
+                            <p>
+                                Your order information is protected.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="checkout-protection">
+
+                        <div class="protection-item">
+
+                            <i class="fa-solid fa-lock"></i>
+
+                            Secure
+
+                        </div>
+
+
+                        <div class="protection-item">
+
+                            <i class="fa-solid fa-truck"></i>
+
+                            Delivery
+
+                        </div>
+
+
+                        <div class="protection-item">
+
+                            <i class="fa-solid fa-headset"></i>
+
+                            Support
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+            </aside>
+
+
+        </div>
+
+
+        {% else %}
+
+        <!-- =================================================
+             EMPTY CHECKOUT
+        ================================================== -->
+
+        <section class="empty-checkout">
+
+
+            <div class="empty-icon">
+
+                <i class="fa-solid fa-cart-shopping"></i>
+
+            </div>
+
+
+            <h2>
+                Your Cart is Empty
+            </h2>
+
+
+            <p>
+                Add products to your cart before proceeding to checkout.
+            </p>
+
+
+            <a href="{{ url_for('marketplace.consumer_marketplace') }}"
+               class="shop-btn">
+
+                <i class="fa-solid fa-store"></i>
+
+                Go to Marketplace
+
+            </a>
+
+
+        </section>
+
+        {% endif %}
+
+
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+/* =========================================================
+   KISANVISION360+ SMART CHECKOUT JAVASCRIPT
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    const form =
+        document.getElementById("checkoutForm");
+
+
+    const address =
+        document.getElementById("delivery_address");
+
+
+    const city =
+        document.getElementById("city");
+
+
+    const pincode =
+        document.getElementById("pincode");
+
+
+    const addressStatus =
+        document.getElementById("addressStatus");
+
+
+    const pinStatus =
+        document.getElementById("pinStatus");
+
+
+    const placeOrderBtn =
+        document.getElementById("placeOrderBtn");
+
+
+    if (!form) {
+        return;
+    }
+
+
+    /* =====================================================
+       ADDRESS VALIDATION
+    ===================================================== */
+
+    if (address) {
+
+        address.addEventListener(
+            "input",
+            function () {
+
+                const value =
+                    this.value.trim();
+
+
+                if (value.length >= 10) {
+
+                    this.classList.add(
+                        "input-valid"
+                    );
+
+                    this.classList.remove(
+                        "input-invalid"
+                    );
+
+
+                    if (addressStatus) {
+
+                        addressStatus.textContent =
+                            "âœ“ Delivery address looks good.";
+
+                        addressStatus.className =
+                            "field-status success";
+
+                    }
+
+                }
+
+                else {
+
+                    this.classList.remove(
+                        "input-valid"
+                    );
+
+                    if (addressStatus) {
+
+                        addressStatus.textContent =
+                            "Minimum 10 characters required.";
+
+                        addressStatus.className =
+                            "field-status warning";
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       PIN CODE VALIDATION
+    ===================================================== */
+
+    if (pincode) {
+
+        pincode.addEventListener(
+            "input",
+            function () {
+
+                this.value =
+                    this.value
+                    .replace(/\D/g, "")
+                    .slice(0, 6);
+
+
+                const pin =
+                    this.value;
+
+
+                if (pin.length === 6) {
+
+                    this.classList.add(
+                        "input-valid"
+                    );
+
+                    this.classList.remove(
+                        "input-invalid"
+                    );
+
+
+                    if (pinStatus) {
+
+                        pinStatus.textContent =
+                            "âœ“ Valid 6-digit PIN format.";
+
+                        pinStatus.className =
+                            "field-status success";
+
+                    }
+
+                }
+
+                else {
+
+                    this.classList.remove(
+                        "input-valid"
+                    );
+
+                    if (pinStatus) {
+
+                        pinStatus.textContent =
+                            "Enter 6-digit PIN for delivery.";
+
+                        pinStatus.className =
+                            "field-status warning";
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       CITY VALIDATION
+    ===================================================== */
+
+    if (city) {
+
+        city.addEventListener(
+            "input",
+            function () {
+
+                this.value =
+                    this.value
+                    .replace(/[<>]/g, "");
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       SUBMIT VALIDATION
+    ===================================================== */
+
+    form.addEventListener(
+        "submit",
+        function (event) {
+
+
+            const addressValue =
+                address
+                ? address.value.trim()
+                : "";
+
+
+            const pinValue =
+                pincode
+                ? pincode.value.trim()
+                : "";
+
+
+            if (!addressValue) {
+
+                event.preventDefault();
+
+                alert(
+                    "Please enter your delivery address."
+                );
+
+                if (address) {
+                    address.focus();
+                }
+
+                return;
+
+            }
+
+
+            if (addressValue.length < 10) {
+
+                event.preventDefault();
+
+                alert(
+                    "Please enter a complete delivery address."
+                );
+
+                if (address) {
+                    address.focus();
+                }
+
+                return;
+
+            }
+
+
+            if (
+                pinValue &&
+                !/^\d{6}$/.test(pinValue)
+            ) {
+
+                event.preventDefault();
+
+                alert(
+                    "Please enter a valid 6-digit PIN code."
+                );
+
+                if (pincode) {
+                    pincode.focus();
+                }
+
+                return;
+
+            }
+
+
+            const confirmed =
+                confirm(
+                    "Are you sure you want to place this order?"
+                );
+
+
+            if (!confirmed) {
+
+                event.preventDefault();
+
+                return;
+
+            }
+
+
+            /* Prevent double submission */
+
+            if (placeOrderBtn) {
+
+                placeOrderBtn.classList.add(
+                    "loading"
+                );
+
+                placeOrderBtn.innerHTML = `
+
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+
+                    Placing Order...
+
+                `;
+
+                placeOrderBtn.disabled =
+                    true;
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       INITIAL STATUS
+    ===================================================== */
+
+    if (address && address.value.trim().length >= 10) {
+
+        address.classList.add(
+            "input-valid"
+        );
+
+    }
+
+
+    if (
+        pincode &&
+        /^\d{6}$/.test(pincode.value.trim())
+    ) {
+
+        pincode.classList.add(
+            "input-valid"
+        );
+
+    }
+
+});
+
+
+/* =========================================================
+   ADDRESS HELPERS
+========================================================= */
+
+function insertAddressHint(text) {
+
+    const address =
+        document.getElementById(
+            "delivery_address"
+        );
+
+
+    if (!address) {
+        return;
+    }
+
+
+    if (
+        address.value.trim() === ""
+    ) {
+
+        address.value =
+            text;
+
+    }
+
+    else {
+
+        address.value +=
+            ", " + text;
+
+    }
+
+
+    address.focus();
+
+
+    address.dispatchEvent(
+        new Event("input")
+    );
+
+}
+
+
+function clearAddress() {
+
+    const address =
+        document.getElementById(
+            "delivery_address"
+        );
+
+
+    if (!address) {
+        return;
+    }
+
+
+    address.value = "";
+
+    address.focus();
+
+
+    address.dispatchEvent(
+        new Event("input")
+    );
+
+}
+
+</script>
+{% endblock %}
+

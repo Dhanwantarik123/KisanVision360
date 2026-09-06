@@ -1,0 +1,1327 @@
+/* =========================================================
+   KISANVISION360+
+   CONSUMER REPORTS
+   NO OVERLAPPING / SIDEBAR SAFE CSS
+========================================================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f6f8f6;
+    color: #26342a;
+}
+
+/* =========================================================
+   MAIN CONTENT — FIX SIDEBAR OVERLAP
+========================================================= */
+
+.main-content {
+    margin-left: 260px !important;
+    width: calc(100% - 260px) !important;
+    max-width: none !important;
+
+    min-width: 0;
+    padding: 28px 30px 45px;
+
+    overflow-x: hidden;
+    position: relative;
+}
+
+.main-content > * {
+    min-width: 0;
+    max-width: 100%;
+}
+
+/* =========================================================
+   REPORT HEADER
+========================================================= */
+
+.kv-report-header {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding: 22px 24px;
+    margin-bottom: 22px;
+
+    background: #ffffff;
+    border: 1px solid #e1e9e2;
+    border-radius: 18px;
+
+    box-shadow: 0 5px 18px rgba(20, 80, 35, 0.06);
+
+    overflow: hidden;
+}
+
+.kv-report-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    min-width: 0;
+    flex: 1;
+}
+
+.kv-report-icon {
+    width: 52px;
+    height: 52px;
+
+    flex: 0 0 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #e7f5e9;
+    color: #2e7d32;
+
+    border-radius: 14px;
+    font-size: 23px;
+}
+
+.kv-report-title h1 {
+    margin: 0;
+    font-size: 24px;
+    line-height: 1.25;
+    color: #183b20;
+
+    overflow-wrap: anywhere;
+}
+
+.kv-report-title p {
+    margin: 5px 0 0;
+    font-size: 13px;
+    color: #718078;
+
+    overflow-wrap: anywhere;
+}
+
+.kv-report-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    margin-top: 8px;
+    padding: 5px 10px;
+
+    background: #eef8ef;
+    color: #2e7d32;
+
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.kv-report-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 10px;
+    flex-wrap: wrap;
+
+    flex: 0 0 auto;
+}
+
+.kv-report-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    min-height: 40px;
+    padding: 10px 15px;
+
+    border: 0;
+    border-radius: 10px;
+
+    background: #2e7d32;
+    color: #ffffff;
+
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+    white-space: nowrap;
+
+    transition: 0.2s ease;
+}
+
+.kv-report-btn:hover {
+    background: #256b29;
+    transform: translateY(-1px);
+}
+
+/* =========================================================
+   META
+========================================================= */
+
+.kv-report-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+
+    margin-bottom: 20px;
+
+    color: #718078;
+    font-size: 12px;
+}
+
+.kv-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    min-width: 0;
+}
+
+.kv-meta-item i {
+    color: #43a047;
+}
+
+/* =========================================================
+   SMART BANNER
+========================================================= */
+
+.kv-smart-banner {
+    width: 100%;
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    padding: 17px 20px;
+    margin-bottom: 22px;
+
+    background: linear-gradient(
+        135deg,
+        #eaf7ec,
+        #f5fbf5
+    );
+
+    border: 1px solid #cde5d0;
+    border-radius: 15px;
+
+    overflow: hidden;
+}
+
+.kv-smart-icon {
+    width: 44px;
+    height: 44px;
+
+    flex: 0 0 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #2e7d32;
+    color: #ffffff;
+
+    font-size: 18px;
+}
+
+.kv-smart-banner > div:last-child {
+    min-width: 0;
+}
+
+.kv-smart-banner strong {
+    display: block;
+    margin-bottom: 3px;
+
+    color: #205526;
+    font-size: 14px;
+}
+
+.kv-smart-banner p {
+    margin: 0;
+
+    color: #607365;
+    font-size: 12px;
+    line-height: 1.55;
+
+    overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   KPI GRID
+========================================================= */
+
+.kv-kpi-grid {
+    width: 100%;
+    min-width: 0;
+
+    display: grid;
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.kv-kpi {
+    min-width: 0;
+    overflow: hidden;
+
+    padding: 19px;
+
+    background: #ffffff;
+    border: 1px solid #e1e9e2;
+    border-radius: 15px;
+
+    box-shadow: 0 4px 14px rgba(20, 80, 35, 0.05);
+}
+
+.kv-kpi-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 13px;
+
+    background: #edf7ee;
+    color: #2e7d32;
+
+    border-radius: 10px;
+}
+
+.kv-kpi-value {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #183b20;
+    font-size: 24px;
+    font-weight: 800;
+
+    overflow-wrap: anywhere;
+}
+
+.kv-kpi-label {
+    color: #78847c;
+    font-size: 11px;
+
+    overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   INTELLIGENCE GRID
+========================================================= */
+
+.kv-intelligence-grid {
+    width: 100%;
+    min-width: 0;
+
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.kv-intelligence-card {
+    min-width: 0;
+    overflow: hidden;
+
+    padding: 19px;
+
+    background: #ffffff;
+    border: 1px solid #e1e9e2;
+    border-radius: 15px;
+
+    box-shadow: 0 4px 14px rgba(20, 80, 35, 0.05);
+}
+
+.kv-intelligence-card h3 {
+    margin: 0 0 8px;
+
+    color: #34513b;
+    font-size: 13px;
+
+    overflow-wrap: anywhere;
+}
+
+.kv-intelligence-value {
+    font-size: 21px;
+    font-weight: 800;
+    color: #2e7d32;
+
+    overflow-wrap: anywhere;
+}
+
+.kv-intelligence-card p {
+    margin: 5px 0 0;
+
+    color: #7a867e;
+    font-size: 11px;
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   MAIN REPORT GRID
+========================================================= */
+
+.report-grid {
+    width: 100%;
+    min-width: 0;
+
+    display: grid;
+    grid-template-columns:
+        minmax(0, 2fr)
+        minmax(280px, 0.9fr);
+
+    gap: 20px;
+
+    align-items: start;
+}
+
+.report-grid > * {
+    min-width: 0;
+    max-width: 100%;
+}
+
+/* =========================================================
+   REPORT CARD
+========================================================= */
+
+.report-card {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+
+    background: #ffffff;
+    border: 1px solid #e1e9e2;
+    border-radius: 16px;
+
+    box-shadow: 0 4px 15px rgba(20, 80, 35, 0.05);
+
+    overflow: hidden;
+}
+
+.report-card + .report-card {
+    margin-top: 18px;
+}
+
+.report-card-header {
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+    flex-wrap: wrap;
+
+    padding: 17px 19px;
+
+    border-bottom: 1px solid #edf1ee;
+}
+
+.report-card-header > div {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.report-card-header h2 {
+    margin: 0;
+
+    color: #23452a;
+    font-size: 15px;
+
+    overflow-wrap: anywhere;
+}
+
+.report-card-subtitle {
+    margin: 4px 0 0;
+
+    color: #849087;
+    font-size: 11px;
+
+    overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   QUICK LINKS
+========================================================= */
+
+.quick-links {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 10px;
+
+    padding: 16px;
+}
+
+.quick-link {
+    min-width: 0;
+    max-width: 100%;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 13px;
+
+    background: #f7faf7;
+    border: 1px solid #e2ebe3;
+    border-radius: 10px;
+
+    color: #315a38;
+    text-decoration: none;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    overflow-wrap: anywhere;
+
+    transition: 0.2s ease;
+}
+
+.quick-link:hover {
+    background: #edf7ee;
+    border-color: #bcd9bf;
+    transform: translateY(-1px);
+}
+
+.quick-link i {
+    flex: 0 0 auto;
+    color: #43a047;
+}
+
+/* =========================================================
+   ORDERS LIST
+========================================================= */
+
+.orders-list {
+    width: 100%;
+    min-width: 0;
+}
+
+.order-row {
+    width: 100%;
+    min-width: 0;
+
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr)
+        auto
+        auto;
+
+    gap: 14px;
+    align-items: center;
+
+    padding: 15px 17px;
+
+    border-bottom: 1px solid #edf1ee;
+}
+
+.order-row:last-child {
+    border-bottom: 0;
+}
+
+.order-info {
+    min-width: 0;
+}
+
+.order-info strong {
+    display: block;
+
+    color: #29492f;
+    font-size: 12px;
+
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.order-info span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #89938c;
+    font-size: 10px;
+
+    overflow-wrap: anywhere;
+}
+
+.order-amount {
+    min-width: 70px;
+
+    color: #2e7d32;
+    font-size: 13px;
+    font-weight: 800;
+
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    min-height: 25px;
+    padding: 5px 9px;
+
+    border-radius: 20px;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+.status i {
+    font-size: 8px;
+}
+
+.status-success {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-pending {
+    background: #fff6df;
+    color: #a56a00;
+}
+
+.status-cancelled,
+.status-danger {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.status-processing {
+    background: #e8f0ff;
+    color: #315da8;
+}
+
+/* =========================================================
+   STATUS GRID
+========================================================= */
+
+.kv-status-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 10px;
+
+    padding: 16px;
+}
+
+.kv-status-box {
+    min-width: 0;
+
+    padding: 14px;
+
+    background: #f8faf8;
+    border: 1px solid #e4ebe5;
+    border-radius: 10px;
+
+    text-align: center;
+}
+
+.kv-status-box strong {
+    display: block;
+
+    color: #2c4e32;
+    font-size: 19px;
+
+    overflow-wrap: anywhere;
+}
+
+.kv-status-box span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #849087;
+    font-size: 10px;
+
+    overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   CATEGORY REPORT
+========================================================= */
+
+.category-report {
+    padding: 16px;
+}
+
+.category-item {
+    min-width: 0;
+    margin-bottom: 16px;
+}
+
+.category-item:last-child {
+    margin-bottom: 0;
+}
+
+.category-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 10px;
+    margin-bottom: 7px;
+
+    min-width: 0;
+}
+
+.category-top span:first-child {
+    min-width: 0;
+
+    color: #425548;
+    font-size: 11px;
+    font-weight: 700;
+
+    overflow-wrap: anywhere;
+}
+
+.category-top span:last-child {
+    flex: 0 0 auto;
+
+    color: #2e7d32;
+    font-size: 11px;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+.progress {
+    width: 100%;
+    height: 7px;
+
+    background: #e9efea;
+    border-radius: 20px;
+
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    max-width: 100%;
+
+    background: #43a047;
+    border-radius: inherit;
+}
+
+.kv-category-insight {
+    margin-top: 13px;
+    padding: 11px 12px;
+
+    background: #f1f8f2;
+    border-radius: 9px;
+
+    color: #55705b;
+    font-size: 10px;
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+}
+
+.category-empty {
+    padding: 25px 15px;
+
+    text-align: center;
+    color: #89938c;
+    font-size: 12px;
+}
+
+/* =========================================================
+   TABLE — NEVER OVERLAP
+========================================================= */
+
+.report-table-wrapper {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    -webkit-overflow-scrolling: touch;
+}
+
+.report-table {
+    width: 100%;
+    min-width: 600px;
+
+    border-collapse: collapse;
+    border-spacing: 0;
+
+    font-size: 11px;
+}
+
+.report-table th {
+    padding: 12px 14px;
+
+    background: #f6f9f6;
+
+    color: #5b6b60;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    text-align: left;
+    white-space: nowrap;
+
+    border-bottom: 1px solid #e5ebe6;
+}
+
+.report-table td {
+    padding: 12px 14px;
+
+    color: #536159;
+
+    border-bottom: 1px solid #edf1ee;
+
+    vertical-align: middle;
+
+    overflow-wrap: anywhere;
+}
+
+.report-table tr:last-child td {
+    border-bottom: 0;
+}
+
+.report-table td strong {
+    color: #29492f;
+}
+
+/* =========================================================
+   REPORT INFO
+========================================================= */
+
+.report-info {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+
+    padding: 16px;
+}
+
+.info-item {
+    min-width: 0;
+
+    padding: 13px;
+
+    background: #f8faf8;
+    border: 1px solid #e4ebe5;
+    border-radius: 10px;
+}
+
+.info-item i {
+    color: #43a047;
+    margin-right: 5px;
+}
+
+.info-item strong {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #36563d;
+    font-size: 11px;
+}
+
+.info-item span {
+    color: #7c887f;
+    font-size: 10px;
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.kv-report-footer {
+    width: 100%;
+    min-width: 0;
+
+    padding: 25px 10px 5px;
+
+    text-align: center;
+
+    color: #8b958e;
+    font-size: 10px;
+
+    overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.kv-report-toast {
+    position: fixed;
+
+    right: 22px;
+    bottom: 22px;
+
+    z-index: 99999;
+
+    max-width: min(360px, calc(100vw - 40px));
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 12px 15px;
+
+    background: #ffffff;
+    border: 1px solid #dce7de;
+    border-radius: 10px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+    color: #38513e;
+    font-size: 12px;
+
+    overflow-wrap: anywhere;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(15px);
+
+    transition: 0.25s ease;
+}
+
+.kv-report-toast.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.kv-toast-icon {
+    width: 30px;
+    height: 30px;
+
+    flex: 0 0 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #e8f5e9;
+    color: #2e7d32;
+
+    border-radius: 50%;
+}
+
+/* =========================================================
+   PRINT
+========================================================= */
+
+.print-only {
+    display: none;
+}
+
+@media print {
+
+    .kv-report-actions,
+    .kv-report-toast,
+    aside,
+    .kv-sidebar {
+        display: none !important;
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 0 !important;
+    }
+
+    .print-only {
+        display: block;
+    }
+
+    .report-card,
+    .kv-kpi,
+    .kv-intelligence-card {
+        box-shadow: none;
+        break-inside: avoid;
+    }
+
+    body {
+        background: #ffffff;
+    }
+}
+
+/* =========================================================
+   LARGE TABLET
+========================================================= */
+
+@media (max-width: 1150px) {
+
+    .main-content {
+        padding: 22px;
+    }
+
+    .kv-kpi-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .kv-intelligence-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .report-grid {
+        grid-template-columns:
+            minmax(0, 1fr);
+    }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+
+        padding: 20px 18px 35px;
+    }
+
+    .kv-report-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .kv-report-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .kv-report-btn {
+        flex: 0 0 auto;
+    }
+
+    .quick-links {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .main-content {
+        padding: 16px 13px 30px;
+    }
+
+    .kv-report-header {
+        padding: 17px;
+        border-radius: 14px;
+    }
+
+    .kv-report-title {
+        align-items: flex-start;
+    }
+
+    .kv-report-icon {
+        width: 44px;
+        height: 44px;
+        flex-basis: 44px;
+        font-size: 19px;
+    }
+
+    .kv-report-title h1 {
+        font-size: 20px;
+    }
+
+    .kv-report-actions {
+        display: grid;
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        width: 100%;
+    }
+
+    .kv-report-btn {
+        width: 100%;
+    }
+
+    .kv-kpi-grid,
+    .kv-intelligence-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 10px;
+    }
+
+    .kv-kpi {
+        padding: 14px;
+    }
+
+    .kv-kpi-value {
+        font-size: 20px;
+    }
+
+    .kv-smart-banner {
+        align-items: flex-start;
+        padding: 14px;
+    }
+
+    .report-card-header {
+        align-items: flex-start;
+    }
+
+    .quick-links {
+        grid-template-columns:
+            minmax(0, 1fr);
+    }
+
+    /* ORDER ROW — NO OVERLAP */
+    .order-row {
+        grid-template-columns:
+            minmax(0, 1fr)
+            auto;
+
+        grid-template-areas:
+            "info amount"
+            "status status";
+
+        gap: 9px 12px;
+    }
+
+    .order-info {
+        grid-area: info;
+    }
+
+    .order-amount {
+        grid-area: amount;
+        align-self: start;
+    }
+
+    .order-row .status {
+        grid-area: status;
+        justify-self: flex-start;
+    }
+
+    .kv-status-grid {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+        gap: 7px;
+    }
+
+    .kv-status-box {
+        padding: 11px 5px;
+    }
+
+    .report-info {
+        grid-template-columns:
+            minmax(0, 1fr);
+    }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .main-content {
+        padding: 12px 10px 25px;
+    }
+
+    .kv-report-title {
+        width: 100%;
+    }
+
+    .kv-report-title h1 {
+        font-size: 18px;
+    }
+
+    .kv-report-title p {
+        font-size: 11px;
+    }
+
+    .kv-report-actions {
+        grid-template-columns:
+            minmax(0, 1fr);
+    }
+
+    .kv-report-meta {
+        gap: 8px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .kv-kpi-grid,
+    .kv-intelligence-grid {
+        grid-template-columns:
+            minmax(0, 1fr);
+    }
+
+    .kv-kpi-value {
+        font-size: 22px;
+    }
+
+    .kv-smart-banner {
+        gap: 10px;
+    }
+
+    .kv-smart-icon {
+        width: 38px;
+        height: 38px;
+        flex-basis: 38px;
+    }
+
+    .report-card-header {
+        padding: 14px;
+    }
+
+    .order-row {
+        grid-template-columns:
+            minmax(0, 1fr);
+
+        grid-template-areas:
+            "info"
+            "amount"
+            "status";
+    }
+
+    .order-amount {
+        justify-self: flex-start;
+        text-align: left;
+    }
+
+    .kv-status-grid {
+        grid-template-columns:
+            minmax(0, 1fr);
+    }
+
+    .category-top {
+        align-items: flex-start;
+    }
+
+    .kv-report-toast {
+        right: 10px;
+        bottom: 10px;
+        max-width: calc(100vw - 20px);
+    }
+}
+
+/* =========================================================
+   RTL
+========================================================= */
+
+html[dir="rtl"] .main-content,
+html[lang="ur"] .main-content,
+html[lang="ks"] .main-content,
+html[lang="sd"] .main-content {
+    margin-left: 0 !important;
+    margin-right: 260px !important;
+}
+
+html[dir="rtl"] .report-table th,
+html[dir="rtl"] .report-table td {
+    text-align: right;
+}
+
+html[dir="rtl"] .order-amount {
+    text-align: left;
+}
+
+@media (max-width: 900px) {
+    html[dir="rtl"] .main-content,
+    html[lang="ur"] .main-content,
+    html[lang="ks"] .main-content,
+    html[lang="sd"] .main-content {
+        margin-right: 0 !important;
+        width: 100% !important;
+    }
+}
+
+/* =========================================================
+   FINAL OVERFLOW PROTECTION
+========================================================= */
+
+.kv-report-header,
+.kv-smart-banner,
+.kv-kpi-grid,
+.kv-intelligence-grid,
+.report-grid,
+.report-card,
+.orders-list,
+.order-row,
+.quick-links,
+.quick-link,
+.category-report,
+.report-info {
+    min-width: 0;
+}
+
+img,
+svg,
+video {
+    max-width: 100%;
+}
+
+button,
+a {
+    max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+span,
+td,
+th {
+    overflow-wrap: anywhere;
+}

@@ -11,3 +11,10 @@ node_modules/
 static/uploads/*
 KisanVision360.apk
 KisanVision360-New.apk
+KerasCache/
+dataset_clean/
+dataset_filtered/
+.env
+KerasCache/
+dataset_clean/
+dataset_filtered/

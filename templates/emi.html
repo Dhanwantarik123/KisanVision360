@@ -1,102 +1,956 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿{% extends "base.html" %}
 
-<head>
+{% block title %}KisanVision360+ | Farm EMI Planner{% endblock %}
 
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>
-        KisanVision360 | EMI Calculator
-    </title>
-
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/sidebar.css') }}">
-
-    <link rel="stylesheet"
+{% block head %}
+<link rel="stylesheet"
           href="{{ url_for('static', filename='css/emi.css') }}">
+<style>
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        :root {
+            --green: #1b5e20;
+            --green2: #43a047;
+            --light-green: #e8f5e9;
+            --orange: #fb8c00;
+            --blue: #1565c0;
+            --red: #c62828;
+            --text: #263238;
+            --muted: #6b7280;
+            --border: #e2e8e4;
+            --bg: #f5f7f6;
+            --white: #ffffff;
+        }
 
-</head>
+
+        * {
+            box-sizing: border-box;
+        }
 
 
-<body>
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
 
-<!-- SIDEBAR -->
+        .emi-page {
+            max-width: 1200px;
+            margin: auto;
+            padding: 28px;
+        }
 
-{% include "components/sidebar.html" %}
+
+        /* =====================================================
+           TOPBAR
+        ====================================================== */
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 22px;
+        }
 
 
-<!-- MAIN CONTENT -->
+        .title-section {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+
+        .title-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 15px;
+
+            background: linear-gradient(
+                135deg,
+                var(--green),
+                var(--green2)
+            );
+
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 22px;
+
+            box-shadow:
+                0 8px 20px rgba(27, 94, 32, .18);
+        }
+
+
+        .title-section h1 {
+            margin: 0;
+            font-size: 27px;
+            font-weight: 800;
+        }
+
+
+        .title-section p {
+            margin: 5px 0 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+
+        .profile img {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+
+            box-shadow:
+                0 3px 12px rgba(0, 0, 0, .10);
+        }
+
+
+        .profile h4 {
+            margin: 0;
+            font-size: 14px;
+        }
+
+
+        .profile span {
+            display: block;
+            margin-top: 3px;
+            color: var(--green);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+
+        .profile span i {
+            font-size: 7px;
+        }
+
+
+        /* =====================================================
+           FINANCE STATUS
+        ====================================================== */
+
+        .finance-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            padding: 13px 16px;
+            margin-bottom: 20px;
+
+            border: 1px solid #dce9df;
+            background: #f2faf3;
+
+            border-radius: 12px;
+
+            color: #35633a;
+            font-size: 13px;
+            font-weight: 650;
+        }
+
+
+        .finance-status i {
+            color: var(--green);
+        }
+
+
+        /* =====================================================
+           BANNER
+        ====================================================== */
+
+        .emi-banner {
+            position: relative;
+            overflow: hidden;
+
+            display: flex;
+            align-items: center;
+            gap: 20px;
+
+            padding: 27px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+
+            background:
+                linear-gradient(
+                    120deg,
+                    #e8f5e9,
+                    #fff8e8
+                );
+
+            border: 1px solid #dfe9df;
+        }
+
+
+        .banner-icon {
+            width: 65px;
+            height: 65px;
+
+            flex-shrink: 0;
+
+            border-radius: 17px;
+
+            background: var(--green);
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 28px;
+        }
+
+
+        .emi-banner h2 {
+            margin: 0;
+            font-size: 23px;
+        }
+
+
+        .emi-banner p {
+            margin: 7px 0 0;
+            color: var(--muted);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           CALCULATOR
+        ====================================================== */
+
+        .calculator-section {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                minmax(0, 1fr);
+
+            gap: 22px;
+        }
+
+
+        .calculator-card,
+        .result-card {
+            background: white;
+
+            border: 1px solid var(--border);
+            border-radius: 20px;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, .05);
+        }
+
+
+        .calculator-card {
+            padding: 25px;
+        }
+
+
+        .card-heading {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+
+        .heading-icon {
+            width: 45px;
+            height: 45px;
+
+            border-radius: 13px;
+
+            background: var(--light-green);
+            color: var(--green);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .card-heading h2 {
+            margin: 0;
+            font-size: 19px;
+        }
+
+
+        .card-heading p {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           FORM
+        ====================================================== */
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-bottom: 8px;
+
+            font-size: 13px;
+            font-weight: 750;
+        }
+
+
+        .form-group label i {
+            color: var(--green);
+        }
+
+
+        .input-box {
+            display: flex;
+            align-items: center;
+
+            height: 49px;
+
+            border: 1px solid #d9e0db;
+            border-radius: 11px;
+
+            overflow: hidden;
+
+            background: white;
+
+            transition: .2s ease;
+        }
+
+
+        .input-box:focus-within {
+            border-color: var(--green);
+
+            box-shadow:
+                0 0 0 3px rgba(27, 94, 32, .08);
+        }
+
+
+        .input-box span {
+            padding: 0 14px;
+
+            color: var(--green);
+            font-weight: 800;
+        }
+
+
+        .input-box input {
+            width: 100%;
+            height: 100%;
+
+            border: 0;
+            outline: 0;
+
+            padding: 0 10px;
+
+            font-size: 14px;
+
+            background: transparent;
+        }
+
+
+        .input-box span:last-child {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+
+        .calculate-btn {
+            width: 100%;
+            min-height: 50px;
+
+            border: 0;
+            border-radius: 11px;
+
+            background: var(--green);
+            color: white;
+
+            font-size: 14px;
+            font-weight: 800;
+
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 9px;
+
+            transition: .2s ease;
+        }
+
+
+        .calculate-btn:hover {
+            background: #174f1b;
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+           RESULT
+        ====================================================== */
+
+        .result-card {
+            padding: 25px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #ffffff,
+                    #f5faf6
+                );
+        }
+
+
+        .result-icon {
+            width: 50px;
+            height: 50px;
+
+            border-radius: 14px;
+
+            background: var(--light-green);
+            color: var(--green);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 20px;
+        }
+
+
+        .result-card h2 {
+            margin: 15px 0 5px;
+            font-size: 21px;
+        }
+
+
+        .result-card > p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+
+        .emi-result {
+            margin-top: 22px;
+
+            padding: 22px;
+
+            border-radius: 16px;
+
+            background: var(--green);
+            color: white;
+        }
+
+
+        .emi-result span {
+            display: block;
+            font-size: 12px;
+            opacity: .85;
+        }
+
+
+        .emi-result strong {
+            display: block;
+
+            margin-top: 5px;
+
+            font-size: 32px;
+        }
+
+
+        /* =====================================================
+           RESULT DETAILS
+        ====================================================== */
+
+        .result-details {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+
+            margin-top: 17px;
+        }
+
+
+        .result-details > div {
+            padding: 14px;
+
+            border: 1px solid var(--border);
+
+            background: white;
+
+            border-radius: 12px;
+        }
+
+
+        .result-details span {
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            margin-bottom: 5px;
+        }
+
+
+        .result-details strong {
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           FINANCE METRICS
+        ====================================================== */
+
+        .finance-metrics {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 12px;
+
+            margin-top: 15px;
+        }
+
+
+        .metric {
+            padding: 13px;
+
+            border-radius: 12px;
+
+            background: #f8faf8;
+
+            border: 1px solid var(--border);
+        }
+
+
+        .metric span {
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+            margin-bottom: 5px;
+        }
+
+
+        .metric strong {
+            font-size: 14px;
+        }
+
+
+        .interest-value {
+            color: var(--orange);
+        }
+
+
+        /* =====================================================
+           SMART INSIGHT
+        ====================================================== */
+
+        .smart-insight {
+            margin-top: 17px;
+
+            padding: 16px;
+
+            border-radius: 13px;
+
+            background: #fff8e8;
+
+            border: 1px solid #f4dfb8;
+        }
+
+
+        .smart-insight-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            font-size: 13px;
+            font-weight: 800;
+
+            color: #8a5a00;
+
+            margin-bottom: 6px;
+        }
+
+
+        .smart-insight p {
+            margin: 0;
+
+            color: #705d36;
+
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           PLANNING
+        ====================================================== */
+
+        .planning-card {
+            margin-top: 22px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 18px;
+
+            padding: 22px;
+
+            box-shadow:
+                0 7px 22px rgba(0, 0, 0, .04);
+        }
+
+
+        .planning-header {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 16px;
+        }
+
+
+        .planning-header i {
+            color: var(--blue);
+        }
+
+
+        .planning-header h3 {
+            margin: 0;
+            font-size: 17px;
+        }
+
+
+        .planning-header p {
+            margin: 4px 0 0;
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+
+        .planning-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 13px;
+        }
+
+
+        .planning-item {
+            padding: 14px;
+
+            border-radius: 12px;
+
+            background: #f7f9f8;
+        }
+
+
+        .planning-item span {
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .planning-item strong {
+            font-size: 15px;
+        }
+
+
+        /* =====================================================
+           INFORMATION
+        ====================================================== */
+
+        .info-card {
+            margin-top: 22px;
+
+            padding: 20px;
+
+            border-radius: 17px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            display: flex;
+
+            gap: 13px;
+
+            align-items: flex-start;
+        }
+
+
+        .info-icon {
+            width: 40px;
+            height: 40px;
+
+            flex-shrink: 0;
+
+            border-radius: 11px;
+
+            background: #fff8e1;
+
+            color: #ef8c00;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .info-card h3 {
+            margin: 0 0 6px;
+
+            font-size: 16px;
+        }
+
+
+        .info-card p {
+            margin: 0;
+
+            color: var(--muted);
+
+            line-height: 1.7;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           BACK BUTTON
+        ====================================================== */
+
+        .back-section {
+            margin-top: 22px;
+        }
+
+
+        .back-section a {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            color: var(--green);
+
+            text-decoration: none;
+
+            font-weight: 750;
+
+            font-size: 13px;
+        }
+
+
+        .back-section a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ====================================================== */
+
+        footer {
+            text-align: center;
+
+            padding: 30px 10px 10px;
+
+            color: #7a817c;
+
+            font-size: 12px;
+        }
+
+
+        footer i {
+            color: var(--green);
+        }
+
+
+        footer span {
+            margin: 0 6px;
+        }
+
+
+        /* =====================================================
+           RTL
+        ====================================================== */
+
+        html[dir="rtl"] .title-section,
+        html[dir="rtl"] .profile,
+        html[dir="rtl"] .emi-banner,
+        html[dir="rtl"] .card-heading,
+        html[dir="rtl"] .planning-header,
+        html[dir="rtl"] .info-card {
+            direction: rtl;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 900px) {
+
+            .calculator-section {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .emi-page {
+                padding: 14px;
+            }
+
+
+            .topbar {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+
+            .profile {
+                width: 100%;
+            }
+
+
+            .emi-banner {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+
+            .result-details,
+            .finance-metrics,
+            .planning-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .calculator-card,
+            .result-card {
+                padding: 19px;
+            }
+
+
+            .emi-result strong {
+                font-size: 27px;
+            }
+
+        }
+
+    </style>
+{% endblock %}
+
+{% block page_title %}Farm EMI Planner{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+
+
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
 
 <main class="main-content">
 
 
-    <!-- TOPBAR -->
-
-    <header class="topbar">
-
-        <div class="title-section">
-
-            <div class="title-icon">
-
-                <i class="fa-solid fa-calculator"></i>
-
-            </div>
-
-            <div>
-
-                <h1>
-                    EMI Calculator
-                </h1>
-
-                <p>
-                    Calculate your farm equipment loan EMI
-                </p>
-
-            </div>
-
-        </div>
+<div class="emi-page">
 
 
-        <!-- PROFILE -->
+    <!-- =====================================================
+         TOPBAR
+    ====================================================== -->
 
-        <div class="profile">
-
-            <img
-                src="{{ url_for(
-                    'static',
-                    filename='images/farmer.jpg'
-                ) }}"
-                alt="Farmer">
-
-            <div>
-
-                <h4>
-                    {{ name }}
-                </h4>
-
-                <span>
-                    <i class="fa-solid fa-circle"></i>
-                    Farmer
-                </span>
-
-            </div>
-
-        </div>
-
-    </header>
+    
 
 
-    <!-- PAGE BANNER -->
+
+    <!-- =====================================================
+         STATUS
+    ====================================================== -->
+
+    <div class="finance-status">
+
+        <i class="fa-solid fa-shield-halved"></i>
+
+        <span>
+            KisanVision360+ Financial Planning Tool
+        </span>
+
+        <span>
+            â€¢
+        </span>
+
+        <span>
+            Calculate before taking a loan
+        </span>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         BANNER
+    ====================================================== -->
 
     <section class="emi-banner">
+
 
         <div class="banner-icon">
 
@@ -104,14 +958,17 @@
 
         </div>
 
+
         <div>
 
             <h2>
-                Farm Machine EMI Calculator
+                Smart Farm Machine EMI Calculator
             </h2>
 
+
             <p>
-                Estimate your monthly payment before
+                Estimate your monthly EMI, total interest,
+                total repayment and basic affordability before
                 purchasing agricultural machinery.
             </p>
 
@@ -120,14 +977,20 @@
     </section>
 
 
-    <!-- CALCULATOR -->
+
+    <!-- =====================================================
+         CALCULATOR
+    ====================================================== -->
 
     <section class="calculator-section">
 
 
-        <!-- INPUT CARD -->
+        <!-- =================================================
+             INPUT CARD
+        ================================================== -->
 
         <div class="calculator-card">
+
 
             <div class="card-heading">
 
@@ -137,6 +1000,7 @@
 
                 </div>
 
+
                 <div>
 
                     <h2>
@@ -144,7 +1008,7 @@
                     </h2>
 
                     <p>
-                        Enter your loan information
+                        Enter the expected equipment financing details.
                     </p>
 
                 </div>
@@ -152,7 +1016,10 @@
             </div>
 
 
-            <form onsubmit="calculateEMI(); return false;">
+
+            <form
+                id="emiForm"
+                onsubmit="calculateEMI(); return false;">
 
 
                 <!-- MACHINE PRICE -->
@@ -167,20 +1034,60 @@
 
                     </label>
 
+
                     <div class="input-box">
 
-                        <span>₹</span>
+                        <span>
+                            â‚¹
+                        </span>
+
 
                         <input
                             type="number"
                             id="amount"
                             placeholder="Example: 600000"
                             min="1"
+                            step="1"
                             required>
 
                     </div>
 
                 </div>
+
+
+
+                <!-- DOWN PAYMENT -->
+
+                <div class="form-group">
+
+                    <label for="downPayment">
+
+                        <i class="fa-solid fa-wallet"></i>
+
+                        Down Payment
+
+                    </label>
+
+
+                    <div class="input-box">
+
+                        <span>
+                            â‚¹
+                        </span>
+
+
+                        <input
+                            type="number"
+                            id="downPayment"
+                            placeholder="Example: 100000"
+                            min="0"
+                            step="1"
+                            value="0">
+
+                    </div>
+
+                </div>
+
 
 
                 <!-- INTEREST -->
@@ -191,11 +1098,13 @@
 
                         <i class="fa-solid fa-percent"></i>
 
-                        Interest Rate
+                        Annual Interest Rate
 
                     </label>
 
+
                     <div class="input-box">
+
 
                         <input
                             type="number"
@@ -203,13 +1112,18 @@
                             value="8"
                             step="0.01"
                             min="0"
+                            max="100"
                             required>
 
-                        <span>%</span>
+
+                        <span>
+                            %
+                        </span>
 
                     </div>
 
                 </div>
+
 
 
                 <!-- YEARS -->
@@ -224,7 +1138,9 @@
 
                     </label>
 
+
                     <div class="input-box">
+
 
                         <input
                             type="number"
@@ -232,14 +1148,21 @@
                             value="5"
                             min="1"
                             max="30"
+                            step="1"
                             required>
 
-                        <span>Years</span>
+
+                        <span>
+                            Years
+                        </span>
 
                     </div>
 
                 </div>
 
+
+
+                <!-- CALCULATE -->
 
                 <button
                     type="submit"
@@ -247,18 +1170,23 @@
 
                     <i class="fa-solid fa-calculator"></i>
 
-                    Calculate EMI
+                    Calculate Smart EMI
 
                 </button>
+
 
             </form>
 
         </div>
 
 
-        <!-- RESULT CARD -->
+
+        <!-- =================================================
+             RESULT CARD
+        ================================================== -->
 
         <div class="result-card">
+
 
             <div class="result-icon">
 
@@ -273,9 +1201,12 @@
 
 
             <p>
-                Your estimated monthly payment
+                Your estimated monthly financing requirement.
             </p>
 
+
+
+            <!-- EMI -->
 
             <div class="emi-result">
 
@@ -283,23 +1214,28 @@
                     Monthly EMI
                 </span>
 
+
                 <strong id="result">
-                    ₹ 0
+                    â‚¹ 0
                 </strong>
 
             </div>
 
 
+
+            <!-- BASIC DETAILS -->
+
             <div class="result-details">
+
 
                 <div>
 
                     <span>
-                        Loan Amount
+                        Financed Amount
                     </span>
 
                     <strong id="loanResult">
-                        ₹ 0
+                        â‚¹ 0
                     </strong>
 
                 </div>
@@ -338,10 +1274,92 @@
                     </span>
 
                     <strong id="totalResult">
-                        ₹ 0
+                        â‚¹ 0
                     </strong>
 
                 </div>
+
+            </div>
+
+
+
+            <!-- EXTRA METRICS -->
+
+            <div class="finance-metrics">
+
+
+                <div class="metric">
+
+                    <span>
+                        Total Interest
+                    </span>
+
+                    <strong
+                        class="interest-value"
+                        id="interestResult">
+
+                        â‚¹ 0
+
+                    </strong>
+
+                </div>
+
+
+                <div class="metric">
+
+                    <span>
+                        Down Payment
+                    </span>
+
+                    <strong id="downPaymentResult">
+
+                        â‚¹ 0
+
+                    </strong>
+
+                </div>
+
+
+                <div class="metric">
+
+                    <span>
+                        Machine Cost
+                    </span>
+
+                    <strong id="machineResult">
+
+                        â‚¹ 0
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SMART INSIGHT -->
+
+            <div
+                class="smart-insight"
+                id="smartInsight">
+
+
+                <div class="smart-insight-title">
+
+                    <i class="fa-solid fa-lightbulb"></i>
+
+                    Smart Finance Insight
+
+                </div>
+
+
+                <p id="insightText">
+
+                    Enter your machine price and loan details
+                    to generate a basic finance insight.
+
+                </p>
 
             </div>
 
@@ -350,9 +1368,87 @@
     </section>
 
 
-    <!-- INFORMATION -->
+
+    <!-- =====================================================
+         LOAN PLANNING
+    ====================================================== -->
+
+    <section class="planning-card">
+
+
+        <div class="planning-header">
+
+            <i class="fa-solid fa-chart-pie"></i>
+
+
+            <div>
+
+                <h3>
+                    Farm Equipment Financing Snapshot
+                </h3>
+
+                <p>
+                    Understand the financial structure of your purchase.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="planning-grid">
+
+
+            <div class="planning-item">
+
+                <span>
+                    Your Contribution
+                </span>
+
+                <strong id="contributionPercent">
+                    0%
+                </strong>
+
+            </div>
+
+
+            <div class="planning-item">
+
+                <span>
+                    Financed Share
+                </span>
+
+                <strong id="financePercent">
+                    0%
+                </strong>
+
+            </div>
+
+
+            <div class="planning-item">
+
+                <span>
+                    Interest as % of Loan
+                </span>
+
+                <strong id="interestPercent">
+                    0%
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         INFORMATION
+    ====================================================== -->
 
     <section class="info-card">
+
 
         <div class="info-icon">
 
@@ -360,17 +1456,25 @@
 
         </div>
 
+
         <div>
 
             <h3>
-                EMI Calculation
+                How EMI Is Calculated
             </h3>
 
+
             <p>
-                EMI depends on the loan amount,
-                interest rate and repayment period.
-                Use the calculator to estimate your
-                monthly farm equipment loan payment.
+
+                EMI depends on the financed amount,
+                annual interest rate and repayment period.
+                A larger down payment reduces the financed
+                amount, while a longer repayment period usually
+                reduces monthly EMI but can increase total interest.
+
+                This calculator provides an estimate only.
+                Actual loan terms depend on the bank or financial institution.
+
             </p>
 
         </div>
@@ -378,11 +1482,60 @@
     </section>
 
 
-    <!-- BACK -->
+
+    <!-- =====================================================
+         FINANCE CONNECTION
+    ====================================================== -->
+
+    <section class="info-card">
+
+
+        <div
+            class="info-icon"
+            style="background:#e3f2fd;color:#1565c0;">
+
+            <i class="fa-solid fa-link"></i>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                Smart Finance Workflow
+            </h3>
+
+
+            <p>
+
+                Equipment Selection â†’
+                Machine Price â†’
+                Down Payment â†’
+                EMI Calculation â†’
+                Total Interest â†’
+                Farm Profitability Check â†’
+                Financing Decision
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         BACK TO FINANCE
+    ====================================================== -->
 
     <div class="back-section">
 
-        <a href="{{ url_for('finance') }}">
+        <!-- IMPORTANT:
+             finance is a Blueprint.
+             Correct endpoint = finance.finance
+        -->
+
+        <a href="{{ url_for('finance.finance') }}">
 
             <i class="fa-solid fa-arrow-left"></i>
 
@@ -393,126 +1546,409 @@
     </div>
 
 
-    <!-- FOOTER -->
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
 
     <footer>
 
         <i class="fa-solid fa-leaf"></i>
 
-        KisanVision360 Smart Farming Finance
+        <strong>
+            KisanVision360+
+        </strong>
 
-        <span>•</span>
+        Smart Farming Finance
+
+        <span>â€¢</span>
 
         Smart Farm Financial Planning
 
     </footer>
 
 
+</div>
+
 </main>
 
 
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+{% endblock %}
+
+{% block scripts %}
 <script>
+
+
+/* =========================================================
+   FORMAT CURRENCY
+========================================================= */
+
+function formatINR(value) {
+
+    return "â‚¹ " +
+        Math.round(value).toLocaleString("en-IN");
+
+}
+
+
+
+/* =========================================================
+   GET ELEMENTS
+========================================================= */
+
+const amountInput =
+    document.getElementById("amount");
+
+const downPaymentInput =
+    document.getElementById("downPayment");
+
+const rateInput =
+    document.getElementById("rate");
+
+const yearsInput =
+    document.getElementById("years");
+
+
+
+/* =========================================================
+   CALCULATE EMI
+========================================================= */
 
 function calculateEMI() {
 
-    let amount =
+
+    const amount =
         parseFloat(
-            document.getElementById("amount").value
+            amountInput.value
         );
 
-    let rate =
+
+    let downPayment =
         parseFloat(
-            document.getElementById("rate").value
+            downPaymentInput.value
+        ) || 0;
+
+
+    const rate =
+        parseFloat(
+            rateInput.value
         );
 
-    let years =
+
+    const years =
         parseFloat(
-            document.getElementById("years").value
+            yearsInput.value
         );
 
+
+    /* =====================================================
+       VALIDATION
+    ====================================================== */
 
     if (
         !amount ||
         amount <= 0 ||
         rate < 0 ||
+        rate > 100 ||
         !years ||
         years <= 0
     ) {
 
-        alert("Please enter valid loan details.");
+        alert(
+            "Please enter valid machine price, interest rate and loan period."
+        );
 
         return;
 
     }
 
 
-    let months = years * 12;
+    if (downPayment < 0) {
 
-    let monthlyRate =
+        downPayment = 0;
+
+    }
+
+
+    if (downPayment >= amount) {
+
+        alert(
+            "Down payment must be less than the machine price."
+        );
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       FINANCED AMOUNT
+    ====================================================== */
+
+    const loanAmount =
+        amount - downPayment;
+
+
+    const months =
+        years * 12;
+
+
+    const monthlyRate =
         rate / (12 * 100);
+
 
     let emi;
 
 
+
+    /* =====================================================
+       EMI FORMULA
+    ====================================================== */
+
     if (monthlyRate === 0) {
 
-        emi = amount / months;
+        emi =
+            loanAmount / months;
 
     }
 
     else {
 
+        const power =
+            Math.pow(
+                1 + monthlyRate,
+                months
+            );
+
+
         emi =
             (
-                amount *
+                loanAmount *
                 monthlyRate *
-                Math.pow(
-                    1 + monthlyRate,
-                    months
-                )
+                power
             )
             /
             (
-                Math.pow(
-                    1 + monthlyRate,
-                    months
-                ) - 1
+                power - 1
             );
 
     }
 
 
-    let totalPayment =
+
+    /* =====================================================
+       TOTALS
+    ====================================================== */
+
+    const totalPayment =
         emi * months;
 
 
-    document.getElementById("result").innerHTML =
-        "₹ " +
-        Math.round(emi).toLocaleString("en-IN");
+    const totalInterest =
+        totalPayment - loanAmount;
 
 
-    document.getElementById("loanResult").innerHTML =
-        "₹ " +
-        Math.round(amount).toLocaleString("en-IN");
+
+    /* =====================================================
+       PERCENTAGES
+    ====================================================== */
+
+    const contributionPercent =
+        (downPayment / amount) * 100;
 
 
-    document.getElementById("rateResult").innerHTML =
+    const financePercent =
+        (loanAmount / amount) * 100;
+
+
+    const interestPercent =
+        loanAmount > 0
+            ? (totalInterest / loanAmount) * 100
+            : 0;
+
+
+
+    /* =====================================================
+       DISPLAY BASIC RESULT
+    ====================================================== */
+
+    document.getElementById("result").textContent =
+        formatINR(emi);
+
+
+    document.getElementById("loanResult").textContent =
+        formatINR(loanAmount);
+
+
+    document.getElementById("rateResult").textContent =
         rate + "%";
 
 
-    document.getElementById("yearsResult").innerHTML =
+    document.getElementById("yearsResult").textContent =
         years + " Years";
 
 
-    document.getElementById("totalResult").innerHTML =
-        "₹ " +
-        Math.round(totalPayment).toLocaleString("en-IN");
+    document.getElementById("totalResult").textContent =
+        formatINR(totalPayment);
+
+
+
+    /* =====================================================
+       EXTRA METRICS
+    ====================================================== */
+
+    document.getElementById("interestResult").textContent =
+        formatINR(totalInterest);
+
+
+    document.getElementById("downPaymentResult").textContent =
+        formatINR(downPayment);
+
+
+    document.getElementById("machineResult").textContent =
+        formatINR(amount);
+
+
+
+    /* =====================================================
+       PLANNING SNAPSHOT
+    ====================================================== */
+
+    document.getElementById("contributionPercent").textContent =
+        contributionPercent.toFixed(1) + "%";
+
+
+    document.getElementById("financePercent").textContent =
+        financePercent.toFixed(1) + "%";
+
+
+    document.getElementById("interestPercent").textContent =
+        interestPercent.toFixed(1) + "%";
+
+
+
+    /* =====================================================
+       SMART INSIGHT
+    ====================================================== */
+
+    let insight = "";
+
+
+    if (contributionPercent >= 30) {
+
+        insight =
+            "Your down payment is relatively strong. " +
+            "A larger upfront contribution can reduce the financed amount and total interest.";
+
+    }
+
+    else if (contributionPercent >= 15) {
+
+        insight =
+            "Your financing structure is moderate. " +
+            "Compare EMI with your expected farm income before choosing the loan.";
+
+    }
+
+    else {
+
+        insight =
+            "A smaller down payment means a larger financed amount. " +
+            "Check whether the monthly EMI remains comfortable during low-income farming months.";
+
+    }
+
+
+    if (rate === 0) {
+
+        insight +=
+            " Since the interest rate is 0%, the EMI is divided directly across the loan period.";
+
+    }
+
+    else if (years >= 10) {
+
+        insight +=
+            " A long loan period may reduce monthly EMI but can increase the total interest paid.";
+
+    }
+
+
+    document.getElementById("insightText").textContent =
+        insight;
 
 }
 
+
+
+/* =========================================================
+   LIVE RECALCULATION
+========================================================= */
+
+[
+    amountInput,
+    downPaymentInput,
+    rateInput,
+    yearsInput
+
+].forEach(
+    function (element) {
+
+        if (element) {
+
+            element.addEventListener(
+                "input",
+                function () {
+
+                    /*
+                       Calculate automatically only
+                       after machine price is entered.
+                    */
+
+                    if (
+                        amountInput.value &&
+                        parseFloat(amountInput.value) > 0
+                    ) {
+
+                        calculateEMI();
+
+                    }
+
+                }
+            );
+
+        }
+
+    }
+);
+
+
+
+/* =========================================================
+   INITIAL CALCULATION
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        if (
+            amountInput &&
+            amountInput.value
+        ) {
+
+            calculateEMI();
+
+        }
+
+    }
+);
+
+
 </script>
+{% endblock %}
 
-
-</body>
-
-</html>
