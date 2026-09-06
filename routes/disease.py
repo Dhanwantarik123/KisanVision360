@@ -80,7 +80,7 @@ BASE_DIR = Path(
 MODEL_PATH = (
     BASE_DIR
     / "ai_models"
-    / "disease_model.keras"
+    / "disease_model.h5"
 )
 
 
