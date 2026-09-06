@@ -1,2428 +1,1880 @@
 ﻿{% extends "base.html" %}
 
-{% block title %}KisanVision360+ | Settings{% endblock %}
+{% block title %}KisanVision360+ | Edit Profile{% endblock %}
 
 {% block head %}
+
 <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/settings.css') }}">
+      href="{{ url_for('static', filename='css/edit-profile.css') }}">
+
 <style>
 
-        /* =========================================================
-           ROOT
-        ========================================================= */
+/* =========================================================
+   ROOT
+========================================================= */
 
-        :root {
-            --kv-green: #1b5e20;
-            --kv-green-2: #2e7d32;
-            --kv-green-3: #43a047;
+:root {
+    --kv-green: #1b5e20;
+    --kv-green-2: #2e7d32;
+    --kv-green-3: #43a047;
 
-            --kv-light: #e8f5e9;
+    --kv-light: #e8f5e9;
 
-            --kv-orange: #fb8c00;
-            --kv-blue: #1565c0;
-            --kv-red: #c62828;
+    --kv-orange: #fb8c00;
+    --kv-blue: #1565c0;
+    --kv-red: #c62828;
 
-            --kv-dark: #263238;
-            --kv-text: #263238;
-            --kv-muted: #6b7280;
+    --kv-dark: #263238;
+    --kv-text: #263238;
+    --kv-muted: #6b7280;
 
-            --kv-border: #e5e7eb;
+    --kv-border: #e5e7eb;
 
-            --kv-bg: #f5f7f6;
-            --kv-white: #ffffff;
+    --kv-bg: #f5f7f6;
+    --kv-white: #ffffff;
 
-            --kv-shadow:
-                0 8px 28px rgba(0,0,0,.08);
-        }
+    --kv-shadow:
+        0 8px 28px rgba(0, 0, 0, .08);
+}
 
 
-        /* =========================================================
-           RESET
-        ========================================================= */
+/* =========================================================
+   RESET
+========================================================= */
 
-        * {
-            box-sizing: border-box;
-        }
+* {
+    box-sizing: border-box;
+}
 
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+}
 
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            min-height: 100%;
-        }
+body {
+    background:
+        linear-gradient(
+            135deg,
+            #f4f8f5 0%,
+            #f8faf9 50%,
+            #eef7ef 100%
+        );
 
+    color: var(--kv-text);
 
-        body {
-            background:
-                linear-gradient(
-                    135deg,
-                    #f4f8f5 0%,
-                    #f8faf9 50%,
-                    #eef7ef 100%
-                );
+    font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+}
 
-            color: var(--kv-text);
 
-            font-family:
-                Inter,
-                Arial,
-                Helvetica,
-                sans-serif;
-        }
+/* =========================================================
+   MAIN PAGE
+========================================================= */
 
+.edit-profile-page {
 
-        /* =========================================================
-           MAIN CONTENT
-        ========================================================= */
+    width: 100%;
+    max-width: 1200px;
 
-        .settings-page {
+    margin: 0 auto;
 
-            padding: 25px;
+    padding: 25px;
+}
 
-            max-width: 1400px;
 
-            margin: 0 auto;
+/* =========================================================
+   HEADER
+========================================================= */
 
-            width: 100%;
-        }
+.profile-header {
 
+    display: flex;
 
-        /* =========================================================
-           HEADER
-        ========================================================= */
+    justify-content: space-between;
 
-        .kv-settings-header {
+    align-items: center;
 
-            display: flex;
+    gap: 20px;
 
-            justify-content: space-between;
+    margin-bottom: 22px;
 
-            align-items: center;
+    flex-wrap: wrap;
+}
 
-            gap: 20px;
+.profile-header-left h1 {
 
-            margin-bottom: 22px;
+    margin: 0;
 
-            flex-wrap: wrap;
-        }
+    color: var(--kv-green);
 
+    font-size: 30px;
 
-        .kv-header-title h1 {
+    font-weight: 800;
+}
 
-            margin: 0;
+.profile-header-left h1 i {
 
-            font-size: 30px;
+    margin-right: 8px;
+}
 
-            font-weight: 800;
+.profile-header-left p {
 
-            color: var(--kv-green);
-        }
+    margin: 7px 0 0;
 
+    color: var(--kv-muted);
 
-        .kv-header-title h1 i {
+    font-size: 14px;
+}
 
-            margin-right: 8px;
-        }
+.profile-status {
 
+    display: flex;
 
-        .kv-header-title p {
+    align-items: center;
 
-            margin: 7px 0 0;
+    gap: 8px;
 
-            color: var(--kv-muted);
+    padding: 10px 15px;
 
-            font-size: 14px;
+    border-radius: 30px;
 
-            line-height: 1.5;
-        }
+    background: rgba(255,255,255,.95);
 
+    border: 1px solid var(--kv-border);
 
-        .kv-settings-status {
+    box-shadow:
+        0 4px 15px rgba(0,0,0,.05);
 
-            display: flex;
+    font-size: 13px;
 
-            align-items: center;
+    font-weight: 700;
+}
 
-            gap: 8px;
+.status-dot {
 
-            padding: 10px 15px;
+    width: 9px;
 
-            background:
-                rgba(255,255,255,.92);
+    height: 9px;
 
-            border:
-                1px solid var(--kv-border);
+    border-radius: 50%;
 
-            border-radius: 30px;
+    background: var(--kv-green-3);
 
-            box-shadow:
-                0 4px 15px rgba(0,0,0,.05);
+    box-shadow:
+        0 0 0 5px var(--kv-light);
+}
 
-            font-size: 13px;
 
-            font-weight: 700;
-        }
+/* =========================================================
+   SMART PROFILE BANNER
+========================================================= */
 
+.profile-banner {
 
-        .status-dot {
+    position: relative;
 
-            width: 9px;
+    overflow: hidden;
 
-            height: 9px;
+    padding: 25px;
 
-            border-radius: 50%;
+    margin-bottom: 24px;
 
-            background: #43a047;
+    border-radius: 22px;
 
-            box-shadow:
-                0 0 0 5px #e8f5e9;
-        }
+    color: white;
 
+    background:
+        linear-gradient(
+            135deg,
+            #1b5e20,
+            #2e7d32 55%,
+            #43a047
+        );
 
-        /* =========================================================
-           SMART BANNER
-        ========================================================= */
+    box-shadow:
+        0 12px 30px rgba(27,94,32,.22);
+}
 
-        .smart-settings-banner {
+.profile-banner::after {
 
-            position: relative;
+    content: "";
 
-            overflow: hidden;
+    position: absolute;
 
-            padding: 25px;
+    width: 180px;
 
-            margin-bottom: 24px;
+    height: 180px;
 
-            border-radius: 22px;
+    border-radius: 50%;
 
-            color: white;
+    background:
+        rgba(255,255,255,.08);
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #1b5e20,
-                    #2e7d32 55%,
-                    #43a047
-                );
+    right: -60px;
 
-            box-shadow:
-                0 12px 30px
-                rgba(27,94,32,.22);
-        }
+    top: -70px;
+}
 
+.profile-banner h2 {
 
-        .smart-settings-banner::after {
+    position: relative;
 
-            content: "";
+    z-index: 2;
 
-            position: absolute;
+    margin: 0 0 7px;
 
-            width: 180px;
+    font-size: 22px;
+}
 
-            height: 180px;
+.profile-banner p {
 
-            border-radius: 50%;
+    position: relative;
 
-            background:
-                rgba(255,255,255,.08);
+    z-index: 2;
 
-            right: -60px;
+    margin: 0;
 
-            top: -70px;
-        }
+    max-width: 760px;
 
+    font-size: 14px;
 
-        .smart-settings-banner h2 {
+    line-height: 1.6;
 
-            position: relative;
+    opacity: .94;
+}
 
-            z-index: 2;
+.profile-badges {
 
-            margin: 0 0 7px;
+    position: relative;
 
-            font-size: 22px;
-        }
+    z-index: 2;
 
+    display: flex;
 
-        .smart-settings-banner p {
+    flex-wrap: wrap;
 
-            position: relative;
+    gap: 9px;
 
-            z-index: 2;
+    margin-top: 17px;
+}
 
-            margin: 0;
+.profile-badge {
 
-            max-width: 750px;
+    display: inline-flex;
 
-            line-height: 1.6;
+    align-items: center;
 
-            opacity: .92;
+    gap: 7px;
 
-            font-size: 14px;
-        }
+    padding: 7px 11px;
 
+    border-radius: 20px;
 
-        .smart-badges {
+    background:
+        rgba(255,255,255,.14);
 
-            position: relative;
+    border:
+        1px solid rgba(255,255,255,.2);
 
-            z-index: 2;
+    font-size: 12px;
 
-            display: flex;
+    font-weight: 600;
+}
 
-            flex-wrap: wrap;
 
-            gap: 9px;
+/* =========================================================
+   MAIN CARD
+========================================================= */
 
-            margin-top: 17px;
-        }
+.profile-card {
 
+    background: var(--kv-white);
 
-        .smart-badge {
+    border-radius: 22px;
 
-            padding: 7px 11px;
+    padding: 28px;
 
-            border-radius: 20px;
+    box-shadow: var(--kv-shadow);
 
-            background:
-                rgba(255,255,255,.14);
+    border:
+        1px solid rgba(0,0,0,.04);
+}
 
-            border:
-                1px solid
-                rgba(255,255,255,.2);
 
-            font-size: 12px;
+/* =========================================================
+   CARD HEADER
+========================================================= */
 
-            font-weight: 600;
-        }
+.card-header {
 
+    display: flex;
 
-        /* =========================================================
-           GRID
-        ========================================================= */
+    align-items: center;
 
-        .settings-grid {
+    gap: 14px;
 
-            display: grid;
+    margin-bottom: 25px;
+}
 
-            grid-template-columns:
-                repeat(2,minmax(0,1fr));
+.header-icon {
 
-            gap: 22px;
-        }
+    width: 48px;
 
+    height: 48px;
 
-        .settings-card {
+    flex-shrink: 0;
 
-            background:
-                var(--kv-white);
+    border-radius: 14px;
 
-            border-radius: 20px;
+    display: flex;
 
-            padding: 24px;
+    align-items: center;
 
-            box-shadow:
-                var(--kv-shadow);
+    justify-content: center;
 
-            border:
-                1px solid
-                rgba(0,0,0,.04);
-        }
+    background: var(--kv-light);
 
+    color: var(--kv-green-2);
 
-        .settings-card.full-width {
+    font-size: 20px;
+}
 
-            grid-column: 1 / -1;
-        }
+.card-header h2 {
 
+    margin: 0;
 
-        /* =========================================================
-           CARD HEADER
-        ========================================================= */
+    color: var(--kv-dark);
 
-        .card-header {
+    font-size: 20px;
+}
 
-            display: flex;
+.card-header p {
 
-            align-items: center;
+    margin: 5px 0 0;
 
-            gap: 14px;
+    color: var(--kv-muted);
 
-            margin-bottom: 22px;
-        }
+    font-size: 13px;
+}
 
 
-        .header-icon {
+/* =========================================================
+   PROFILE LAYOUT
+========================================================= */
 
-            width: 48px;
+.profile-layout {
 
-            height: 48px;
+    display: grid;
 
-            flex-shrink: 0;
+    grid-template-columns:
+        230px 1fr;
 
-            border-radius: 14px;
+    gap: 35px;
 
-            display: flex;
+    align-items: start;
+}
 
-            align-items: center;
 
-            justify-content: center;
+/* =========================================================
+   PROFILE PHOTO
+========================================================= */
 
-            background:
-                var(--kv-light);
+.profile-photo-section {
 
-            color:
-                var(--kv-green-2);
+    display: flex;
 
-            font-size: 20px;
-        }
+    flex-direction: column;
 
+    align-items: center;
 
-        .card-header h2 {
+    padding: 20px;
 
-            margin: 0;
+    background:
+        linear-gradient(
+            135deg,
+            #f8fbf8,
+            #eef7ef
+        );
 
-            font-size: 19px;
+    border:
+        1px solid #dcecdf;
 
-            color:
-                var(--kv-dark);
-        }
+    border-radius: 18px;
+}
 
+.profile-photo-wrapper {
 
-        .card-header p {
+    position: relative;
 
-            margin: 5px 0 0;
+    width: 145px;
 
-            color:
-                var(--kv-muted);
+    height: 145px;
 
-            font-size: 13px;
+    margin-bottom: 15px;
+}
 
-            line-height: 1.4;
-        }
+.profile-photo {
 
+    width: 145px;
 
-        /* =========================================================
-           PROFILE
-        ========================================================= */
+    height: 145px;
 
-        .profile-section {
+    object-fit: cover;
 
-            display: grid;
+    border-radius: 50%;
 
-            grid-template-columns:
-                120px 1fr;
+    border:
+        5px solid #e8f5e9;
 
-            gap: 24px;
+    box-shadow:
+        0 7px 22px rgba(0,0,0,.12);
+}
 
-            align-items: start;
-        }
+.photo-edit-icon {
 
+    position: absolute;
 
-        .profile-image-container {
+    right: 4px;
 
-            display: flex;
+    bottom: 5px;
 
-            justify-content: center;
-        }
+    width: 38px;
 
+    height: 38px;
 
-        .profile-image {
+    display: flex;
 
-            width: 105px;
+    align-items: center;
 
-            height: 105px;
+    justify-content: center;
 
-            object-fit: cover;
+    border-radius: 50%;
 
-            border-radius: 50%;
+    background:
+        var(--kv-green-2);
 
-            border:
-                5px solid #e8f5e9;
+    color: white;
 
-            box-shadow:
-                0 5px 18px
-                rgba(0,0,0,.1);
-        }
+    border:
+        3px solid white;
 
+    font-size: 14px;
+}
 
-        .profile-details {
+.photo-title {
 
-            display: grid;
+    font-size: 15px;
 
-            gap: 12px;
-        }
+    font-weight: 700;
 
+    color: var(--kv-dark);
 
-        .detail-row {
+    margin-bottom: 5px;
+}
 
-            display: flex;
+.photo-description {
 
-            justify-content: space-between;
+    text-align: center;
 
-            gap: 15px;
+    color: var(--kv-muted);
 
-            padding: 11px 13px;
+    font-size: 11px;
 
-            background:
-                #f8faf8;
+    line-height: 1.5;
 
-            border-radius: 10px;
+    margin-bottom: 15px;
+}
 
-            border:
-                1px solid #edf1ed;
-        }
+.photo-input-label {
 
+    display: inline-flex;
 
-        .detail-row span {
+    align-items: center;
 
-            color:
-                var(--kv-muted);
+    justify-content: center;
 
-            font-size: 13px;
-        }
+    gap: 7px;
 
+    width: 100%;
 
-        .detail-row span i {
+    padding: 10px 12px;
 
-            width: 18px;
+    border-radius: 9px;
 
-            color:
-                var(--kv-green-2);
-        }
+    background:
+        var(--kv-green-2);
 
+    color: white;
 
-        .detail-row strong {
+    font-size: 12px;
 
-            color:
-                var(--kv-dark);
+    font-weight: 700;
 
-            font-size: 13px;
+    cursor: pointer;
 
-            text-align: right;
+    transition: .2s;
+}
 
-            word-break: break-word;
-        }
+.photo-input-label:hover {
 
+    background:
+        var(--kv-green);
 
-        /* =========================================================
-           BUTTON
-        ========================================================= */
+    transform:
+        translateY(-1px);
+}
 
-        .primary-btn {
+#profile {
 
-            display: inline-flex;
+    display: none;
+}
 
-            align-items: center;
+.photo-note {
 
-            justify-content: center;
+    margin-top: 10px;
 
-            gap: 8px;
+    text-align: center;
 
-            width: fit-content;
+    color: var(--kv-muted);
 
-            padding: 11px 17px;
+    font-size: 10px;
 
-            border: none;
+    line-height: 1.5;
+}
 
-            border-radius: 10px;
 
-            background:
-                var(--kv-green-2);
+/* =========================================================
+   FORM
+========================================================= */
 
-            color: white;
+.profile-form {
 
-            text-decoration: none;
+    width: 100%;
+}
 
-            font-size: 13px;
+.form-grid {
 
-            font-weight: 700;
+    display: grid;
 
-            cursor: pointer;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
 
-            transition: .2s;
-        }
+    gap: 18px;
+}
 
+.form-group {
 
-        .primary-btn:hover {
+    display: flex;
 
-            background:
-                var(--kv-green);
+    flex-direction: column;
 
-            transform:
-                translateY(-1px);
-        }
+    gap: 7px;
+}
 
+.form-group.full-width {
 
-        /* =========================================================
-           LANGUAGE
-        ========================================================= */
+    grid-column: 1 / -1;
+}
 
-        .language-control {
+.form-label {
 
-            padding: 18px;
+    color: var(--kv-dark);
 
-            border-radius: 15px;
+    font-size: 13px;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #f7fff8,
-                    #eef8f0
-                );
+    font-weight: 700;
+}
 
-            border:
-                1px solid #dcecdf;
-        }
+.form-label i {
 
+    width: 18px;
 
-        .language-current {
+    margin-right: 4px;
 
-            display: flex;
+    color:
+        var(--kv-green-2);
+}
 
-            align-items: center;
+.form-input {
 
-            justify-content: space-between;
+    width: 100%;
 
-            gap: 15px;
+    padding: 13px 14px;
 
-            margin-bottom: 15px;
+    border:
+        1px solid #d9e0da;
 
-            flex-wrap: wrap;
-        }
+    border-radius: 10px;
 
+    background: white;
 
-        .language-current-info {
+    color: var(--kv-dark);
 
-            display: flex;
+    outline: none;
 
-            align-items: center;
+    font-family: inherit;
 
-            gap: 10px;
-        }
+    font-size: 14px;
 
+    transition: .2s;
+}
 
-        .language-current-info i {
+.form-input:focus {
 
-            color:
-                var(--kv-green-2);
+    border-color:
+        var(--kv-green-2);
 
-            font-size: 19px;
-        }
+    box-shadow:
+        0 0 0 3px
+        rgba(46,125,50,.10);
+}
 
+.form-input::placeholder {
 
-        .language-current-info strong {
+    color: #9ca3af;
+}
 
-            display: block;
+.form-input:disabled {
 
-            font-size: 14px;
-        }
+    background: #f3f5f4;
 
+    color: #6b7280;
 
-        .language-current-info small {
+    cursor: not-allowed;
+}
 
-            color:
-                var(--kv-muted);
+.form-help {
 
-            font-size: 11px;
-        }
+    color: var(--kv-muted);
 
+    font-size: 10px;
 
-        .language-select {
+    line-height: 1.4;
+}
 
-            width: 100%;
 
-            padding: 13px 14px;
+/* =========================================================
+   PROFILE COMPLETION
+========================================================= */
 
-            border:
-                1px solid #d7dfd9;
+.completion-box {
 
-            border-radius: 10px;
+    margin-top: 25px;
 
-            background: white;
+    padding: 17px;
 
-            outline: none;
+    border-radius: 14px;
 
-            font-size: 14px;
+    background:
+        linear-gradient(
+            135deg,
+            #f7fff8,
+            #eef8f0
+        );
 
-            cursor: pointer;
-        }
+    border:
+        1px solid #dcecdf;
+}
 
+.completion-header {
 
-        .language-select:focus {
+    display: flex;
 
-            border-color:
-                var(--kv-green-2);
+    justify-content: space-between;
 
-            box-shadow:
-                0 0 0 3px
-                rgba(46,125,50,.1);
-        }
+    align-items: center;
 
+    gap: 15px;
 
-        .language-actions {
+    margin-bottom: 10px;
+}
 
-            display: flex;
+.completion-header strong {
 
-            align-items: center;
+    color: var(--kv-dark);
 
-            gap: 12px;
+    font-size: 13px;
+}
 
-            margin-top: 13px;
+.completion-percent {
 
-            flex-wrap: wrap;
-        }
+    color: var(--kv-green-2);
 
+    font-size: 13px;
 
-        .language-message {
+    font-weight: 800;
+}
 
-            display: none;
+.progress-track {
 
-            padding: 9px 12px;
+    width: 100%;
 
-            border-radius: 9px;
+    height: 9px;
 
-            background:
-                #e8f5e9;
+    overflow: hidden;
 
-            color:
-                #1b5e20;
+    border-radius: 20px;
 
-            font-size: 12px;
+    background: #dce7de;
+}
 
-            font-weight: 600;
-        }
+.progress-bar {
 
+    width: 0%;
 
-        .language-note {
+    height: 100%;
 
-            margin-top: 13px;
+    border-radius: 20px;
 
-            color:
-                var(--kv-muted);
+    background:
+        linear-gradient(
+            90deg,
+            #2e7d32,
+            #66bb6a
+        );
 
-            font-size: 11px;
+    transition:
+        width .35s ease;
+}
 
-            line-height: 1.5;
-        }
+.completion-message {
 
+    margin-top: 8px;
 
-        /* =========================================================
-           NOTIFICATIONS
-        ========================================================= */
+    color: var(--kv-muted);
 
-        .notification-list {
+    font-size: 11px;
+}
 
-            display: grid;
 
-            gap: 12px;
-        }
+/* =========================================================
+   PERSONALIZATION
+========================================================= */
 
+.personalization-box {
 
-        .notification-item {
+    margin-top: 22px;
 
-            display: flex;
+    padding: 18px;
 
-            justify-content: space-between;
+    border-radius: 15px;
 
-            align-items: center;
+    background:
+        #fafcfb;
 
-            gap: 15px;
+    border:
+        1px solid #e8eee9;
+}
 
-            padding: 15px;
+.personalization-title {
 
-            border:
-                1px solid #edf0ed;
+    display: flex;
 
-            border-radius: 13px;
+    align-items: center;
 
-            background:
-                #fafcfb;
-        }
+    gap: 9px;
 
+    margin-bottom: 12px;
 
-        .notification-item strong {
+    color: var(--kv-dark);
 
-            display: block;
+    font-size: 14px;
 
-            font-size: 14px;
+    font-weight: 700;
+}
 
-            color:
-                var(--kv-dark);
-        }
+.personalization-title i {
 
+    color:
+        var(--kv-green-2);
+}
 
-        .notification-item p {
+.personalization-tags {
 
-            margin: 5px 0 0;
+    display: flex;
 
-            font-size: 12px;
+    flex-wrap: wrap;
 
-            color:
-                var(--kv-muted);
+    gap: 8px;
+}
 
-            line-height: 1.4;
-        }
+.personalization-tag {
 
+    display: inline-flex;
 
-        /* =========================================================
-           SWITCH
-        ========================================================= */
+    align-items: center;
 
-        .switch {
+    gap: 6px;
 
-            position: relative;
+    padding: 7px 10px;
 
-            display: inline-block;
+    border-radius: 20px;
 
-            width: 50px;
+    background: #e8f5e9;
 
-            height: 27px;
+    color: #1b5e20;
 
-            flex-shrink: 0;
-        }
+    font-size: 11px;
 
+    font-weight: 600;
+}
 
-        .switch input {
 
-            opacity: 0;
+/* =========================================================
+   SECURITY STRIP
+========================================================= */
 
-            width: 0;
+.security-strip {
 
-            height: 0;
-        }
+    display: flex;
 
+    align-items: center;
 
-        .slider {
+    gap: 12px;
 
-            position: absolute;
+    margin-top: 22px;
 
-            cursor: pointer;
+    padding: 14px 16px;
 
-            inset: 0;
+    border-radius: 12px;
 
-            background:
-                #cfd8dc;
+    background:
+        #f8faf8;
 
-            transition: .25s;
+    border:
+        1px solid #e7ece8;
+}
 
-            border-radius: 30px;
-        }
+.security-strip-icon {
 
+    width: 38px;
 
-        .slider::before {
+    height: 38px;
 
-            content: "";
+    display: flex;
 
-            position: absolute;
+    align-items: center;
 
-            height: 21px;
+    justify-content: center;
 
-            width: 21px;
+    flex-shrink: 0;
 
-            left: 3px;
+    border-radius: 10px;
 
-            top: 3px;
+    background:
+        #e8f5e9;
 
-            background: white;
+    color:
+        var(--kv-green-2);
+}
 
-            transition: .25s;
+.security-strip strong {
 
-            border-radius: 50%;
+    display: block;
 
-            box-shadow:
-                0 2px 5px
-                rgba(0,0,0,.18);
-        }
+    color: var(--kv-dark);
 
+    font-size: 12px;
+}
 
-        .switch input:checked + .slider {
+.security-strip span {
 
-            background:
-                var(--kv-green-2);
-        }
+    display: block;
 
+    margin-top: 3px;
 
-        .switch input:checked + .slider::before {
+    color: var(--kv-muted);
 
-            transform:
-                translateX(23px);
-        }
+    font-size: 10px;
+}
 
 
-        /* =========================================================
-           WEATHER
-        ========================================================= */
+/* =========================================================
+   FORM ACTIONS
+========================================================= */
 
-        .weather-intelligence {
+.form-actions {
 
-            display: grid;
+    display: flex;
 
-            grid-template-columns:
-                repeat(3,minmax(0,1fr));
+    align-items: center;
 
-            gap: 13px;
-        }
+    justify-content: space-between;
 
+    gap: 15px;
 
-        .weather-item {
+    margin-top: 25px;
 
-            padding: 18px;
+    padding-top: 22px;
 
-            border-radius: 14px;
+    border-top:
+        1px solid #edf0ed;
+}
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #f8fbff,
-                    #eef6ff
-                );
+.action-left {
 
-            border:
-                1px solid #e1ebf5;
-        }
+    display: flex;
 
+    align-items: center;
 
-        .weather-item i {
+    gap: 10px;
 
-            display: block;
+    flex-wrap: wrap;
+}
 
-            margin-bottom: 9px;
+.btn {
 
-            color:
-                var(--kv-blue);
+    display: inline-flex;
 
-            font-size: 20px;
-        }
+    align-items: center;
 
+    justify-content: center;
 
-        .weather-item span {
+    gap: 8px;
 
-            display: block;
+    padding: 12px 19px;
 
-            color:
-                var(--kv-muted);
+    border: none;
 
-            font-size: 11px;
+    border-radius: 10px;
 
-            margin-bottom: 5px;
-        }
+    text-decoration: none;
 
+    font-size: 13px;
 
-        .weather-item strong {
+    font-weight: 700;
 
-            font-size: 14px;
+    cursor: pointer;
 
-            color:
-                var(--kv-dark);
+    transition: .2s;
+}
 
-            word-break: break-word;
-        }
+.btn-primary {
 
+    background:
+        var(--kv-green-2);
 
-        /* =========================================================
-           FARM INTELLIGENCE
-        ========================================================= */
+    color: white;
+}
 
-        .module-grid {
+.btn-primary:hover {
 
-            display: grid;
+    background:
+        var(--kv-green);
 
-            grid-template-columns:
-                repeat(
-                    auto-fit,
-                    minmax(170px,1fr)
-                );
+    transform:
+        translateY(-1px);
+}
 
-            gap: 13px;
-        }
+.btn-secondary {
 
+    background:
+        #f1f3f2;
 
-        .module-card {
+    color:
+        var(--kv-dark);
 
-            padding: 17px;
+    border:
+        1px solid #e0e5e1;
+}
 
-            border-radius: 14px;
+.btn-secondary:hover {
 
-            background:
-                #fafcfb;
+    background:
+        #e7ebe8;
+}
 
-            border:
-                1px solid #e9eeea;
+.btn-primary:disabled {
 
-            transition: .2s;
-        }
+    opacity: .65;
 
+    cursor: not-allowed;
 
-        .module-card:hover {
+    transform: none;
+}
 
-            transform:
-                translateY(-3px);
 
-            border-color:
-                #c9dfcc;
-        }
+/* =========================================================
+   FOOTER
+========================================================= */
 
+.profile-footer {
 
-        .module-card i {
+    text-align: center;
 
-            font-size: 20px;
+    padding:
+        25px 10px 10px;
 
-            color:
-                var(--kv-green-2);
+    color:
+        #78909c;
 
-            margin-bottom: 10px;
-        }
+    font-size: 12px;
+}
 
+.profile-footer i {
 
-        .module-card strong {
+    color:
+        var(--kv-green-2);
+}
 
-            display: block;
+.profile-footer span {
 
-            font-size: 13px;
-        }
+    margin: 0 7px;
+}
 
 
-        .module-card span {
+/* =========================================================
+   FLASH MESSAGE
+========================================================= */
 
-            display: block;
+.flash-message {
 
-            margin-top: 4px;
+    margin-bottom: 18px;
 
-            color:
-                var(--kv-muted);
+    padding: 13px 15px;
 
-            font-size: 11px;
+    border-radius: 10px;
 
-            line-height: 1.4;
-        }
+    font-size: 13px;
 
+    font-weight: 600;
+}
 
-        /* =========================================================
-           SECURITY
-        ========================================================= */
+.flash-success {
 
-        .security-status {
+    background:
+        #e8f5e9;
 
-            display: grid;
+    color:
+        #1b5e20;
 
-            grid-template-columns:
-                repeat(3,minmax(0,1fr));
+    border:
+        1px solid #c8e6c9;
+}
 
-            gap: 12px;
+.flash-error {
 
-            margin-bottom: 15px;
-        }
+    background:
+        #ffebee;
 
+    color:
+        #c62828;
 
-        .security-item {
+    border:
+        1px solid #ffcdd2;
+}
 
-            padding: 15px;
 
-            border-radius: 13px;
+/* =========================================================
+   RESPONSIVE TABLET
+========================================================= */
 
-            background:
-                #f8faf8;
+@media (max-width: 900px) {
 
-            border:
-                1px solid #e8eee8;
-        }
+    .profile-layout {
 
+        grid-template-columns: 1fr;
+    }
 
-        .security-item i {
+    .profile-photo-section {
 
-            color:
-                var(--kv-green-2);
+        max-width: 320px;
 
-            margin-bottom: 8px;
-        }
+        margin: 0 auto;
 
+        width: 100%;
+    }
 
-        .security-item strong {
+}
 
-            display: block;
 
-            font-size: 12px;
-        }
+/* =========================================================
+   RESPONSIVE MOBILE
+========================================================= */
 
+@media (max-width: 650px) {
 
-        .security-item span {
+    .edit-profile-page {
 
-            display: block;
+        padding: 15px;
+    }
 
-            margin-top: 4px;
+    .profile-header {
 
-            font-size: 11px;
+        align-items: flex-start;
+    }
 
-            color:
-                var(--kv-muted);
-        }
+    .profile-header-left h1 {
 
+        font-size: 24px;
+    }
 
-        .settings-action {
+    .profile-header-left p {
 
-            display: flex;
+        font-size: 13px;
+    }
 
-            align-items: center;
+    .profile-status {
 
-            justify-content: space-between;
+        font-size: 11px;
 
-            gap: 15px;
+        padding: 8px 12px;
+    }
 
-            padding: 15px;
+    .profile-banner {
 
-            border-radius: 13px;
+        padding: 20px;
 
-            background:
-                #fafafa;
+        border-radius: 17px;
+    }
 
-            color:
-                var(--kv-dark);
+    .profile-banner h2 {
 
-            text-decoration: none;
+        font-size: 19px;
+    }
 
-            border:
-                1px solid #ececec;
+    .profile-banner p {
 
-            transition: .2s;
-        }
+        font-size: 13px;
+    }
 
+    .profile-card {
 
-        .settings-action:hover {
+        padding: 18px;
 
-            background:
-                #f1f8f2;
+        border-radius: 17px;
+    }
 
-            border-color:
-                #cce2ce;
-        }
+    .card-header {
 
+        gap: 11px;
 
-        .settings-action div {
+        margin-bottom: 18px;
+    }
 
-            display: flex;
+    .header-icon {
 
-            align-items: center;
+        width: 42px;
 
-            gap: 12px;
-        }
+        height: 42px;
 
+        border-radius: 12px;
 
-        .settings-action div i {
+        font-size: 17px;
+    }
 
-            color:
-                var(--kv-green-2);
-        }
+    .card-header h2 {
 
+        font-size: 17px;
+    }
 
-        .settings-action span {
+    .card-header p {
 
-            font-size: 13px;
+        font-size: 12px;
+    }
 
-            font-weight: 700;
-        }
+    .form-grid {
 
+        grid-template-columns: 1fr;
+    }
 
-        .settings-action > i {
+    .form-group.full-width {
 
-            color:
-                #78909c;
-        }
+        grid-column: auto;
+    }
 
+    .form-actions {
 
-        /* =========================================================
-           HELP
-        ========================================================= */
+        flex-direction: column;
 
-        .help-box {
+        align-items: stretch;
+    }
 
-            display: flex;
+    .action-left {
 
-            align-items: center;
+        width: 100%;
 
-            justify-content: space-between;
+        flex-direction: column;
+    }
 
-            gap: 18px;
+    .action-left .btn {
 
-            padding: 18px;
+        width: 100%;
+    }
 
-            border-radius: 14px;
+    .form-actions > .btn {
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #fffaf2,
-                    #fff6e8
-                );
+        width: 100%;
+    }
 
-            border:
-                1px solid #f3dfbd;
-        }
+    .profile-badge {
 
+        font-size: 11px;
+    }
 
-        .help-info {
+}
 
-            display: flex;
 
-            gap: 13px;
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
 
-            align-items: center;
-        }
+@media (max-width: 400px) {
 
+    .edit-profile-page {
 
-        .help-icon {
+        padding: 10px;
+    }
 
-            width: 43px;
+    .profile-card {
 
-            height: 43px;
+        padding: 15px;
+    }
 
-            border-radius: 12px;
+    .profile-banner {
 
-            display: flex;
+        padding: 17px;
+    }
 
-            align-items: center;
+    .profile-header-left h1 {
 
-            justify-content: center;
+        font-size: 21px;
+    }
 
-            background:
-                #fff0d5;
+}
 
-            color:
-                var(--kv-orange);
-        }
+</style>
 
-
-        .help-info strong {
-
-            display: block;
-
-            font-size: 13px;
-        }
-
-
-        .help-info p {
-
-            margin: 4px 0 0;
-
-            font-size: 11px;
-
-            color:
-                var(--kv-muted);
-        }
-
-
-        /* =========================================================
-           LOGOUT
-        ========================================================= */
-
-        .logout-card {
-
-            border:
-                1px solid #f1d7d7;
-        }
-
-
-        .logout-icon {
-
-            background:
-                #ffebee;
-
-            color:
-                var(--kv-red);
-        }
-
-
-        .logout-btn {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            gap: 9px;
-
-            padding: 12px 20px;
-
-            border-radius: 10px;
-
-            background:
-                #c62828;
-
-            color: white;
-
-            text-decoration: none;
-
-            font-size: 13px;
-
-            font-weight: 700;
-
-            transition: .2s;
-        }
-
-
-        .logout-btn:hover {
-
-            background:
-                #a61b1b;
-        }
-
-
-        /* =========================================================
-           FOOTER
-        ========================================================= */
-
-        .settings-footer {
-
-            text-align: center;
-
-            padding: 30px 10px 15px;
-
-            color:
-                #78909c;
-
-            font-size: 12px;
-        }
-
-
-        .settings-footer i {
-
-            color:
-                var(--kv-green-2);
-        }
-
-
-        .settings-footer span {
-
-            margin: 0 7px;
-        }
-
-
-        /* =========================================================
-           RTL
-        ========================================================= */
-
-        [dir="rtl"] .detail-row strong {
-
-            text-align: left;
-        }
-
-
-        /* =========================================================
-           RESPONSIVE - TABLET
-        ========================================================= */
-
-        @media (max-width: 1100px) {
-
-            .settings-grid {
-
-                grid-template-columns: 1fr;
-            }
-
-
-            .settings-card.full-width {
-
-                grid-column: auto;
-            }
-
-        }
-
-
-        /* =========================================================
-           RESPONSIVE - MOBILE
-        ========================================================= */
-
-        @media (max-width: 650px) {
-
-            .settings-page {
-
-                padding: 15px;
-            }
-
-
-            .kv-settings-header {
-
-                align-items: flex-start;
-            }
-
-
-            .kv-header-title h1 {
-
-                font-size: 24px;
-            }
-
-
-            .kv-header-title p {
-
-                font-size: 13px;
-            }
-
-
-            .kv-settings-status {
-
-                font-size: 11px;
-
-                padding: 8px 12px;
-            }
-
-
-            .smart-settings-banner {
-
-                padding: 20px;
-
-                border-radius: 17px;
-            }
-
-
-            .smart-settings-banner h2 {
-
-                font-size: 19px;
-            }
-
-
-            .smart-settings-banner p {
-
-                font-size: 13px;
-            }
-
-
-            .settings-card {
-
-                padding: 18px;
-
-                border-radius: 17px;
-            }
-
-
-            .card-header {
-
-                gap: 11px;
-
-                margin-bottom: 18px;
-            }
-
-
-            .header-icon {
-
-                width: 42px;
-
-                height: 42px;
-
-                border-radius: 12px;
-
-                font-size: 17px;
-            }
-
-
-            .card-header h2 {
-
-                font-size: 17px;
-            }
-
-
-            .card-header p {
-
-                font-size: 12px;
-            }
-
-
-            .profile-section {
-
-                grid-template-columns: 1fr;
-            }
-
-
-            .profile-image-container {
-
-                justify-content: flex-start;
-            }
-
-
-            .detail-row {
-
-                flex-direction: column;
-
-                gap: 5px;
-            }
-
-
-            .detail-row strong {
-
-                text-align: left;
-            }
-
-
-            .weather-intelligence {
-
-                grid-template-columns: 1fr;
-            }
-
-
-            .security-status {
-
-                grid-template-columns: 1fr;
-            }
-
-
-            .help-box {
-
-                align-items: flex-start;
-
-                flex-direction: column;
-            }
-
-
-            .help-box .primary-btn {
-
-                width: 100%;
-            }
-
-
-            .logout-btn {
-
-                width: 100%;
-            }
-
-
-            .smart-badge {
-
-                font-size: 11px;
-            }
-
-        }
-
-
-        /* =========================================================
-           SMALL MOBILE
-        ========================================================= */
-
-        @media (max-width: 400px) {
-
-            .settings-page {
-
-                padding: 10px;
-            }
-
-
-            .settings-card {
-
-                padding: 15px;
-            }
-
-
-            .smart-settings-banner {
-
-                padding: 17px;
-            }
-
-
-            .kv-header-title h1 {
-
-                font-size: 21px;
-            }
-
-
-            .notification-item {
-
-                padding: 12px;
-            }
-
-
-            .notification-item strong {
-
-                font-size: 12px;
-            }
-
-
-            .notification-item p {
-
-                font-size: 10px;
-            }
-
-        }
-
-    </style>
 {% endblock %}
 
-{% block page_title %}Settings{% endblock %}
-{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block page_title %}Edit Profile{% endblock %}
+
+{% block page_subtitle %}Manage your KisanVision360+ account{% endblock %}
+
 
 {% block content %}
-<!-- =====================================================
-         SIDEBAR
-    ====================================================== -->
 
-    
+<div class="edit-profile-page">
 
 
     <!-- =====================================================
-         MAIN CONTENT
+         HEADER
     ====================================================== -->
 
-    <div class="main-content">
+    <div class="profile-header">
 
-        <div class="settings-page">
+        <div class="profile-header-left">
+
+            <h1>
+
+                <i class="fa-solid fa-user-pen"></i>
+
+                Edit Profile
+
+            </h1>
+
+            <p>
+
+                Update your personal information and profile details
+
+            </p>
+
+        </div>
 
 
-            <!-- =================================================
-                 HEADER
-            ================================================== -->
+        <div class="profile-status">
 
-            <div class="kv-settings-header">
+            <span class="status-dot"></span>
 
-                <div class="kv-header-title">
+            Profile Settings Active
 
-                    <h1>
+        </div>
 
-                        <i class="fa-solid fa-sliders"></i>
+    </div>
 
-                        Settings
 
-                    </h1>
+    <!-- =====================================================
+         FLASH MESSAGES
+    ====================================================== -->
 
-                    <p>
+    {% with messages = get_flashed_messages(with_categories=true) %}
 
-                        Manage your account, language,
-                        alerts and farming preferences
+        {% if messages %}
 
-                    </p>
+            {% for category, message in messages %}
+
+                <div
+                    class="flash-message
+                    {% if category == 'success' %}
+                        flash-success
+                    {% else %}
+                        flash-error
+                    {% endif %}"
+                >
+
+                    <i
+                        class="fa-solid
+                        {% if category == 'success' %}
+                            fa-circle-check
+                        {% else %}
+                            fa-circle-exclamation
+                        {% endif %}"
+                    ></i>
+
+                    {{ message }}
 
                 </div>
 
+            {% endfor %}
 
-                <div class="kv-settings-status">
+        {% endif %}
 
-                    <span class="status-dot"></span>
+    {% endwith %}
 
-                    Account Settings Active
 
-                </div>
+    <!-- =====================================================
+         SMART PROFILE BANNER
+    ====================================================== -->
+
+    <div class="profile-banner">
+
+        <h2>
+
+            <i class="fa-solid fa-user-gear"></i>
+
+            KisanVision360+ Profile Center
+
+        </h2>
+
+        <p>
+
+            Keep your profile information updated so that
+            KisanVision360+ can provide better weather,
+            crop, disease, market, finance and farming
+            recommendations.
+
+        </p>
+
+
+        <div class="profile-badges">
+
+            <span class="profile-badge">
+
+                <i class="fa-solid fa-user"></i>
+
+                Personal Profile
+
+            </span>
+
+
+            <span class="profile-badge">
+
+                <i class="fa-solid fa-location-dot"></i>
+
+                Farm Location
+
+            </span>
+
+
+            <span class="profile-badge">
+
+                <i class="fa-solid fa-language"></i>
+
+                Language
+
+            </span>
+
+
+            <span class="profile-badge">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                Secure Account
+
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PROFILE CARD
+    ====================================================== -->
+
+    <div class="profile-card">
+
+
+        <!-- =================================================
+             CARD HEADER
+        ================================================== -->
+
+        <div class="card-header">
+
+            <div class="header-icon">
+
+                <i class="fa-solid fa-user-edit"></i>
 
             </div>
 
 
-
-            <!-- =================================================
-                 SMART BANNER
-            ================================================== -->
-
-            <div class="smart-settings-banner">
+            <div>
 
                 <h2>
 
-                    <i class="fa-solid fa-wand-magic-sparkles"></i>
-
-                    KisanVision360+ Personalization Center
+                    Personal Information
 
                 </h2>
 
-
                 <p>
 
-                    Configure your global language, smart farming
-                    alerts, account security and preferences.
-                    These settings connect your farmer profile with
-                    weather, crop, disease, market and finance
-                    intelligence.
+                    Update your account information below.
 
                 </p>
 
-
-                <div class="smart-badges">
-
-                    <span class="smart-badge">
-
-                        <i class="fa-solid fa-language"></i>
-
-                        20 Languages
-
-                    </span>
-
-
-                    <span class="smart-badge">
-
-                        <i class="fa-solid fa-cloud-sun"></i>
-
-                        Weather Alerts
-
-                    </span>
-
-
-                    <span class="smart-badge">
-
-                        <i class="fa-solid fa-seedling"></i>
-
-                        Crop Intelligence
-
-                    </span>
-
-
-                    <span class="smart-badge">
-
-                        <i class="fa-solid fa-shield-halved"></i>
-
-                        Secure Account
-
-                    </span>
-
-                </div>
-
             </div>
 
+        </div>
 
 
-            <!-- =================================================
-                 SETTINGS GRID
-            ================================================== -->
+        <!-- =================================================
+             PROFILE FORM
+        ================================================== -->
 
-            <div class="settings-grid">
-
-
-                <!-- =================================================
-                     PROFILE
-                ================================================== -->
-
-                <div class="settings-card">
-
-                    <div class="card-header">
-
-                        <div class="header-icon">
-
-                            <i class="fa-solid fa-user"></i>
-
-                        </div>
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+            id="profileForm"
+            class="profile-form"
+            action="{{ url_for('profile.edit_profile') }}"
+        >
 
 
-                        <div>
-
-                            <h2>
-                                Profile Information
-                            </h2>
-
-                            <p>
-                                Your KisanVision360 account details
-                            </p>
-
-                        </div>
-
-                    </div>
+            <div class="profile-layout">
 
 
-                    <div class="profile-section">
+                <!-- =========================================
+                     PROFILE PHOTO
+                ========================================== -->
+
+                <div class="profile-photo-section">
 
 
-                        <div class="profile-image-container">
+                    <div class="profile-photo-wrapper">
+
+                        {% if profile_pic %}
+
+                            <img
+                                src="{{ url_for('static', filename=profile_pic) }}"
+                                alt="Profile Photo"
+                                class="profile-photo"
+                                id="profilePreview"
+                            >
+
+                        {% else %}
 
                             <img
                                 src="{{ url_for('static', filename='images/farmer.jpg') }}"
-                                alt="Farmer Profile"
-                                class="profile-image"
+                                alt="Profile Photo"
+                                class="profile-photo"
+                                id="profilePreview"
                             >
+
+                        {% endif %}
+
+
+                        <div class="photo-edit-icon">
+
+                            <i class="fa-solid fa-camera"></i>
 
                         </div>
 
-
-                        <div class="profile-details">
-
-
-                            <div class="detail-row">
-
-                                <span>
-
-                                    <i class="fa-solid fa-user"></i>
-
-                                    Name
-
-                                </span>
+                    </div>
 
 
-                                <strong>
+                    <div class="photo-title">
 
-                                    {{ session.get('name', 'Farmer') }}
+                        Profile Photo
 
-                                </strong>
-
-                            </div>
+                    </div>
 
 
-                            <div class="detail-row">
+                    <div class="photo-description">
 
-                                <span>
+                        Add a clear profile photo so your
+                        account is easy to identify.
 
-                                    <i class="fa-solid fa-phone"></i>
-
-                                    Mobile
-
-                                </span>
+                    </div>
 
 
-                                <strong>
+                    <label
+                        for="profile"
+                        class="photo-input-label"
+                    >
 
-                                    {{ user.mobile if user else 'Not Available' }}
+                        <i class="fa-solid fa-upload"></i>
 
-                                </strong>
+                        Choose Photo
 
-                            </div>
-
-
-                            <div class="detail-row">
-
-                                <span>
-
-                                    <i class="fa-solid fa-envelope"></i>
-
-                                    Email
-
-                                </span>
+                    </label>
 
 
-                                <strong>
-
-                                    {{ user.email if user else 'Not Available' }}
-
-                                </strong>
-
-                            </div>
-
-
-                            <div class="detail-row">
-
-                                <span>
-
-                                    <i class="fa-solid fa-user-tag"></i>
-
-                                    Role
-
-                                </span>
+                    <input
+                        type="file"
+                        id="profile"
+                        name="profile"
+                        accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                    >
 
 
-                                <strong>
+                    <div class="photo-note">
 
-                                    {{ session.get('role', 'Farmer') }}
-
-                                </strong>
-
-                            </div>
-
-
-                            <div class="detail-row">
-
-                                <span>
-
-                                    <i class="fa-solid fa-location-dot"></i>
-
-                                    Location
-
-                                </span>
-
-
-                                <strong>
-
-                                    {{ user.location if user and user.location else 'Nagpur' }}
-
-                                </strong>
-
-                            </div>
-
-
-                            <a
-                                href="{{ url_for('profile.profile') }}"
-                                class="primary-btn"
-                            >
-
-                                <i class="fa-solid fa-pen"></i>
-
-                                Edit Profile
-
-                            </a>
-
-                        </div>
+                        JPG, JPEG or PNG - Maximum 5 MB recommended
 
                     </div>
 
                 </div>
 
 
+                <!-- =========================================
+                     FORM FIELDS
+                ========================================== -->
 
-                <!-- =================================================
-                     LANGUAGE
-                ================================================== -->
-
-                <div class="settings-card">
-
-                    <div class="card-header">
-
-                        <div class="header-icon">
-
-                            <i class="fa-solid fa-language"></i>
-
-                        </div>
+                <div>
 
 
-                        <div>
-
-                            <h2>
-                                Global App Language
-                            </h2>
-
-                            <p>
-                                Change the language for the entire application
-                            </p>
-
-                        </div>
-
-                    </div>
+                    <div class="form-grid">
 
 
-                    <div class="language-control">
+                        <!-- NAME -->
+
+                        <div class="form-group">
+
+                            <label
+                                for="name"
+                                class="form-label"
+                            >
+
+                                <i class="fa-solid fa-user"></i>
+
+                                Full Name
+
+                            </label>
 
 
-                        <div class="language-current">
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                class="form-input"
+                                value="{{ name|default(session.get('name', ''), true) }}"
+                                placeholder="Enter your full name"
+                                maxlength="150"
+                                required
+                                autocomplete="name"
+                            >
 
-                            <div class="language-current-info">
 
-                                <i class="fa-solid fa-globe"></i>
+                            <div class="form-help">
 
-                                <div>
-
-                                    <strong id="currentLanguageText">
-                                        English
-                                    </strong>
-
-                                    <small>
-                                        Current application language
-                                    </small>
-
-                                </div>
+                                Enter your complete name.
 
                             </div>
 
                         </div>
 
 
-                        <select
-                            id="languageSelect"
-                            class="language-select"
-                        >
+                        <!-- MOBILE -->
 
-                            <option value="en">English</option>
+                        <div class="form-group">
 
-                            <option value="hi">à¤¹à¤¿à¤¨à¥à¤¦à¥€</option>
-
-                            <option value="mr">à¤®à¤°à¤¾à¤ à¥€</option>
-
-                            <option value="kn">à²•à²¨à³à²¨à²¡</option>
-
-                            <option value="te">à°¤à±†à°²à±à°—à±</option>
-
-                            <option value="ta">à®¤à®®à®¿à®´à¯</option>
-
-                            <option value="ml">à´®à´²à´¯à´¾à´³à´‚</option>
-
-                            <option value="gu">àª—à«àªœàª°àª¾àª¤à«€</option>
-
-                            <option value="pa">à¨ªà©°à¨œà¨¾à¨¬à©€</option>
-
-                            <option value="bn">à¦¬à¦¾à¦‚à¦²à¦¾</option>
-
-                            <option value="as">à¦…à¦¸à¦®à§€à¦¯à¦¼à¦¾</option>
-
-                            <option value="or">à¬“à¬¡à¬¼à¬¿à¬†</option>
-
-                            <option value="ur">Ø§Ø±Ø¯Ùˆ</option>
-
-                            <option value="ne">à¤¨à¥‡à¤ªà¤¾à¤²à¥€</option>
-
-                            <option value="sa">à¤¸à¤‚à¤¸à¥à¤•à¥ƒà¤¤</option>
-
-                            <option value="kok">à¤•à¥‹à¤‚à¤•à¤£à¥€</option>
-
-                            <option value="mai">à¤®à¥ˆà¤¥à¤¿à¤²à¥€</option>
-
-                            <option value="ks">à¤•à¥‰à¤¶à¥à¤°</option>
-
-                            <option value="sd">Ø³Ù†ÚŒÙŠ</option>
-
-                            <option value="mni">à¦®à§ˆà¦¤à§ˆà¦²à§‹à¦¨à§</option>
-
-                        </select>
-
-
-                        <div class="language-actions">
-
-                            <button
-                                type="button"
-                                onclick="saveLanguage()"
-                                class="primary-btn"
+                            <label
+                                for="mobile"
+                                class="form-label"
                             >
 
-                                <i class="fa-solid fa-floppy-disk"></i>
+                                <i class="fa-solid fa-phone"></i>
 
-                                Apply Language
+                                Mobile Number
 
-                            </button>
+                            </label>
 
+
+                            <input
+                                type="tel"
+                                id="mobile"
+                                name="mobile"
+                                class="form-input"
+                                value="{{ mobile|default(user.mobile if user else '', true) }}"
+                                placeholder="10-digit mobile number"
+                                maxlength="10"
+                                inputmode="numeric"
+                                autocomplete="tel"
+                                required
+                            >
+
+
+                            <div class="form-help">
+
+                                Enter a valid 10-digit Indian mobile number.
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- EMAIL -->
+
+                        <div class="form-group">
+
+                            <label
+                                for="email"
+                                class="form-label"
+                            >
+
+                                <i class="fa-solid fa-envelope"></i>
+
+                                Email Address
+
+                            </label>
+
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                class="form-input"
+                                value="{{ email|default(user.email if user else '', true) }}"
+                                placeholder="Enter your email"
+                                maxlength="150"
+                                autocomplete="email"
+                            >
+
+
+                            <div class="form-help">
+
+                                Used for account communication.
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ROLE -->
+
+                        <div class="form-group">
+
+                            <label
+                                for="role"
+                                class="form-label"
+                            >
+
+                                <i class="fa-solid fa-user-tag"></i>
+
+                                Account Role
+
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="role"
+                                name="role"
+                                class="form-input"
+                                value="{{ role|default(session.get('role', 'Farmer'), true) }}"
+                                disabled
+                            >
+
+
+                            <div class="form-help">
+
+                                Account role cannot be changed here.
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- LOCATION -->
+
+                        <div class="form-group full-width">
+
+                            <label
+                                for="location"
+                                class="form-label"
+                            >
+
+                                <i class="fa-solid fa-location-dot"></i>
+
+                                Location
+
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="location"
+                                name="location"
+                                class="form-input"
+                                value="{{ location|default(user.location if user else '', true) }}"
+                                placeholder="Enter your village, city or district"
+                                maxlength="200"
+                                autocomplete="address-level2"
+                            >
+
+
+                            <div class="form-help">
+
+                                Your location can be used for
+                                weather and farming recommendations.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =====================================
+                         PROFILE COMPLETION
+                    ====================================== -->
+
+                    <div class="completion-box">
+
+                        <div class="completion-header">
+
+                            <strong>
+
+                                <i class="fa-solid fa-chart-simple"></i>
+
+                                Profile Completion
+
+                            </strong>
+
+
+                            <span
+                                class="completion-percent"
+                                id="completionPercent"
+                            >
+
+                                0%
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="progress-track">
 
                             <div
-                                id="languageMessage"
-                                class="language-message"
+                                class="progress-bar"
+                                id="completionBar"
                             ></div>
 
                         </div>
 
 
-                        <div class="language-note">
+                        <div
+                            class="completion-message"
+                            id="completionMessage"
+                        >
 
-                            <i class="fa-solid fa-circle-info"></i>
-
-                            Language is a global application preference.
-                            After applying it, the entire application
-                            uses the selected language.
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- =================================================
-                     NOTIFICATIONS
-                ================================================== -->
-
-                <div class="settings-card">
-
-                    <div class="card-header">
-
-                        <div class="header-icon">
-
-                            <i class="fa-solid fa-bell"></i>
-
-                        </div>
-
-
-                        <div>
-
-                            <h2>
-                                Smart Notifications
-                            </h2>
-
-                            <p>
-                                Control farming and marketplace alerts
-                            </p>
+                            Complete your profile to improve personalization.
 
                         </div>
 
                     </div>
 
 
-                    <div class="notification-list">
+                    <!-- =====================================
+                         PERSONALIZATION
+                    ====================================== -->
 
+                    <div class="personalization-box">
 
-                        <!-- WEATHER -->
+                        <div class="personalization-title">
 
-                        <div class="notification-item">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
 
-                            <div>
-
-                                <strong>
-                                    ðŸŒ¦ Weather Alerts
-                                </strong>
-
-                                <p>
-                                    Receive rain, temperature and
-                                    weather condition alerts.
-                                </p>
-
-                            </div>
-
-
-                            <label class="switch">
-
-                                <input
-                                    type="checkbox"
-                                    id="weatherNotification"
-                                    checked
-                                    onchange="saveNotificationSettings()"
-                                >
-
-                                <span class="slider"></span>
-
-                            </label>
+                            Smart Personalization
 
                         </div>
 
 
+                        <div class="personalization-tags">
 
-                        <!-- FARMING -->
+                            <span class="personalization-tag">
 
-                        <div class="notification-item">
+                                <i class="fa-solid fa-cloud-sun"></i>
 
-                            <div>
-
-                                <strong>
-                                    ðŸŒ± Farming Alerts
-                                </strong>
-
-                                <p>
-                                    Receive crop recommendations,
-                                    cultivation and farming advice.
-                                </p>
-
-                            </div>
-
-
-                            <label class="switch">
-
-                                <input
-                                    type="checkbox"
-                                    id="farmingNotification"
-                                    checked
-                                    onchange="saveNotificationSettings()"
-                                >
-
-                                <span class="slider"></span>
-
-                            </label>
-
-                        </div>
-
-
-
-                        <!-- DISEASE -->
-
-                        <div class="notification-item">
-
-                            <div>
-
-                                <strong>
-                                    ðŸ©º Disease Alerts
-                                </strong>
-
-                                <p>
-                                    Receive crop health and disease
-                                    information.
-                                </p>
-
-                            </div>
-
-
-                            <label class="switch">
-
-                                <input
-                                    type="checkbox"
-                                    id="diseaseNotification"
-                                    checked
-                                    onchange="saveNotificationSettings()"
-                                >
-
-                                <span class="slider"></span>
-
-                            </label>
-
-                        </div>
-
-
-
-                        <!-- ORDERS -->
-
-                        <div class="notification-item">
-
-                            <div>
-
-                                <strong>
-                                    ðŸ›’ Order Notifications
-                                </strong>
-
-                                <p>
-                                    Receive marketplace order and
-                                    delivery updates.
-                                </p>
-
-                            </div>
-
-
-                            <label class="switch">
-
-                                <input
-                                    type="checkbox"
-                                    id="orderNotification"
-                                    checked
-                                    onchange="saveNotificationSettings()"
-                                >
-
-                                <span class="slider"></span>
-
-                            </label>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- =================================================
-                     WEATHER
-                ================================================== -->
-
-                <div class="settings-card">
-
-                    <div class="card-header">
-
-                        <div class="header-icon">
-
-                            <i class="fa-solid fa-cloud-sun"></i>
-
-                        </div>
-
-
-                        <div>
-
-                            <h2>
-                                Weather Intelligence
-                            </h2>
-
-                            <p>
-                                Current weather information for your location
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="weather-intelligence">
-
-
-                        <div class="weather-item">
-
-                            <i class="fa-solid fa-location-dot"></i>
-
-                            <span>
-                                Location
-                            </span>
-
-                            <strong>
-
-                                {{ weather.location if weather else 'Nagpur' }}
-
-                            </strong>
-
-                        </div>
-
-
-                        <div class="weather-item">
-
-                            <i class="fa-solid fa-temperature-half"></i>
-
-                            <span>
-                                Temperature
-                            </span>
-
-                            <strong>
-
-                                {{ weather.temperature if weather else 'N/A' }} Â°C
-
-                            </strong>
-
-                        </div>
-
-
-                        <div class="weather-item">
-
-                            <i class="fa-solid fa-cloud"></i>
-
-                            <span>
-                                Condition
-                            </span>
-
-                            <strong>
-
-                                {{ weather.condition if weather else 'Unavailable' }}
-
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- =================================================
-                     FARM INTELLIGENCE
-                ================================================== -->
-
-                <div class="settings-card full-width">
-
-                    <div class="card-header">
-
-                        <div class="header-icon">
-
-                            <i class="fa-solid fa-brain"></i>
-
-                        </div>
-
-
-                        <div>
-
-                            <h2>
-                                Connected Farm Intelligence
-                            </h2>
-
-                            <p>
-                                KisanVision360+ modules connected with
-                                your account preferences
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="module-grid">
-
-
-                        <div class="module-card">
-
-                            <i class="fa-solid fa-seedling"></i>
-
-                            <strong>
-                                AI Crop Advisor
-                            </strong>
-
-                            <span>
-                                Crop selection based on farm conditions.
-                            </span>
-
-                        </div>
-
-
-                        <div class="module-card">
-
-                            <i class="fa-solid fa-cloud-sun-rain"></i>
-
-                            <strong>
                                 Weather
-                            </strong>
 
-                            <span>
-                                Weather information for farm planning.
                             </span>
 
-                        </div>
 
+                            <span class="personalization-tag">
 
-                        <div class="module-card">
+                                <i class="fa-solid fa-seedling"></i>
 
-                            <i class="fa-solid fa-droplet"></i>
+                                Crop Advisor
 
-                            <strong>
-                                Smart Irrigation
-                            </strong>
-
-                            <span>
-                                Weather-aware irrigation decisions.
                             </span>
 
-                        </div>
 
+                            <span class="personalization-tag">
 
-                        <div class="module-card">
+                                <i class="fa-solid fa-virus"></i>
 
-                            <i class="fa-solid fa-virus"></i>
-
-                            <strong>
                                 Disease Detection
-                            </strong>
 
-                            <span>
-                                AI-assisted crop health analysis.
                             </span>
 
-                        </div>
 
+                            <span class="personalization-tag">
 
-                        <div class="module-card">
+                                <i class="fa-solid fa-droplet"></i>
 
-                            <i class="fa-solid fa-chart-line"></i>
+                                Irrigation
 
-                            <strong>
-                                Market Intelligence
-                            </strong>
-
-                            <span>
-                                Mandi prices and market information.
                             </span>
 
-                        </div>
 
+                            <span class="personalization-tag">
 
-                        <div class="module-card">
+                                <i class="fa-solid fa-chart-line"></i>
 
-                            <i class="fa-solid fa-indian-rupee-sign"></i>
+                                Market
 
-                            <strong>
-                                Farm Finance
-                            </strong>
-
-                            <span>
-                                Income, expenses and financial planning.
                             </span>
 
-                        </div>
 
+                            <span class="personalization-tag">
 
-                        <div class="module-card">
+                                <i class="fa-solid fa-indian-rupee-sign"></i>
 
-                            <i class="fa-solid fa-building-columns"></i>
+                                Finance
 
-                            <strong>
-                                Government Schemes
-                            </strong>
-
-                            <span>
-                                Agricultural support programs and schemes.
-                            </span>
-
-                        </div>
-
-
-                        <div class="module-card">
-
-                            <i class="fa-solid fa-store"></i>
-
-                            <strong>
-                                Marketplace
-                            </strong>
-
-                            <span>
-                                Buy and sell agricultural products.
                             </span>
 
                         </div>
 
                     </div>
 
-                </div>
 
+                    <!-- =====================================
+                         SECURITY
+                    ====================================== -->
 
+                    <div class="security-strip">
 
-                <!-- =================================================
-                     SECURITY
-                ================================================== -->
-
-                <div class="settings-card">
-
-                    <div class="card-header">
-
-                        <div class="header-icon">
+                        <div class="security-strip-icon">
 
                             <i class="fa-solid fa-shield-halved"></i>
 
@@ -2431,62 +1883,17 @@
 
                         <div>
 
-                            <h2>
-                                Security
-                            </h2>
-
-                            <p>
-                                Manage your password and account security
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="security-status">
-
-
-                        <div class="security-item">
-
-                            <i class="fa-solid fa-user-shield"></i>
-
                             <strong>
-                                Account Protected
+
+                                Your profile information is protected
+
                             </strong>
 
                             <span>
-                                Active
-                            </span>
 
-                        </div>
+                                KisanVision360+ uses your profile details
+                                only for account and farming personalization.
 
-
-                        <div class="security-item">
-
-                            <i class="fa-solid fa-lock"></i>
-
-                            <strong>
-                                Password
-                            </strong>
-
-                            <span>
-                                Manage securely
-                            </span>
-
-                        </div>
-
-
-                        <div class="security-item">
-
-                            <i class="fa-solid fa-database"></i>
-
-                            <strong>
-                                Data Protection
-                            </strong>
-
-                            <span>
-                                Account controlled
                             </span>
 
                         </div>
@@ -2494,728 +1901,429 @@
                     </div>
 
 
-                    <!-- CORRECT ENDPOINT -->
+                    <!-- =====================================
+                         ACTIONS
+                    ====================================== -->
 
-                    <a
-                        href="{{ url_for('auth.change_password') }}"
-                        class="settings-action"
-                    >
-
-                        <div>
-
-                            <i class="fa-solid fa-key"></i>
-
-                            <span>
-                                Change Password
-                            </span>
-
-                        </div>
-
-                        <i class="fa-solid fa-chevron-right"></i>
-
-                    </a>
-
-                </div>
+                    <div class="form-actions">
 
 
+                        <div class="action-left">
 
-                <!-- =================================================
-                     HELP
-                ================================================== -->
 
-                <div class="settings-card">
+                            <a
+                                href="{{ url_for('profile.profile') }}"
+                                class="btn btn-secondary"
+                            >
 
-                    <div class="card-header">
+                                <i class="fa-solid fa-arrow-left"></i>
 
-                        <div class="header-icon">
+                                Back to Profile
 
-                            <i class="fa-solid fa-circle-question"></i>
+                            </a>
+
+
+                            <a
+                                href="{{ url_for('settings.settings') }}"
+                                class="btn btn-secondary"
+                            >
+
+                                <i class="fa-solid fa-sliders"></i>
+
+                                Settings
+
+                            </a>
 
                         </div>
 
 
-                        <div>
-
-                            <h2>
-                                Help & Support
-                            </h2>
-
-                            <p>
-                                Get assistance with KisanVision360+
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="help-box">
-
-                        <div class="help-info">
-
-                            <div class="help-icon">
-
-                                <i class="fa-solid fa-headset"></i>
-
-                            </div>
-
-
-                            <div>
-
-                                <strong>
-                                    Need help?
-                                </strong>
-
-                                <p>
-                                    Get farmer assistance and
-                                    application support.
-                                </p>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- CORRECT ENDPOINT -->
-
-                        <a
-                            href="{{ url_for('help.help_page') }}"
-                            class="primary-btn"
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            id="saveProfileBtn"
                         >
 
-                            <i class="fa-solid fa-arrow-right"></i>
+                            <i class="fa-solid fa-floppy-disk"></i>
 
-                            Open Help
+                            Save Changes
 
-                        </a>
+                        </button>
 
                     </div>
 
                 </div>
-
-
-
-                <!-- =================================================
-                     LOGOUT
-                ================================================== -->
-
-                <div class="settings-card logout-card full-width">
-
-                    <div class="card-header">
-
-                        <div class="header-icon logout-icon">
-
-                            <i class="fa-solid fa-right-from-bracket"></i>
-
-                        </div>
-
-
-                        <div>
-
-                            <h2>
-                                Logout
-                            </h2>
-
-                            <p>
-                                Sign out safely from KisanVision360+
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <a
-                        href="{{ url_for('auth.logout') }}"
-                        class="logout-btn"
-                        onclick="return confirmLogout();"
-                    >
-
-                        <i class="fa-solid fa-right-from-bracket"></i>
-
-                        Logout Safely
-
-                    </a>
-
-                </div>
-
 
             </div>
 
-
-
-            <!-- =================================================
-                 FOOTER
-            ================================================== -->
-
-            <footer class="settings-footer">
-
-                <i class="fa-solid fa-leaf"></i>
-
-                KisanVision360+
-
-                <span>â€¢</span>
-
-                Smart Farming Platform
-
-                <span>â€¢</span>
-
-                Made in India ðŸ‡®ðŸ‡³
-
-            </footer>
-
-        </div>
+        </form>
 
     </div>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="profile-footer">
+
+        <i class="fa-solid fa-leaf"></i>
+
+        KisanVision360+
+
+        <span>-</span>
+
+        Smart Farming Platform
+
+        <span>-</span>
+
+        Made in India
+
+    </footer>
+
+</div>
+
 {% endblock %}
 
+
 {% block scripts %}
+
 <script>
 
 "use strict";
 
 
 /* =========================================================
-   LANGUAGE NAMES
+   ELEMENTS
 ========================================================= */
 
-const LANGUAGE_NAMES = {
+const profileForm =
+    document.getElementById("profileForm");
 
-    en: "English",
+const profileInput =
+    document.getElementById("profile");
 
-    hi: "à¤¹à¤¿à¤¨à¥à¤¦à¥€",
+const profilePreview =
+    document.getElementById("profilePreview");
 
-    mr: "à¤®à¤°à¤¾à¤ à¥€",
+const saveButton =
+    document.getElementById("saveProfileBtn");
 
-    kn: "à²•à²¨à³à²¨à²¡",
+const completionBar =
+    document.getElementById("completionBar");
 
-    te: "à°¤à±†à°²à±à°—à±",
+const completionPercent =
+    document.getElementById("completionPercent");
 
-    ta: "à®¤à®®à®¿à®´à¯",
-
-    ml: "à´®à´²à´¯à´¾à´³à´‚",
-
-    gu: "àª—à«àªœàª°àª¾àª¤à«€",
-
-    pa: "à¨ªà©°à¨œà¨¾à¨¬à©€",
-
-    bn: "à¦¬à¦¾à¦‚à¦²à¦¾",
-
-    as: "à¦…à¦¸à¦®à§€à¦¯à¦¼à¦¾",
-
-    or: "à¬“à¬¡à¬¼à¬¿à¬†",
-
-    ur: "Ø§Ø±Ø¯Ùˆ",
-
-    ne: "à¤¨à¥‡à¤ªà¤¾à¤²à¥€",
-
-    sa: "à¤¸à¤‚à¤¸à¥à¤•à¥ƒà¤¤",
-
-    kok: "à¤•à¥‹à¤‚à¤•à¤£à¥€",
-
-    mai: "à¤®à¥ˆà¤¥à¤¿à¤²à¥€",
-
-    ks: "à¤•à¥‰à¤¶à¥à¤°",
-
-    sd: "Ø³Ù†ÚŒÙŠ",
-
-    mni: "à¦®à§ˆà¦¤à§ˆà¦²à§‹à¦¨à§"
-
-};
-
+const completionMessage =
+    document.getElementById("completionMessage");
 
 
 /* =========================================================
-   LOAD CURRENT LANGUAGE
+   PROFILE PHOTO PREVIEW
 ========================================================= */
 
-function loadCurrentLanguage() {
+if (profileInput) {
 
-    const select =
-        document.getElementById(
-            "languageSelect"
-        );
+    profileInput.addEventListener(
+        "change",
+        function () {
 
+            const file =
+                this.files && this.files[0];
 
-    if (!select) {
-        return;
-    }
-
-
-    let currentLanguage =
-        "{{ session.get('language', 'en') }}";
-
-
-    if (
-        !currentLanguage ||
-        currentLanguage === "None"
-    ) {
-
-        currentLanguage =
-            localStorage.getItem(
-                "kisanvision360_language"
-            ) || "en";
-    }
-
-
-    if (
-        !LANGUAGE_NAMES[currentLanguage]
-    ) {
-
-        currentLanguage = "en";
-
-    }
-
-
-    select.value =
-        currentLanguage;
-
-
-    updateCurrentLanguageText(
-        currentLanguage
-    );
-}
-
-
-
-/* =========================================================
-   UPDATE LANGUAGE TEXT
-========================================================= */
-
-function updateCurrentLanguageText(language) {
-
-    const text =
-        document.getElementById(
-            "currentLanguageText"
-        );
-
-
-    if (!text) {
-        return;
-    }
-
-
-    text.textContent =
-        LANGUAGE_NAMES[language] ||
-        "English";
-}
-
-
-
-/* =========================================================
-   SAVE GLOBAL LANGUAGE
-========================================================= */
-
-async function saveLanguage() {
-
-    const select =
-        document.getElementById(
-            "languageSelect"
-        );
-
-
-    const message =
-        document.getElementById(
-            "languageMessage"
-        );
-
-
-    if (!select) {
-        return;
-    }
-
-
-    const language =
-        select.value;
-
-
-    if (!LANGUAGE_NAMES[language]) {
-
-        return;
-    }
-
-
-    try {
-
-        /*
-         * IMPORTANT:
-         * This matches:
-         * settings.update_language
-         */
-
-        const response =
-            await fetch(
-                "{{ url_for('settings.update_language') }}",
-                {
-
-                    method: "POST",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json"
-
-                    },
-
-                    credentials:
-                        "same-origin",
-
-                    body:
-                        JSON.stringify({
-
-                            language:
-                                language
-
-                        })
-
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (data.success) {
-
-            localStorage.setItem(
-                "kisanvision360_language",
-                language
-            );
-
-
-            updateCurrentLanguageText(
-                language
-            );
-
-
-            if (message) {
-
-                message.textContent =
-                    "âœ“ Language saved successfully";
-
-                message.style.display =
-                    "block";
+            if (!file) {
+                return;
             }
 
 
-            setTimeout(
-                function () {
+            const allowedTypes = [
+                "image/jpeg",
+                "image/png"
+            ];
 
-                    window.location.reload();
 
-                },
-                700
-            );
+            if (!allowedTypes.includes(file.type)) {
 
+                alert(
+                    "Please select a JPG, JPEG or PNG image."
+                );
+
+                this.value = "";
+
+                return;
+            }
+
+
+            const maxSize =
+                5 * 1024 * 1024;
+
+
+            if (file.size > maxSize) {
+
+                alert(
+                    "Image size must be 5 MB or less."
+                );
+
+                this.value = "";
+
+                return;
+            }
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                function (event) {
+
+                    if (profilePreview) {
+
+                        profilePreview.src =
+                            event.target.result;
+
+                    }
+
+                };
+
+
+            reader.readAsDataURL(file);
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   GET FORM VALUE
+========================================================= */
+
+function getValue(id) {
+
+    const element =
+        document.getElementById(id);
+
+    if (!element) {
+        return "";
+    }
+
+    return element.value.trim();
+}
+
+
+/* =========================================================
+   UPDATE PROFILE COMPLETION
+========================================================= */
+
+function updateProfileCompletion() {
+
+    const name =
+        getValue("name");
+
+    const mobile =
+        getValue("mobile");
+
+    const email =
+        getValue("email");
+
+    const location =
+        getValue("location");
+
+
+    let completed = 0;
+
+    const total = 4;
+
+
+    if (name.length >= 2) {
+        completed++;
+    }
+
+
+    if (/^[6-9]\d{9}$/.test(mobile)) {
+        completed++;
+    }
+
+
+    if (
+        email.length > 0 &&
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+    ) {
+
+        completed++;
+
+    }
+
+
+    if (location.length >= 2) {
+        completed++;
+    }
+
+
+    const percentage =
+        Math.round(
+            (completed / total) * 100
+        );
+
+
+    if (completionBar) {
+
+        completionBar.style.width =
+            percentage + "%";
+
+    }
+
+
+    if (completionPercent) {
+
+        completionPercent.textContent =
+            percentage + "%";
+
+    }
+
+
+    if (completionMessage) {
+
+        if (percentage === 100) {
+
+            completionMessage.textContent =
+                "Your profile is complete.";
+
+        } else if (percentage >= 75) {
+
+            completionMessage.textContent =
+                "Almost complete. Add the remaining information.";
+
+        } else if (percentage >= 50) {
+
+            completionMessage.textContent =
+                "Good progress. Complete more details for better personalization.";
 
         } else {
 
-            if (message) {
+            completionMessage.textContent =
+                "Complete your profile to improve personalization.";
 
-                message.textContent =
-                    data.message ||
-                    "Unable to save language.";
+        }
 
-                message.style.display =
-                    "block";
+    }
+
+}
+
+
+/* =========================================================
+   INPUT EVENTS
+========================================================= */
+
+[
+    "name",
+    "mobile",
+    "email",
+    "location"
+].forEach(function (id) {
+
+    const element =
+        document.getElementById(id);
+
+    if (!element) {
+        return;
+    }
+
+    element.addEventListener(
+        "input",
+        updateProfileCompletion
+    );
+
+});
+
+
+/* =========================================================
+   FORM VALIDATION
+========================================================= */
+
+if (profileForm) {
+
+    profileForm.addEventListener(
+        "submit",
+        function (event) {
+
+            const name =
+                getValue("name");
+
+            const mobile =
+                getValue("mobile");
+
+            const email =
+                getValue("email");
+
+
+            if (name.length < 2) {
+
+                event.preventDefault();
+
+                alert(
+                    "Please enter your full name."
+                );
+
+                document
+                    .getElementById("name")
+                    ?.focus();
+
+                return;
+            }
+
+
+            if (
+                !/^[6-9]\d{9}$/.test(mobile)
+            ) {
+
+                event.preventDefault();
+
+                alert(
+                    "Please enter a valid 10-digit Indian mobile number."
+                );
+
+                document
+                    .getElementById("mobile")
+                    ?.focus();
+
+                return;
+            }
+
+
+            if (
+                email &&
+                !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+            ) {
+
+                event.preventDefault();
+
+                alert(
+                    "Please enter a valid email address."
+                );
+
+                document
+                    .getElementById("email")
+                    ?.focus();
+
+                return;
+            }
+
+
+            if (saveButton) {
+
+                saveButton.disabled = true;
+
+                saveButton.innerHTML =
+                    '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
             }
 
         }
-
-
-    } catch (error) {
-
-        console.error(
-            "LANGUAGE ERROR:",
-            error
-        );
-
-
-        if (message) {
-
-            message.textContent =
-                "Unable to save language.";
-
-            message.style.display =
-                "block";
-        }
-
-    }
-
-}
-
-
-
-/* =========================================================
-   NOTIFICATION IDs
-========================================================= */
-
-const NOTIFICATION_IDS = {
-
-    weather:
-        "weatherNotification",
-
-    farming:
-        "farmingNotification",
-
-    disease:
-        "diseaseNotification",
-
-    orders:
-        "orderNotification"
-
-};
-
-
-
-/* =========================================================
-   GET NOTIFICATION DATA
-========================================================= */
-
-function getNotificationData() {
-
-    return {
-
-        weather:
-            document.getElementById(
-                NOTIFICATION_IDS.weather
-            )?.checked ?? true,
-
-
-        farming:
-            document.getElementById(
-                NOTIFICATION_IDS.farming
-            )?.checked ?? true,
-
-
-        disease:
-            document.getElementById(
-                NOTIFICATION_IDS.disease
-            )?.checked ?? true,
-
-
-        orders:
-            document.getElementById(
-                NOTIFICATION_IDS.orders
-            )?.checked ?? true
-
-    };
-
-}
-
-
-
-/* =========================================================
-   SAVE NOTIFICATION SETTINGS
-========================================================= */
-
-async function saveNotificationSettings() {
-
-    const data =
-        getNotificationData();
-
-
-    /*
-     * Local backup
-     */
-
-    localStorage.setItem(
-
-        "kisanvision360_notifications",
-
-        JSON.stringify(data)
-
-    );
-
-
-    try {
-
-        /*
-         * IMPORTANT:
-         * This matches:
-         * settings.update_notifications
-         */
-
-        const response =
-            await fetch(
-                "{{ url_for('settings.update_notifications') }}",
-                {
-
-                    method: "POST",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json"
-
-                    },
-
-                    credentials:
-                        "same-origin",
-
-                    body:
-                        JSON.stringify(data)
-
-                }
-            );
-
-
-        const result =
-            await response.json();
-
-
-        if (!result.success) {
-
-            console.warn(
-
-                result.message ||
-                "Notification settings could not be saved."
-
-            );
-
-        }
-
-
-    } catch (error) {
-
-        console.warn(
-
-            "Notification API unavailable:",
-
-            error
-
-        );
-
-    }
-
-}
-
-
-
-/* =========================================================
-   LOAD NOTIFICATION SETTINGS
-========================================================= */
-
-function loadNotificationSettings() {
-
-    const saved =
-        localStorage.getItem(
-            "kisanvision360_notifications"
-        );
-
-
-    if (!saved) {
-
-        return;
-
-    }
-
-
-    try {
-
-        const data =
-            JSON.parse(saved);
-
-
-        const weather =
-            document.getElementById(
-                "weatherNotification"
-            );
-
-
-        const farming =
-            document.getElementById(
-                "farmingNotification"
-            );
-
-
-        const disease =
-            document.getElementById(
-                "diseaseNotification"
-            );
-
-
-        const orders =
-            document.getElementById(
-                "orderNotification"
-            );
-
-
-        if (
-            weather &&
-            data.weather !== undefined
-        ) {
-
-            weather.checked =
-                Boolean(data.weather);
-
-        }
-
-
-        if (
-            farming &&
-            data.farming !== undefined
-        ) {
-
-            farming.checked =
-                Boolean(data.farming);
-
-        }
-
-
-        if (
-            disease &&
-            data.disease !== undefined
-        ) {
-
-            disease.checked =
-                Boolean(data.disease);
-
-        }
-
-
-        if (
-            orders &&
-            data.orders !== undefined
-        ) {
-
-            orders.checked =
-                Boolean(data.orders);
-
-        }
-
-
-    } catch (error) {
-
-        console.warn(
-
-            "Invalid notification settings:",
-
-            error
-
-        );
-
-    }
-
-}
-
-
-
-/* =========================================================
-   LOGOUT CONFIRMATION
-========================================================= */
-
-function confirmLogout() {
-
-    return confirm(
-
-        "Are you sure you want to logout from KisanVision360+?"
-
     );
 
 }
-
 
 
 /* =========================================================
@@ -3223,19 +2331,14 @@ function confirmLogout() {
 ========================================================= */
 
 document.addEventListener(
-
     "DOMContentLoaded",
-
     function () {
 
-        loadCurrentLanguage();
-
-        loadNotificationSettings();
+        updateProfileCompletion();
 
     }
-
 );
 
 </script>
-{% endblock %}
 
+{% endblock %}

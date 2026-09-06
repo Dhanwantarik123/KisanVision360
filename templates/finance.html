@@ -186,7 +186,7 @@
         }
 
         .finance-banner::after {
-            content: "â‚¹";
+            content: "₹";
 
             position: absolute;
 
@@ -700,7 +700,7 @@
         }
 
         .flow-step:not(:last-child)::after {
-            content: "â†’";
+            content: "→";
 
             position: absolute;
 
@@ -1032,7 +1032,7 @@
         .flow-step:not(:last-child)::after {
             right: auto;
             left: -14px;
-            content: "â†";
+            content: "←";
         }
 
         /* =========================================
@@ -1142,11 +1142,10 @@
 {% block page_subtitle %}Smart Agriculture Platform{% endblock %}
 
 {% block content %}
-<!-- =========================================
+
+    <!-- =========================================
          TOPBAR
     ========================================= -->
-
-    
 
 
     <!-- =========================================
@@ -1207,7 +1206,7 @@
             </h3>
 
             <h2>
-                â‚¹ {{ "%.2f"|format(
+                ₹ {{ "%.2f"|format(
                     income|default(0, true)|float
                 ) }}
             </h2>
@@ -1241,7 +1240,7 @@
             </h3>
 
             <h2>
-                â‚¹ {{ "%.2f"|format(
+                ₹ {{ "%.2f"|format(
                     expenses|default(0, true)|float
                 ) }}
             </h2>
@@ -1275,7 +1274,7 @@
             </h3>
 
             <h2>
-                â‚¹ {{ "%.2f"|format(
+                ₹ {{ "%.2f"|format(
                     profit|default(0, true)|float
                 ) }}
             </h2>
@@ -1853,7 +1852,7 @@
 
                                     <strong>
 
-                                        â‚¹ {{
+                                        ₹ {{
                                             "%.2f"|format(
                                                 t.amount
                                                 |default(0, true)
@@ -1991,11 +1990,12 @@
 
         KisanVision360+ Smart Farming Finance
 
-        <span>â€¢</span>
+        <span>•</span>
 
         Manage your farm better
 
     </footer>
+
 {% endblock %}
 
 {% block scripts %}

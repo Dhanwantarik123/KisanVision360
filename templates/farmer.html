@@ -1,6 +1,10 @@
 ﻿{% extends "base.html" %}
 
-{% set weather_data = weather if weather is defined else {} %}
+{# ============================================================
+WEATHER DATA
+farmer.py sends weather_data=_weather()
+============================================================ #}
+{% set weather_data = weather_data if weather_data is defined else (weather if weather is defined else {}) %}
 
 {% block title %}
 KisanVision360+ | Farmer Dashboard
@@ -15,16 +19,13 @@ KisanVision360+ | Farmer Dashboard
 
 {% endblock %}
 
-
 {% block page_title %}
 🌾 Farmer Dashboard
 {% endblock %}
 
-
 {% block page_subtitle %}
 Smart Farm Command Center
 {% endblock %}
-
 
 {% block content %}
 
@@ -34,147 +35,309 @@ Smart Farm Command Center
 
 <div class="dashboard-container">
 
+```
+<!-- =================================================
+     WELCOME / DASHBOARD HEADER
+================================================== -->
 
-    <!-- =================================================
-         WELCOME / DASHBOARD HEADER
-    ================================================== -->
+<section class="farmer-dashboard-header">
 
-    <section class="farmer-dashboard-header">
+    <div class="welcome-section">
 
-        <div class="welcome-section">
-
-            <div class="dashboard-kicker">
-                <span class="live-dot"></span>
-                Smart Farm Command Center
-            </div>
-
-            <h1>
-                🌾 KisanVision360+
-            </h1>
-
-            <p>
-                Welcome
-                <strong>
-                    {{ name|default(session.get('name', 'Farmer'), true) }}
-                </strong>
-                👋
-                <br>
-
-                AI-powered intelligence for smarter farming decisions.
-            </p>
-
+        <div class="dashboard-kicker">
+            <span class="live-dot"></span>
+            Smart Farm Command Center
         </div>
 
+        <h1>
+            🌾 KisanVision360+
+        </h1>
 
-        <div class="top-right">
+        <p>
+            Welcome
+            <strong>
+                {{ name|default(session.get('name', 'Farmer'), true) }}
+            </strong>
+            👋
+            <br>
 
-            <div class="live-time">
+            AI-powered intelligence for smarter farming decisions.
+        </p>
 
-                <div class="time-icon">
-                    <i class="fa-solid fa-calendar-days"></i>
-                </div>
-
-                <div>
-
-                    <h4 id="date">
-                        Loading date...
-                    </h4>
-
-                    <p id="clock">
-                        Loading time...
-                    </p>
-
-                </div>
-
-            </div>
+    </div>
 
 
-            <a
-                href="/notifications"
-                class="notification"
-                title="Smart Farm Notifications"
-                aria-label="Notifications"
-            >
+    <div class="top-right">
 
-                <i class="fa-solid fa-bell"></i>
+        <div class="live-time">
 
-                <span id="notificationCount">
-                    {{ notification_count|default(0) }}
-                </span>
-
-            </a>
-
-
-            <div class="profile">
-
-                <div class="profile-image-wrapper">
-
-                    <img
-                        src="{{ url_for('static', filename='images/farmer.png') }}"
-                        alt="Farmer"
-                        onerror="
-                            this.onerror=null;
-                            this.src='{{ url_for('static', filename='images/farmer.jpg') }}';
-                        "
-                    >
-
-                    <span class="profile-online"></span>
-
-                </div>
-
-
-                <div class="profile-info">
-
-                    <h4>
-                        {{ name|default(session.get('name', 'Farmer'), true) }}
-                    </h4>
-
-                    <small>
-
-                        <i class="fa-solid fa-seedling"></i>
-
-                        Farmer
-
-                    </small>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =================================================
-         SMART STATUS
-    ================================================== -->
-
-    <section class="farm-status-bar">
-
-
-        <div class="status-item">
-
-            <div class="status-icon weather-status">
-
-                <i class="fa-solid fa-cloud-sun"></i>
-
+            <div class="time-icon">
+                <i class="fa-solid fa-calendar-days"></i>
             </div>
 
             <div>
 
-                <span>
-                    Weather System
-                </span>
+                <h4 id="date">
+                    Loading date...
+                </h4>
 
-                <strong class="status-online">
+                <p id="clock">
+                    Loading time...
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <a
+            href="/notifications"
+            class="notification"
+            title="Smart Farm Notifications"
+            aria-label="Notifications"
+        >
+
+            <i class="fa-solid fa-bell"></i>
+
+            <span id="notificationCount">
+                {{ notification_count|default(0) }}
+            </span>
+
+        </a>
+
+
+        <div class="profile">
+
+            <div class="profile-image-wrapper">
+
+                <img
+                    src="{{ url_for('static', filename='images/farmer.png') }}"
+                    alt="Farmer"
+                    onerror="
+                        this.onerror=null;
+                        this.src='{{ url_for('static', filename='images/farmer.jpg') }}';
+                    "
+                >
+
+                <span class="profile-online"></span>
+
+            </div>
+
+
+            <div class="profile-info">
+
+                <h4>
+                    {{ name|default(session.get('name', 'Farmer'), true) }}
+                </h4>
+
+                <small>
+
+                    <i class="fa-solid fa-seedling"></i>
+
+                    Farmer
+
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =================================================
+     SMART STATUS
+================================================== -->
+
+<section class="farm-status-bar">
+
+
+    <div class="status-item">
+
+        <div class="status-icon weather-status">
+
+            <i class="fa-solid fa-cloud-sun"></i>
+
+        </div>
+
+        <div>
+
+            <span>
+                Weather System
+            </span>
+
+            <strong class="status-online">
+
+                <i class="fa-solid fa-circle"></i>
+
+                Live Data
+
+            </strong>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="status-item">
+
+        <div class="status-icon crop-status">
+
+            <i class="fa-solid fa-seedling"></i>
+
+        </div>
+
+        <div>
+
+            <span>
+                Crop Advisory
+            </span>
+
+            <strong>
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                AI Ready
+
+            </strong>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="status-item">
+
+        <div class="status-icon irrigation-status">
+
+            <i class="fa-solid fa-droplet"></i>
+
+        </div>
+
+        <div>
+
+            <span>
+                Irrigation
+            </span>
+
+            <strong>
+                Smart Planning
+            </strong>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="status-item">
+
+        <div class="status-icon market-status">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+        </div>
+
+        <div>
+
+            <span>
+                Market Intelligence
+            </span>
+
+            <strong>
+                Connected
+            </strong>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =================================================
+     WEATHER
+================================================== -->
+
+<section class="weather-summary">
+
+    <div class="weather-glow glow-one"></div>
+    <div class="weather-glow glow-two"></div>
+
+
+    <div class="weather-main">
+
+
+        <div class="weather-content">
+
+
+            <span class="weather-location">
+
+                <i class="fa-solid fa-location-dot"></i>
+
+                {{ weather_data.city|default('Your Location', true) }},
+                {{ weather_data.country|default('India', true) }}
+
+                <span class="location-live">
 
                     <i class="fa-solid fa-circle"></i>
 
-                    Live Data
+                    Live
 
-                </strong>
+                </span>
+
+            </span>
+
+
+            <div class="weather-temperature">
+
+                <h1>
+                    {{ weather_data.temperature|default('--', true) }}
+                </h1>
+
+                <span>
+                    °C
+                </span>
+
+            </div>
+
+
+            <p class="weather-description">
+
+                <i class="fa-solid fa-cloud-sun"></i>
+
+                {{ weather_data.description|default(
+                    'Weather information unavailable',
+                    true
+                ) }}
+
+            </p>
+
+
+            <div class="weather-intelligence">
+
+                <span>
+
+                    <i class="fa-solid fa-brain"></i>
+
+                    AI Weather Intelligence
+
+                </span>
+
+
+                <span>
+
+                    <i class="fa-solid fa-seedling"></i>
+
+                    Farming Insights Active
+
+                </span>
 
             </div>
 
@@ -182,27 +345,46 @@ Smart Farm Command Center
 
 
 
-        <div class="status-item">
+        <div class="weather-visual">
 
-            <div class="status-icon crop-status">
+            <div class="weather-orbit orbit-one"></div>
 
-                <i class="fa-solid fa-seedling"></i>
+            <div class="weather-orbit orbit-two"></div>
+
+
+            <img
+                src="https://openweathermap.org/img/wn/{{ weather_data.icon|default('01d', true) }}@4x.png"
+                alt="Current Weather"
+                onerror="this.style.display='none';"
+            >
+
+        </div>
+
+    </div>
+
+
+
+    <div class="weather-grid">
+
+
+        <div class="weather-card">
+
+            <div class="weather-icon">
+
+                <i class="fa-solid fa-temperature-half"></i>
 
             </div>
 
             <div>
 
-                <span>
-                    Crop Advisory
-                </span>
+                <h3>
+                    Feels Like
+                </h3>
 
-                <strong>
-
-                    <i class="fa-solid fa-circle-check"></i>
-
-                    AI Ready
-
-                </strong>
+                <p>
+                    {{ weather_data.feels_like|default('--', true) }}
+                    °C
+                </p>
 
             </div>
 
@@ -210,9 +392,9 @@ Smart Farm Command Center
 
 
 
-        <div class="status-item">
+        <div class="weather-card">
 
-            <div class="status-icon irrigation-status">
+            <div class="weather-icon">
 
                 <i class="fa-solid fa-droplet"></i>
 
@@ -220,13 +402,14 @@ Smart Farm Command Center
 
             <div>
 
-                <span>
-                    Irrigation
-                </span>
+                <h3>
+                    Humidity
+                </h3>
 
-                <strong>
-                    Smart Planning
-                </strong>
+                <p>
+                    {{ weather_data.humidity|default('--', true) }}
+                    %
+                </p>
 
             </div>
 
@@ -234,957 +417,780 @@ Smart Farm Command Center
 
 
 
-        <div class="status-item">
+        <div class="weather-card">
 
-            <div class="status-icon market-status">
+            <div class="weather-icon">
 
-                <i class="fa-solid fa-chart-line"></i>
+                <i class="fa-solid fa-wind"></i>
 
             </div>
 
             <div>
 
-                <span>
-                    Market Intelligence
-                </span>
+                <h3>
+                    Wind Speed
+                </h3>
 
-                <strong>
-                    Connected
-                </strong>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =================================================
-         WEATHER
-    ================================================== -->
-
-    <section class="weather-summary">
-
-        <div class="weather-glow glow-one"></div>
-        <div class="weather-glow glow-two"></div>
-
-
-        <div class="weather-main">
-
-
-            <div class="weather-content">
-
-
-                <span class="weather-location">
-
-                    <i class="fa-solid fa-location-dot"></i>
-
-                    {{ weather_data.city|default('Your Location', true) }},
-                    {{ weather_data.country|default('India', true) }}
-
-                    <span class="location-live">
-
-                        <i class="fa-solid fa-circle"></i>
-
-                        Live
-
-                    </span>
-
-                </span>
-
-
-                <div class="weather-temperature">
-
-                    <h1>
-                        {{ weather_data.temperature|default('--', true) }}
-                    </h1>
-
-                    <span>
-                        °C
-                    </span>
-
-                </div>
-
-
-                <p class="weather-description">
-
-                    <i class="fa-solid fa-cloud-sun"></i>
-
-                    {{ weather_data.description|default(
-                        'Weather information unavailable',
+                <p>
+                    {{ weather_data.wind|default(
+                        weather_data.wind_speed|default('--', true),
                         true
                     ) }}
-
+                    m/s
                 </p>
 
-
-                <div class="weather-intelligence">
-
-                    <span>
-
-                        <i class="fa-solid fa-brain"></i>
-
-                        AI Weather Intelligence
-
-                    </span>
-
-
-                    <span>
-
-                        <i class="fa-solid fa-seedling"></i>
-
-                        Farming Insights Active
-
-                    </span>
-
-                </div>
-
-            </div>
-
-
-
-            <div class="weather-visual">
-
-                <div class="weather-orbit orbit-one"></div>
-
-                <div class="weather-orbit orbit-two"></div>
-
-
-                <img
-                    src="https://openweathermap.org/img/wn/{{ weather_data.icon|default('01d', true) }}@4x.png"
-                    alt="Current Weather"
-                >
-
             </div>
 
         </div>
 
 
 
-        <div class="weather-grid">
+        <div class="weather-card">
 
+            <div class="weather-icon">
 
-            <div class="weather-card">
-
-                <div class="weather-icon">
-
-                    <i class="fa-solid fa-temperature-half"></i>
-
-                </div>
-
-                <div>
-
-                    <h3>
-                        Feels Like
-                    </h3>
-
-                    <p>
-                        {{ weather_data.feels_like|default('--', true) }}
-                        °C
-                    </p>
-
-                </div>
+                <i class="fa-solid fa-cloud"></i>
 
             </div>
 
+            <div>
 
+                <h3>
+                    Cloud Cover
+                </h3>
 
-            <div class="weather-card">
-
-                <div class="weather-icon">
-
-                    <i class="fa-solid fa-droplet"></i>
-
-                </div>
-
-                <div>
-
-                    <h3>
-                        Humidity
-                    </h3>
-
-                    <p>
-                        {{ weather_data.humidity|default('--', true) }}
-                        %
-                    </p>
-
-                </div>
-
-            </div>
-
-
-
-            <div class="weather-card">
-
-                <div class="weather-icon">
-
-                    <i class="fa-solid fa-wind"></i>
-
-                </div>
-
-                <div>
-
-                    <h3>
-                        Wind Speed
-                    </h3>
-
-                    <p>
-                        {{ weather_data.wind|default('--', true) }}
-                        m/s
-                    </p>
-
-                </div>
-
-            </div>
-
-
-
-            <div class="weather-card">
-
-                <div class="weather-icon">
-
-                    <i class="fa-solid fa-cloud"></i>
-
-                </div>
-
-                <div>
-
-                    <h3>
-                        Cloud Cover
-                    </h3>
-
-                    <p>
-                        {{ weather_data.clouds|default('--', true) }}
-                        %
-                    </p>
-
-                </div>
+                <p>
+                    {{ weather_data.clouds|default(
+                        weather_data.cloud_cover|default('--', true),
+                        true
+                    ) }}
+                    %
+                </p>
 
             </div>
 
         </div>
 
-    </section>
+    </div>
+
+</section>
 
 
 
-    <!-- =================================================
-         AI HERO
-    ================================================== -->
+<!-- =================================================
+     AI HERO
+================================================== -->
 
-    <section class="hero">
+<section class="hero">
 
-        <div class="hero-background-shape shape-one"></div>
-
-        <div class="hero-background-shape shape-two"></div>
-
-
-        <div class="hero-text">
+    <div class="hero-background-shape shape-one"></div>
+    <div class="hero-background-shape shape-two"></div>
 
 
-            <span class="hero-label">
+    <div class="hero-text">
 
-                <i class="fa-solid fa-wand-magic-sparkles"></i>
 
-                AI Smart Farming
+        <span class="hero-label">
+
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+            AI Smart Farming
+
+        </span>
+
+
+        <h1>
+
+            Grow Better With
+
+            <span>
+                Intelligent Farm Decisions
+            </span>
+
+        </h1>
+
+
+        <p>
+
+            KisanVision360+ connects weather, crop advisory,
+            disease detection, irrigation, market prices,
+            government schemes and farm finance into one
+            intelligent farming platform.
+
+        </p>
+
+
+        <div class="hero-buttons">
+
+
+            <a
+                href="{{ url_for('recommendation.recommendation') }}"
+                class="primary-btn"
+            >
+
+                <i class="fa-solid fa-seedling"></i>
+
+                Crop Recommendation
+
+            </a>
+
+
+            <a
+                href="{{ url_for('weather.weather') }}"
+                class="secondary-btn"
+            >
+
+                <i class="fa-solid fa-cloud-sun"></i>
+
+                Live Weather
+
+            </a>
+
+        </div>
+
+
+        <div class="hero-trust">
+
+            <span>
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                Weather Connected
 
             </span>
 
 
-            <h1>
+            <span>
 
-                Grow Better With
+                <i class="fa-solid fa-circle-check"></i>
 
-                <span>
-                    Intelligent Farm Decisions
-                </span>
+                AI Ready
 
-            </h1>
+            </span>
 
 
-            <p>
+            <span>
 
-                KisanVision360+ connects weather, crop advisory,
-                disease detection, irrigation, market prices,
-                government schemes and farm finance into one
-                intelligent farming platform.
+                <i class="fa-solid fa-circle-check"></i>
 
-            </p>
+                Farmer Focused
 
-
-            <div class="hero-buttons">
-
-
-                <a
-                    href="{{ url_for('recommendation.recommendation') }}"
-                    class="primary-btn"
-                >
-
-                    <i class="fa-solid fa-seedling"></i>
-
-                    Crop Recommendation
-
-                </a>
-
-
-                <a
-                    href="{{ url_for('weather.weather') }}"
-                    class="secondary-btn"
-                >
-
-                    <i class="fa-solid fa-cloud-sun"></i>
-
-                    Live Weather
-
-                </a>
-
-            </div>
-
-
-            <div class="hero-trust">
-
-                <span>
-
-                    <i class="fa-solid fa-circle-check"></i>
-
-                    Weather Connected
-
-                </span>
-
-
-                <span>
-
-                    <i class="fa-solid fa-circle-check"></i>
-
-                    AI Ready
-
-                </span>
-
-
-                <span>
-
-                    <i class="fa-solid fa-circle-check"></i>
-
-                    Farmer Focused
-
-                </span>
-
-            </div>
+            </span>
 
         </div>
 
-
-
-        <div class="hero-image">
-
-            <div class="hero-image-overlay"></div>
-
-
-            <img
-                src="{{ url_for('static', filename='images/farm-banner.png') }}"
-                alt="Smart Farming"
-                onerror="this.style.display='none';"
-            >
-
-
-            <div class="hero-floating-card weather-float">
-
-                <i class="fa-solid fa-cloud-sun"></i>
-
-                <div>
-
-                    <strong>
-                        Weather
-                    </strong>
-
-                    <small>
-                        Live Intelligence
-                    </small>
-
-                </div>
-
-            </div>
-
-
-            <div class="hero-floating-card ai-float">
-
-                <i class="fa-solid fa-brain"></i>
-
-                <div>
-
-                    <strong>
-                        AI Advisory
-                    </strong>
-
-                    <small>
-                        Decision Support
-                    </small>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
+    </div>
 
 
 
-    <!-- =================================================
-         SERVICES
-    ================================================== -->
+    <div class="hero-image">
 
-    <section class="features-section">
+        <div class="hero-image-overlay"></div>
 
 
-        <div class="section-heading">
+        <img
+            src="{{ url_for('static', filename='images/farm-banner.png') }}"
+            alt="Smart Farming"
+            onerror="this.style.display='none';"
+        >
+
+
+        <div class="hero-floating-card weather-float">
+
+            <i class="fa-solid fa-cloud-sun"></i>
 
             <div>
-
-                <span class="section-kicker">
-                    FARM INTELLIGENCE
-                </span>
-
-                <h2>
-                    Smart Agriculture Services
-                </h2>
-
-                <p>
-                    Everything you need for smarter and more
-                    informed farm decisions.
-                </p>
-
-            </div>
-
-
-            <div class="section-counter">
 
                 <strong>
-                    06
+                    Weather
                 </strong>
 
-                <span>
-                    Core Services
+                <small>
+                    Live Intelligence
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-floating-card ai-float">
+
+            <i class="fa-solid fa-brain"></i>
+
+            <div>
+
+                <strong>
+                    AI Advisory
+                </strong>
+
+                <small>
+                    Decision Support
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =================================================
+     SERVICES
+================================================== -->
+
+<section class="features-section">
+
+
+    <div class="section-heading">
+
+        <div>
+
+            <span class="section-kicker">
+                FARM INTELLIGENCE
+            </span>
+
+            <h2>
+                Smart Agriculture Services
+            </h2>
+
+            <p>
+                Everything you need for smarter and more
+                informed farm decisions.
+            </p>
+
+        </div>
+
+
+        <div class="section-counter">
+
+            <strong>
+                06
+            </strong>
+
+            <span>
+                Core Services
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="features">
+
+
+        <!-- CROP -->
+
+        <a
+            href="{{ url_for('recommendation.recommendation') }}"
+            class="feature-link"
+        >
+
+            <div class="card service-card">
+
+                <div class="service-top">
+
+                    <div class="feature-icon">
+                        🌱
+                    </div>
+
+                    <span class="service-number">
+                        01
+                    </span>
+
+                </div>
+
+                <h3>
+                    AI Crop Advisory
+                </h3>
+
+                <p>
+                    Get crop and fertilizer recommendations
+                    based on farm conditions.
+                </p>
+
+                <span class="service-action">
+
+                    Explore
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
                 </span>
 
             </div>
 
-        </div>
+        </a>
 
 
 
-        <div class="features">
+        <!-- IRRIGATION -->
 
+        <a
+            href="{{ url_for('irrigation.irrigation') }}"
+            class="feature-link"
+        >
 
-            <!-- CROP -->
+            <div class="card service-card">
 
-            <a
-                href="{{ url_for('recommendation.recommendation') }}"
-                class="feature-link"
-            >
+                <div class="service-top">
 
-                <div class="card service-card">
-
-                    <div class="service-top">
-
-                        <div class="feature-icon">
-                            🌱
-                        </div>
-
-                        <span class="service-number">
-                            01
-                        </span>
-
+                    <div class="feature-icon">
+                        💧
                     </div>
 
-                    <h3>
-                        AI Crop Advisory
-                    </h3>
-
-                    <p>
-                        Get crop and fertilizer recommendations
-                        based on farm conditions.
-                    </p>
-
-                    <span class="service-action">
-
-                        Explore
-
-                        <i class="fa-solid fa-arrow-right"></i>
-
+                    <span class="service-number">
+                        02
                     </span>
 
                 </div>
 
-            </a>
+                <h3>
+                    Smart Irrigation
+                </h3>
 
+                <p>
+                    Plan water usage using crop requirements
+                    and weather conditions.
+                </p>
 
+                <span class="service-action">
 
-            <!-- IRRIGATION -->
+                    Explore
 
-            <a
-                href="{{ url_for('irrigation.irrigation') }}"
-                class="feature-link"
-            >
+                    <i class="fa-solid fa-arrow-right"></i>
 
-                <div class="card service-card">
-
-                    <div class="service-top">
-
-                        <div class="feature-icon">
-                            💧
-                        </div>
-
-                        <span class="service-number">
-                            02
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        Smart Irrigation
-                    </h3>
-
-                    <p>
-                        Plan water usage using crop requirements
-                        and weather conditions.
-                    </p>
-
-                    <span class="service-action">
-
-                        Explore
-
-                        <i class="fa-solid fa-arrow-right"></i>
-
-                    </span>
-
-                </div>
-
-            </a>
-
-
-
-            <!-- DISEASE -->
-
-            <a
-                href="{{ url_for('disease.disease') }}"
-                class="feature-link"
-            >
-
-                <div class="card service-card">
-
-                    <div class="service-top">
-
-                        <div class="feature-icon">
-                            🐛
-                        </div>
-
-                        <span class="service-number">
-                            03
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        AI Disease Detection
-                    </h3>
-
-                    <p>
-                        Analyze crop images and identify
-                        possible diseases.
-                    </p>
-
-                    <span class="service-action">
-
-                        Detect Disease
-
-                        <i class="fa-solid fa-arrow-right"></i>
-
-                    </span>
-
-                </div>
-
-            </a>
-
-
-
-            <!-- MARKET -->
-
-            <a
-                href="{{ url_for('market.market') }}"
-                class="feature-link"
-            >
-
-                <div class="card service-card">
-
-                    <div class="service-top">
-
-                        <div class="feature-icon">
-                            📈
-                        </div>
-
-                        <span class="service-number">
-                            04
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        Mandi Intelligence
-                    </h3>
-
-                    <p>
-                        Check agricultural market prices and
-                        make better selling decisions.
-                    </p>
-
-                    <span class="service-action">
-
-                        View Prices
-
-                        <i class="fa-solid fa-arrow-right"></i>
-
-                    </span>
-
-                </div>
-
-            </a>
-
-
-
-            <!-- GOVERNMENT -->
-
-            <a
-                href="{{ url_for('government.government') }}"
-                class="feature-link"
-            >
-
-                <div class="card service-card">
-
-                    <div class="service-top">
-
-                        <div class="feature-icon">
-                            🏛️
-                        </div>
-
-                        <span class="service-number">
-                            05
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        Government Schemes
-                    </h3>
-
-                    <p>
-                        Discover farmer subsidies, benefits
-                        and government programs.
-                    </p>
-
-                    <span class="service-action">
-
-                        View Schemes
-
-                        <i class="fa-solid fa-arrow-right"></i>
-
-                    </span>
-
-                </div>
-
-            </a>
-
-
-
-            <!-- MARKETPLACE -->
-
-            <a
-                href="{{ url_for('marketplace.farmer_marketplace') }}"
-                class="feature-link"
-            >
-
-                <div class="card service-card">
-
-                    <div class="service-top">
-
-                        <div class="feature-icon">
-                            🛒
-                        </div>
-
-                        <span class="service-number">
-                            06
-                        </span>
-
-                    </div>
-
-                    <h3>
-                        Farmer Marketplace
-                    </h3>
-
-                    <p>
-                        List farm products and sell directly
-                        to consumers.
-                    </p>
-
-                    <span class="service-action">
-
-                        Open Marketplace
-
-                        <i class="fa-solid fa-arrow-right"></i>
-
-                    </span>
-
-                </div>
-
-            </a>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =================================================
-         CONNECTED INTELLIGENCE
-    ================================================== -->
-
-    <section class="connections-section">
-
-
-        <div class="section-heading">
-
-            <div>
-
-                <span class="section-kicker">
-                    INTELLIGENCE NETWORK
                 </span>
 
-                <h2>
-                    Connected Farm Intelligence
-                </h2>
+            </div>
+
+        </a>
+
+
+
+        <!-- DISEASE -->
+
+        <a
+            href="{{ url_for('disease.disease') }}"
+            class="feature-link"
+        >
+
+            <div class="card service-card">
+
+                <div class="service-top">
+
+                    <div class="feature-icon">
+                        🐛
+                    </div>
+
+                    <span class="service-number">
+                        03
+                    </span>
+
+                </div>
+
+                <h3>
+                    AI Disease Detection
+                </h3>
 
                 <p>
-                    One farming decision can improve another.
+                    Analyze crop images and identify
+                    possible diseases.
                 </p>
 
+                <span class="service-action">
+
+                    Detect Disease
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </span>
+
             </div>
+
+        </a>
+
+
+
+        <!-- MARKET -->
+
+        <a
+            href="{{ url_for('market.market') }}"
+            class="feature-link"
+        >
+
+            <div class="card service-card">
+
+                <div class="service-top">
+
+                    <div class="feature-icon">
+                        📈
+                    </div>
+
+                    <span class="service-number">
+                        04
+                    </span>
+
+                </div>
+
+                <h3>
+                    Mandi Intelligence
+                </h3>
+
+                <p>
+                    Check agricultural market prices and
+                    make better selling decisions.
+                </p>
+
+                <span class="service-action">
+
+                    View Prices
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </span>
+
+            </div>
+
+        </a>
+
+
+
+        <!-- GOVERNMENT -->
+
+        <a
+            href="{{ url_for('government.government') }}"
+            class="feature-link"
+        >
+
+            <div class="card service-card">
+
+                <div class="service-top">
+
+                    <div class="feature-icon">
+                        🏛️
+                    </div>
+
+                    <span class="service-number">
+                        05
+                    </span>
+
+                </div>
+
+                <h3>
+                    Government Schemes
+                </h3>
+
+                <p>
+                    Discover farmer subsidies, benefits
+                    and government programs.
+                </p>
+
+                <span class="service-action">
+
+                    View Schemes
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </span>
+
+            </div>
+
+        </a>
+
+
+
+        <!-- MARKETPLACE -->
+
+        <a
+            href="{{ url_for('marketplace.farmer_marketplace') }}"
+            class="feature-link"
+        >
+
+            <div class="card service-card">
+
+                <div class="service-top">
+
+                    <div class="feature-icon">
+                        🛒
+                    </div>
+
+                    <span class="service-number">
+                        06
+                    </span>
+
+                </div>
+
+                <h3>
+                    Farmer Marketplace
+                </h3>
+
+                <p>
+                    List farm products and sell directly
+                    to consumers.
+                </p>
+
+                <span class="service-action">
+
+                    Open Marketplace
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </span>
+
+            </div>
+
+        </a>
+
+    </div>
+
+</section>
+
+
+
+<!-- =================================================
+     CONNECTED INTELLIGENCE
+================================================== -->
+
+<section class="connections-section">
+
+
+    <div class="section-heading">
+
+        <div>
+
+            <span class="section-kicker">
+                INTELLIGENCE NETWORK
+            </span>
+
+            <h2>
+                Connected Farm Intelligence
+            </h2>
+
+            <p>
+                One farming decision can improve another.
+            </p>
 
         </div>
 
+    </div>
 
 
-        <div class="connections">
 
+    <div class="connections">
 
-            <div class="connection">
 
-                <div class="connection-icon">
-                    <i class="fa-solid fa-cloud-rain"></i>
-                </div>
+        <div class="connection">
 
-                <div>
-
-                    <h4>
-                        Weather → Irrigation
-                    </h4>
-
-                    <p>
-                        Weather conditions guide water planning.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-
-            <div class="connection">
-
-                <div class="connection-icon">
-                    <i class="fa-solid fa-cloud-bolt"></i>
-                </div>
-
-                <div>
-
-                    <h4>
-                        Weather → Crop Risk
-                    </h4>
-
-                    <p>
-                        Weather changes influence crop decisions.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-
-            <div class="connection">
-
-                <div class="connection-icon">
-                    <i class="fa-solid fa-microscope"></i>
-                </div>
-
-                <div>
-
-                    <h4>
-                        Disease → Crop Health
-                    </h4>
-
-                    <p>
-                        Disease analysis supports crop-health decisions.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-
-            <div class="connection">
-
-                <div class="connection-icon">
-                    <i class="fa-solid fa-chart-line"></i>
-                </div>
-
-                <div>
-
-                    <h4>
-                        Crop → Market
-                    </h4>
-
-                    <p>
-                        Crop selection can connect with market intelligence.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-
-            <div class="connection">
-
-                <div class="connection-icon">
-                    <i class="fa-solid fa-money-bill-trend-up"></i>
-                </div>
-
-                <div>
-
-                    <h4>
-                        Market → Finance
-                    </h4>
-
-                    <p>
-                        Selling decisions support profit planning.
-                    </p>
-
-                </div>
-
-            </div>
-
-
-
-            <div class="connection">
-
-                <div class="connection-icon">
-                    <i class="fa-solid fa-landmark"></i>
-                </div>
-
-                <div>
-
-                    <h4>
-                        Farmer → Schemes
-                    </h4>
-
-                    <p>
-                        Farm information supports scheme discovery.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =================================================
-         QUICK ACCESS
-    ================================================== -->
-
-    <section class="quick-access">
-
-
-        <div class="quick-card">
-
-            <div class="quick-icon">
-                💰
+            <div class="connection-icon">
+                <i class="fa-solid fa-cloud-rain"></i>
             </div>
 
             <div>
 
-                <h3>
-                    Farm Finance
-                </h3>
+                <h4>
+                    Weather → Irrigation
+                </h4>
 
                 <p>
-                    Track income, expenses, profit and farm economics.
+                    Weather conditions guide water planning.
                 </p>
 
             </div>
-
-            <a href="{{ url_for('finance.finance') }}">
-
-                Open
-
-                <i class="fa-solid fa-arrow-right"></i>
-
-            </a>
 
         </div>
 
 
 
-        <div class="quick-card">
+        <div class="connection">
 
-            <div class="quick-icon">
-                ❓
+            <div class="connection-icon">
+                <i class="fa-solid fa-cloud-bolt"></i>
             </div>
 
             <div>
 
-                <h3>
-                    Help & Support
-                </h3>
+                <h4>
+                    Weather → Crop Risk
+                </h4>
 
                 <p>
-                    Get assistance while using KisanVision360+.
+                    Weather changes influence crop decisions.
                 </p>
 
             </div>
 
-            <a href="{{ url_for('help.help_page') }}">
+        </div>
 
-                Help
 
-                <i class="fa-solid fa-arrow-right"></i>
 
-            </a>
+        <div class="connection">
+
+            <div class="connection-icon">
+                <i class="fa-solid fa-microscope"></i>
+            </div>
+
+            <div>
+
+                <h4>
+                    Disease → Crop Health
+                </h4>
+
+                <p>
+                    Disease analysis supports crop-health decisions.
+                </p>
+
+            </div>
 
         </div>
 
-    </section>
+
+
+        <div class="connection">
+
+            <div class="connection-icon">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+
+            <div>
+
+                <h4>
+                    Crop → Market
+                </h4>
+
+                <p>
+                    Crop selection can connect with market intelligence.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="connection">
+
+            <div class="connection-icon">
+                <i class="fa-solid fa-money-bill-trend-up"></i>
+            </div>
+
+            <div>
+
+                <h4>
+                    Market → Finance
+                </h4>
+
+                <p>
+                    Selling decisions support profit planning.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="connection">
+
+            <div class="connection-icon">
+                <i class="fa-solid fa-landmark"></i>
+            </div>
+
+            <div>
+
+                <h4>
+                    Farmer → Schemes
+                </h4>
+
+                <p>
+                    Farm information supports scheme discovery.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =================================================
+     QUICK ACCESS
+================================================== -->
+
+<section class="quick-access">
+
+
+    <div class="quick-card">
+
+        <div class="quick-icon">
+            💰
+        </div>
+
+        <div>
+
+            <h3>
+                Farm Finance
+            </h3>
+
+            <p>
+                Track income, expenses, profit and farm economics.
+            </p>
+
+        </div>
+
+        <a href="{{ url_for('finance.finance') }}">
+
+            Open
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+        </a>
+
+    </div>
+
+
+
+    <div class="quick-card">
+
+        <div class="quick-icon">
+            ❓
+        </div>
+
+        <div>
+
+            <h3>
+                Help & Support
+            </h3>
+
+            <p>
+                Get assistance while using KisanVision360+.
+            </p>
+
+        </div>
+
+        <a href="{{ url_for('help.help_page') }}">
+
+            Help
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+        </a>
+
+    </div>
+
+</section>
+```
 
 </div>
 
 {% endblock %}
-
-
 
 {% block scripts %}
 
@@ -1194,6 +1200,10 @@ Smart Farm Command Center
 
     "use strict";
 
+
+    /* =================================================
+       DATE & TIME
+    ================================================= */
 
     function updateDateTime() {
 
@@ -1269,6 +1279,7 @@ Smart Farm Command Center
     setInterval(updateDateTime, 1000);
 
 
+
     /* =================================================
        NOTIFICATION CLICK
     ================================================= */
@@ -1304,9 +1315,9 @@ Smart Farm Command Center
 
     }
 
+
 })();
 
 </script>
 
 {% endblock %}
-

@@ -1,4 +1,5 @@
-﻿# ============================================================
+﻿
+# ============================================================
 # KISANVISION360+
 # AI FARMING CHATBOT
 # Flask + PostgreSQL / Supabase
@@ -17,7 +18,6 @@
 # ============================================================
 
 import os
-import re
 import logging
 from datetime import datetime
 
@@ -97,73 +97,73 @@ FEATURES = {
     "weather": {
         "name": "Open Weather",
         "url_endpoint": "weather.weather",
-        "icon": "â˜ï¸"
+        "icon": "[Weather]"
     },
 
     "crop_advisor": {
         "name": "Open Crop Advisor",
         "url_endpoint": "recommendation.recommendation",
-        "icon": "ðŸŒ±"
+        "icon": "[Crop]"
     },
 
     "disease": {
         "name": "Open Disease Detection",
         "url_endpoint": "disease.disease",
-        "icon": "ðŸ©º"
+        "icon": "[Disease]"
     },
 
     "irrigation": {
         "name": "Open Smart Irrigation",
         "url_endpoint": "irrigation.irrigation",
-        "icon": "ðŸ’§"
+        "icon": "[Water]"
     },
 
     "market": {
         "name": "Open Mandi Prices",
         "url_endpoint": "market.market",
-        "icon": "ðŸ“ˆ"
+        "icon": "[Market]"
     },
 
     "marketplace": {
         "name": "Open Marketplace",
         "url_endpoint": "marketplace.farmer_marketplace",
-        "icon": "ðŸ›’"
+        "icon": "[Shop]"
     },
 
     "finance": {
         "name": "Open Farm Finance",
         "url_endpoint": "finance.finance",
-        "icon": "ðŸ’°"
+        "icon": "[Finance]"
     },
 
     "schemes": {
         "name": "Open Government Schemes",
         "url_endpoint": "government.government",
-        "icon": "ðŸ›ï¸"
+        "icon": "[Schemes]"
     },
 
     "notifications": {
         "name": "Open Notifications",
         "url_endpoint": "notifications.notifications",
-        "icon": "ðŸ””"
+        "icon": "[Alerts]"
     },
 
     "reports": {
         "name": "Open Farm Reports",
         "url_endpoint": "reports.reports",
-        "icon": "ðŸ“Š"
+        "icon": "[Reports]"
     },
 
     "tools": {
         "name": "Open Farmer Tools",
         "url_endpoint": "tools.tools",
-        "icon": "ðŸ› ï¸"
+        "icon": "[Tools]"
     },
 
     "profile": {
         "name": "Open Farm Profile",
         "url_endpoint": "profile.profile",
-        "icon": "ðŸ‘¨â€ðŸŒ¾"
+        "icon": "[Profile]"
     }
 }
 
@@ -192,12 +192,14 @@ def get_feature_url(feature_key):
 
     try:
         return url_for(endpoint)
+
     except Exception as exc:
         logger.warning(
             "Feature URL unavailable: %s -> %s",
             feature_key,
             exc
         )
+
         return ""
 
 
@@ -256,6 +258,7 @@ def get_current_role():
 # ============================================================
 
 def get_current_language():
+
     language = str(
         session.get(
             "language",
@@ -274,6 +277,7 @@ def get_current_language():
 # ============================================================
 
 def get_current_name():
+
     return str(
         session.get(
             "name",
@@ -353,6 +357,7 @@ def row_to_dict(row):
 
     try:
         return dict(row)
+
     except Exception:
         return {}
 
@@ -407,15 +412,19 @@ def weather_answer():
     if not weather:
 
         return (
-            "I could not retrieve the live weather data right now. "
+            "I could not retrieve the live weather data right now.\n\n"
             "Please open the Weather module to check the latest "
-            "weather information for your location. â˜ï¸"
+            "weather information for your location.\n\n"
+            "[Weather]"
         ), feature
 
     city = (
         weather.get("city")
         or session.get("location")
-        or os.getenv("DEFAULT_CITY", "Nagpur")
+        or os.getenv(
+            "DEFAULT_CITY",
+            "Nagpur"
+        )
     )
 
     temperature = weather.get(
@@ -441,29 +450,32 @@ def weather_answer():
     )
 
     answer_parts = [
-        f"â˜ï¸ Current weather for {city}:",
+        f"[Weather] Current weather for {city}:",
         "",
-        f"â€¢ Condition: {description}"
+        f"- Condition: {description}"
     ]
 
     if temperature is not None:
+
         answer_parts.append(
-            f"â€¢ Temperature: {temperature}Â°C"
+            f"- Temperature: {temperature} C"
         )
 
     if humidity is not None:
+
         answer_parts.append(
-            f"â€¢ Humidity: {humidity}%"
+            f"- Humidity: {humidity}%"
         )
 
     if wind is not None:
+
         answer_parts.append(
-            f"â€¢ Wind: {wind}"
+            f"- Wind: {wind}"
         )
 
     answer_parts.extend([
         "",
-        "ðŸŒ± Farming advice:",
+        "[Crop] Farming advice:",
         "Check soil moisture before irrigation.",
         "If humidity is high, monitor crops regularly "
         "for disease symptoms."
@@ -483,7 +495,7 @@ def crop_advisor_answer():
     )
 
     return (
-        "ðŸŒ± KisanVision360+ Crop Advisor helps you select "
+        "[Crop] KisanVision360+ Crop Advisor helps you select "
         "suitable crops using farm information such as soil, "
         "location, season and farming conditions.\n\n"
         "For a personalized recommendation, open Crop Advisor "
@@ -502,7 +514,7 @@ def disease_answer():
     )
 
     return (
-        "ðŸ©º KisanVision360+ Disease Detection uses the crop "
+        "[Disease] KisanVision360+ Disease Detection uses the crop "
         "leaf image analysis module to classify supported "
         "crop-disease classes.\n\n"
         "Upload a clear crop leaf image in Disease Detection "
@@ -525,8 +537,8 @@ def irrigation_answer():
     weather = get_weather_information()
 
     answer = (
-        "ðŸ’§ Smart Irrigation helps you plan irrigation according "
-        "to crop and environmental conditions."
+        "[Water] Smart Irrigation helps you plan irrigation "
+        "according to crop and environmental conditions."
     )
 
     if weather:
@@ -602,7 +614,7 @@ def market_answer(message):
         if records:
 
             lines = [
-                "ðŸ“ˆ Available mandi information:"
+                "[Market] Available mandi information:"
             ]
 
             for record in records[:5]:
@@ -639,19 +651,20 @@ def market_answer(message):
                 )
 
                 line = (
-                    f"â€¢ {commodity} â€” {market}"
+                    f"- {commodity} - {market}"
                 )
 
                 if modal:
+
                     line += (
-                        f" | Modal: â‚¹{modal}"
+                        f" | Modal Price: Rs. {modal}"
                     )
 
                 elif minimum or maximum:
 
                     line += (
-                        f" | Range: â‚¹{minimum or '-'}"
-                        f" - â‚¹{maximum or '-'}"
+                        f" | Range: Rs. {minimum or '-'}"
+                        f" - Rs. {maximum or '-'}"
                     )
 
                 lines.append(
@@ -674,8 +687,8 @@ def market_answer(message):
         )
 
     return (
-        "ðŸ“ˆ I could not retrieve the requested mandi information "
-        "right now.\n\n"
+        "[Market] I could not retrieve the requested mandi "
+        "information right now.\n\n"
         "Open Mandi Prices to check the available market records."
     ), feature
 
@@ -746,19 +759,22 @@ def marketplace_answer():
         )
 
         try:
+
             total_products = int(
                 result.get(
                     "total_products",
                     0
                 ) or 0
             )
+
         except Exception:
+
             total_products = 0
 
     if total_products:
 
         answer = (
-            f"ðŸ›’ The marketplace currently has "
+            f"[Shop] The marketplace currently has "
             f"{total_products} active product listing"
             f"{'s' if total_products != 1 else ''}.\n\n"
             "You can search products, view product details, "
@@ -768,7 +784,7 @@ def marketplace_answer():
     else:
 
         answer = (
-            "ðŸ›’ I could not find active marketplace products "
+            "[Shop] I could not find active marketplace products "
             "right now.\n\n"
             "Open Marketplace to check the latest listings."
         )
@@ -793,7 +809,7 @@ def finance_answer():
     if not user_id:
 
         return (
-            "ðŸ’° Please log in to view your personal farm "
+            "[Finance] Please log in to view your personal farm "
             "finance information."
         ), feature
 
@@ -829,13 +845,16 @@ def finance_answer():
         )
 
         try:
+
             income = float(
                 income_result.get(
                     "total_income",
                     0
                 ) or 0
             )
+
         except Exception:
+
             income = 0
 
     if expense_result:
@@ -845,22 +864,25 @@ def finance_answer():
         )
 
         try:
+
             expense = float(
                 expense_result.get(
                     "total_expense",
                     0
                 ) or 0
             )
+
         except Exception:
+
             expense = 0
 
     balance = income - expense
 
     return (
-        "ðŸ’° Your farm finance summary:\n\n"
-        f"â€¢ Total income: â‚¹{income:,.2f}\n"
-        f"â€¢ Total expenses: â‚¹{expense:,.2f}\n"
-        f"â€¢ Balance: â‚¹{balance:,.2f}\n\n"
+        "[Finance] Your farm finance summary:\n\n"
+        f"- Total income: Rs. {income:,.2f}\n"
+        f"- Total expenses: Rs. {expense:,.2f}\n"
+        f"- Balance: Rs. {balance:,.2f}\n\n"
         "Open Farm Finance to manage income, expenses and "
         "financial records."
     ), feature
@@ -894,19 +916,22 @@ def schemes_answer():
         )
 
         try:
+
             total = int(
                 result.get(
                     "total_schemes",
                     0
                 ) or 0
             )
+
         except Exception:
+
             total = 0
 
     if total:
 
         return (
-            f"ðŸ›ï¸ KisanVision360+ currently has "
+            f"[Schemes] KisanVision360+ currently has "
             f"{total} government scheme record"
             f"{'s' if total != 1 else ''} available.\n\n"
             "Open Government Schemes to search schemes, "
@@ -916,8 +941,8 @@ def schemes_answer():
         ), feature
 
     return (
-        "ðŸ›ï¸ Government scheme information is available through "
-        "the Government Schemes module.\n\n"
+        "[Schemes] Government scheme information is available "
+        "through the Government Schemes module.\n\n"
         "Open the module to search available schemes and "
         "eligibility information."
     ), feature
@@ -934,7 +959,7 @@ def notifications_answer():
     )
 
     return (
-        "ðŸ”” KisanVision360+ Notifications can provide updates "
+        "[Alerts] KisanVision360+ Notifications can provide updates "
         "related to farming activities, weather, market "
         "information, orders and other application events.\n\n"
         "Open Notifications to view your latest alerts."
@@ -952,8 +977,8 @@ def reports_answer():
     )
 
     return (
-        "ðŸ“Š Farm Reports bring together important farm information "
-        "such as financial records, weather information, "
+        "[Reports] Farm Reports bring together important farm "
+        "information such as financial records, weather information, "
         "analysis and connected module data.\n\n"
         "Open Farm Reports for your complete report."
     ), feature
@@ -970,8 +995,8 @@ def tools_answer():
     )
 
     return (
-        "ðŸ› ï¸ Farmer Tools provides useful agricultural tools and "
-        "calculators available in KisanVision360+.\n\n"
+        "[Tools] Farmer Tools provides useful agricultural tools "
+        "and calculators available in KisanVision360+.\n\n"
         "Open Farmer Tools to use the available utilities."
     ), feature
 
@@ -987,7 +1012,7 @@ def profile_answer():
     )
 
     return (
-        "ðŸ‘¨â€ðŸŒ¾ Your Farm Profile stores important information "
+        "[Profile] Your Farm Profile stores important information "
         "used by KisanVision360+ for personalized farming "
         "features.\n\n"
         "Open Farm Profile to review or update your information."
@@ -1001,22 +1026,22 @@ def profile_answer():
 def about_answer():
 
     return (
-        "ðŸŒ± KisanVision360+ is an integrated smart farming "
-        "decision-support platform.\n\n"
+        "[KisanVision360+] KisanVision360+ is an integrated "
+        "smart farming decision-support platform.\n\n"
         "It connects:\n"
-        "â€¢ Farm Profile\n"
-        "â€¢ Weather\n"
-        "â€¢ Crop Advisor\n"
-        "â€¢ Cultivation\n"
-        "â€¢ Disease Detection\n"
-        "â€¢ Smart Irrigation\n"
-        "â€¢ Mandi Prices\n"
-        "â€¢ Marketplace\n"
-        "â€¢ Finance\n"
-        "â€¢ Government Schemes\n"
-        "â€¢ Notifications\n"
-        "â€¢ Reports\n"
-        "â€¢ AI Assistant\n\n"
+        "- Farm Profile\n"
+        "- Weather\n"
+        "- Crop Advisor\n"
+        "- Cultivation\n"
+        "- Disease Detection\n"
+        "- Smart Irrigation\n"
+        "- Mandi Prices\n"
+        "- Marketplace\n"
+        "- Finance\n"
+        "- Government Schemes\n"
+        "- Notifications\n"
+        "- Reports\n"
+        "- AI Assistant\n\n"
         "The main idea is to connect the farming lifecycle "
         "instead of keeping every feature as a separate system."
     ), None
@@ -1033,10 +1058,10 @@ def farming_general_answer(message):
     if "npk" in text:
 
         return (
-            "ðŸŒ± NPK stands for Nitrogen, Phosphorus and Potassium.\n\n"
-            "â€¢ Nitrogen supports vegetative growth.\n"
-            "â€¢ Phosphorus supports root development and reproductive growth.\n"
-            "â€¢ Potassium supports overall plant strength and several "
+            "[Crop] NPK stands for Nitrogen, Phosphorus and Potassium.\n\n"
+            "- Nitrogen supports vegetative growth.\n"
+            "- Phosphorus supports root development and reproductive growth.\n"
+            "- Potassium supports overall plant strength and several "
             "physiological processes.\n\n"
             "The correct fertilizer requirement depends on crop, "
             "soil condition and recommendation."
@@ -1048,7 +1073,7 @@ def farming_general_answer(message):
     ):
 
         return (
-            "ðŸŒ± Black soil can support several crops, including "
+            "[Crop] Black soil can support several crops, including "
             "cotton, soybean and some cereal crops depending on "
             "location, season, water availability and soil condition.\n\n"
             "For a personalized recommendation, use Crop Advisor "
@@ -1065,8 +1090,8 @@ def farming_general_answer(message):
         return irrigation_answer()
 
     return (
-        "ðŸŒ± I can help with KisanVision360+ features and "
-        "general farming questions.\n\n"
+        "[KisanVision360+] I can help with KisanVision360+ features "
+        "and general farming questions.\n\n"
         "Try asking about Weather, Crop Advisor, Disease Detection, "
         "Irrigation, Mandi Prices, Marketplace, Finance or "
         "Government Schemes."
@@ -1082,7 +1107,7 @@ def greeting_answer():
     name = get_current_name()
 
     return (
-        f"Hello {name}! ðŸ‘‹\n\n"
+        f"Hello {name}!\n\n"
         "I am your KisanVision360+ AI Assistant.\n\n"
         "You can ask me about your farm, weather, crops, "
         "disease detection, irrigation, mandi prices, "
@@ -1097,7 +1122,7 @@ def greeting_answer():
 def thank_you_answer():
 
     return (
-        "ðŸ˜Š You're welcome!\n\n"
+        "You are welcome!\n\n"
         "I am here to help you use KisanVision360+."
     ), None
 
@@ -1124,6 +1149,7 @@ def detect_intent(message):
         "good afternoon",
         "good evening"
     ]):
+
         return "greeting"
 
     # --------------------------------------------------------
@@ -1135,6 +1161,7 @@ def detect_intent(message):
         "thanks",
         "thank"
     ]):
+
         return "thanks"
 
     # --------------------------------------------------------
@@ -1151,6 +1178,7 @@ def detect_intent(message):
         "wind",
         "climate"
     ]):
+
         return "weather"
 
     # --------------------------------------------------------
@@ -1167,6 +1195,7 @@ def detect_intent(message):
         "what should i grow",
         "what crop should"
     ]):
+
         return "crop_advisor"
 
     # --------------------------------------------------------
@@ -1184,6 +1213,7 @@ def detect_intent(message):
         "symptoms",
         "leaf image"
     ]):
+
         return "disease"
 
     # --------------------------------------------------------
@@ -1198,6 +1228,7 @@ def detect_intent(message):
         "watering",
         "when should i water"
     ]):
+
         return "irrigation"
 
     # --------------------------------------------------------
@@ -1214,6 +1245,7 @@ def detect_intent(message):
         "modal price",
         "wholesale price"
     ]):
+
         return "market"
 
     # --------------------------------------------------------
@@ -1232,6 +1264,7 @@ def detect_intent(message):
         "wishlist",
         "order"
     ]):
+
         return "marketplace"
 
     # --------------------------------------------------------
@@ -1251,6 +1284,7 @@ def detect_intent(message):
         "earnings",
         "emi"
     ]):
+
         return "finance"
 
     # --------------------------------------------------------
@@ -1267,6 +1301,7 @@ def detect_intent(message):
         "farmer support",
         "government help"
     ]):
+
         return "schemes"
 
     # --------------------------------------------------------
@@ -1279,6 +1314,7 @@ def detect_intent(message):
         "alert",
         "alerts"
     ]):
+
         return "notifications"
 
     # --------------------------------------------------------
@@ -1292,6 +1328,7 @@ def detect_intent(message):
         "farm analysis",
         "analysis"
     ]):
+
         return "reports"
 
     # --------------------------------------------------------
@@ -1306,6 +1343,7 @@ def detect_intent(message):
         "equipment",
         "emi calculator"
     ]):
+
         return "tools"
 
     # --------------------------------------------------------
@@ -1318,6 +1356,7 @@ def detect_intent(message):
         "my farm details",
         "my farm"
     ]):
+
         return "profile"
 
     # --------------------------------------------------------
@@ -1329,6 +1368,7 @@ def detect_intent(message):
         or "what is this app" in text
         or "about the app" in text
     ):
+
         return "about"
 
     return "general"
@@ -1391,6 +1431,7 @@ def generate_answer(message):
     # --------------------------------------------------------
 
     if intent == "market":
+
         return market_answer(
             message
         )
@@ -1400,6 +1441,7 @@ def generate_answer(message):
     # --------------------------------------------------------
 
     if intent == "marketplace":
+
         return marketplace_answer()
 
     # --------------------------------------------------------
@@ -1407,6 +1449,7 @@ def generate_answer(message):
     # --------------------------------------------------------
 
     if intent == "finance":
+
         return finance_answer()
 
     # --------------------------------------------------------
@@ -1414,6 +1457,7 @@ def generate_answer(message):
     # --------------------------------------------------------
 
     if intent == "schemes":
+
         return schemes_answer()
 
     # --------------------------------------------------------
@@ -1421,6 +1465,7 @@ def generate_answer(message):
     # --------------------------------------------------------
 
     if intent == "notifications":
+
         return notifications_answer()
 
     # --------------------------------------------------------
@@ -1428,6 +1473,7 @@ def generate_answer(message):
     # --------------------------------------------------------
 
     if intent == "reports":
+
         return reports_answer()
 
     # --------------------------------------------------------
@@ -1435,6 +1481,7 @@ def generate_answer(message):
     # --------------------------------------------------------
 
     if intent == "tools":
+
         return tools_answer()
 
     # --------------------------------------------------------
@@ -1442,6 +1489,7 @@ def generate_answer(message):
     # --------------------------------------------------------
 
     if intent == "profile":
+
         return profile_answer()
 
     # --------------------------------------------------------
@@ -1449,6 +1497,7 @@ def generate_answer(message):
     # --------------------------------------------------------
 
     if intent == "about":
+
         return about_answer()
 
     # --------------------------------------------------------
@@ -1463,21 +1512,16 @@ def generate_answer(message):
 # ============================================================
 # MULTILINGUAL RESPONSE LAYER
 # ============================================================
-#
-# The application language is selected globally.
-#
-# For English, return the detailed answer directly.
-#
-# For the other supported languages, this function provides
-# simple common UI responses. Full natural-language translation
-# should later be connected to a translation service/model if
-# required.
-# ============================================================
 
 def translate_common_response(
     answer,
     language
 ):
+    """
+    Keep technical farming answers unchanged.
+
+    The selected language is returned to the frontend.
+    """
 
     if not answer:
         return answer
@@ -1485,149 +1529,107 @@ def translate_common_response(
     if language == "en":
         return answer
 
-    common = {
-
-        "hi": {
-            "Hello": "à¤¨à¤®à¤¸à¥à¤¤à¥‡",
-            "You're welcome": "à¤†à¤ªà¤•à¤¾ à¤¸à¥à¤µà¤¾à¤—à¤¤ à¤¹à¥ˆ"
-        },
-
-        "mr": {
-            "Hello": "à¤¨à¤®à¤¸à¥à¤•à¤¾à¤°",
-            "You're welcome": "à¤†à¤ªà¤²à¥‡ à¤¸à¥à¤µà¤¾à¤—à¤¤ à¤†à¤¹à¥‡"
-        },
-
-        "kn": {
-            "Hello": "à²¨à²®à²¸à³à²•à²¾à²°",
-            "You're welcome": "à²¸à³à²µà²¾à²—à²¤"
-        },
-
-        "te": {
-            "Hello": "à°¨à°®à°¸à±à°•à°¾à°°à°‚",
-            "You're welcome": "à°¸à±à°µà°¾à°—à°¤à°‚"
-        },
-
-        "ta": {
-            "Hello": "à®µà®£à®•à¯à®•à®®à¯",
-            "You're welcome": "à®µà®°à®µà¯‡à®±à¯à®•à®¿à®±à¯‡à®©à¯"
-        },
-
-        "ml": {
-            "Hello": "à´¨à´®à´¸àµà´•à´¾à´°à´‚",
-            "You're welcome": "à´¸àµà´µà´¾à´—à´¤à´‚"
-        },
-
-        "gu": {
-            "Hello": "àª¨àª®àª¸à«àª¤à«‡",
-            "You're welcome": "àª†àªªàª¨à«àª‚ àª¸à«àªµàª¾àª—àª¤ àª›à«‡"
-        },
-
-        "pa": {
-            "Hello": "à¨¸à¨¤ à¨¸à©à¨°à©€ à¨…à¨•à¨¾à¨²",
-            "You're welcome": "à¨œà©€ à¨†à¨‡à¨†à¨‚ à¨¨à©‚à©°"
-        },
-
-        "bn": {
-            "Hello": "à¦¨à¦®à¦¸à§à¦•à¦¾à¦°",
-            "You're welcome": "à¦¸à§à¦¬à¦¾à¦—à¦¤à¦®"
-        },
-
-        "as": {
-            "Hello": "à¦¨à¦®à¦¸à§à¦•à¦¾à§°",
-            "You're welcome": "à¦¸à§à¦¬à¦¾à¦—à¦¤à¦®"
-        },
-
-        "or": {
-            "Hello": "à¬¨à¬®à¬¸à­à¬•à¬¾à¬°",
-            "You're welcome": "à¬¸à­à­±à¬¾à¬—à¬¤"
-        },
-
-        "ur": {
-            "Hello": "Ø§Ù„Ø³Ù„Ø§Ù… Ø¹Ù„ÛŒÚ©Ù…",
-            "You're welcome": "Ø®ÙˆØ´ Ø¢Ù…Ø¯ÛŒØ¯"
-        },
-
-        "ne": {
-            "Hello": "à¤¨à¤®à¤¸à¥à¤¤à¥‡",
-            "You're welcome": "à¤¸à¥à¤µà¤¾à¤—à¤¤ à¤›"
-        },
-
-        "sa": {
-            "Hello": "à¤¨à¤®à¤ƒ",
-            "You're welcome": "à¤¸à¥à¤µà¤¾à¤—à¤¤à¤®à¥"
-        },
-
-        "kok": {
-            "Hello": "à¤¨à¤®à¤¸à¥à¤•à¤¾à¤°",
-            "You're welcome": "à¤¸à¥à¤µà¤¾à¤—à¤¤"
-        },
-
-        "mai": {
-            "Hello": "à¤ªà¥à¤°à¤£à¤¾à¤®",
-            "You're welcome": "à¤¸à¥à¤µà¤¾à¤—à¤¤ à¤…à¤›à¤¿"
-        },
-
-        "ks": {
-            "Hello": "Ø§Ù„Ø³Ù„Ø§Ù… Ø¹Ù„ÛŒÚ©Ù…",
-            "You're welcome": "Ø®ÙˆØ´ Ø¢Ù…Ø¯ÛŒØ¯"
-        },
-
-        "sd": {
-            "Hello": "Ø§Ù„Ø³Ù„Ø§Ù… Ø¹Ù„ÙŠÚªÙ…",
-            "You're welcome": "Ú€Ù„ÙŠÚªØ§Ø±"
-        },
-
-        "mni": {
-            "Hello": "ê¯ê¯¥ê¯",
-            "You're welcome": "ê¯†ê¯¥ê¯Žê¯”ê¯¥ê¯›ê¯„"
-        }
-    }
-
-    # Do not incorrectly translate technical farming content.
-    # The selected language is still returned to frontend.
+    # We intentionally do not perform unsafe partial translation.
+    # Full natural-language translation can later be connected
+    # to a translation service or AI model.
 
     return answer
 
 
 # ============================================================
-# OPEN-ENDED AI ANSWER (OPTIONAL)
+# OPEN-ENDED AI ANSWER
 # ============================================================
 
-def open_ended_ai_answer(message, language, role, user_name):
-    """Use an LLM for questions outside the built-in farming intents.
-    Requires OPENAI_API_KEY. If unavailable/fails, return None so the
+def open_ended_ai_answer(
+    message,
+    language,
+    role,
+    user_name
+):
+    """
+    Use an LLM for questions outside the built-in farming intents.
+
+    Requires OPENAI_API_KEY.
+
+    If unavailable or the request fails, return None so the
     built-in chatbot remains the fallback.
     """
-    api_key = os.getenv("OPENAI_API_KEY", "").strip()
+
+    api_key = os.getenv(
+        "OPENAI_API_KEY",
+        ""
+    ).strip()
+
     if not api_key:
         return None
+
     try:
+
         from openai import OpenAI
-        client = OpenAI(api_key=api_key)
-        model = os.getenv("OPENAI_MODEL", "gpt-5.6-luna")
-        language_name = SUPPORTED_LANGUAGES.get(language, "English")
-        system = (
-            "You are KisanVision360+ AI Assistant. Answer clearly and safely. "
-            "You can answer general questions, agriculture, weather concepts, "
-            "crop management, disease prevention, irrigation, markets, finance, "
-            "government schemes, technology and everyday questions. "
-            f"The user's preferred response language is {language_name} (code {language}). "
-            "Reply in that language. If the question is medical, legal or financial, "
-            "include a brief caution that professional/local official advice may be needed. "
-            "Do not invent live prices, weather, scheme eligibility or government rules. "
-            "For live app data, tell the user to open the relevant KisanVision360+ module. "
-            f"User role: {role}. User name: {user_name}."
+
+        client = OpenAI(
+            api_key=api_key
         )
+
+        model = os.getenv(
+            "OPENAI_MODEL",
+            "gpt-5.6-luna"
+        )
+
+        language_name = SUPPORTED_LANGUAGES.get(
+            language,
+            "English"
+        )
+
+        system = (
+            "You are KisanVision360+ AI Assistant. "
+            "Answer clearly and safely. "
+            "You can answer general questions, agriculture, "
+            "weather concepts, crop management, disease prevention, "
+            "irrigation, markets, finance, government schemes, "
+            "technology and everyday questions. "
+
+            f"The user's preferred response language is "
+            f"{language_name} (code {language}). "
+
+            "Reply in that language. "
+
+            "If the question is medical, legal or financial, "
+            "include a brief caution that professional/local "
+            "official advice may be needed. "
+
+            "Do not invent live prices, weather, scheme eligibility "
+            "or government rules. "
+
+            "For live app data, tell the user to open the relevant "
+            "KisanVision360+ module. "
+
+            f"User role: {role}. "
+            f"User name: {user_name}."
+        )
+
         response = client.responses.create(
             model=model,
             instructions=system,
             input=message,
             max_output_tokens=700
         )
-        text = getattr(response, "output_text", None)
+
+        text = getattr(
+            response,
+            "output_text",
+            None
+        )
+
         return text.strip() if text else None
+
     except Exception as exc:
-        logger.warning("Open-ended AI answer unavailable: %s", exc)
+
+        logger.warning(
+            "Open-ended AI answer unavailable: %s",
+            exc
+        )
+
         return None
 
 
@@ -1730,9 +1732,11 @@ def ask_chatbot():
     ).strip().lower()
 
     if language not in SUPPORTED_LANGUAGES:
+
         language = get_current_language()
 
-    # Keep server session as the source of truth.
+    # Keep server session as source of truth.
+
     session["language"] = language
 
     # --------------------------------------------------------
@@ -1741,7 +1745,6 @@ def ask_chatbot():
 
     role = get_current_role()
 
-    # Do not blindly trust frontend role.
     requested_role = str(
         data.get(
             "role",
@@ -1783,11 +1786,24 @@ def ask_chatbot():
         # ----------------------------------------------------
         # Open-ended AI fallback
         # ----------------------------------------------------
-        intent = detect_intent(message)
-        if intent in ("general", "unknown", "chat"):
+
+        intent = detect_intent(
+            message
+        )
+
+        if intent in (
+            "general",
+            "unknown",
+            "chat"
+        ):
+
             ai_answer = open_ended_ai_answer(
-                message, language, requested_role, user_name
+                message,
+                language,
+                requested_role,
+                user_name
             )
+
             if ai_answer:
                 answer = ai_answer
 
@@ -1863,13 +1879,13 @@ def ask_chatbot():
             "success": False,
 
             "reply": (
-                "âš ï¸ I could not process your question right now. "
-                "Please try again."
+                "Warning: I could not process your question "
+                "right now. Please try again."
             ),
 
             "message": (
-                "âš ï¸ I could not process your question right now. "
-                "Please try again."
+                "Warning: I could not process your question "
+                "right now. Please try again."
             ),
 
             "error": str(exc)
@@ -1919,6 +1935,7 @@ def chatbot_health():
 def chatbot_metadata():
 
     language = get_current_language()
+
     role = get_current_role()
 
     available_features = []
@@ -1984,7 +2001,9 @@ def clear_chat():
 
         "success": True,
 
-        "message": "Chat history can be cleared from the device."
+        "message": (
+            "Chat history can be cleared from the device."
+        )
 
     })
 
@@ -2000,3 +2019,4 @@ def initialize_chatbot_service():
     )
 
     return True
+

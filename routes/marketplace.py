@@ -610,10 +610,7 @@ def farmer_products():
 # ADD PRODUCT
 # =========================================================
 
-@marketplace_bp.route(
-    "/add-product",
-    methods=["GET", "POST"]
-)
+@marketplace_bp.route("/marketplace/add-product", methods=["GET", "POST"])
 def add_product():
 
     if not farmer_only():
@@ -4092,9 +4089,7 @@ def cancel_consumer_order(order_id):
 # FARMER ORDERS
 # =========================================================
 
-@marketplace_bp.route(
-    "/farmer/orders"
-)
+@marketplace_bp.route("/orders")
 def farmer_orders():
 
     if not farmer_only():

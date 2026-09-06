@@ -1,1137 +1,1257 @@
-﻿{% extends "base.html" %}
+﻿
+{% extends "base.html" %}
 
-{% block title %}KisanVision360+ | Smart Farm Reports{% endblock %}
+{% block title %}
+KisanVision360+ | Smart Farm Reports
+{% endblock %}
 
 {% block head %}
 <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/reports.css') }}">
+      href="{{ url_for('static', filename='css/reports.css') }}">
+
 <style>
+/* =========================================================
+   KISANVISION360+ SMART FARM REPORT
+   ========================================================= */
+
+:root {
+    --kv-green: #1B5E20;
+    --kv-green-light: #43A047;
+    --kv-orange: #FB8C00;
+    --kv-blue: #1976D2;
+    --kv-red: #D32F2F;
+    --kv-text: #183B24;
+    --kv-muted: #66806F;
+    --kv-border: #E4EEE7;
+    --kv-bg: #F5F9F6;
+    --kv-white: #FFFFFF;
+    --kv-shadow: 0 12px 30px rgba(27, 94, 32, 0.08);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: var(--kv-bg);
+    color: var(--kv-text);
+}
+
+/* =========================================================
+   MAIN CONTAINER
+   ========================================================= */
+
+.reports-container {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+/* =========================================================
+   STATUS BAR
+   ========================================================= */
+
+.smart-status-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.smart-status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    background: var(--kv-white);
+    border: 1px solid var(--kv-border);
+    border-radius: 14px;
+    padding: 14px 16px;
+
+    box-shadow: 0 5px 18px rgba(27, 94, 32, 0.04);
+}
+
+.smart-status-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+    background: #E8F5E9;
+    color: var(--kv-green);
+}
+
+.smart-status strong {
+    display: block;
+    margin-bottom: 3px;
+    font-size: 13px;
+}
+
+.smart-status span {
+    font-size: 11px;
+    color: var(--kv-muted);
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.reports-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    margin-bottom: 20px;
+    padding: 24px;
+
+    background: linear-gradient(135deg, #FFFFFF, #F0F8F2);
+    border: 1px solid var(--kv-border);
+    border-radius: 20px;
+
+    box-shadow: var(--kv-shadow);
+}
+
+.reports-header h1 {
+    margin: 0 0 8px;
+    color: var(--kv-green);
+    font-size: 30px;
+}
+
+.reports-header p {
+    margin: 0;
+    color: var(--kv-muted);
+    line-height: 1.6;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.profile img {
+    width: 52px;
+    height: 52px;
+    object-fit: cover;
+
+    border-radius: 50%;
+    border: 3px solid #E8F5E9;
+}
+
+.profile h4 {
+    margin: 0 0 4px;
+    color: var(--kv-text);
+}
+
+.profile span {
+    color: var(--kv-muted);
+    font-size: 12px;
+}
+
+/* =========================================================
+   ACTION BUTTONS
+   ========================================================= */
+
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 11px 17px;
+
+    border: 0;
+    border-radius: 12px;
+
+    text-decoration: none;
+    cursor: pointer;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    transition: 0.25s ease;
+}
+
+.action:hover {
+    transform: translateY(-2px);
+}
+
+.action.dashboard {
+    background: #E8F5E9;
+    color: var(--kv-green);
+}
+
+.action.finance {
+    background: #E3F2FD;
+    color: #1565C0;
+}
+
+.action.weather {
+    background: #E1F5FE;
+    color: #0277BD;
+}
+
+.action.print {
+    background: #FFF3E0;
+    color: #EF6C00;
+}
+
+.action.print:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* =========================================================
+   INTELLIGENCE BANNER
+   ========================================================= */
+
+.intelligence-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    margin-bottom: 25px;
+    padding: 25px;
+
+    color: #FFFFFF;
+
+    background: linear-gradient(
+        135deg,
+        #1B5E20,
+        #2E7D32,
+        #43A047
+    );
+
+    border-radius: 22px;
+    box-shadow: 0 14px 35px rgba(27, 94, 32, 0.18);
+}
+
+.intelligence-left {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+}
+
+.intelligence-icon {
+    width: 62px;
+    height: 62px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.16);
+
+    font-size: 28px;
+}
+
+.intelligence-banner h2 {
+    margin: 0 0 6px;
+    font-size: 22px;
+}
+
+.intelligence-banner p {
+    margin: 0;
+    opacity: 0.9;
+}
+
+.report-date {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   FARM SCORE
+   ========================================================= */
+
+.score-section {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+
+    margin-bottom: 30px;
+    padding: 28px;
+
+    background: var(--kv-white);
+    border: 1px solid var(--kv-border);
+    border-radius: 22px;
+
+    box-shadow: var(--kv-shadow);
+}
+
+.score-circle {
+    width: 145px;
+    height: 145px;
+    flex-shrink: 0;
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        conic-gradient(
+            var(--kv-green)
+            calc({{ farm_score|default(0, true)|float }} * 1%),
+            #E7EEE9 0
+        );
+}
+
+.score-circle::before {
+    content: "";
+
+    position: absolute;
+
+    width: 113px;
+    height: 113px;
+
+    border-radius: 50%;
+    background: #FFFFFF;
+}
+
+.score-circle strong,
+.score-circle span {
+    position: relative;
+    z-index: 1;
+}
+
+.score-circle strong {
+    font-size: 38px;
+    line-height: 1;
+    color: var(--kv-green);
+}
+
+.score-circle span {
+    margin-top: 5px;
+    font-size: 13px;
+    color: var(--kv-muted);
+}
+
+.score-content h2 {
+    margin: 0 0 6px;
+    color: var(--kv-text);
+}
+
+.score-content h3 {
+    margin: 0 0 10px;
+    color: var(--kv-green);
+}
+
+.score-content p {
+    margin: 0;
+    color: var(--kv-muted);
+    line-height: 1.6;
+}
+
+/* =========================================================
+   SECTION TITLE
+   ========================================================= */
+
+.section-title {
+    margin: 30px 0 16px;
+    color: var(--kv-text);
+}
+
+.section-title i {
+    margin-right: 7px;
+    color: var(--kv-green);
+}
+
+/* =========================================================
+   STATISTICS
+   ========================================================= */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.stat-card {
+    display: flex;
+    gap: 15px;
+
+    padding: 20px;
+
+    background: var(--kv-white);
+    border: 1px solid var(--kv-border);
+    border-radius: 18px;
+
+    box-shadow: 0 7px 22px rgba(27, 94, 32, 0.05);
+
+    transition: 0.25s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+}
+
+.stat-icon {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+}
+
+.stat-card.income .stat-icon {
+    background: #E8F5E9;
+    color: #2E7D32;
+}
+
+.stat-card.expense .stat-icon {
+    background: #FFEBEE;
+    color: #C62828;
+}
+
+.stat-card.profit .stat-icon {
+    background: #E3F2FD;
+    color: #1565C0;
+}
+
+.stat-card.margin .stat-icon {
+    background: #FFF3E0;
+    color: #EF6C00;
+}
+
+.stat-card p {
+    margin: 0 0 5px;
+    color: var(--kv-muted);
+    font-size: 13px;
+}
+
+.stat-card h2 {
+    margin: 0 0 5px;
+    color: var(--kv-text);
+    font-size: 22px;
+}
+
+.stat-card small {
+    color: var(--kv-muted);
+}
+
+.stat-card small.success {
+    color: #2E7D32;
+}
+
+.stat-card small.danger {
+    color: #C62828;
+}
+
+/* =========================================================
+   FINANCIAL HEALTH
+   ========================================================= */
+
+.health-card {
+    margin-top: 20px;
+    padding: 22px;
+
+    background: var(--kv-white);
+    border: 1px solid var(--kv-border);
+    border-radius: 18px;
+
+    box-shadow: var(--kv-shadow);
+}
+
+.health-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 12px;
+}
+
+.health-header strong {
+    color: var(--kv-text);
+}
+
+.health-header span {
+    color: var(--kv-green);
+    font-weight: 800;
+}
+
+.health-bar {
+    width: 100%;
+    height: 12px;
+
+    overflow: hidden;
+
+    background: #E9EFEB;
+    border-radius: 20px;
+}
+
+.health-fill {
+    width: {{ financial_score|default(0, true)|float }}%;
+    max-width: 100%;
+    height: 100%;
+
+    background: linear-gradient(
+        90deg,
+        #43A047,
+        #1B5E20
+    );
+
+    border-radius: inherit;
+}
+
+/* =========================================================
+   WEATHER REPORT
+   ========================================================= */
+
+.weather-report {
+    padding: 24px;
+
+    background: var(--kv-white);
+    border: 1px solid var(--kv-border);
+    border-radius: 20px;
+
+    box-shadow: var(--kv-shadow);
+}
+
+.weather-location {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+
+    margin-bottom: 24px;
+}
+
+.weather-icon {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 17px;
+
+    background: #E1F5FE;
+    color: #0288D1;
+
+    font-size: 25px;
+}
+
+.weather-location h2 {
+    margin: 0;
+    color: var(--kv-text);
+}
+
+.weather-location p {
+    margin: 3px 0;
+    color: var(--kv-muted);
+}
+
+.weather-location strong {
+    color: #1565C0;
+}
+
+.weather-values {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.weather-values > div {
+    padding: 15px;
+
+    text-align: center;
+
+    background: #F7FAF8;
+    border: 1px solid #E7EEE9;
+    border-radius: 14px;
+}
+
+.weather-values i {
+    display: block;
+    margin-bottom: 7px;
+
+    color: #1976D2;
+    font-size: 18px;
+}
+
+.weather-values span {
+    display: block;
+    font-size: 12px;
+    color: var(--kv-muted);
+}
+
+.weather-values strong {
+    display: block;
+    margin-top: 4px;
+
+    color: var(--kv-text);
+    font-size: 16px;
+}
+
+/* =========================================================
+   SMART ANALYSIS
+   ========================================================= */
+
+.analysis-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.analysis-card {
+    padding: 22px;
+
+    background: var(--kv-white);
+    border: 1px solid var(--kv-border);
+    border-radius: 18px;
+
+    box-shadow: var(--kv-shadow);
+}
+
+.analysis-header {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    padding-bottom: 15px;
+    margin-bottom: 10px;
+
+    border-bottom: 1px solid var(--kv-border);
+}
+
+.analysis-header > i {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #E8F5E9;
+    color: var(--kv-green);
+}
+
+.analysis-header h3 {
+    margin: 0;
+}
+
+.analysis-header p {
+    margin: 3px 0 0;
+
+    color: var(--kv-muted);
+    font-size: 12px;
+}
+
+.analysis-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+
+    padding: 12px 0;
+
+    border-bottom: 1px dashed #E6EEE8;
+}
+
+.analysis-row:last-child {
+    border-bottom: 0;
+}
+
+.analysis-row span {
+    color: var(--kv-muted);
+}
+
+.analysis-row strong {
+    color: var(--kv-text);
+}
+
+/* =========================================================
+   SMART INSIGHT
+   ========================================================= */
+
+.smart-insight {
+    display: flex;
+    gap: 14px;
+
+    margin-top: 20px;
+    padding: 20px;
+
+    background: linear-gradient(
+        135deg,
+        #F1F8F2,
+        #FFFFFF
+    );
+
+    border: 1px solid #DCEBDD;
+    border-radius: 17px;
+}
+
+.smart-insight-icon {
+    width: 43px;
+    height: 43px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #E8F5E9;
+    color: var(--kv-green);
+}
+
+.smart-insight h3 {
+    margin: 0 0 5px;
+}
+
+.smart-insight p {
+    margin: 0;
+
+    color: var(--kv-muted);
+    line-height: 1.6;
+}
+
+/* =========================================================
+   GENERAL CARDS
+   ========================================================= */
+
+.problem-card,
+.positive-card,
+.solutions-card,
+.transaction-card {
+    margin-top: 22px;
+    padding: 23px;
+
+    background: var(--kv-white);
+    border: 1px solid var(--kv-border);
+    border-radius: 20px;
+
+    box-shadow: var(--kv-shadow);
+}
+
+.problem-card {
+    border-left: 5px solid #E53935;
+}
+
+.positive-card {
+    border-left: 5px solid #43A047;
+}
+
+.solutions-card {
+    border-left: 5px solid #FB8C00;
+}
+
+.card-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    margin-bottom: 18px;
+}
+
+.card-title > i,
+.solution-main-icon {
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: #FFF3E0;
+    color: #EF6C00;
+}
+
+.card-title h2 {
+    margin: 0;
+}
+
+.card-title p {
+    margin: 3px 0 0;
+    color: var(--kv-muted);
+}
+
+/* =========================================================
+   PROBLEMS
+   ========================================================= */
+
+.problem-list {
+    display: grid;
+    gap: 10px;
+}
+
+.problem {
+    display: flex;
+    gap: 10px;
+
+    padding: 12px 14px;
+
+    background: #FFF7F7;
+    border-radius: 12px;
+
+    color: #8E2424;
+}
+
+.no-problem {
+    padding: 14px;
+
+    background: #EDF8EF;
+    border-radius: 12px;
+
+    color: #287631;
+}
+
+/* =========================================================
+   POSITIVE PERFORMANCE
+   ========================================================= */
+
+.positive-list {
+    display: grid;
+    gap: 10px;
+}
+
+.positive-list > div {
+    padding: 12px 14px;
+
+    background: #F3FAF4;
+    border-radius: 12px;
+
+    color: #2E6F35;
+}
+
+/* =========================================================
+   SOLUTIONS
+   ========================================================= */
+
+.solutions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.solution {
+    display: flex;
+    gap: 13px;
+
+    padding: 16px;
+
+    background: #FFFAF3;
+    border: 1px solid #F7EAD8;
+    border-radius: 15px;
+}
+
+.solution-number {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: var(--kv-orange);
+    color: #FFFFFF;
+
+    font-weight: 800;
+}
+
+.solution h3 {
+    margin: 0 0 5px;
+}
+
+.solution p {
+    margin: 0 0 8px;
+
+    color: var(--kv-muted);
+    line-height: 1.5;
+}
+
+.solution strong {
+    color: #EF6C00;
+}
+
+.solution span {
+    color: var(--kv-text);
+}
+
+/* =========================================================
+   TRANSACTION TABLE
+   ========================================================= */
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
 
-        /* =====================================================
-           KISANVISION360+ REPORT ENHANCEMENTS
-        ===================================================== */
-
-        :root {
-            --kv-green: #1b5e20;
-            --kv-green-light: #43a047;
-            --kv-orange: #fb8c00;
-            --kv-blue: #1976d2;
-            --kv-red: #d32f2f;
-            --kv-text: #183b24;
-            --kv-muted: #66806f;
-            --kv-border: #e4eee7;
-            --kv-bg: #f5f9f6;
-            --kv-white: #ffffff;
-            --kv-shadow: 0 12px 30px rgba(27, 94, 32, 0.08);
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            margin: 0;
-            background: var(--kv-bg);
-            color: var(--kv-text);
-        }
-
-        .reports-container {
-            max-width: 1500px;
-            margin: 0 auto;
-            padding: 24px;
-        }
-
-        /* =====================================================
-           SMART STATUS BAR
-        ===================================================== */
-
-        .smart-status-bar {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 22px;
-        }
-
-        .smart-status {
-            background: #ffffff;
-            border: 1px solid var(--kv-border);
-            border-radius: 14px;
-            padding: 13px 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 5px 18px rgba(27, 94, 32, 0.04);
-        }
-
-        .smart-status-icon {
-            width: 38px;
-            height: 38px;
-            flex-shrink: 0;
-            border-radius: 11px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #e8f5e9;
-            color: var(--kv-green);
-        }
-
-        .smart-status strong {
-            display: block;
-            font-size: 13px;
-            color: var(--kv-text);
-        }
-
-        .smart-status span {
-            font-size: 11px;
-            color: var(--kv-muted);
-        }
-
-        /* =====================================================
-           HEADER
-        ===================================================== */
-
-        .reports-header {
-            background: linear-gradient(135deg, #ffffff, #f0f8f2);
-            border: 1px solid var(--kv-border);
-            border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 20px;
-            box-shadow: var(--kv-shadow);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .reports-header h1 {
-            margin: 0 0 8px;
-            color: var(--kv-green);
-        }
-
-        .reports-header p {
-            margin: 0;
-            color: var(--kv-muted);
-            line-height: 1.6;
-        }
-
-        .reports-header .profile {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-shrink: 0;
-        }
-
-        .reports-header .profile img {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #e8f5e9;
-        }
-
-        .reports-header .profile h4 {
-            margin: 0 0 4px;
-            color: var(--kv-text);
-        }
-
-        .reports-header .profile span {
-            color: var(--kv-muted);
-            font-size: 12px;
-        }
-
-        /* =====================================================
-           ACTION BUTTONS
-        ===================================================== */
-
-        .action-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .action {
-            border: 0;
-            text-decoration: none;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 11px 17px;
-            border-radius: 12px;
-            font-weight: 700;
-            transition: 0.25s ease;
-            font-size: 14px;
-        }
-
-        .action:hover {
-            transform: translateY(-2px);
-        }
-
-        .action.dashboard {
-            background: #e8f5e9;
-            color: var(--kv-green);
-        }
-
-        .action.finance {
-            background: #e3f2fd;
-            color: #1565c0;
-        }
-
-        .action.weather {
-            background: #e1f5fe;
-            color: #0277bd;
-        }
-
-        .action.print {
-            background: #fff3e0;
-            color: #ef6c00;
-        }
-
-        /* =====================================================
-           REPORT INTELLIGENCE BANNER
-        ===================================================== */
-
-        .intelligence-banner {
-            background: linear-gradient(
-                135deg,
-                #1b5e20,
-                #2e7d32,
-                #43a047
-            );
-            color: #ffffff;
-            border-radius: 22px;
-            padding: 25px;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            box-shadow: 0 14px 35px rgba(27, 94, 32, 0.18);
-        }
-
-        .intelligence-left {
-            display: flex;
-            align-items: center;
-            gap: 17px;
-        }
-
-        .intelligence-icon {
-            width: 62px;
-            height: 62px;
-            flex-shrink: 0;
-            border-radius: 18px;
-            background: rgba(255, 255, 255, 0.16);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-        }
-
-        .intelligence-banner h2 {
-            margin: 0 0 5px;
-        }
-
-        .intelligence-banner p {
-            margin: 0;
-            opacity: 0.9;
-        }
-
-        .report-date {
-            font-size: 13px;
-            opacity: 0.9;
-            white-space: nowrap;
-        }
-
-        /* =====================================================
-           FARM SCORE
-        ===================================================== */
-
-        .score-section {
-            background: #ffffff;
-            border: 1px solid var(--kv-border);
-            border-radius: 22px;
-            padding: 28px;
-            display: flex;
-            align-items: center;
-            gap: 28px;
-            margin-bottom: 30px;
-            box-shadow: var(--kv-shadow);
-        }
-
-        .score-circle {
-            width: 145px;
-            height: 145px;
-            flex-shrink: 0;
-            border-radius: 50%;
-            background:
-                conic-gradient(
-                    var(--kv-green)
-                    calc({{ farm_score|default(0)|float }} * 1%),
-                    #e7eee9 0
-                );
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .score-circle::before {
-            content: "";
-            position: absolute;
-            width: 113px;
-            height: 113px;
-            border-radius: 50%;
-            background: #ffffff;
-        }
-
-        .score-circle strong,
-        .score-circle span {
-            position: relative;
-            z-index: 1;
-        }
-
-        .score-circle strong {
-            font-size: 38px;
-            color: var(--kv-green);
-            line-height: 1;
-        }
-
-        .score-circle span {
-            font-size: 13px;
-            color: var(--kv-muted);
-        }
-
-        .score-content h2 {
-            margin: 0 0 5px;
-            color: var(--kv-text);
-        }
-
-        .score-content h3 {
-            color: var(--kv-green);
-            margin: 0 0 10px;
-        }
-
-        .score-content p {
-            color: var(--kv-muted);
-            margin: 0;
-            line-height: 1.6;
-        }
-
-        /* =====================================================
-           SECTION TITLES
-        ===================================================== */
-
-        .section-title {
-            color: var(--kv-text);
-            margin: 30px 0 16px;
-        }
-
-        .section-title i {
-            color: var(--kv-green);
-            margin-right: 7px;
-        }
-
-        [dir="rtl"] .section-title i {
-            margin-right: 0;
-            margin-left: 7px;
-        }
-
-        /* =====================================================
-           FINANCE STATISTICS
-        ===================================================== */
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-        }
-
-        .stat-card {
-            background: #ffffff;
-            border: 1px solid var(--kv-border);
-            border-radius: 18px;
-            padding: 20px;
-            display: flex;
-            gap: 15px;
-            box-shadow: 0 7px 22px rgba(27, 94, 32, 0.05);
-            transition: 0.25s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .stat-icon {
-            width: 46px;
-            height: 46px;
-            flex-shrink: 0;
-            border-radius: 13px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .stat-card.income .stat-icon {
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
-
-        .stat-card.expense .stat-icon {
-            background: #ffebee;
-            color: #c62828;
-        }
-
-        .stat-card.profit .stat-icon {
-            background: #e3f2fd;
-            color: #1565c0;
-        }
-
-        .stat-card.margin .stat-icon {
-            background: #fff3e0;
-            color: #ef6c00;
-        }
-
-        .stat-card p {
-            margin: 0 0 5px;
-            color: var(--kv-muted);
-            font-size: 13px;
-        }
-
-        .stat-card h2 {
-            margin: 0 0 5px;
-            color: var(--kv-text);
-            font-size: 23px;
-        }
-
-        .stat-card small {
-            color: var(--kv-muted);
-        }
-
-        .stat-card small.success {
-            color: #2e7d32;
-        }
-
-        .stat-card small.danger {
-            color: #c62828;
-        }
-
-        /* =====================================================
-           FINANCIAL HEALTH
-        ===================================================== */
-
-        .health-card {
-            margin-top: 20px;
-            background: #ffffff;
-            border: 1px solid var(--kv-border);
-            border-radius: 18px;
-            padding: 22px;
-            box-shadow: var(--kv-shadow);
-        }
-
-        .health-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .health-header strong {
-            color: var(--kv-text);
-        }
-
-        .health-header span {
-            color: var(--kv-green);
-            font-weight: 800;
-        }
-
-        .health-bar {
-            height: 12px;
-            background: #e9efeb;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        .health-fill {
-            height: 100%;
-            width: {{ financial_score|default(0)|float }}%;
-            max-width: 100%;
-            background: linear-gradient(
-                90deg,
-                #43a047,
-                #1b5e20
-            );
-            border-radius: inherit;
-        }
-
-        /* =====================================================
-           WEATHER
-        ===================================================== */
-
-        .weather-report {
-            background: #ffffff;
-            border: 1px solid var(--kv-border);
-            border-radius: 20px;
-            padding: 24px;
-            box-shadow: var(--kv-shadow);
-        }
-
-        .weather-location {
-            display: flex;
-            align-items: center;
-            gap: 17px;
-            margin-bottom: 24px;
-        }
-
-        .weather-icon {
-            width: 60px;
-            height: 60px;
-            flex-shrink: 0;
-            border-radius: 17px;
-            background: #e1f5fe;
-            color: #0288d1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 25px;
-        }
-
-        .weather-location h2 {
-            margin: 0;
-            color: var(--kv-text);
-        }
-
-        .weather-location p {
-            margin: 3px 0;
-            color: var(--kv-muted);
-        }
-
-        .weather-location strong {
-            color: #1565c0;
-        }
-
-        .weather-values {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-        }
-
-        .weather-values > div {
-            background: #f7faf8;
-            border: 1px solid #e7eee9;
-            border-radius: 14px;
-            padding: 15px;
-            text-align: center;
-        }
-
-        .weather-values i {
-            display: block;
-            color: #1976d2;
-            font-size: 18px;
-            margin-bottom: 7px;
-        }
-
-        .weather-values span {
-            display: block;
-            font-size: 12px;
-            color: var(--kv-muted);
-        }
-
-        .weather-values strong {
-            display: block;
-            margin-top: 4px;
-            color: var(--kv-text);
-            font-size: 17px;
-        }
-
-        /* =====================================================
-           SMART ANALYSIS
-        ===================================================== */
-
-        .analysis-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 18px;
-        }
-
-        .analysis-card {
-            background: #ffffff;
-            border: 1px solid var(--kv-border);
-            border-radius: 18px;
-            padding: 22px;
-            box-shadow: var(--kv-shadow);
-        }
-
-        .analysis-header {
-            display: flex;
-            align-items: center;
-            gap: 13px;
-            padding-bottom: 15px;
-            margin-bottom: 10px;
-            border-bottom: 1px solid var(--kv-border);
-        }
-
-        .analysis-header > i {
-            width: 42px;
-            height: 42px;
-            flex-shrink: 0;
-            border-radius: 12px;
-            background: #e8f5e9;
-            color: var(--kv-green);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .analysis-header h3 {
-            margin: 0;
-            color: var(--kv-text);
-        }
-
-        .analysis-header p {
-            margin: 3px 0 0;
-            font-size: 12px;
-            color: var(--kv-muted);
-        }
-
-        .analysis-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            padding: 12px 0;
-            border-bottom: 1px dashed #e6eee8;
-        }
-
-        .analysis-row:last-child {
-            border-bottom: 0;
-        }
-
-        .analysis-row span {
-            color: var(--kv-muted);
-        }
-
-        .analysis-row strong {
-            color: var(--kv-text);
-        }
-
-        /* =====================================================
-           SMART INSIGHT
-        ===================================================== */
-
-        .smart-insight {
-            margin-top: 20px;
-            padding: 20px;
-            border-radius: 17px;
-            background: linear-gradient(
-                135deg,
-                #f1f8f2,
-                #ffffff
-            );
-            border: 1px solid #dcebdd;
-            display: flex;
-            gap: 14px;
-        }
-
-        .smart-insight-icon {
-            width: 43px;
-            height: 43px;
-            border-radius: 12px;
-            flex-shrink: 0;
-            background: #e8f5e9;
-            color: var(--kv-green);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .smart-insight h3 {
-            margin: 0 0 5px;
-            color: var(--kv-text);
-        }
-
-        .smart-insight p {
-            margin: 0;
-            color: var(--kv-muted);
-            line-height: 1.6;
-        }
-
-        /* =====================================================
-           PROBLEMS / POSITIVE / SOLUTIONS
-        ===================================================== */
-
-        .problem-card,
-        .positive-card,
-        .solutions-card,
-        .transaction-card {
-            background: #ffffff;
-            border: 1px solid var(--kv-border);
-            border-radius: 20px;
-            padding: 23px;
-            margin-top: 22px;
-            box-shadow: var(--kv-shadow);
-        }
-
-        .problem-card {
-            border-left: 5px solid #e53935;
-        }
-
-        .positive-card {
-            border-left: 5px solid #43a047;
-        }
-
-        .solutions-card {
-            border-left: 5px solid #fb8c00;
-        }
-
-        .card-title {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 18px;
-        }
-
-        .card-title > i,
-        .solution-main-icon {
-            width: 45px;
-            height: 45px;
-            flex-shrink: 0;
-            border-radius: 13px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #fff3e0;
-            color: #ef6c00;
-        }
-
-        .card-title h2 {
-            margin: 0;
-            color: var(--kv-text);
-        }
-
-        .card-title p {
-            margin: 3px 0 0;
-            color: var(--kv-muted);
-        }
-
-        .problem-list,
-        .positive-list {
-            display: grid;
-            gap: 10px;
-        }
-
-        .problem {
-            padding: 12px 14px;
-            background: #fff7f7;
-            border-radius: 12px;
-            color: #8e2424;
-            display: flex;
-            gap: 10px;
-        }
-
-        .no-problem {
-            padding: 14px;
-            background: #edf8ef;
-            border-radius: 12px;
-            color: #287631;
-        }
-
-        .positive-list > div {
-            padding: 12px 14px;
-            background: #f3faf4;
-            border-radius: 12px;
-            color: #2e6f35;
-        }
-
-        .solutions-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        .solution {
-            display: flex;
-            gap: 13px;
-            padding: 16px;
-            background: #fffaf3;
-            border: 1px solid #f7ead8;
-            border-radius: 15px;
-        }
-
-        .solution-number {
-            width: 34px;
-            height: 34px;
-            flex-shrink: 0;
-            border-radius: 10px;
-            background: #fb8c00;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-        }
-
-        .solution h3 {
-            margin: 0 0 5px;
-            color: var(--kv-text);
-        }
-
-        .solution p {
-            margin: 0 0 8px;
-            color: var(--kv-muted);
-            line-height: 1.5;
-        }
-
-        .solution strong {
-            color: #ef6c00;
-        }
-
-        .solution span {
-            color: var(--kv-text);
-        }
-
-        /* =====================================================
-           TRANSACTION TABLE
-        ===================================================== */
-
-        .table-container {
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        .table-container table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 650px;
-        }
-
-        .table-container th {
-            text-align: left;
-            padding: 14px;
-            background: #f2f7f3;
-            color: var(--kv-text);
-            font-size: 13px;
-        }
-
-        .table-container td {
-            padding: 14px;
-            border-bottom: 1px solid #edf2ee;
-            color: #496354;
-        }
-
-        .income-badge,
-        .expense-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .income-badge {
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
-
-        .expense-badge {
-            background: #ffebee;
-            color: #c62828;
-        }
-
-        .empty {
-            text-align: center;
-            padding: 30px !important;
-            color: var(--kv-muted);
-        }
-
-        /* =====================================================
-           MODULE CONNECTIONS
-        ===================================================== */
-
-        .module-links {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
-            margin-top: 24px;
-        }
-
-        .module-links a {
-            background: #ffffff;
-            border: 1px solid var(--kv-border);
-            border-radius: 16px;
-            padding: 17px;
-            display: grid;
-            grid-template-columns: 42px 1fr 25px;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: var(--kv-text);
-            transition: 0.25s ease;
-        }
-
-        .module-links a:hover {
-            transform: translateY(-3px);
-            border-color: #b8d7bd;
-            box-shadow: var(--kv-shadow);
-        }
-
-        .module-links a > i:first-child {
-            width: 42px;
-            height: 42px;
-            border-radius: 12px;
-            background: #e8f5e9;
-            color: var(--kv-green);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .module-links strong,
-        .module-links span {
-            display: block;
-        }
-
-        .module-links span {
-            margin-top: 3px;
-            font-size: 12px;
-            color: var(--kv-muted);
-        }
-
-        .module-links a > i:last-child {
-            color: var(--kv-green);
-        }
-
-        /* =====================================================
-           FOOTER
-        ===================================================== */
-
-        footer {
-            text-align: center;
-            padding: 28px 10px 10px;
-            color: var(--kv-muted);
-            font-size: 13px;
-        }
-
-        footer i {
-            color: var(--kv-green);
-        }
-
-        footer span {
-            margin: 0 5px;
-        }
-
-        /* =====================================================
-           RTL
-        ===================================================== */
-
-        [dir="rtl"] .problem-card,
-        [dir="rtl"] .positive-card,
-        [dir="rtl"] .solutions-card {
-            border-left: 1px solid var(--kv-border);
-            border-right: 5px solid;
-        }
-
-        [dir="rtl"] .problem-card {
-            border-right-color: #e53935;
-        }
-
-        [dir="rtl"] .positive-card {
-            border-right-color: #43a047;
-        }
-
-        [dir="rtl"] .solutions-card {
-            border-right-color: #fb8c00;
-        }
-
-        [dir="rtl"] .table-container th {
-            text-align: right;
-        }
-
-        /* =====================================================
-           RESPONSIVE
-        ===================================================== */
-
-        @media (max-width: 1100px) {
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .weather-values {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .smart-status-bar {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 800px) {
-
-            .reports-container {
-                padding: 15px;
-            }
-
-            .reports-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .intelligence-banner {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-
-            .score-section {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .analysis-grid,
-            .solutions-grid,
-            .module-links {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 600px) {
-
-            .smart-status-bar,
-            .stats-grid,
-            .weather-values {
-                grid-template-columns: 1fr;
-            }
-
-            .action-buttons {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .action {
-                width: 100%;
-            }
-
-            .intelligence-left {
-                align-items: flex-start;
-            }
-
-            .report-date {
-                white-space: normal;
-            }
-
-            .score-circle {
-                width: 125px;
-                height: 125px;
-            }
-
-            .score-circle::before {
-                width: 97px;
-                height: 97px;
-            }
-
-            .module-links a {
-                grid-template-columns: 40px 1fr 20px;
-            }
-        }
-
-        @media (max-width: 420px) {
-
-            .action-buttons {
-                grid-template-columns: 1fr;
-            }
-
-            .reports-header {
-                padding: 18px;
-            }
-
-            .intelligence-banner {
-                padding: 18px;
-            }
-
-            .score-section {
-                padding: 20px;
-            }
-
-            .problem-card,
-            .positive-card,
-            .solutions-card,
-            .transaction-card {
-                padding: 17px;
-            }
-        }
-
-        /* =====================================================
-           PRINT MODE
-        ===================================================== */
-
-        @media print {
-
-            body {
-                background: #ffffff !important;
-            }
-
-            .action-buttons,
-            .smart-status-bar,
-            .module-links,
-            .sidebar,
-            .profile,
-            footer {
-                display: none !important;
-            }
-
-            .main-content {
-                margin: 0 !important;
-                width: 100% !important;
-            }
-
-            .reports-container {
-                max-width: 100%;
-                padding: 0;
-            }
-
-            .intelligence-banner {
-                box-shadow: none;
-                color: #000000;
-                background: #ffffff !important;
-                border: 2px solid #1b5e20;
-            }
-
-            .intelligence-icon {
-                color: #1b5e20;
-                background: #e8f5e9;
-            }
-
-            .stat-card,
-            .weather-report,
-            .analysis-card,
-            .problem-card,
-            .positive-card,
-            .solutions-card,
-            .transaction-card,
-            .score-section,
-            .health-card {
-                box-shadow: none !important;
-                break-inside: avoid;
-            }
-        }
-
-    </style>
+.table-container table {
+    width: 100%;
+    min-width: 650px;
+
+    border-collapse: collapse;
+}
+
+.table-container th {
+    padding: 14px;
+
+    text-align: left;
+
+    background: #F2F7F3;
+    color: var(--kv-text);
+
+    font-size: 13px;
+}
+
+.table-container td {
+    padding: 14px;
+
+    border-bottom: 1px solid #EDF2EE;
+
+    color: #496354;
+}
+
+.income-badge,
+.expense-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 6px 10px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.income-badge {
+    background: #E8F5E9;
+    color: #2E7D32;
+}
+
+.expense-badge {
+    background: #FFEBEE;
+    color: #C62828;
+}
+
+.empty {
+    padding: 30px !important;
+
+    text-align: center;
+
+    color: var(--kv-muted);
+}
+
+/* =========================================================
+   CONNECTED MODULES
+   ========================================================= */
+
+.module-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+
+    margin-top: 24px;
+}
+
+.module-links a {
+    display: grid;
+    grid-template-columns: 42px 1fr 25px;
+    align-items: center;
+    gap: 12px;
+
+    padding: 17px;
+
+    background: var(--kv-white);
+    border: 1px solid var(--kv-border);
+    border-radius: 16px;
+
+    text-decoration: none;
+    color: var(--kv-text);
+
+    transition: 0.25s ease;
+}
+
+.module-links a:hover {
+    transform: translateY(-3px);
+
+    border-color: #B8D7BD;
+    box-shadow: var(--kv-shadow);
+}
+
+.module-links a > i:first-child {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #E8F5E9;
+    color: var(--kv-green);
+}
+
+.module-links strong,
+.module-links span {
+    display: block;
+}
+
+.module-links span {
+    margin-top: 3px;
+
+    color: var(--kv-muted);
+    font-size: 12px;
+}
+
+.module-links a > i:last-child {
+    color: var(--kv-green);
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.report-footer {
+    padding: 28px 10px 10px;
+
+    text-align: center;
+
+    color: var(--kv-muted);
+    font-size: 13px;
+}
+
+.report-footer i {
+    color: var(--kv-green);
+}
+
+.report-footer span {
+    margin: 0 5px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .smart-status-bar {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .weather-values {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 800px) {
+
+    .reports-container {
+        padding: 15px;
+    }
+
+    .reports-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .intelligence-banner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .score-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .analysis-grid,
+    .solutions-grid,
+    .module-links {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .smart-status-bar,
+    .stats-grid,
+    .weather-values {
+        grid-template-columns: 1fr;
+    }
+
+    .action-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .action {
+        width: 100%;
+    }
+
+    .intelligence-left {
+        align-items: flex-start;
+    }
+
+    .report-date {
+        white-space: normal;
+    }
+
+    .score-circle {
+        width: 125px;
+        height: 125px;
+    }
+
+    .score-circle::before {
+        width: 97px;
+        height: 97px;
+    }
+}
+
+@media (max-width: 420px) {
+
+    .action-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .reports-header {
+        padding: 18px;
+    }
+
+    .intelligence-banner {
+        padding: 18px;
+    }
+
+    .score-section {
+        padding: 20px;
+    }
+
+    .problem-card,
+    .positive-card,
+    .solutions-card,
+    .transaction-card {
+        padding: 17px;
+    }
+}
+
+/* =========================================================
+   PRINT
+   ========================================================= */
+
+@media print {
+
+    body {
+        background: #FFFFFF !important;
+    }
+
+    .action-buttons,
+    .smart-status-bar,
+    .module-links,
+    .sidebar,
+    .profile,
+    .report-footer {
+        display: none !important;
+    }
+
+    .main-content {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    .reports-container {
+        max-width: 100%;
+        padding: 0;
+    }
+
+    .intelligence-banner {
+        color: #000000;
+
+        background: #FFFFFF !important;
+        border: 2px solid var(--kv-green);
+
+        box-shadow: none;
+    }
+
+    .intelligence-icon {
+        color: var(--kv-green);
+        background: #E8F5E9;
+    }
+
+    .stat-card,
+    .weather-report,
+    .analysis-card,
+    .problem-card,
+    .positive-card,
+    .solutions-card,
+    .transaction-card,
+    .score-section,
+    .health-card {
+        box-shadow: none !important;
+        break-inside: avoid;
+    }
+}
+</style>
 {% endblock %}
 
-{% block page_title %}Smart Farm Reports{% endblock %}
-{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block page_title %}
+Smart Farm Reports
+{% endblock %}
+
+{% block page_subtitle %}
+Smart Agriculture Platform
+{% endblock %}
+
 
 {% block content %}
-<!-- =====================================================
-     SAFE TEMPLATE DEFAULTS
-===================================================== -->
+
+{# =========================================================
+   SAFE DEFAULTS
+   ========================================================= #}
 
 {% set weather_data = weather|default({}, true) %}
 {% set warning_points = warning_points|default([], true) %}
@@ -1142,6 +1262,7 @@
 {% set farm_score_value = farm_score|default(0, true)|float %}
 {% set financial_score_value = financial_score|default(0, true)|float %}
 {% set weather_score_value = weather_score|default(0, true)|float %}
+
 {% set income_value = income|default(0, true)|float %}
 {% set expenses_value = expenses|default(0, true)|float %}
 {% set profit_value = profit|default(0, true)|float %}
@@ -1151,10 +1272,9 @@
 
     <div class="reports-container">
 
-
-        <!-- =================================================
+        <!-- =====================================================
              SMART STATUS
-        ================================================== -->
+        ====================================================== -->
 
         <div class="smart-status-bar">
 
@@ -1166,7 +1286,7 @@
 
                 <div>
                     <strong>Financial Analysis</strong>
-                    <span>Income & expense data</span>
+                    <span>Income &amp; expense data</span>
                 </div>
 
             </div>
@@ -1216,9 +1336,9 @@
         </div>
 
 
-        <!-- =================================================
-             HEADER
-        ================================================== -->
+        <!-- =====================================================
+             REPORT HEADER
+        ====================================================== -->
 
         <header class="reports-header">
 
@@ -1230,8 +1350,8 @@
                 </h1>
 
                 <p>
-                    Complete analysis of your farm using Finance,
-                    Weather and Smart Farming data.
+                    Complete analysis of your farm using
+                    Finance, Weather and Smart Farming data.
                 </p>
 
             </div>
@@ -1241,7 +1361,7 @@
 
                 <img
                     src="{{ url_for('static', filename='images/farmer.jpg') }}"
-                    alt="Farmer">
+                    alt="Farmer profile">
 
                 <div>
 
@@ -1261,16 +1381,15 @@
         </header>
 
 
-        <!-- =================================================
-             ACTIONS
-        ================================================== -->
+        <!-- =====================================================
+             ACTION BUTTONS
+        ====================================================== -->
 
         <div class="action-buttons">
 
-            <!-- FIXED: farmer.farmer -->
-
-            <a href="{{ url_for('farmer.farmer') }}"
-               class="action dashboard">
+            <a
+                href="{{ url_for('farmer.farmer') }}"
+                class="action dashboard">
 
                 <i class="fa-solid fa-house"></i>
                 Dashboard
@@ -1278,10 +1397,9 @@
             </a>
 
 
-            <!-- FIXED: finance.finance -->
-
-            <a href="{{ url_for('finance.finance') }}"
-               class="action finance">
+            <a
+                href="{{ url_for('finance.finance') }}"
+                class="action finance">
 
                 <i class="fa-solid fa-wallet"></i>
                 Finance
@@ -1289,10 +1407,9 @@
             </a>
 
 
-            <!-- FIXED: weather.weather -->
-
-            <a href="{{ url_for('weather.weather') }}"
-               class="action weather">
+            <a
+                href="{{ url_for('weather.weather') }}"
+                class="action weather">
 
                 <i class="fa-solid fa-cloud-sun"></i>
                 Weather
@@ -1302,8 +1419,8 @@
 
             <button
                 type="button"
-                onclick="printReport()"
-                class="action print">
+                class="action print"
+                onclick="printReport()">
 
                 <i class="fa-solid fa-print"></i>
                 Print Report
@@ -1313,18 +1430,16 @@
         </div>
 
 
-        <!-- =================================================
+        <!-- =====================================================
              INTELLIGENCE BANNER
-        ================================================== -->
+        ====================================================== -->
 
-        <div class="intelligence-banner">
+        <section class="intelligence-banner">
 
             <div class="intelligence-left">
 
                 <div class="intelligence-icon">
-
                     <i class="fa-solid fa-brain"></i>
-
                 </div>
 
                 <div>
@@ -1353,14 +1468,14 @@
 
             </div>
 
-        </div>
+        </section>
 
 
-        <!-- =================================================
-             FARM SCORE
-        ================================================== -->
+        <!-- =====================================================
+             OVERALL FARM SCORE
+        ====================================================== -->
 
-        <div class="score-section">
+        <section class="score-section">
 
             <div class="score-circle">
 
@@ -1394,12 +1509,12 @@
 
             </div>
 
-        </div>
+        </section>
 
 
-        <!-- =================================================
+        <!-- =====================================================
              FINANCIAL SUMMARY
-        ================================================== -->
+        ====================================================== -->
 
         <h2 class="section-title">
 
@@ -1410,17 +1525,14 @@
         </h2>
 
 
-        <div class="stats-grid">
-
+        <section class="stats-grid">
 
             <!-- INCOME -->
 
             <div class="stat-card income">
 
                 <div class="stat-icon">
-
                     <i class="fa-solid fa-arrow-trend-up"></i>
-
                 </div>
 
                 <div>
@@ -1428,7 +1540,7 @@
                     <p>Total Income</p>
 
                     <h2>
-                        â‚¹ {{ "%.2f"|format(income_value) }}
+                        ₹ {{ "%.2f"|format(income_value) }}
                     </h2>
 
                     <small>
@@ -1446,9 +1558,7 @@
             <div class="stat-card expense">
 
                 <div class="stat-icon">
-
                     <i class="fa-solid fa-arrow-trend-down"></i>
-
                 </div>
 
                 <div>
@@ -1456,7 +1566,7 @@
                     <p>Total Expenses</p>
 
                     <h2>
-                        â‚¹ {{ "%.2f"|format(expenses_value) }}
+                        ₹ {{ "%.2f"|format(expenses_value) }}
                     </h2>
 
                     <small>
@@ -1474,9 +1584,7 @@
             <div class="stat-card profit">
 
                 <div class="stat-icon">
-
                     <i class="fa-solid fa-chart-line"></i>
-
                 </div>
 
                 <div>
@@ -1484,28 +1592,21 @@
                     <p>Net Profit</p>
 
                     <h2>
-                        â‚¹ {{ "%.2f"|format(profit_value) }}
+                        ₹ {{ "%.2f"|format(profit_value) }}
                     </h2>
-
 
                     {% if profit_value > 0 %}
 
                         <small class="success">
-
                             <i class="fa-solid fa-circle-check"></i>
-
                             Profitable
-
                         </small>
 
                     {% elif profit_value < 0 %}
 
                         <small class="danger">
-
                             <i class="fa-solid fa-triangle-exclamation"></i>
-
                             Loss
-
                         </small>
 
                     {% else %}
@@ -1521,14 +1622,12 @@
             </div>
 
 
-            <!-- MARGIN -->
+            <!-- PROFIT MARGIN -->
 
             <div class="stat-card margin">
 
                 <div class="stat-icon">
-
                     <i class="fa-solid fa-percent"></i>
-
                 </div>
 
                 <div>
@@ -1548,14 +1647,14 @@
 
             </div>
 
-        </div>
+        </section>
 
 
-        <!-- =================================================
+        <!-- =====================================================
              FINANCIAL HEALTH
-        ================================================== -->
+        ====================================================== -->
 
-        <div class="health-card">
+        <section class="health-card">
 
             <div class="health-header">
 
@@ -1575,12 +1674,12 @@
 
             </div>
 
-        </div>
+        </section>
 
 
-        <!-- =================================================
+        <!-- =====================================================
              WEATHER
-        ================================================== -->
+        ====================================================== -->
 
         <h2 class="section-title">
 
@@ -1591,15 +1690,12 @@
         </h2>
 
 
-        <div class="weather-report">
-
+        <section class="weather-report">
 
             <div class="weather-location">
 
                 <div class="weather-icon">
-
                     <i class="fa-solid fa-cloud-sun"></i>
-
                 </div>
 
                 <div>
@@ -1613,7 +1709,10 @@
                     </p>
 
                     <strong>
-                        {{ weather_data.description|default("Weather unavailable", true) }}
+                        {{ weather_data.description|default(
+                            "Weather unavailable",
+                            true
+                        ) }}
                     </strong>
 
                 </div>
@@ -1623,17 +1722,18 @@
 
             <div class="weather-values">
 
-
                 <!-- TEMPERATURE -->
 
                 <div>
 
                     <i class="fa-solid fa-temperature-half"></i>
 
-                    <span>Temperature</span>
+                    <span>
+                        Temperature
+                    </span>
 
                     <strong>
-                        {{ weather_data.temperature|default(0, true) }}Â°C
+                        {{ weather_data.temperature|default(0, true) }}°C
                     </strong>
 
                 </div>
@@ -1645,7 +1745,9 @@
 
                     <i class="fa-solid fa-droplet"></i>
 
-                    <span>Humidity</span>
+                    <span>
+                        Humidity
+                    </span>
 
                     <strong>
                         {{ weather_data.humidity|default(0, true) }}%
@@ -1660,7 +1762,9 @@
 
                     <i class="fa-solid fa-cloud-rain"></i>
 
-                    <span>Rainfall</span>
+                    <span>
+                        Rainfall
+                    </span>
 
                     <strong>
                         {{ weather_data.rainfall|default(0, true) }} mm
@@ -1675,13 +1779,19 @@
 
                     <i class="fa-solid fa-wind"></i>
 
-                    <span>Wind</span>
+                    <span>
+                        Wind
+                    </span>
 
                     <strong>
-                        {{ weather_data.wind|default(
-                            weather_data.wind_speed|default(0, true),
-                            true
-                        ) }} m/s
+                        {{
+                            weather_data.wind
+                            |default(
+                                weather_data.wind_speed
+                                |default(0, true),
+                                true
+                            )
+                        }} m/s
                     </strong>
 
                 </div>
@@ -1693,7 +1803,9 @@
 
                     <i class="fa-solid fa-gauge-high"></i>
 
-                    <span>Pressure</span>
+                    <span>
+                        Pressure
+                    </span>
 
                     <strong>
                         {{ weather_data.pressure|default(0, true) }} hPa
@@ -1702,19 +1814,25 @@
                 </div>
 
 
-                <!-- CLOUD -->
+                <!-- CLOUD COVER -->
 
                 <div>
 
                     <i class="fa-solid fa-cloud"></i>
 
-                    <span>Cloud Cover</span>
+                    <span>
+                        Cloud Cover
+                    </span>
 
                     <strong>
-                        {{ weather_data.clouds|default(
-                            weather_data.cloud_cover|default(0, true),
-                            true
-                        ) }}%
+                        {{
+                            weather_data.clouds
+                            |default(
+                                weather_data.cloud_cover
+                                |default(0, true),
+                                true
+                            )
+                        }}%
                     </strong>
 
                 </div>
@@ -1726,7 +1844,9 @@
 
                     <i class="fa-solid fa-eye"></i>
 
-                    <span>Visibility</span>
+                    <span>
+                        Visibility
+                    </span>
 
                     <strong>
                         {{ weather_data.visibility|default(0, true) }} km
@@ -1741,7 +1861,9 @@
 
                     <i class="fa-solid fa-sun"></i>
 
-                    <span>UV Index</span>
+                    <span>
+                        UV Index
+                    </span>
 
                     <strong>
                         {{ weather_data.uv_index|default("N/A", true) }}
@@ -1751,12 +1873,12 @@
 
             </div>
 
-        </div>
+        </section>
 
 
-        <!-- =================================================
+        <!-- =====================================================
              SMART FARM ANALYSIS
-        ================================================== -->
+        ====================================================== -->
 
         <h2 class="section-title">
 
@@ -1767,10 +1889,9 @@
         </h2>
 
 
-        <div class="analysis-grid">
+        <section class="analysis-grid">
 
-
-            <!-- FINANCE ANALYSIS -->
+            <!-- FINANCIAL ANALYSIS -->
 
             <div class="analysis-card">
 
@@ -1798,7 +1919,7 @@
                     <span>Income</span>
 
                     <strong>
-                        â‚¹ {{ "%.2f"|format(income_value) }}
+                        ₹ {{ "%.2f"|format(income_value) }}
                     </strong>
 
                 </div>
@@ -1809,7 +1930,7 @@
                     <span>Expenses</span>
 
                     <strong>
-                        â‚¹ {{ "%.2f"|format(expenses_value) }}
+                        ₹ {{ "%.2f"|format(expenses_value) }}
                     </strong>
 
                 </div>
@@ -1820,7 +1941,7 @@
                     <span>Profit</span>
 
                     <strong>
-                        â‚¹ {{ "%.2f"|format(profit_value) }}
+                        ₹ {{ "%.2f"|format(profit_value) }}
                     </strong>
 
                 </div>
@@ -1867,7 +1988,7 @@
                     <span>Temperature</span>
 
                     <strong>
-                        {{ weather_data.temperature|default(0, true) }}Â°C
+                        {{ weather_data.temperature|default(0, true) }}°C
                     </strong>
 
                 </div>
@@ -1907,14 +2028,14 @@
 
             </div>
 
-        </div>
+        </section>
 
 
-        <!-- =================================================
+        <!-- =====================================================
              SMART INSIGHT
-        ================================================== -->
+        ====================================================== -->
 
-        <div class="smart-insight">
+        <section class="smart-insight">
 
             <div class="smart-insight-icon">
 
@@ -1956,14 +2077,14 @@
 
             </div>
 
-        </div>
+        </section>
 
 
-        <!-- =================================================
-             PROBLEMS
-        ================================================== -->
+        <!-- =====================================================
+             PROBLEMS DETECTED
+        ====================================================== -->
 
-        <div class="problem-card">
+        <section class="problem-card">
 
             <div class="card-title">
 
@@ -2012,14 +2133,14 @@
 
             </div>
 
-        </div>
+        </section>
 
 
-        <!-- =================================================
+        <!-- =====================================================
              POSITIVE PERFORMANCE
-        ================================================== -->
+        ====================================================== -->
 
-        <div class="positive-card">
+        <section class="positive-card">
 
             <div class="card-title">
 
@@ -2067,14 +2188,14 @@
 
             </div>
 
-        </div>
+        </section>
 
 
-        <!-- =================================================
+        <!-- =====================================================
              SMART SOLUTIONS
-        ================================================== -->
+        ====================================================== -->
 
-        <div class="solutions-card">
+        <section class="solutions-card">
 
             <div class="card-title">
 
@@ -2113,7 +2234,10 @@
                         <div>
 
                             <h3>
-                                {{ solution.title|default("Recommended Action", true) }}
+                                {{ solution.title|default(
+                                    "Recommended Action",
+                                    true
+                                ) }}
                             </h3>
 
                             <p>
@@ -2124,11 +2248,8 @@
                             </p>
 
                             <strong>
-
                                 <i class="fa-solid fa-arrow-right"></i>
-
                                 Solution:
-
                             </strong>
 
                             <span>
@@ -2165,7 +2286,8 @@
                             </strong>
 
                             <span>
-                                Continue updating Finance and Weather data.
+                                Continue updating Finance and
+                                Weather data.
                             </span>
 
                         </div>
@@ -2176,14 +2298,14 @@
 
             </div>
 
-        </div>
+        </section>
 
 
-        <!-- =================================================
+        <!-- =====================================================
              TRANSACTION HISTORY
-        ================================================== -->
+        ====================================================== -->
 
-        <div class="transaction-card">
+        <section class="transaction-card">
 
             <div class="card-title">
 
@@ -2211,15 +2333,10 @@
                     <thead>
 
                         <tr>
-
                             <th>Description</th>
-
                             <th>Amount</th>
-
                             <th>Type</th>
-
                             <th>Date</th>
-
                         </tr>
 
                     </thead>
@@ -2227,65 +2344,73 @@
 
                     <tbody>
 
-                    {% for row in transactions %}
+                        {% for row in transactions %}
 
-                        <tr>
+                            <tr>
 
-                            <td>
-                                {{ row[0]|default("", true) }}
-                            </td>
+                                <td>
+                                    {{ row[0]|default("", true) }}
+                                </td>
 
-                            <td>
-                                â‚¹ {{ "%.2f"|format(row[1]|default(0, true)|float) }}
-                            </td>
+                                <td>
+                                    ₹ {{
+                                        "%.2f"|format(
+                                            row[1]
+                                            |default(0, true)
+                                            |float
+                                        )
+                                    }}
+                                </td>
 
-                            <td>
+                                <td>
 
-                                {% if row[2]|default("")|lower == "income" %}
+                                    {% if row[2]|default("")|lower == "income" %}
 
-                                    <span class="income-badge">
+                                        <span class="income-badge">
 
-                                        <i class="fa-solid fa-arrow-up"></i>
+                                            <i class="fa-solid fa-arrow-up"></i>
 
-                                        Income
+                                            Income
 
-                                    </span>
+                                        </span>
 
-                                {% else %}
+                                    {% else %}
 
-                                    <span class="expense-badge">
+                                        <span class="expense-badge">
 
-                                        <i class="fa-solid fa-arrow-down"></i>
+                                            <i class="fa-solid fa-arrow-down"></i>
 
-                                        Expense
+                                            Expense
 
-                                    </span>
+                                        </span>
 
-                                {% endif %}
+                                    {% endif %}
 
-                            </td>
+                                </td>
 
-                            <td>
-                                {{ row[3]|default("", true) }}
-                            </td>
+                                <td>
+                                    {{ row[3]|default("", true) }}
+                                </td>
 
-                        </tr>
+                            </tr>
 
-                    {% else %}
+                        {% else %}
 
-                        <tr>
+                            <tr>
 
-                            <td colspan="4" class="empty">
+                                <td
+                                    colspan="4"
+                                    class="empty">
 
-                                <i class="fa-solid fa-receipt"></i>
+                                    <i class="fa-solid fa-receipt"></i>
 
-                                No Finance transactions available.
+                                    No Finance transactions available.
 
-                            </td>
+                                </td>
 
-                        </tr>
+                            </tr>
 
-                    {% endfor %}
+                        {% endfor %}
 
                     </tbody>
 
@@ -2293,12 +2418,12 @@
 
             </div>
 
-        </div>
+        </section>
 
 
-        <!-- =================================================
-             CONNECTED MODULES
-        ================================================== -->
+        <!-- =====================================================
+             CONNECTED FARM MODULES
+        ====================================================== -->
 
         <h2 class="section-title">
 
@@ -2311,8 +2436,7 @@
 
         <div class="module-links">
 
-
-            <!-- FIXED -->
+            <!-- FINANCE -->
 
             <a href="{{ url_for('finance.finance') }}">
 
@@ -2325,7 +2449,7 @@
                     </strong>
 
                     <span>
-                        Manage income & expenses
+                        Manage income &amp; expenses
                     </span>
 
                 </div>
@@ -2335,7 +2459,7 @@
             </a>
 
 
-            <!-- FIXED -->
+            <!-- WEATHER -->
 
             <a href="{{ url_for('weather.weather') }}">
 
@@ -2358,7 +2482,7 @@
             </a>
 
 
-            <!-- FIXED -->
+            <!-- CROP RECOMMENDATION -->
 
             <a href="{{ url_for('recommendation.recommendation') }}">
 
@@ -2381,7 +2505,7 @@
             </a>
 
 
-            <!-- FIXED -->
+            <!-- IRRIGATION -->
 
             <a href="{{ url_for('irrigation.irrigation') }}">
 
@@ -2406,131 +2530,129 @@
         </div>
 
 
-        <!-- =================================================
+        <!-- =====================================================
              FOOTER
-        ================================================== -->
+        ====================================================== -->
 
-        <footer>
+        <footer class="report-footer">
 
             <i class="fa-solid fa-leaf"></i>
 
             KisanVision360+
 
-            <span>â€¢</span>
+            <span>•</span>
 
             AI-Powered Smart Farming Platform
 
-            <span>â€¢</span>
+            <span>•</span>
 
             Finance + Weather Intelligence
 
-            <span>â€¢</span>
+            <span>•</span>
 
-            Made in India ðŸ‡®ðŸ‡³
+            Made in India 🇮🇳
 
         </footer>
-
 
     </div>
 
 </div>
 
-
-<!-- =====================================================
-     JAVASCRIPT
-===================================================== -->
 {% endblock %}
 
+
 {% block scripts %}
+
 <script>
 
-    /* =====================================================
-       REPORT DATE
-    ===================================================== */
+/* =========================================================
+   REPORT DATE
+   ========================================================= */
 
-    document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
 
-        const dateElement =
-            document.getElementById("reportDate");
+    const dateElement =
+        document.getElementById("reportDate");
 
-        if (!dateElement) {
-            return;
-        }
+    if (!dateElement) {
+        return;
+    }
 
-        const now = new Date();
+    const now = new Date();
 
-        try {
+    try {
 
-            dateElement.textContent =
-                now.toLocaleDateString(
-                    "en-IN",
-                    {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric"
-                    }
-                );
+        dateElement.textContent =
+            now.toLocaleDateString(
+                "en-IN",
+                {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric"
+                }
+            );
 
-        } catch (error) {
+    } catch (error) {
 
-            dateElement.textContent =
-                now.toLocaleDateString();
-
-        }
-
-    });
-
-
-    /* =====================================================
-       PRINT REPORT
-    ===================================================== */
-
-    function printReport() {
-
-        document.body.classList.add("printing");
-
-        setTimeout(function () {
-
-            window.print();
-
-            setTimeout(function () {
-
-                document.body.classList.remove("printing");
-
-            }, 500);
-
-        }, 100);
+        dateElement.textContent =
+            now.toLocaleDateString();
 
     }
 
+});
 
-    /* =====================================================
-       PREVENT PRINT BUTTON DOUBLE CLICK
-    ===================================================== */
 
-    document.addEventListener("DOMContentLoaded", function () {
+/* =========================================================
+   PRINT REPORT
+   ========================================================= */
 
-        const printButton =
-            document.querySelector(".action.print");
+function printReport() {
 
-        if (!printButton) {
-            return;
-        }
+    document.body.classList.add("printing");
 
-        printButton.addEventListener("click", function () {
+    setTimeout(function () {
 
-            this.disabled = true;
+        window.print();
 
-            setTimeout(() => {
+        setTimeout(function () {
 
-                this.disabled = false;
+            document.body.classList.remove("printing");
 
-            }, 1500);
+        }, 500);
 
-        });
+    }, 100);
+
+}
+
+
+/* =========================================================
+   PRINT BUTTON PROTECTION
+   ========================================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const printButton =
+        document.querySelector(".action.print");
+
+    if (!printButton) {
+        return;
+    }
+
+    printButton.addEventListener("click", function () {
+
+        this.disabled = true;
+
+        setTimeout(() => {
+
+            this.disabled = false;
+
+        }, 1500);
 
     });
 
+});
+
 </script>
+
 {% endblock %}
 

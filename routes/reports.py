@@ -1,1855 +1,1807 @@
-﻿# ============================================================
-# KISANVISION360+ - REPORTS ROUTE
+﻿
 # ============================================================
-# Farmer Reports & Analytics
-#
-# Features:
-# - Farmer report dashboard
-# - Farm overview
-# - Crop summary
-# - Finance summary
-# - Marketplace summary
-# - Orders summary
-# - Monthly analytics
-# - Crop performance
-# - Expense/income analysis
-# - Report API
-# - JSON export-ready API
-# - PostgreSQL / Supabase compatible
+# KISANVISION360+
+# routes/reports.py
+# Smart Farm Reports
+# PostgreSQL / Supabase Finance Integration
 # ============================================================
+
+import os
+from datetime import datetime
 
 from flask import (
     Blueprint,
     render_template,
     jsonify,
-    request,
-    redirect,
-    url_for,
     session,
 )
 
 from database.db import get_db_connection
 
-from datetime import datetime
+
+# ============================================================
+# OPTIONAL DOTENV
+# ============================================================
+
+try:
+    from dotenv import load_dotenv
+
+    load_dotenv(override=True)
+
+except Exception:
+    pass
 
 
 # ============================================================
 # BLUEPRINT
 # ============================================================
 
-reports_bp = Blueprint("reports", __name__)
+reports_bp = Blueprint(
+    "reports",
+    __name__,
+    url_prefix="/reports"
+)
 
 
 # ============================================================
-# AUTHENTICATION
+# WEATHER IMPORT
 # ============================================================
 
-def is_logged_in():
-    return bool(session.get("user_id"))
+try:
 
+    from routes.weather import get_current_weather
 
-def is_farmer():
-    role = str(
-        session.get("role", "")
-    ).strip().lower()
+except Exception:
 
-    return role == "farmer"
-
-
-def current_user_id():
-    return session.get("user_id")
+    get_current_weather = None
 
 
 # ============================================================
-# DATABASE HELPERS
+# SAFE HELPERS
 # ============================================================
 
-def get_connection():
-    return get_db_connection()
-
-
-def safe_close(cursor=None, conn=None):
-    try:
-        if cursor:
-            cursor.close()
-    except Exception:
-        pass
+def safe_float(value, default=0):
+    """Safely convert value to float."""
 
     try:
-        if conn:
-            conn.close()
-    except Exception:
-        pass
+
+        if value is None:
+            return default
+
+        return float(value)
+
+    except (ValueError, TypeError):
+
+        return default
 
 
-def table_exists(cursor, table_name):
-    """
-    Check whether a PostgreSQL table exists.
-    """
-
-    try:
-        cursor.execute(
-            """
-            SELECT EXISTS (
-                SELECT 1
-                FROM information_schema.tables
-                WHERE table_schema = 'public'
-                  AND table_name = %s
-            )
-            """,
-            (table_name,),
-        )
-
-        row = cursor.fetchone()
-
-        if isinstance(row, dict):
-            return bool(row.get("exists"))
-
-        return bool(row[0])
-
-    except Exception:
-        return False
-
-
-def get_columns(cursor, table_name):
-    """
-    Return available columns of a PostgreSQL table.
-    """
+def safe_int(value, default=0):
+    """Safely convert value to integer."""
 
     try:
-        cursor.execute(
-            """
-            SELECT column_name
-            FROM information_schema.columns
-            WHERE table_schema = 'public'
-              AND table_name = %s
-            """,
-            (table_name,),
-        )
 
-        rows = cursor.fetchall()
+        if value is None:
+            return default
 
-        columns = set()
+        return int(value)
 
-        for row in rows:
-            if isinstance(row, dict):
-                columns.add(row["column_name"])
-            else:
-                columns.add(row[0])
+    except (ValueError, TypeError):
 
-        return columns
-
-    except Exception:
-        return set()
+        return default
 
 
-def row_to_dict(cursor, row):
+# ============================================================
+# GET FARMER ID
+# ============================================================
+
+def get_farmer_id():
     """
-    Convert tuple or dict database result into dict.
+    Get logged-in farmer ID from session.
+
+    Existing session names are preserved.
     """
 
-    if row is None:
-        return {}
-
-    if isinstance(row, dict):
-        return dict(row)
-
-    columns = [
-        description[0]
-        for description in cursor.description
+    possible_ids = [
+        session.get("farmer_id"),
+        session.get("user_id"),
+        session.get("id"),
+        session.get("uid"),
     ]
 
-    return dict(zip(columns, row))
+    for value in possible_ids:
 
-
-def clean_value(value):
-    """
-    Convert PostgreSQL values into JSON-safe values.
-    """
-
-    if value is None:
-        return None
-
-    if isinstance(value, datetime):
-        return value.isoformat()
-
-    try:
-        # Decimal
-        if hasattr(value, "as_tuple"):
-            return float(value)
-    except Exception:
-        pass
-
-    return value
-
-
-def clean_dict(data):
-    return {
-        key: clean_value(value)
-        for key, value in data.items()
-    }
-
-
-# ============================================================
-# FARMER PROFILE
-# ============================================================
-
-def get_farmer_profile(user_id):
-    """
-    Get farmer profile from users + farmer_profiles.
-    """
-
-    conn = None
-    cursor = None
-
-    try:
-        conn = get_connection()
-        cursor = conn.cursor()
-
-        user_data = {}
-
-        if table_exists(cursor, "users"):
-
-            user_columns = get_columns(
-                cursor,
-                "users",
-            )
-
-            columns = [
-                c
-                for c in [
-                    "id",
-                    "name",
-                    "email",
-                    "mobile",
-                    "location",
-                    "role",
-                    "preferred_language",
-                ]
-                if c in user_columns
-            ]
-
-            if "id" in columns:
-
-                cursor.execute(
-                    f"""
-                    SELECT {", ".join(columns)}
-                    FROM users
-                    WHERE id = %s
-                    LIMIT 1
-                    """,
-                    (user_id,),
-                )
-
-                row = cursor.fetchone()
-
-                if row:
-                    user_data = row_to_dict(
-                        cursor,
-                        row,
-                    )
-
-        profile_data = {}
-
-        if table_exists(
-            cursor,
-            "farmer_profiles",
-        ):
-
-            profile_columns = get_columns(
-                cursor,
-                "farmer_profiles",
-            )
-
-            possible_columns = [
-                "user_id",
-                "farm_name",
-                "farm_location",
-                "latitude",
-                "longitude",
-                "land_area",
-                "land_unit",
-                "soil_type",
-                "irrigation_type",
-                "main_crop",
-                "farming_type",
-                "water_availability",
-                "budget",
-                "farming_goal",
-                "village",
-                "district",
-                "state",
-                "pincode",
-            ]
-
-            columns = [
-                c
-                for c in possible_columns
-                if c in profile_columns
-            ]
-
-            if "user_id" in columns:
-
-                cursor.execute(
-                    f"""
-                    SELECT {", ".join(columns)}
-                    FROM farmer_profiles
-                    WHERE user_id = %s
-                    LIMIT 1
-                    """,
-                    (user_id,),
-                )
-
-                row = cursor.fetchone()
-
-                if row:
-                    profile_data = row_to_dict(
-                        cursor,
-                        row,
-                    )
-
-        result = {
-            **user_data,
-            **profile_data,
-        }
-
-        return clean_dict(result)
-
-    except Exception as exc:
-
-        print(
-            "Reports farmer profile error:",
-            exc,
-        )
-
-        return {}
-
-    finally:
-        safe_close(
-            cursor,
-            conn,
-        )
-
-
-# ============================================================
-# CROP REPORT
-# ============================================================
-
-def get_crop_report(user_id):
-    """
-    Crop statistics for current farmer.
-    """
-
-    conn = None
-    cursor = None
-
-    result = {
-        "total_crops": 0,
-        "active_crops": 0,
-        "harvested_crops": 0,
-        "planned_crops": 0,
-        "total_area": 0,
-        "crops": [],
-    }
-
-    try:
-        conn = get_connection()
-        cursor = conn.cursor()
-
-        if not table_exists(cursor, "crops"):
-            return result
-
-        columns = get_columns(
-            cursor,
-            "crops",
-        )
-
-        if "user_id" not in columns:
-            return result
-
-        select_columns = [
-            c
-            for c in [
-                "id",
-                "user_id",
-                "crop_name",
-                "name",
-                "crop",
-                "area",
-                "land_area",
-                "area_acres",
-                "soil_type",
-                "sowing_date",
-                "planting_date",
-                "harvest_date",
-                "expected_harvest",
-                "status",
-                "growth_stage",
-                "progress",
-                "expected_yield",
-                "yield_quantity",
-                "quantity",
-                "created_at",
-            ]
-            if c in columns
-        ]
-
-        if not select_columns:
-            return result
-
-        cursor.execute(
-            f"""
-            SELECT {", ".join(select_columns)}
-            FROM crops
-            WHERE user_id = %s
-            ORDER BY created_at DESC NULLS LAST
-            """,
-            (user_id,),
-        )
-
-        rows = cursor.fetchall()
-
-        for row in rows:
-
-            crop = row_to_dict(
-                cursor,
-                row,
-            )
-
-            crop = clean_dict(crop)
-
-            result["crops"].append(crop)
-
-        result["total_crops"] = len(
-            result["crops"]
-        )
-
-        for crop in result["crops"]:
-
-            status = str(
-                crop.get("status", "")
-            ).lower()
-
-            if status in {
-                "active",
-                "growing",
-                "cultivating",
-                "cultivation",
-            }:
-                result["active_crops"] += 1
-
-            elif status in {
-                "harvested",
-                "completed",
-                "complete",
-            }:
-                result["harvested_crops"] += 1
-
-            elif status in {
-                "planned",
-                "upcoming",
-            }:
-                result["planned_crops"] += 1
-
-            area = (
-                crop.get("area")
-                or crop.get("land_area")
-                or crop.get("area_acres")
-                or 0
-            )
+        if value is not None:
 
             try:
-                result["total_area"] += float(area)
-            except Exception:
-                pass
+                return int(value)
 
-    except Exception as exc:
+            except (ValueError, TypeError):
+                continue
+
+    return None
+
+
+# ============================================================
+# GET LOGGED USER NAME
+# ============================================================
+
+def get_logged_user_name():
+    """Get farmer name from session."""
+
+    possible_names = [
+        session.get("name"),
+        session.get("user_name"),
+        session.get("username"),
+        session.get("farmer_name"),
+    ]
+
+    for name in possible_names:
+
+        if name:
+
+            return str(name)
+
+    return "Farmer"
+
+
+# ============================================================
+# FARMER REPORT DATA
+# ============================================================
+
+def get_farmer_report_data(farmer_id):
+    """
+    Get farmer profile information from PostgreSQL/Supabase.
+    """
+
+    farmer = {
+        "id": farmer_id,
+        "name": get_logged_user_name(),
+        "location": "",
+        "mobile": "",
+        "email": "",
+    }
+
+    if not farmer_id:
+        return farmer
+
+    connection = None
+    cursor = None
+
+    try:
+
+        connection = get_db_connection()
+        cursor = connection.cursor()
+
+        # ====================================================
+        # USERS
+        # ====================================================
+
+        try:
+
+            cursor.execute(
+                """
+                SELECT
+                    id,
+                    name,
+                    location,
+                    mobile,
+                    email
+                FROM users
+                WHERE id = %s
+                LIMIT 1
+                """,
+                (farmer_id,)
+            )
+
+            row = cursor.fetchone()
+
+            if row:
+
+                farmer["id"] = row["id"]
+
+                if row["name"]:
+                    farmer["name"] = row["name"]
+
+                farmer["location"] = row["location"] or ""
+                farmer["mobile"] = row["mobile"] or ""
+                farmer["email"] = row["email"] or ""
+
+                return farmer
+
+        except Exception as error:
+
+            print(
+                "Users report query error:",
+                error
+            )
+
+            connection.rollback()
+
+        # ====================================================
+        # FARMERS FALLBACK
+        # ====================================================
+
+        try:
+
+            cursor.execute(
+                """
+                SELECT *
+                FROM farmers
+                WHERE id = %s
+                LIMIT 1
+                """,
+                (farmer_id,)
+            )
+
+            row = cursor.fetchone()
+
+            if row:
+
+                if row.get("name"):
+                    farmer["name"] = row["name"]
+
+                if row.get("location"):
+                    farmer["location"] = row["location"]
+
+                if row.get("mobile"):
+                    farmer["mobile"] = row["mobile"]
+
+                if row.get("email"):
+                    farmer["email"] = row["email"]
+
+        except Exception as error:
+
+            print(
+                "Farmers fallback query error:",
+                error
+            )
+
+            connection.rollback()
+
+        return farmer
+
+    except Exception as error:
 
         print(
-            "Reports crop error:",
-            exc,
+            "FARMER REPORT ERROR:",
+            error
         )
+
+        return farmer
 
     finally:
-        safe_close(
-            cursor,
-            conn,
-        )
 
-    return result
+        if cursor:
+            cursor.close()
+
+        if connection:
+            connection.close()
 
 
 # ============================================================
 # FINANCE REPORT
 # ============================================================
 
-def get_finance_report(user_id):
+def get_finance_report(farmer_id):
     """
-    Income and expense summary.
+    Get complete finance information from PostgreSQL/Supabase.
+
+    Database source:
+
+        .env
+          ↓
+        DATABASE_URL
+          ↓
+        database/db.py
+          ↓
+        get_db_connection()
+          ↓
+        farm_income / farm_expenses
     """
 
-    result = {
-        "total_income": 0.0,
-        "total_expense": 0.0,
-        "profit": 0.0,
+    finance = {
+        "income": 0,
+        "expenses": 0,
+        "profit": 0,
+
         "income_count": 0,
         "expense_count": 0,
-        "income_categories": {},
-        "expense_categories": {},
-        "monthly": [],
+
+        "profit_margin": 0,
+        "expense_ratio": 0,
+
+        "financial_score": 0,
+
+        "transactions": [],
+
+        "monthly_data": [],
+
+        "income_categories": [],
+
+        "expense_categories": [],
+
+        "goals": [],
     }
 
-    conn = None
-    cursor = None
-
-    try:
-        conn = get_connection()
-        cursor = conn.cursor()
-
-        # ----------------------------------------------------
-        # INCOME
-        # ----------------------------------------------------
-
-        if table_exists(
-            cursor,
-            "farm_income",
-        ):
-
-            columns = get_columns(
-                cursor,
-                "farm_income",
-            )
-
-            if "user_id" in columns:
-
-                amount_column = None
-
-                for candidate in [
-                    "amount",
-                    "income",
-                    "value",
-                    "total",
-                ]:
-                    if candidate in columns:
-                        amount_column = candidate
-                        break
-
-                category_column = (
-                    "category"
-                    if "category" in columns
-                    else None
-                )
-
-                date_column = None
-
-                for candidate in [
-                    "income_date",
-                    "date",
-                    "created_at",
-                ]:
-                    if candidate in columns:
-                        date_column = candidate
-                        break
-
-                if amount_column:
-
-                    select_parts = [
-                        f"{amount_column} AS amount"
-                    ]
-
-                    if category_column:
-                        select_parts.append(
-                            f"{category_column} AS category"
-                        )
-
-                    if date_column:
-                        select_parts.append(
-                            f"{date_column} AS record_date"
-                        )
-
-                    cursor.execute(
-                        f"""
-                        SELECT {", ".join(select_parts)}
-                        FROM farm_income
-                        WHERE user_id = %s
-                        """,
-                        (user_id,),
-                    )
-
-                    rows = cursor.fetchall()
-
-                    for row in rows:
-
-                        data = row_to_dict(
-                            cursor,
-                            row,
-                        )
-
-                        try:
-                            amount = float(
-                                data.get(
-                                    "amount",
-                                    0,
-                                )
-                                or 0
-                            )
-                        except Exception:
-                            amount = 0
-
-                        result[
-                            "total_income"
-                        ] += amount
-
-                        result[
-                            "income_count"
-                        ] += 1
-
-                        category = str(
-                            data.get(
-                                "category",
-                                "Other",
-                            )
-                            or "Other"
-                        )
-
-                        result[
-                            "income_categories"
-                        ][category] = (
-                            result[
-                                "income_categories"
-                            ].get(category, 0)
-                            + amount
-                        )
-
-        # ----------------------------------------------------
-        # EXPENSE
-        # ----------------------------------------------------
-
-        if table_exists(
-            cursor,
-            "farm_expenses",
-        ):
-
-            columns = get_columns(
-                cursor,
-                "farm_expenses",
-            )
-
-            if "user_id" in columns:
-
-                amount_column = None
-
-                for candidate in [
-                    "amount",
-                    "expense",
-                    "value",
-                    "total",
-                ]:
-                    if candidate in columns:
-                        amount_column = candidate
-                        break
-
-                category_column = (
-                    "category"
-                    if "category" in columns
-                    else None
-                )
-
-                if amount_column:
-
-                    select_parts = [
-                        f"{amount_column} AS amount"
-                    ]
-
-                    if category_column:
-                        select_parts.append(
-                            f"{category_column} AS category"
-                        )
-
-                    cursor.execute(
-                        f"""
-                        SELECT {", ".join(select_parts)}
-                        FROM farm_expenses
-                        WHERE user_id = %s
-                        """,
-                        (user_id,),
-                    )
-
-                    rows = cursor.fetchall()
-
-                    for row in rows:
-
-                        data = row_to_dict(
-                            cursor,
-                            row,
-                        )
-
-                        try:
-                            amount = float(
-                                data.get(
-                                    "amount",
-                                    0,
-                                )
-                                or 0
-                            )
-                        except Exception:
-                            amount = 0
-
-                        result[
-                            "total_expense"
-                        ] += amount
-
-                        result[
-                            "expense_count"
-                        ] += 1
-
-                        category = str(
-                            data.get(
-                                "category",
-                                "Other",
-                            )
-                            or "Other"
-                        )
-
-                        result[
-                            "expense_categories"
-                        ][category] = (
-                            result[
-                                "expense_categories"
-                            ].get(category, 0)
-                            + amount
-                        )
-
-        result["profit"] = (
-            result["total_income"]
-            - result["total_expense"]
-        )
-
-        result["total_income"] = round(
-            result["total_income"],
-            2,
-        )
-
-        result["total_expense"] = round(
-            result["total_expense"],
-            2,
-        )
-
-        result["profit"] = round(
-            result["profit"],
-            2,
-        )
-
-    except Exception as exc:
+    if not farmer_id:
 
         print(
-            "Reports finance error:",
-            exc,
+            "FINANCE REPORT: farmer_id is missing"
         )
 
-    finally:
-        safe_close(
-            cursor,
-            conn,
-        )
+        return finance
 
-    return result
-
-
-# ============================================================
-# MARKETPLACE REPORT
-# ============================================================
-
-def get_marketplace_report(user_id):
-    """
-    Farmer marketplace inventory and order statistics.
-    """
-
-    result = {
-        "products": 0,
-        "active_products": 0,
-        "stock_quantity": 0.0,
-        "inventory_value": 0.0,
-        "orders": 0,
-        "completed_orders": 0,
-        "pending_orders": 0,
-    }
-
-    conn = None
+    connection = None
     cursor = None
 
     try:
-        conn = get_connection()
-        cursor = conn.cursor()
 
-        # ----------------------------------------------------
-        # PRODUCTS
-        # ----------------------------------------------------
+        # ====================================================
+        # DATABASE FROM .ENV
+        # ====================================================
 
-        product_table = None
+        connection = get_db_connection()
+        cursor = connection.cursor()
 
-        if table_exists(
-            cursor,
-            "marketplace_products",
-        ):
-            product_table = (
-                "marketplace_products"
-            )
+        print()
+        print("=" * 65)
+        print("KISANVISION360+ FINANCE REPORT")
+        print("=" * 65)
+        print("Farmer ID:", farmer_id)
 
-        elif table_exists(
-            cursor,
-            "products",
-        ):
-            product_table = "products"
+        # ====================================================
+        # TOTAL INCOME
+        # ====================================================
 
-        if product_table:
-
-            columns = get_columns(
-                cursor,
-                product_table,
-            )
-
-            owner_column = None
-
-            for candidate in [
-                "farmer_id",
-                "user_id",
-                "seller_id",
-            ]:
-                if candidate in columns:
-                    owner_column = candidate
-                    break
-
-            if owner_column:
-
-                quantity_column = None
-
-                for candidate in [
-                    "quantity",
-                    "stock",
-                    "available_quantity",
-                ]:
-                    if candidate in columns:
-                        quantity_column = candidate
-                        break
-
-                price_column = None
-
-                for candidate in [
-                    "price",
-                    "selling_price",
-                    "unit_price",
-                ]:
-                    if candidate in columns:
-                        price_column = candidate
-                        break
-
-                status_column = (
-                    "status"
-                    if "status" in columns
-                    else None
-                )
-
-                if quantity_column:
-
-                    query = f"""
-                        SELECT
-                            {quantity_column} AS quantity
-                    """
-
-                    if price_column:
-                        query += f"""
-                            ,
-                            {price_column} AS price
-                        """
-
-                    if status_column:
-                        query += f"""
-                            ,
-                            {status_column} AS status
-                        """
-
-                    query += f"""
-                        FROM {product_table}
-                        WHERE {owner_column} = %s
-                    """
-
-                    cursor.execute(
-                        query,
-                        (user_id,),
-                    )
-
-                    rows = cursor.fetchall()
-
-                    result["products"] = len(rows)
-
-                    for row in rows:
-
-                        item = row_to_dict(
-                            cursor,
-                            row,
-                        )
-
-                        try:
-                            quantity = float(
-                                item.get(
-                                    "quantity",
-                                    0,
-                                )
-                                or 0
-                            )
-                        except Exception:
-                            quantity = 0
-
-                        result[
-                            "stock_quantity"
-                        ] += quantity
-
-                        if price_column:
-
-                            try:
-                                price = float(
-                                    item.get(
-                                        "price",
-                                        0,
-                                    )
-                                    or 0
-                                )
-                            except Exception:
-                                price = 0
-
-                            result[
-                                "inventory_value"
-                            ] += (
-                                quantity
-                                * price
-                            )
-
-                        status = str(
-                            item.get(
-                                "status",
-                                "active",
-                            )
-                            or "active"
-                        ).lower()
-
-                        if status in {
-                            "active",
-                            "available",
-                            "listed",
-                        }:
-                            result[
-                                "active_products"
-                            ] += 1
-
-        # ----------------------------------------------------
-        # ORDERS
-        # ----------------------------------------------------
-
-        if table_exists(
-            cursor,
-            "orders",
-        ):
-
-            columns = get_columns(
-                cursor,
-                "orders",
-            )
-
-            owner_column = None
-
-            for candidate in [
-                "farmer_id",
-                "seller_id",
-            ]:
-                if candidate in columns:
-                    owner_column = candidate
-                    break
-
-            if owner_column:
-
-                status_column = (
-                    "status"
-                    if "status" in columns
-                    else None
-                )
-
-                query = "SELECT "
-
-                if status_column:
-                    query += (
-                        f"{status_column}"
-                        " AS status"
-                    )
-                else:
-                    query += (
-                        "'pending' AS status"
-                    )
-
-                query += """
-                    FROM orders
-                    WHERE
-                """
-
-                query += (
-                    f"{owner_column} = %s"
-                )
-
-                cursor.execute(
-                    query,
-                    (user_id,),
-                )
-
-                rows = cursor.fetchall()
-
-                result["orders"] = len(rows)
-
-                for row in rows:
-
-                    data = row_to_dict(
-                        cursor,
-                        row,
-                    )
-
-                    status = str(
-                        data.get(
-                            "status",
-                            "pending",
-                        )
-                        or "pending"
-                    ).lower()
-
-                    if status in {
-                        "completed",
-                        "delivered",
-                        "complete",
-                    }:
-                        result[
-                            "completed_orders"
-                        ] += 1
-
-                    elif status in {
-                        "pending",
-                        "processing",
-                        "confirmed",
-                    }:
-                        result[
-                            "pending_orders"
-                        ] += 1
-
-        result[
-            "stock_quantity"
-        ] = round(
-            result["stock_quantity"],
-            2,
+        cursor.execute(
+            """
+            SELECT
+                COALESCE(SUM(amount), 0) AS total_income,
+                COUNT(*) AS income_count
+            FROM farm_income
+            WHERE farmer_id = %s
+            """,
+            (farmer_id,)
         )
-
-        result[
-            "inventory_value"
-        ] = round(
-            result["inventory_value"],
-            2,
-        )
-
-    except Exception as exc:
-
-        print(
-            "Reports marketplace error:",
-            exc,
-        )
-
-    finally:
-        safe_close(
-            cursor,
-            conn,
-        )
-
-    return result
-
-
-# ============================================================
-# NOTIFICATION REPORT
-# ============================================================
-
-def get_notification_report(user_id):
-    """
-    Notification statistics.
-    """
-
-    result = {
-        "total": 0,
-        "unread": 0,
-        "read": 0,
-    }
-
-    conn = None
-    cursor = None
-
-    try:
-        conn = get_connection()
-        cursor = conn.cursor()
-
-        if not table_exists(
-            cursor,
-            "notifications",
-        ):
-            return result
-
-        columns = get_columns(
-            cursor,
-            "notifications",
-        )
-
-        owner_column = None
-
-        for candidate in [
-            "user_id",
-            "farmer_id",
-        ]:
-            if candidate in columns:
-                owner_column = candidate
-                break
-
-        if not owner_column:
-            return result
-
-        read_column = (
-            "is_read"
-            if "is_read" in columns
-            else None
-        )
-
-        if read_column:
-
-            cursor.execute(
-                f"""
-                SELECT
-                    COUNT(*) AS total,
-                    COUNT(*) FILTER (
-                        WHERE {read_column} = FALSE
-                    ) AS unread,
-                    COUNT(*) FILTER (
-                        WHERE {read_column} = TRUE
-                    ) AS read
-                FROM notifications
-                WHERE {owner_column} = %s
-                """,
-                (user_id,),
-            )
-
-        else:
-
-            cursor.execute(
-                f"""
-                SELECT
-                    COUNT(*) AS total
-                FROM notifications
-                WHERE {owner_column} = %s
-                """,
-                (user_id,),
-            )
 
         row = cursor.fetchone()
 
         if row:
 
-            data = row_to_dict(
-                cursor,
-                row,
+            finance["income"] = safe_float(
+                row["total_income"]
             )
 
-            result["total"] = int(
-                data.get(
-                    "total",
-                    0,
+            finance["income_count"] = safe_int(
+                row["income_count"]
+            )
+
+        # ====================================================
+        # TOTAL EXPENSE
+        # ====================================================
+
+        cursor.execute(
+            """
+            SELECT
+                COALESCE(SUM(amount), 0) AS total_expenses,
+                COUNT(*) AS expense_count
+            FROM farm_expenses
+            WHERE farmer_id = %s
+            """,
+            (farmer_id,)
+        )
+
+        row = cursor.fetchone()
+
+        if row:
+
+            finance["expenses"] = safe_float(
+                row["total_expenses"]
+            )
+
+            finance["expense_count"] = safe_int(
+                row["expense_count"]
+            )
+
+        # ====================================================
+        # PROFIT
+        # ====================================================
+
+        finance["profit"] = round(
+            finance["income"]
+            - finance["expenses"],
+            2
+        )
+
+        # ====================================================
+        # PROFIT MARGIN
+        # ====================================================
+
+        if finance["income"] > 0:
+
+            finance["profit_margin"] = round(
+                (
+                    finance["profit"]
+                    / finance["income"]
+                ) * 100,
+                2
+            )
+
+        # ====================================================
+        # EXPENSE RATIO
+        # ====================================================
+
+        if finance["income"] > 0:
+
+            finance["expense_ratio"] = round(
+                (
+                    finance["expenses"]
+                    / finance["income"]
+                ) * 100,
+                2
+            )
+
+        # ====================================================
+        # FINANCIAL SCORE
+        # ====================================================
+
+        if finance["income"] <= 0:
+
+            finance["financial_score"] = 0
+
+        elif finance["profit"] <= 0:
+
+            finance["financial_score"] = 20
+
+        else:
+
+            score = (
+                50
+                + finance["profit_margin"]
+            )
+
+            finance["financial_score"] = round(
+                max(0, min(100, score)),
+                2
+            )
+
+        # ====================================================
+        # ALL TRANSACTIONS
+        # ====================================================
+
+        cursor.execute(
+            """
+            SELECT
+                description,
+                amount,
+                'Income' AS type,
+                income_date AS transaction_date
+            FROM farm_income
+            WHERE farmer_id = %s
+
+            UNION ALL
+
+            SELECT
+                description,
+                amount,
+                'Expense' AS type,
+                expense_date AS transaction_date
+            FROM farm_expenses
+            WHERE farmer_id = %s
+
+            ORDER BY transaction_date DESC
+            """,
+            (
+                farmer_id,
+                farmer_id
+            )
+        )
+
+        transaction_rows = cursor.fetchall()
+
+        finance["transactions"] = []
+
+        for row in transaction_rows:
+
+            finance["transactions"].append(
+                (
+                    row["description"] or "Finance Transaction",
+                    safe_float(row["amount"]),
+                    row["type"],
+                    row["transaction_date"],
                 )
-                or 0
             )
 
-            result["unread"] = int(
-                data.get(
-                    "unread",
-                    0,
-                )
-                or 0
+        # ====================================================
+        # INCOME CATEGORIES
+        # ====================================================
+
+        cursor.execute(
+            """
+            SELECT
+                COALESCE(category, 'Other') AS category,
+                COALESCE(SUM(amount), 0) AS amount
+            FROM farm_income
+            WHERE farmer_id = %s
+            GROUP BY category
+            ORDER BY amount DESC
+            """,
+            (farmer_id,)
+        )
+
+        finance["income_categories"] = []
+
+        for row in cursor.fetchall():
+
+            finance["income_categories"].append(
+                {
+                    "category": row["category"],
+                    "amount": safe_float(
+                        row["amount"]
+                    ),
+                }
             )
 
-            result["read"] = int(
-                data.get(
-                    "read",
-                    0,
-                )
-                or 0
+        # ====================================================
+        # EXPENSE CATEGORIES
+        # ====================================================
+
+        cursor.execute(
+            """
+            SELECT
+                COALESCE(category, 'Other') AS category,
+                COALESCE(SUM(amount), 0) AS amount
+            FROM farm_expenses
+            WHERE farmer_id = %s
+            GROUP BY category
+            ORDER BY amount DESC
+            """,
+            (farmer_id,)
+        )
+
+        finance["expense_categories"] = []
+
+        for row in cursor.fetchall():
+
+            finance["expense_categories"].append(
+                {
+                    "category": row["category"],
+                    "amount": safe_float(
+                        row["amount"]
+                    ),
+                }
             )
 
-    except Exception as exc:
+        # ====================================================
+        # MONTHLY FINANCE
+        # ====================================================
+
+        cursor.execute(
+            """
+            SELECT
+                month,
+                SUM(income) AS income,
+                SUM(expenses) AS expenses
+            FROM (
+
+                SELECT
+                    DATE_TRUNC(
+                        'month',
+                        income_date
+                    ) AS month,
+
+                    SUM(amount) AS income,
+
+                    0::numeric AS expenses
+
+                FROM farm_income
+
+                WHERE farmer_id = %s
+
+                GROUP BY
+                    DATE_TRUNC(
+                        'month',
+                        income_date
+                    )
+
+                UNION ALL
+
+                SELECT
+                    DATE_TRUNC(
+                        'month',
+                        expense_date
+                    ) AS month,
+
+                    0::numeric AS income,
+
+                    SUM(amount) AS expenses
+
+                FROM farm_expenses
+
+                WHERE farmer_id = %s
+
+                GROUP BY
+                    DATE_TRUNC(
+                        'month',
+                        expense_date
+                    )
+
+            ) AS monthly
+
+            GROUP BY month
+
+            ORDER BY month DESC
+            """,
+            (
+                farmer_id,
+                farmer_id
+            )
+        )
+
+        monthly_rows = cursor.fetchall()
+
+        finance["monthly_data"] = []
+
+        for row in monthly_rows:
+
+            monthly_income = safe_float(
+                row["income"]
+            )
+
+            monthly_expenses = safe_float(
+                row["expenses"]
+            )
+
+            month_value = row["month"]
+
+            if month_value:
+
+                try:
+
+                    month_value = month_value.strftime(
+                        "%Y-%m"
+                    )
+
+                except Exception:
+
+                    month_value = str(
+                        month_value
+                    )
+
+            else:
+
+                month_value = ""
+
+            finance["monthly_data"].append(
+                {
+                    "month": month_value,
+
+                    "income": monthly_income,
+
+                    "expenses": monthly_expenses,
+
+                    "profit": round(
+                        monthly_income
+                        - monthly_expenses,
+                        2
+                    ),
+                }
+            )
+
+        # ====================================================
+        # FINANCIAL GOALS
+        # ====================================================
+
+        try:
+
+            cursor.execute(
+                """
+                SELECT *
+                FROM financial_goals
+                WHERE farmer_id = %s
+                ORDER BY id DESC
+                """,
+                (farmer_id,)
+            )
+
+            finance["goals"] = cursor.fetchall()
+
+        except Exception as goal_error:
+
+            print(
+                "Financial goals unavailable:",
+                goal_error
+            )
+
+            connection.rollback()
+
+            finance["goals"] = []
+
+        # ====================================================
+        # DEBUG INFORMATION
+        # ====================================================
 
         print(
-            "Reports notification error:",
-            exc,
+            "Income:",
+            finance["income"]
         )
+
+        print(
+            "Expenses:",
+            finance["expenses"]
+        )
+
+        print(
+            "Profit:",
+            finance["profit"]
+        )
+
+        print(
+            "Income count:",
+            finance["income_count"]
+        )
+
+        print(
+            "Expense count:",
+            finance["expense_count"]
+        )
+
+        print(
+            "Transactions:",
+            len(finance["transactions"])
+        )
+
+        print(
+            "Financial score:",
+            finance["financial_score"]
+        )
+
+        print("=" * 65)
+        print()
+
+        return finance
+
+    except Exception as error:
+
+        print()
+        print("=" * 65)
+        print("FINANCE REPORT DATABASE ERROR")
+        print("=" * 65)
+        print(error)
+        print("=" * 65)
+        print()
+
+        return finance
 
     finally:
-        safe_close(
-            cursor,
-            conn,
+
+        if cursor:
+            cursor.close()
+
+        if connection:
+            connection.close()
+
+
+# ============================================================
+# WEATHER REPORT
+# ============================================================
+
+def get_report_weather(farmer):
+    """
+    Get weather information using existing weather module.
+    """
+
+    default_weather = {
+        "success": False,
+        "city": "Nagpur",
+        "country": "IN",
+        "description": "Weather data unavailable",
+        "temperature": 0,
+        "feels_like": 0,
+        "humidity": 0,
+        "rainfall": 0,
+        "wind": 0,
+        "wind_speed": 0,
+        "pressure": 0,
+        "clouds": 0,
+        "cloud_cover": 0,
+        "visibility": 0,
+        "uv_index": 0,
+        "risk": "Unknown",
+        "advice": "",
+    }
+
+    if not get_current_weather:
+
+        return default_weather
+
+    try:
+
+        location = (
+            farmer.get("location")
+            or os.getenv(
+                "DEFAULT_CITY",
+                "Nagpur"
+            )
         )
 
-    return result
+        weather = get_current_weather(
+            location
+        )
+
+        if not weather:
+
+            return default_weather
+
+        if isinstance(weather, dict):
+
+            default_weather.update(
+                weather
+            )
+
+        # ----------------------------------------------------
+        # Compatibility values
+        # ----------------------------------------------------
+
+        if not default_weather.get("wind"):
+
+            default_weather["wind"] = safe_float(
+                default_weather.get(
+                    "wind_speed",
+                    0
+                )
+            )
+
+        if not default_weather.get("clouds"):
+
+            default_weather["clouds"] = safe_float(
+                default_weather.get(
+                    "cloud_cover",
+                    0
+                )
+            )
+
+        return default_weather
+
+    except Exception as error:
+
+        print(
+            "REPORT WEATHER ERROR:",
+            error
+        )
+
+        return default_weather
 
 
 # ============================================================
-# COMPLETE REPORT
+# WEATHER SCORE
 # ============================================================
 
-def build_report(user_id):
-    """
-    Build complete farmer analytics report.
-    """
+def calculate_weather_score(weather):
+    """Calculate simple weather score."""
 
-    profile = get_farmer_profile(
-        user_id
+    if not weather:
+        return 0
+
+    temperature = safe_float(
+        weather.get("temperature")
     )
 
-    crops = get_crop_report(
-        user_id
+    humidity = safe_float(
+        weather.get("humidity")
     )
 
-    finance = get_finance_report(
-        user_id
+    rainfall = safe_float(
+        weather.get("rainfall")
     )
 
-    marketplace = get_marketplace_report(
-        user_id
-    )
+    score = 70
 
-    notifications = get_notification_report(
-        user_id
-    )
+    # Temperature
+    if 15 <= temperature <= 35:
 
-    # --------------------------------------------------------
-    # PROFIT MARGIN
-    # --------------------------------------------------------
-
-    income = finance[
-        "total_income"
-    ]
-
-    expense = finance[
-        "total_expense"
-    ]
-
-    profit = finance[
-        "profit"
-    ]
-
-    if income > 0:
-        profit_margin = (
-            profit / income
-        ) * 100
-    else:
-        profit_margin = 0
-
-    # --------------------------------------------------------
-    # FARM SCORE
-    # --------------------------------------------------------
-
-    score = 0
-
-    if crops["total_crops"] > 0:
-        score += 25
-
-    if finance["total_income"] > 0:
-        score += 20
-
-    if marketplace["products"] > 0:
-        score += 20
-
-    if marketplace["active_products"] > 0:
-        score += 15
-
-    if notifications["unread"] == 0:
         score += 10
 
-    if finance["profit"] >= 0:
+    elif temperature > 40 or temperature < 10:
+
+        score -= 15
+
+    # Humidity
+    if 40 <= humidity <= 80:
+
         score += 10
 
-    score = min(
-        100,
-        max(0, score),
+    elif humidity > 90 or humidity < 20:
+
+        score -= 10
+
+    # Rainfall
+    if rainfall > 50:
+
+        score -= 15
+
+    elif rainfall > 0:
+
+        score += 5
+
+    return round(
+        max(0, min(100, score)),
+        2
     )
+
+
+# ============================================================
+# FARM SCORE
+# ============================================================
+
+def calculate_farm_score(
+    financial_score,
+    weather_score
+):
+    """
+    Calculate overall farm score.
+
+    Finance = 60%
+    Weather = 40%
+    """
+
+    financial_score = safe_float(
+        financial_score
+    )
+
+    weather_score = safe_float(
+        weather_score
+    )
+
+    if financial_score <= 0 and weather_score <= 0:
+
+        return 0
+
+    if financial_score <= 0:
+
+        return round(
+            weather_score,
+            2
+        )
+
+    if weather_score <= 0:
+
+        return round(
+            financial_score,
+            2
+        )
+
+    score = (
+        financial_score * 0.60
+        +
+        weather_score * 0.40
+    )
+
+    return round(
+        max(0, min(100, score)),
+        2
+    )
+
+
+# ============================================================
+# FARM STATUS
+# ============================================================
+
+def get_farm_status(score):
+
+    score = safe_float(score)
 
     if score >= 80:
-        health = "Excellent"
-    elif score >= 60:
-        health = "Good"
-    elif score >= 40:
-        health = "Moderate"
+
+        return "Excellent"
+
+    if score >= 60:
+
+        return "Good"
+
+    if score >= 40:
+
+        return "Needs Attention"
+
+    return "Critical"
+
+
+# ============================================================
+# GENERATE INSIGHTS
+# ============================================================
+
+def generate_insights(
+    finance,
+    weather
+):
+    """
+    Generate report warnings, positive points
+    and solutions.
+    """
+
+    warning_points = []
+    positive_points = []
+    solutions = []
+
+    # ========================================================
+    # FINANCE
+    # ========================================================
+
+    income = safe_float(
+        finance.get("income")
+    )
+
+    expenses = safe_float(
+        finance.get("expenses")
+    )
+
+    profit = safe_float(
+        finance.get("profit")
+    )
+
+    profit_margin = safe_float(
+        finance.get("profit_margin")
+    )
+
+    expense_ratio = safe_float(
+        finance.get("expense_ratio")
+    )
+
+    # --------------------------------------------------------
+    # No transactions
+    # --------------------------------------------------------
+
+    if (
+        finance.get("income_count", 0) == 0
+        and
+        finance.get("expense_count", 0) == 0
+    ):
+
+        warning_points.append(
+            "No Finance transactions have been recorded yet."
+        )
+
+        solutions.append(
+            "Add your farm income and expense transactions "
+            "to generate a complete financial report."
+        )
+
+    # --------------------------------------------------------
+    # Profit
+    # --------------------------------------------------------
+
+    elif profit > 0:
+
+        positive_points.append(
+            f"Farm is currently showing a profit of ₹{profit:,.2f}."
+        )
+
     else:
-        health = "Needs Attention"
+
+        warning_points.append(
+            "Farm expenses are currently higher than income."
+        )
+
+        solutions.append(
+            "Review major expenses and identify areas "
+            "where costs can be reduced."
+        )
+
+    # --------------------------------------------------------
+    # Profit margin
+    # --------------------------------------------------------
+
+    if income > 0:
+
+        if profit_margin >= 30:
+
+            positive_points.append(
+                "Your profit margin is healthy."
+            )
+
+        elif profit_margin < 10:
+
+            warning_points.append(
+                "Profit margin is low."
+            )
+
+            solutions.append(
+                "Consider improving crop yield, "
+                "market price realization and expense control."
+            )
+
+    # --------------------------------------------------------
+    # Expense ratio
+    # --------------------------------------------------------
+
+    if expense_ratio > 80:
+
+        warning_points.append(
+            "A large portion of farm income is being spent."
+        )
+
+        solutions.append(
+            "Monitor input costs, labour expenses "
+            "and other recurring farm expenses."
+        )
+
+    elif expense_ratio < 60 and income > 0:
+
+        positive_points.append(
+            "Farm expense ratio is under control."
+        )
+
+    # ========================================================
+    # WEATHER
+    # ========================================================
+
+    temperature = safe_float(
+        weather.get("temperature")
+    )
+
+    humidity = safe_float(
+        weather.get("humidity")
+    )
+
+    rainfall = safe_float(
+        weather.get("rainfall")
+    )
+
+    # --------------------------------------------------------
+    # Temperature
+    # --------------------------------------------------------
+
+    if temperature >= 40:
+
+        warning_points.append(
+            "High temperature may create heat stress "
+            "for crops."
+        )
+
+        solutions.append(
+            "Monitor irrigation and provide sufficient "
+            "water during hot conditions."
+        )
+
+    elif 15 <= temperature <= 35:
+
+        positive_points.append(
+            "Current temperature is generally suitable "
+            "for farming activity."
+        )
+
+    # --------------------------------------------------------
+    # Humidity
+    # --------------------------------------------------------
+
+    if humidity >= 85:
+
+        warning_points.append(
+            "High humidity can increase disease risk."
+        )
+
+        solutions.append(
+            "Monitor crops regularly for fungal "
+            "and bacterial symptoms."
+        )
+
+    # --------------------------------------------------------
+    # Rainfall
+    # --------------------------------------------------------
+
+    if rainfall > 50:
+
+        warning_points.append(
+            "Heavy rainfall may increase waterlogging risk."
+        )
+
+        solutions.append(
+            "Check field drainage and avoid unnecessary "
+            "irrigation during heavy rainfall."
+        )
+
+    elif rainfall > 0:
+
+        positive_points.append(
+            "Recent rainfall may support crop water availability."
+        )
 
     return {
-        "generated_at": datetime.now().isoformat(),
-
-        "farmer": profile,
-
-        "crops": crops,
-
-        "finance": finance,
-
-        "marketplace": marketplace,
-
-        "notifications": notifications,
-
-        "analytics": {
-            "profit_margin": round(
-                profit_margin,
-                2,
-            ),
-            "farm_score": score,
-            "farm_health": health,
-        },
-
-        "insights": generate_insights(
-            crops,
-            finance,
-            marketplace,
-            notifications,
-        ),
+        "warning_points": warning_points,
+        "positive_points": positive_points,
+        "solutions": solutions,
     }
 
 
 # ============================================================
-# SMART INSIGHTS
+# BUILD COMPLETE REPORT
 # ============================================================
 
-def generate_insights(
-    crops,
-    finance,
-    marketplace,
-    notifications,
+def build_report(
+    farmer_id,
+    farmer=None,
+    finance=None,
+    weather=None
 ):
     """
-    Generate explainable rule-based insights.
+    Build complete Smart Farm Report.
     """
 
-    insights = []
+    if farmer is None:
 
-    # Crop insight
-    if crops["total_crops"] == 0:
+        farmer = get_farmer_report_data(
+            farmer_id
+        )
 
-        insights.append({
-            "type": "crop",
-            "priority": "high",
-            "title": "Add your crops",
-            "message": (
-                "Add your current crops "
-                "to unlock better farm analytics."
-            ),
-        })
+    if finance is None:
 
-    elif crops["active_crops"] > 0:
+        finance = get_finance_report(
+            farmer_id
+        )
 
-        insights.append({
-            "type": "crop",
-            "priority": "normal",
-            "title": "Active cultivation",
-            "message": (
-                f"You currently have "
-                f"{crops['active_crops']} active crop(s)."
-            ),
-        })
+    if weather is None:
 
-    # Finance insight
-    if finance["total_expense"] > finance["total_income"]:
+        weather = get_report_weather(
+            farmer
+        )
 
-        insights.append({
-            "type": "finance",
-            "priority": "high",
-            "title": "Expense alert",
-            "message": (
-                "Your recorded expenses are "
-                "higher than your recorded income."
-            ),
-        })
+    # ========================================================
+    # WEATHER SCORE
+    # ========================================================
 
-    elif finance["profit"] > 0:
+    weather_score = calculate_weather_score(
+        weather
+    )
 
-        insights.append({
-            "type": "finance",
-            "priority": "normal",
-            "title": "Positive balance",
-            "message": (
-                "Your recorded farm income "
-                "is currently above expenses."
-            ),
-        })
+    # ========================================================
+    # FINANCIAL SCORE
+    # ========================================================
 
-    # Marketplace
-    if marketplace["products"] == 0:
+    financial_score = safe_float(
+        finance.get(
+            "financial_score",
+            0
+        )
+    )
 
-        insights.append({
-            "type": "marketplace",
-            "priority": "normal",
-            "title": "Marketplace opportunity",
-            "message": (
-                "Add farm products to your "
-                "marketplace inventory."
-            ),
-        })
+    # ========================================================
+    # FARM SCORE
+    # ========================================================
 
-    elif marketplace["active_products"] < marketplace["products"]:
+    farm_score = calculate_farm_score(
+        financial_score,
+        weather_score
+    )
 
-        insights.append({
-            "type": "marketplace",
-            "priority": "normal",
-            "title": "Review product listings",
-            "message": (
-                "Some products may not currently "
-                "be active in the marketplace."
-            ),
-        })
+    # ========================================================
+    # FARM STATUS
+    # ========================================================
 
-    # Notifications
-    if notifications["unread"] > 0:
+    farm_status = get_farm_status(
+        farm_score
+    )
 
-        insights.append({
-            "type": "notification",
-            "priority": "normal",
-            "title": "Unread notifications",
-            "message": (
-                f"You have "
-                f"{notifications['unread']} unread "
-                f"notification(s)."
-            ),
-        })
+    # ========================================================
+    # INSIGHTS
+    # ========================================================
 
-    if not insights:
+    insights = generate_insights(
+        finance,
+        weather
+    )
 
-        insights.append({
-            "type": "general",
-            "priority": "normal",
-            "title": "Farm data looks good",
-            "message": (
-                "Continue updating your farm, "
-                "crop and finance records."
-            ),
-        })
+    # ========================================================
+    # COMPLETE REPORT
+    # ========================================================
 
-    return insights
+    report = {
+
+        "farmer": farmer,
+
+        "finance": finance,
+
+        "weather": weather,
+
+        "farm_score": farm_score,
+
+        "farm_status": farm_status,
+
+        "financial_score": financial_score,
+
+        "weather_score": weather_score,
+
+        "insights": insights,
+
+        "crops": [],
+
+        "marketplace": [],
+
+        "notifications": [],
+
+        "generated_at": datetime.now().strftime(
+            "%Y-%m-%d %H:%M:%S"
+        ),
+    }
+
+    return report
 
 
 # ============================================================
-# REPORT PAGE
+# MAIN REPORT PAGE
 # ============================================================
 
-@reports_bp.route(
-    "/reports",
-    methods=["GET"],
-)
+@reports_bp.route("/")
 def reports():
     """
-    Main farmer reports page.
+    Smart Farm Report page.
     """
 
-    if not is_logged_in():
-        return redirect(
-            url_for("auth.login")
-        )
+    farmer_id = get_farmer_id()
 
-    if not is_farmer():
-        return redirect(
-            url_for("farmer.farmer")
-        )
+    # ========================================================
+    # FARMER
+    # ========================================================
 
-    report = build_report(
-        current_user_id()
+    farmer = get_farmer_report_data(
+        farmer_id
     )
+
+    # ========================================================
+    # FINANCE FROM DATABASE
+    # ========================================================
+
+    finance = get_finance_report(
+        farmer_id
+    )
+
+    # ========================================================
+    # WEATHER
+    # ========================================================
+
+    weather = get_report_weather(
+        farmer
+    )
+
+    # ========================================================
+    # SCORES
+    # ========================================================
+
+    financial_score = safe_float(
+        finance.get(
+            "financial_score",
+            0
+        )
+    )
+
+    weather_score = calculate_weather_score(
+        weather
+    )
+
+    farm_score = calculate_farm_score(
+        financial_score,
+        weather_score
+    )
+
+    farm_status = get_farm_status(
+        farm_score
+    )
+
+    # ========================================================
+    # INSIGHTS
+    # ========================================================
+
+    insights = generate_insights(
+        finance,
+        weather
+    )
+
+    # ========================================================
+    # FLAT VARIABLES
+    #
+    # IMPORTANT:
+    # reports.html expects these variables directly.
+    # ========================================================
+
+    name = farmer.get(
+        "name",
+        get_logged_user_name()
+    )
+
+    income = safe_float(
+        finance.get("income", 0)
+    )
+
+    expenses = safe_float(
+        finance.get("expenses", 0)
+    )
+
+    profit = safe_float(
+        finance.get("profit", 0)
+    )
+
+    income_count = safe_int(
+        finance.get("income_count", 0)
+    )
+
+    expense_count = safe_int(
+        finance.get("expense_count", 0)
+    )
+
+    profit_margin = safe_float(
+        finance.get("profit_margin", 0)
+    )
+
+    expense_ratio = safe_float(
+        finance.get("expense_ratio", 0)
+    )
+
+    transactions = finance.get(
+        "transactions",
+        []
+    )
+
+    warning_points = insights.get(
+        "warning_points",
+        []
+    )
+
+    positive_points = insights.get(
+        "positive_points",
+        []
+    )
+
+    solutions = insights.get(
+        "solutions",
+        []
+    )
+
+    # ========================================================
+    # RENDER
+    # ========================================================
 
     return render_template(
         "reports.html",
-        report=report,
 
-        # Backward-compatible variables
-        farmer=report.get(
-            "farmer",
-            {},
+        # ----------------------------------------------------
+        # Complete report
+        # ----------------------------------------------------
+
+        report=build_report(
+            farmer_id,
+            farmer=farmer,
+            finance=finance,
+            weather=weather
         ),
 
-        crops=report.get(
-            "crops",
-            {},
+        reports=build_report(
+            farmer_id,
+            farmer=farmer,
+            finance=finance,
+            weather=weather
         ),
 
-        finance=report.get(
-            "finance",
-            {},
+        # ----------------------------------------------------
+        # Farmer
+        # ----------------------------------------------------
+
+        farmer=farmer,
+
+        name=name,
+
+        # ----------------------------------------------------
+        # Finance
+        # ----------------------------------------------------
+
+        finance=finance,
+
+        income=income,
+
+        expenses=expenses,
+
+        profit=profit,
+
+        income_count=income_count,
+
+        expense_count=expense_count,
+
+        profit_margin=profit_margin,
+
+        expense_ratio=expense_ratio,
+
+        financial_score=financial_score,
+
+        transactions=transactions,
+
+        monthly_data=finance.get(
+            "monthly_data",
+            []
         ),
 
-        marketplace=report.get(
-            "marketplace",
-            {},
+        income_categories=finance.get(
+            "income_categories",
+            []
         ),
 
-        notifications=report.get(
-            "notifications",
-            {},
+        expense_categories=finance.get(
+            "expense_categories",
+            []
         ),
 
-        insights=report.get(
-            "insights",
-            [],
+        goals=finance.get(
+            "goals",
+            []
         ),
 
-        language=session.get(
-            "language",
-            "en",
+        # ----------------------------------------------------
+        # Weather
+        # ----------------------------------------------------
+
+        weather=weather,
+
+        weather_score=weather_score,
+
+        # ----------------------------------------------------
+        # Farm
+        # ----------------------------------------------------
+
+        farm_score=farm_score,
+
+        farm_status=farm_status,
+
+        # ----------------------------------------------------
+        # Insights
+        # ----------------------------------------------------
+
+        warning_points=warning_points,
+
+        positive_points=positive_points,
+
+        solutions=solutions,
+
+        # ----------------------------------------------------
+        # Other modules
+        # ----------------------------------------------------
+
+        crops=[],
+
+        marketplace=[],
+
+        notifications=[],
+
+        # ----------------------------------------------------
+        # Generated
+        # ----------------------------------------------------
+
+        generated_at=datetime.now().strftime(
+            "%Y-%m-%d %H:%M:%S"
         ),
     )
 
 
 # ============================================================
-# REPORT API
+# API - SUMMARY
 # ============================================================
 
-@reports_bp.route(
-    "/api/reports",
-    methods=["GET"],
-)
-def reports_api():
+@reports_bp.route("/api/summary")
+def report_summary_api():
+    """
+    Return complete report summary as JSON.
+    """
 
-    if not is_logged_in():
-        return jsonify({
-            "success": False,
-            "message": "Login required",
-        }), 401
+    farmer_id = get_farmer_id()
 
-    if not is_farmer():
-        return jsonify({
-            "success": False,
-            "message": "Farmer access required",
-        }), 403
-
-    report = build_report(
-        current_user_id()
+    farmer = get_farmer_report_data(
+        farmer_id
     )
 
-    return jsonify({
-        "success": True,
-        "report": report,
-    })
-
-
-# ============================================================
-# FARM SUMMARY API
-# ============================================================
-
-@reports_bp.route(
-    "/api/reports/summary",
-    methods=["GET"],
-)
-def reports_summary():
-
-    if not is_logged_in():
-        return jsonify({
-            "success": False,
-            "message": "Login required",
-        }), 401
-
-    if not is_farmer():
-        return jsonify({
-            "success": False,
-            "message": "Farmer access required",
-        }), 403
-
-    report = build_report(
-        current_user_id()
+    finance = get_finance_report(
+        farmer_id
     )
 
-    return jsonify({
-        "success": True,
-
-        "summary": {
-            "total_crops": report[
-                "crops"
-            ]["total_crops"],
-
-            "active_crops": report[
-                "crops"
-            ]["active_crops"],
-
-            "total_area": report[
-                "crops"
-            ]["total_area"],
-
-            "income": report[
-                "finance"
-            ]["total_income"],
-
-            "expense": report[
-                "finance"
-            ]["total_expense"],
-
-            "profit": report[
-                "finance"
-            ]["profit"],
-
-            "products": report[
-                "marketplace"
-            ]["products"],
-
-            "orders": report[
-                "marketplace"
-            ]["orders"],
-
-            "unread_notifications": report[
-                "notifications"
-            ]["unread"],
-
-            "farm_score": report[
-                "analytics"
-            ]["farm_score"],
-
-            "farm_health": report[
-                "analytics"
-            ]["farm_health"],
-        },
-    })
-
-
-# ============================================================
-# CROP REPORT API
-# ============================================================
-
-@reports_bp.route(
-    "/api/reports/crops",
-    methods=["GET"],
-)
-def crop_report_api():
-
-    if not is_logged_in():
-        return jsonify({
-            "success": False,
-            "message": "Login required",
-        }), 401
-
-    if not is_farmer():
-        return jsonify({
-            "success": False,
-            "message": "Farmer access required",
-        }), 403
-
-    return jsonify({
-        "success": True,
-        "data": get_crop_report(
-            current_user_id()
-        ),
-    })
-
-
-# ============================================================
-# FINANCE REPORT API
-# ============================================================
-
-@reports_bp.route(
-    "/api/reports/finance",
-    methods=["GET"],
-)
-def finance_report_api():
-
-    if not is_logged_in():
-        return jsonify({
-            "success": False,
-            "message": "Login required",
-        }), 401
-
-    if not is_farmer():
-        return jsonify({
-            "success": False,
-            "message": "Farmer access required",
-        }), 403
-
-    return jsonify({
-        "success": True,
-        "data": get_finance_report(
-            current_user_id()
-        ),
-    })
-
-
-# ============================================================
-# MARKETPLACE REPORT API
-# ============================================================
-
-@reports_bp.route(
-    "/api/reports/marketplace",
-    methods=["GET"],
-)
-def marketplace_report_api():
-
-    if not is_logged_in():
-        return jsonify({
-            "success": False,
-            "message": "Login required",
-        }), 401
-
-    if not is_farmer():
-        return jsonify({
-            "success": False,
-            "message": "Farmer access required",
-        }), 403
-
-    return jsonify({
-        "success": True,
-        "data": get_marketplace_report(
-            current_user_id()
-        ),
-    })
-
-
-# ============================================================
-# SMART INSIGHTS API
-# ============================================================
-
-@reports_bp.route(
-    "/api/reports/insights",
-    methods=["GET"],
-)
-def insights_api():
-
-    if not is_logged_in():
-        return jsonify({
-            "success": False,
-            "message": "Login required",
-        }), 401
-
-    if not is_farmer():
-        return jsonify({
-            "success": False,
-            "message": "Farmer access required",
-        }), 403
-
-    report = build_report(
-        current_user_id()
+    weather = get_report_weather(
+        farmer
     )
 
-    return jsonify({
-        "success": True,
-        "insights": report[
-            "insights"
-        ],
-    })
-
-
-# ============================================================
-# REPORT FILTER
-# ============================================================
-
-@reports_bp.route(
-    "/api/reports/filter",
-    methods=["POST"],
-)
-def filter_report():
-
-    if not is_logged_in():
-        return jsonify({
-            "success": False,
-            "message": "Login required",
-        }), 401
-
-    if not is_farmer():
-        return jsonify({
-            "success": False,
-            "message": "Farmer access required",
-        }), 403
-
-    data = request.get_json(
-        silent=True
-    ) or {}
-
-    report = build_report(
-        current_user_id()
+    weather_score = calculate_weather_score(
+        weather
     )
 
-    # Current report is user-level.
-    # Date filtering can be expanded when all
-    # financial/crop records have consistent dates.
+    financial_score = safe_float(
+        finance.get(
+            "financial_score",
+            0
+        )
+    )
 
-    return jsonify({
-        "success": True,
-        "filter": {
-            "from": data.get("from"),
-            "to": data.get("to"),
-            "crop": data.get("crop"),
-        },
-        "report": report,
-    })
+    farm_score = calculate_farm_score(
+        financial_score,
+        weather_score
+    )
+
+    farm_status = get_farm_status(
+        farm_score
+    )
+
+    return jsonify(
+        {
+            "success": True,
+
+            "farmer": farmer,
+
+            "finance": finance,
+
+            "weather": weather,
+
+            "financial_score": financial_score,
+
+            "weather_score": weather_score,
+
+            "farm_score": farm_score,
+
+            "farm_status": farm_status,
+
+            "generated_at":
+                datetime.now().isoformat(),
+        }
+    )
 
 
 # ============================================================
-# REPORT HEALTH
+# API - WEATHER
 # ============================================================
 
-@reports_bp.route(
-    "/api/reports/health",
-    methods=["GET"],
-)
+@reports_bp.route("/api/weather")
+def report_weather_api():
+    """
+    Return report weather.
+    """
+
+    farmer_id = get_farmer_id()
+
+    farmer = get_farmer_report_data(
+        farmer_id
+    )
+
+    weather = get_report_weather(
+        farmer
+    )
+
+    return jsonify(
+        {
+            "success": True,
+
+            "weather": weather,
+
+            "weather_score":
+                calculate_weather_score(
+                    weather
+                ),
+        }
+    )
+
+
+# ============================================================
+# API - FINANCE
+# ============================================================
+
+@reports_bp.route("/api/finance")
+def report_finance_api():
+    """
+    Return finance data directly from PostgreSQL/Supabase.
+    """
+
+    farmer_id = get_farmer_id()
+
+    finance = get_finance_report(
+        farmer_id
+    )
+
+    return jsonify(
+        {
+            "success": True,
+
+            "farmer_id": farmer_id,
+
+            "finance": finance,
+
+            "income": finance.get(
+                "income",
+                0
+            ),
+
+            "expenses": finance.get(
+                "expenses",
+                0
+            ),
+
+            "profit": finance.get(
+                "profit",
+                0
+            ),
+
+            "income_count": finance.get(
+                "income_count",
+                0
+            ),
+
+            "expense_count": finance.get(
+                "expense_count",
+                0
+            ),
+
+            "transactions": finance.get(
+                "transactions",
+                []
+            ),
+        }
+    )
+
+
+# ============================================================
+# HEALTH CHECK
+# ============================================================
+
+@reports_bp.route("/health")
 def reports_health():
-
-    database_ok = False
-    error = None
-
-    conn = None
-    cursor = None
+    """
+    Reports module health check.
+    """
 
     try:
-        conn = get_connection()
-        cursor = conn.cursor()
+
+        connection = get_db_connection()
+        cursor = connection.cursor()
 
         cursor.execute(
-            "SELECT 1"
+            """
+            SELECT
+                current_database()
+                AS database_name
+            """
         )
 
-        cursor.fetchone()
+        row = cursor.fetchone()
 
-        database_ok = True
+        cursor.close()
+        connection.close()
 
-    except Exception as exc:
+        return jsonify(
+            {
+                "success": True,
 
-        error = str(exc)
+                "module": "reports",
 
-    finally:
-        safe_close(
-            cursor,
-            conn,
+                "database": "PostgreSQL / Supabase",
+
+                "database_name":
+                    row["database_name"]
+                    if row
+                    else "",
+
+                "finance_integration": True,
+
+                "status": "healthy",
+            }
         )
 
-    return jsonify({
-        "success": database_ok,
-        "service": "reports",
-        "database": database_ok,
-        "postgresql": True,
-        "supabase_compatible": True,
-        "error": error,
-    }), (
-        200
-        if database_ok
-        else 503
-    )
+    except Exception as error:
+
+        return jsonify(
+            {
+                "success": False,
+
+                "module": "reports",
+
+                "finance_integration": True,
+
+                "status": "unhealthy",
+
+                "error": str(error),
+            }
+        ), 500
 
 
 # ============================================================
-# INITIALIZATION
+# END OF FILE
 # ============================================================
 
-def initialize_reports_service(app=None):
-    """
-    Optional initialization hook.
-    """
-
-    if app:
-        app.logger.info(
-            "KisanVision360+ Reports service initialized."
-        )
-
-    return True

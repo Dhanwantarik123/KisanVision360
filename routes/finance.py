@@ -1,4 +1,5 @@
-﻿# ============================================================
+﻿
+# ============================================================
 # KISANVISION360+ FARM FINANCE ROUTES
 # File: routes/finance.py
 # ============================================================
@@ -175,12 +176,6 @@ def column_exists(conn, table_name, column_name):
 def create_finance_tables():
     """
     Create finance tables if they don't exist.
-
-    Existing KisanVision360 database schema:
-        farm_expenses
-        farm_income
-
-    This function also creates financial_goals.
     """
 
     conn = get_db_connection()
@@ -292,15 +287,20 @@ def initialize_finance_service():
     Called by app.py if required.
     """
     try:
+
         create_finance_tables()
+
         print("[FINANCE] Finance service initialized.")
+
         return True
 
     except Exception as error:
+
         print(
             "[FINANCE] Finance service initialization failed:",
             repr(error)
         )
+
         return False
 
 
@@ -368,14 +368,7 @@ def finance():
         profit = income - expenses
 
         # ----------------------------------------------------
-        # RECENT INCOME + EXPENSES
-        #
-        # Return tuples because finance.html uses:
-        #
-        # t[0] = description
-        # t[1] = amount
-        # t[2] = type
-        # t[3] = date
+        # RECENT TRANSACTIONS
         # ----------------------------------------------------
 
         cur.execute(
@@ -409,6 +402,7 @@ def finance():
         for row in cur.fetchall():
 
             if isinstance(row, dict):
+
                 transactions.append(
                     (
                         row.get("description"),
@@ -417,7 +411,9 @@ def finance():
                         row.get("transaction_date")
                     )
                 )
+
             else:
+
                 transactions.append(
                     (
                         row[0],
@@ -428,7 +424,7 @@ def finance():
                 )
 
         # ----------------------------------------------------
-        # CURRENT USER NAME
+        # USER NAME
         # ----------------------------------------------------
 
         name = session.get("name", "Farmer")
@@ -614,6 +610,10 @@ def add_income():
             cur.close()
             conn.close()
 
+    # --------------------------------------------------------
+    # GET INCOME PAGE
+    # --------------------------------------------------------
+
     return render_template(
         "income.html",
         today=date.today().isoformat()
@@ -630,6 +630,12 @@ def add_expense():
 
     if not farmer_only():
         return login_redirect()
+
+    farmer_id = get_user_id()
+
+    # ========================================================
+    # POST - ADD EXPENSE
+    # ========================================================
 
     if request.method == "POST":
 
@@ -651,6 +657,10 @@ def add_expense():
             "expense_date"
         ) or request.form.get("date")
 
+        # ----------------------------------------------------
+        # VALIDATE DESCRIPTION
+        # ----------------------------------------------------
+
         if not description:
 
             flash(
@@ -661,6 +671,10 @@ def add_expense():
             return redirect(
                 url_for("finance.add_expense")
             )
+
+        # ----------------------------------------------------
+        # VALIDATE AMOUNT
+        # ----------------------------------------------------
 
         if amount is None:
 
@@ -673,6 +687,10 @@ def add_expense():
                 url_for("finance.add_expense")
             )
 
+        # ----------------------------------------------------
+        # DEFAULT DATE
+        # ----------------------------------------------------
+
         if not expense_date:
             expense_date = date.today()
 
@@ -680,6 +698,10 @@ def add_expense():
         cur = conn.cursor()
 
         try:
+
+            # ------------------------------------------------
+            # INSERT EXPENSE
+            # ------------------------------------------------
 
             cur.execute(
                 """
@@ -694,7 +716,7 @@ def add_expense():
                 VALUES (%s, %s, %s, %s, %s)
                 """,
                 (
-                    get_user_id(),
+                    farmer_id,
                     description,
                     amount,
                     category,
@@ -708,6 +730,12 @@ def add_expense():
                 "Expense added successfully.",
                 "success"
             )
+
+            # ------------------------------------------------
+            # IMPORTANT:
+            # After POST, redirect to finance dashboard.
+            # Do NOT render expense.html here.
+            # ------------------------------------------------
 
             return redirect(
                 url_for("finance.finance")
@@ -736,17 +764,109 @@ def add_expense():
             cur.close()
             conn.close()
 
-    return render_template(
-        "expense.html",
-        today=date.today().isoformat()
-    )
+    # ========================================================
+    # GET - LOAD EXPENSE PAGE
+    # ========================================================
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    try:
+
+        # ----------------------------------------------------
+        # TOTAL EXPENSE
+        # ----------------------------------------------------
+
+        cur.execute(
+            """
+            SELECT COALESCE(SUM(amount), 0) AS expense_total
+            FROM farm_expenses
+            WHERE farmer_id = %s
+            """,
+            (farmer_id,)
+        )
+
+        row = cur.fetchone()
+
+        if isinstance(row, dict):
+
+            expense_total = safe_float(
+                row.get("expense_total")
+            )
+
+        else:
+
+            expense_total = safe_float(
+                row[0]
+            )
+
+        # ----------------------------------------------------
+        # EXPENSE LIST
+        # ----------------------------------------------------
+
+        cur.execute(
+            """
+            SELECT
+                id,
+                description,
+                amount,
+                category,
+                expense_date
+            FROM farm_expenses
+            WHERE farmer_id = %s
+            ORDER BY expense_date DESC, id DESC
+            """,
+            (farmer_id,)
+        )
+
+        expense_list = cur.fetchall()
+
+        # ----------------------------------------------------
+        # RENDER EXPENSE PAGE
+        # ----------------------------------------------------
+
+        return render_template(
+            "expense.html",
+            today=date.today().isoformat(),
+            expense_total={
+                "value": expense_total
+            },
+            expense_list=expense_list,
+            name=session.get("name", "Farmer")
+        )
+
+    except Exception as error:
+
+        conn.rollback()
+
+        print(
+            "[FINANCE] Load expense page error:",
+            repr(error)
+        )
+
+        flash(
+            "Unable to load expense page.",
+            "error"
+        )
+
+        return redirect(
+            url_for("finance.finance")
+        )
+
+    finally:
+
+        cur.close()
+        conn.close()
 
 
 # ============================================================
 # DELETE INCOME
 # ============================================================
 
-@finance_bp.route("/finance/income/delete/<int:income_id>", methods=["POST", "GET"])
+@finance_bp.route(
+    "/finance/income/delete/<int:income_id>",
+    methods=["POST", "GET"]
+)
 def delete_income(income_id):
 
     if not farmer_only():
@@ -804,7 +924,10 @@ def delete_income(income_id):
 # DELETE EXPENSE
 # ============================================================
 
-@finance_bp.route("/finance/expense/delete/<int:expense_id>", methods=["POST", "GET"])
+@finance_bp.route(
+    "/finance/expense/delete/<int:expense_id>",
+    methods=["POST", "GET"]
+)
 def delete_expense(expense_id):
 
     if not farmer_only():
@@ -1122,10 +1245,6 @@ def calculator():
             0
         )
 
-        # ----------------------------------------------------
-        # TOTAL COST
-        # ----------------------------------------------------
-
         total_cost = (
             seed_cost
             + fertilizer_cost
@@ -1135,27 +1254,15 @@ def calculator():
             + other_cost
         )
 
-        # ----------------------------------------------------
-        # EXPECTED REVENUE
-        # ----------------------------------------------------
-
         expected_revenue = (
             expected_yield
             * selling_price
         )
 
-        # ----------------------------------------------------
-        # EXPECTED PROFIT
-        # ----------------------------------------------------
-
         expected_profit = (
             expected_revenue
             - total_cost
         )
-
-        # ----------------------------------------------------
-        # PROFIT MARGIN
-        # ----------------------------------------------------
 
         if expected_revenue > 0:
 
@@ -1167,10 +1274,6 @@ def calculator():
         else:
 
             profit_margin = 0
-
-        # ----------------------------------------------------
-        # COST PER AREA
-        # ----------------------------------------------------
 
         if area > 0:
             cost_per_area = total_cost / area
@@ -1200,6 +1303,7 @@ def calculator():
 def summary():
 
     if not farmer_only():
+
         return jsonify({
             "success": False,
             "message": "Login required"
@@ -1279,6 +1383,7 @@ def summary():
 def monthly():
 
     if not farmer_only():
+
         return jsonify({
             "success": False,
             "message": "Login required"
@@ -1413,6 +1518,7 @@ def monthly():
 def categories():
 
     if not farmer_only():
+
         return jsonify({
             "success": False,
             "message": "Login required"
@@ -1837,6 +1943,7 @@ def delete_goal(goal_id):
 def finance_health():
 
     if not farmer_only():
+
         return jsonify({
             "success": False,
             "message": "Login required"
@@ -1957,6 +2064,7 @@ def finance_health():
 def finance_test():
 
     if not farmer_only():
+
         return jsonify({
             "success": False,
             "message": "Login required"
@@ -1985,3 +2093,4 @@ def finance_test():
 # initialize_finance_service()
 #
 # ============================================================
+

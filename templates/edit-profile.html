@@ -1,1844 +1,1114 @@
-﻿{% extends "base.html" %}
+﻿
+{% extends "base.html" %}
 
-{% block title %}KisanVision360+ | Edit Profile{% endblock %}
-
-{% block head %}
-<link rel="stylesheet"
-          href="{{ url_for('static',
-          filename='css/edit-profile.css') }}">
-<style>
-
-        :root {
-            --kv-green: #1b5e20;
-            --kv-green-2: #2e7d32;
-            --kv-light-green: #e8f5e9;
-            --kv-orange: #fb8c00;
-            --kv-blue: #1565c0;
-            --kv-red: #c62828;
-            --kv-text: #1f2937;
-            --kv-muted: #6b7280;
-            --kv-border: #e5e7eb;
-            --kv-bg: #f5f7f6;
-            --kv-white: #ffffff;
-            --kv-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
-            --kv-radius: 18px;
-        }
-
-
-        * {
-            box-sizing: border-box;
-        }
-
-
-        body {
-            margin: 0;
-            background: var(--kv-bg);
-            color: var(--kv-text);
-        }
-
-
-        .edit-profile-page {
-            width: 100%;
-            max-width: 1180px;
-            margin: 0 auto;
-            padding: 28px;
-        }
-
-
-        /* =====================================================
-           TOPBAR
-        ====================================================== */
-
-        .edit-topbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            margin-bottom: 24px;
-        }
-
-
-        .edit-title-area {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-
-        .edit-title-icon {
-            width: 54px;
-            height: 54px;
-            border-radius: 15px;
-            background: linear-gradient(
-                135deg,
-                var(--kv-green),
-                var(--kv-green-2)
-            );
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            box-shadow: 0 8px 20px rgba(27, 94, 32, 0.20);
-        }
-
-
-        .edit-topbar h1 {
-            margin: 0;
-            font-size: 28px;
-            font-weight: 800;
-        }
-
-
-        .edit-topbar p {
-            margin: 5px 0 0;
-            color: var(--kv-muted);
-            font-size: 14px;
-        }
-
-
-        .top-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-
-        .back-btn,
-        .settings-btn {
-            text-decoration: none;
-            padding: 11px 16px;
-            border-radius: 11px;
-            font-weight: 700;
-            font-size: 14px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: 0.2s ease;
-        }
-
-
-        .back-btn {
-            color: var(--kv-green);
-            background: white;
-            border: 1px solid #dce8de;
-        }
-
-
-        .settings-btn {
-            background: var(--kv-green);
-            color: white;
-        }
-
-
-        .back-btn:hover,
-        .settings-btn:hover {
-            transform: translateY(-2px);
-        }
-
-
-        /* =====================================================
-           PROFILE COMPLETION
-        ====================================================== */
-
-        .profile-progress-card {
-            background: white;
-            border: 1px solid var(--kv-border);
-            border-radius: var(--kv-radius);
-            padding: 20px;
-            margin-bottom: 22px;
-            box-shadow: var(--kv-shadow);
-        }
-
-
-        .progress-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 12px;
-        }
-
-
-        .progress-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 800;
-        }
-
-
-        .progress-title i {
-            color: var(--kv-green);
-        }
-
-
-        .completion-value {
-            color: var(--kv-green);
-            font-weight: 800;
-        }
-
-
-        .profile-progress {
-            width: 100%;
-            height: 10px;
-            background: #edf1ee;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-
-        .profile-progress-bar {
-            width: 80%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                var(--kv-green),
-                #66bb6a
-            );
-            border-radius: inherit;
-            transition: width 0.5s ease;
-        }
-
-
-        .progress-help {
-            margin: 10px 0 0;
-            font-size: 13px;
-            color: var(--kv-muted);
-        }
-
-
-        /* =====================================================
-           MAIN EDIT CARD
-        ====================================================== */
-
-        .edit-card {
-            background: white;
-            border: 1px solid var(--kv-border);
-            border-radius: 22px;
-            box-shadow: var(--kv-shadow);
-            overflow: hidden;
-        }
-
-
-        .edit-header {
-            padding: 24px 26px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background:
-                linear-gradient(
-                    135deg,
-                    #f1f8f2,
-                    #ffffff
-                );
-            border-bottom: 1px solid var(--kv-border);
-        }
-
-
-        .edit-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
-            background: var(--kv-light-green);
-            color: var(--kv-green);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 19px;
-        }
-
-
-        .edit-header h2 {
-            margin: 0;
-            font-size: 21px;
-        }
-
-
-        .edit-header p {
-            margin: 5px 0 0;
-            color: var(--kv-muted);
-            font-size: 13px;
-        }
-
-
-        /* =====================================================
-           PROFILE PHOTO
-        ====================================================== */
-
-        .profile-photo-section {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            padding: 28px;
-            background: #fafcfb;
-            border-bottom: 1px solid var(--kv-border);
-        }
-
-
-        .profile-photo-box {
-            position: relative;
-            width: 120px;
-            height: 120px;
-            flex-shrink: 0;
-        }
-
-
-        .edit-profile-image {
-            width: 120px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 5px solid white;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.13);
-        }
-
-
-        .photo-camera {
-            position: absolute;
-            right: 3px;
-            bottom: 5px;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: var(--kv-green);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 3px solid white;
-            transition: 0.2s ease;
-        }
-
-
-        .photo-camera:hover {
-            transform: scale(1.08);
-        }
-
-
-        .photo-info h3 {
-            margin: 0 0 7px;
-            font-size: 18px;
-        }
-
-
-        .photo-info p {
-            margin: 0 0 12px;
-            color: var(--kv-muted);
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-
-        .upload-photo-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 14px;
-            background: var(--kv-light-green);
-            color: var(--kv-green);
-            border-radius: 10px;
-            font-weight: 700;
-            cursor: pointer;
-            font-size: 13px;
-        }
-
-
-        .photo-info small {
-            display: block;
-            margin-top: 8px;
-            color: #8a8f94;
-        }
-
-
-        /* =====================================================
-           FORM
-        ====================================================== */
-
-        .profile-form {
-            padding: 28px;
-        }
-
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 20px;
-        }
-
-
-        .form-group {
-            margin-bottom: 0;
-        }
-
-
-        .form-group.full-width {
-            grid-column: 1 / -1;
-        }
-
-
-        .form-group label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-            font-size: 14px;
-            font-weight: 750;
-            color: #374151;
-        }
-
-
-        .form-group label i {
-            color: var(--kv-green);
-        }
-
-
-        .form-group input {
-            width: 100%;
-            height: 48px;
-            border: 1px solid #d9dfdb;
-            border-radius: 11px;
-            padding: 0 14px;
-            outline: none;
-            font-size: 14px;
-            background: white;
-            color: var(--kv-text);
-            transition: 0.2s ease;
-        }
-
-
-        .form-group input:focus {
-            border-color: var(--kv-green);
-            box-shadow: 0 0 0 3px rgba(27, 94, 32, 0.08);
-        }
-
-
-        .form-group input:disabled {
-            background: #f3f5f4;
-            color: #6b7280;
-            cursor: not-allowed;
-        }
-
-
-        .field-help {
-            margin: 6px 0 0;
-            color: #8a8f94;
-            font-size: 12px;
-        }
-
-
-        .mobile-status {
-            display: none;
-            margin-top: 6px;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-
-        .mobile-status.valid {
-            display: block;
-            color: #2e7d32;
-        }
-
-
-        .mobile-status.invalid {
-            display: block;
-            color: var(--kv-red);
-        }
-
-
-        /* =====================================================
-           SMART PERSONALIZATION
-        ====================================================== */
-
-        .personalization-card {
-            margin-top: 25px;
-            padding: 20px;
-            border-radius: 15px;
-            background:
-                linear-gradient(
-                    135deg,
-                    #f1f8f2,
-                    #fff8ed
-                );
-            border: 1px solid #e0eadf;
-        }
-
-
-        .personalization-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-
-        .personalization-header i {
-            color: var(--kv-orange);
-            font-size: 20px;
-        }
-
-
-        .personalization-header strong {
-            font-size: 16px;
-        }
-
-
-        .personalization-card p {
-            margin: 0;
-            color: #5f6660;
-            font-size: 13px;
-            line-height: 1.7;
-        }
-
-
-        .personalization-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 13px;
-        }
-
-
-        .personalization-tags span {
-            padding: 7px 10px;
-            border-radius: 20px;
-            background: white;
-            border: 1px solid #dfe7df;
-            font-size: 12px;
-            font-weight: 700;
-            color: #416044;
-        }
-
-
-        /* =====================================================
-           FORM ACTIONS
-        ====================================================== */
-
-        .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-            margin-top: 28px;
-            padding-top: 22px;
-            border-top: 1px solid var(--kv-border);
-        }
-
-
-        .cancel-btn,
-        .save-btn {
-            min-height: 46px;
-            padding: 0 19px;
-            border-radius: 11px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            text-decoration: none;
-            font-weight: 750;
-            cursor: pointer;
-            font-size: 14px;
-            border: none;
-            transition: 0.2s ease;
-        }
-
-
-        .cancel-btn {
-            background: #f3f4f6;
-            color: #4b5563;
-        }
-
-
-        .save-btn {
-            background: var(--kv-green);
-            color: white;
-            box-shadow: 0 6px 15px rgba(27, 94, 32, 0.18);
-        }
-
-
-        .cancel-btn:hover,
-        .save-btn:hover {
-            transform: translateY(-2px);
-        }
-
-
-        .save-btn:disabled {
-            opacity: 0.7;
-            cursor: wait;
-            transform: none;
-        }
-
-
-        /* =====================================================
-           INFORMATION CARD
-        ====================================================== */
-
-        .info-card {
-            margin-top: 22px;
-            padding: 20px;
-            border-radius: var(--kv-radius);
-            background: white;
-            border: 1px solid var(--kv-border);
-            box-shadow: var(--kv-shadow);
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-        }
-
-
-        .info-icon {
-            width: 40px;
-            height: 40px;
-            flex-shrink: 0;
-            border-radius: 12px;
-            background: #e3f2fd;
-            color: var(--kv-blue);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-
-        .info-card h3 {
-            margin: 0 0 6px;
-            font-size: 16px;
-        }
-
-
-        .info-card p {
-            margin: 0;
-            color: var(--kv-muted);
-            font-size: 13px;
-            line-height: 1.7;
-        }
-
-
-        /* =====================================================
-           SECURITY STATUS
-        ====================================================== */
-
-        .security-strip {
-            margin-top: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 13px 15px;
-            border-radius: 11px;
-            background: #f4fbf5;
-            color: #356b3a;
-            font-size: 13px;
-            font-weight: 650;
-        }
-
-
-        .security-strip i {
-            color: var(--kv-green);
-        }
-
-
-        /* =====================================================
-           FOOTER
-        ====================================================== */
-
-        .edit-footer {
-            text-align: center;
-            padding: 28px 10px 10px;
-            color: #7a817c;
-            font-size: 13px;
-        }
-
-
-        .edit-footer i {
-            color: var(--kv-green);
-            margin-right: 5px;
-        }
-
-
-        .edit-footer strong {
-            color: var(--kv-green);
-        }
-
-
-        /* =====================================================
-           RTL
-        ====================================================== */
-
-        html[dir="rtl"] .profile-photo-section,
-        html[dir="rtl"] .edit-header,
-        html[dir="rtl"] .info-card,
-        html[dir="rtl"] .personalization-header,
-        html[dir="rtl"] .form-group label {
-            direction: rtl;
-        }
-
-
-        /* =====================================================
-           RESPONSIVE
-        ====================================================== */
-
-        @media (max-width: 850px) {
-
-            .edit-profile-page {
-                padding: 18px;
-            }
-
-
-            .edit-topbar {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-
-
-            .top-actions {
-                width: 100%;
-            }
-
-
-            .back-btn,
-            .settings-btn {
-                flex: 1;
-                justify-content: center;
-            }
-
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-
-            .form-group.full-width {
-                grid-column: auto;
-            }
-
-        }
-
-
-        @media (max-width: 600px) {
-
-            .edit-profile-page {
-                padding: 12px;
-            }
-
-
-            .edit-topbar h1 {
-                font-size: 23px;
-            }
-
-
-            .edit-title-icon {
-                width: 46px;
-                height: 46px;
-            }
-
-
-            .profile-photo-section {
-                flex-direction: column;
-                text-align: center;
-            }
-
-
-            .profile-photo-box {
-                margin: 0 auto;
-            }
-
-
-            .profile-form {
-                padding: 20px;
-            }
-
-
-            .edit-header {
-                padding: 20px;
-            }
-
-
-            .form-actions {
-                flex-direction: column-reverse;
-            }
-
-
-            .cancel-btn,
-            .save-btn {
-                width: 100%;
-            }
-
-
-            .progress-top {
-                align-items: flex-start;
-            }
-
-        }
-
-    </style>
-{% endblock %}
-
-{% block page_title %}Edit Profile{% endblock %}
-{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+{% block title %}Edit Profile - KisanVision360+{% endblock %}
 
 {% block content %}
-<!-- =====================================================
-         SIDEBAR
-    ====================================================== -->
 
-    
+<style>
+    .edit-profile-page {
+        min-height: calc(100vh - 80px);
+        padding: 30px 20px 50px;
+        background: #f5f8f5;
+    }
 
+    .edit-profile-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
 
+    /* Header */
+    .profile-header {
+        margin-bottom: 25px;
+    }
 
-    <!-- =====================================================
-         MAIN CONTENT
-    ====================================================== -->
+    .profile-header h1 {
+        margin: 0 0 8px;
+        color: #1b5e20;
+        font-size: 30px;
+        font-weight: 700;
+    }
 
-    <main class="main-content">
+    .profile-header p {
+        margin: 0;
+        color: #666;
+        font-size: 15px;
+    }
 
+    /* Main Card */
+    .profile-card {
+        background: #ffffff;
+        border-radius: 18px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+    }
 
-        <div class="edit-profile-page">
+    /* Top Section */
+    .profile-top {
+        background: linear-gradient(135deg, #1b5e20, #43a047);
+        padding: 30px;
+        color: white;
+    }
 
+    .profile-top-inner {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+    }
 
-            <!-- =================================================
-                 TOPBAR
-            ================================================== -->
+    .profile-avatar-wrapper {
+        position: relative;
+        flex-shrink: 0;
+    }
 
-            <div class="edit-topbar">
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid white;
+        background: #e8f5e9;
+        display: block;
+    }
 
+    .avatar-placeholder {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 4px solid white;
+        background: #e8f5e9;
+        color: #1b5e20;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 42px;
+        font-weight: 700;
+    }
 
-                <div class="edit-title-area">
+    .photo-upload-label {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: #fb8c00;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: 3px solid white;
+        font-size: 15px;
+    }
 
-                    <div class="edit-title-icon">
+    .photo-upload-label:hover {
+        background: #ef6c00;
+    }
 
-                        <i class="fa-solid fa-user-pen"></i>
+    #profile {
+        display: none;
+    }
+
+    .profile-top-info h2 {
+        margin: 0 0 8px;
+        font-size: 25px;
+    }
+
+    .profile-top-info p {
+        margin: 4px 0;
+        opacity: 0.9;
+        font-size: 14px;
+    }
+
+    .role-badge {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    /* Completion */
+    .completion-section {
+        padding: 22px 30px;
+        background: #f9fbf9;
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    .completion-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .completion-title {
+        color: #333;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .completion-value {
+        color: #1b5e20;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .progress-track {
+        width: 100%;
+        height: 9px;
+        background: #e0e0e0;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #43a047, #1b5e20);
+        border-radius: 10px;
+        transition: width 0.3s ease;
+    }
+
+    /* Form */
+    .profile-form {
+        padding: 30px;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0 0 20px;
+        color: #1b5e20;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .section-title::before {
+        content: "";
+        width: 5px;
+        height: 23px;
+        background: #fb8c00;
+        border-radius: 5px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .form-group label {
+        margin-bottom: 8px;
+        color: #333;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .required {
+        color: #d32f2f;
+    }
+
+    .form-control {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 13px 14px;
+        border: 1px solid #d6d6d6;
+        border-radius: 10px;
+        outline: none;
+        font-size: 14px;
+        background: white;
+        color: #333;
+        transition: 0.2s ease;
+    }
+
+    .form-control:focus {
+        border-color: #43a047;
+        box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.12);
+    }
+
+    .form-control:disabled {
+        background: #f1f3f1;
+        color: #777;
+        cursor: not-allowed;
+    }
+
+    .input-help {
+        margin-top: 6px;
+        font-size: 12px;
+        color: #777;
+    }
+
+    .error-message {
+        margin-top: 5px;
+        color: #d32f2f;
+        font-size: 12px;
+        display: none;
+    }
+
+    .form-control.invalid {
+        border-color: #d32f2f;
+    }
+
+    .form-control.valid {
+        border-color: #43a047;
+    }
+
+    /* Personalization */
+    .personalization-box {
+        margin-top: 30px;
+        padding: 20px;
+        border-radius: 14px;
+        background: #f1f8f2;
+        border: 1px solid #d7ead8;
+    }
+
+    .personalization-box h3 {
+        margin: 0 0 8px;
+        color: #1b5e20;
+        font-size: 17px;
+    }
+
+    .personalization-box p {
+        margin: 0 0 15px;
+        color: #666;
+        font-size: 13px;
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .tag {
+        padding: 7px 12px;
+        border-radius: 20px;
+        background: white;
+        border: 1px solid #cde2ce;
+        color: #1b5e20;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    /* Security */
+    .security-strip {
+        margin-top: 25px;
+        padding: 15px;
+        border-radius: 10px;
+        background: #fff8e1;
+        border: 1px solid #ffe0a3;
+        color: #6d4c00;
+        font-size: 13px;
+    }
+
+    /* Buttons */
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 30px;
+        padding-top: 25px;
+        border-top: 1px solid #eeeeee;
+    }
+
+    .btn {
+        border: none;
+        border-radius: 10px;
+        padding: 12px 22px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 120px;
+        transition: 0.2s ease;
+    }
+
+    .btn-cancel {
+        background: #eeeeee;
+        color: #444;
+    }
+
+    .btn-cancel:hover {
+        background: #dddddd;
+    }
+
+    .btn-save {
+        background: #1b5e20;
+        color: white;
+    }
+
+    .btn-save:hover {
+        background: #124416;
+    }
+
+    .btn-save:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    /* File text */
+    .photo-info {
+        margin-top: 8px;
+        color: #777;
+        font-size: 12px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+
+        .edit-profile-page {
+            padding: 20px 12px 40px;
+        }
+
+        .profile-top-inner {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group.full-width {
+            grid-column: auto;
+        }
+
+        .profile-form {
+            padding: 20px;
+        }
+
+        .completion-section {
+            padding: 18px 20px;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+        }
+
+        .btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="edit-profile-page">
+
+    <div class="edit-profile-container">
+
+        <!-- ================= HEADER ================= -->
+
+        <div class="profile-header">
+            <h1>Edit Profile</h1>
+            <p>Update your personal information and profile photo.</p>
+        </div>
+
+        <!-- ================= MAIN CARD ================= -->
+
+        <div class="profile-card">
+
+            <!-- ================= PROFILE TOP ================= -->
+
+            <div class="profile-top">
+
+                <div class="profile-top-inner">
+
+                    <div class="profile-avatar-wrapper">
+
+                        {% if profile_pic %}
+
+                            <img
+                                id="profilePreview"
+                                class="profile-avatar"
+                                src="{{ profile_pic }}"
+                                alt="Profile Photo"
+                                onerror="this.style.display='none'; document.getElementById('avatarPlaceholder').style.display='flex';"
+                            >
+
+                            <div
+                                id="avatarPlaceholder"
+                                class="avatar-placeholder"
+                                style="display:none;"
+                            >
+                                {{ (name or 'F')[0]|upper }}
+                            </div>
+
+                        {% else %}
+
+                            <div
+                                id="avatarPlaceholder"
+                                class="avatar-placeholder"
+                            >
+                                {{ (name or 'F')[0]|upper }}
+                            </div>
+
+                            <img
+                                id="profilePreview"
+                                class="profile-avatar"
+                                src=""
+                                alt="Profile Photo"
+                                style="display:none;"
+                            >
+
+                        {% endif %}
+
+                        <label
+                            for="profile"
+                            class="photo-upload-label"
+                            title="Change profile photo"
+                        >
+                            Edit
+                        </label>
 
                     </div>
 
+                    <div class="profile-top-info">
 
-                    <div>
-
-                        <h1>
-                            Edit Profile
-                        </h1>
+                        <h2 id="headerName">
+                            {{ name or "Farmer" }}
+                        </h2>
 
                         <p>
-                            Update your KisanVision360+ account information.
+                            {{ email or "No email added" }}
                         </p>
 
+                        <p>
+                            {{ location or "Location not added" }}
+                        </p>
+
+                        <span class="role-badge">
+                            {{ role or session.get('role', 'Farmer')|title }}
+                        </span>
+
                     </div>
-
-                </div>
-
-
-                <div class="top-actions">
-
-
-                    <a href="/profile"
-                       class="back-btn">
-
-                        <i class="fa-solid fa-arrow-left"></i>
-
-                        Back to Profile
-
-                    </a>
-
-
-                    <a href="/settings"
-                       class="settings-btn">
-
-                        <i class="fa-solid fa-gear"></i>
-
-                        Settings
-
-                    </a>
 
                 </div>
 
             </div>
 
+            <!-- ================= COMPLETION ================= -->
 
+            <div class="completion-section">
 
-            <!-- =================================================
-                 PROFILE COMPLETION
-            ================================================== -->
+                <div class="completion-header">
 
-            <div class="profile-progress-card">
-
-
-                <div class="progress-top">
-
-                    <div class="progress-title">
-
-                        <i class="fa-solid fa-chart-pie"></i>
-
-                        <span>
-                            Profile Completion
-                        </span>
-
-                    </div>
-
+                    <span class="completion-title">
+                        Profile Completion
+                    </span>
 
                     <span
                         class="completion-value"
-                        id="completionValue">
-
-                        80%
-
+                        id="completionText"
+                    >
+                        0%
                     </span>
 
                 </div>
 
-
-                <div class="profile-progress">
-
+                <div class="progress-track">
                     <div
-                        class="profile-progress-bar"
-                        id="completionBar">
-
-                    </div>
-
+                        class="progress-bar"
+                        id="completionBar"
+                    ></div>
                 </div>
-
-
-                <p class="progress-help">
-
-                    A complete profile helps KisanVision360+
-                    personalize crop, weather, market and farming recommendations.
-
-                </p>
 
             </div>
 
+            <!-- ================= FORM ================= -->
 
+            <form
+                method="POST"
+                enctype="multipart/form-data"
+                id="profileForm"
+                class="profile-form"
+            >
 
-            <!-- =================================================
-                 EDIT CARD
-            ================================================== -->
+                <h2 class="section-title">
+                    Personal Information
+                </h2>
 
-            <div class="edit-card">
+                <div class="form-grid">
 
+                    <!-- Name -->
 
-                <!-- HEADER -->
+                    <div class="form-group">
 
-                <div class="edit-header">
+                        <label for="name">
+                            Full Name
+                            <span class="required">*</span>
+                        </label>
 
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            class="form-control"
+                            value="{{ name or '' }}"
+                            maxlength="150"
+                            autocomplete="name"
+                            required
+                        >
 
-                    <div class="edit-icon">
-
-                        <i class="fa-solid fa-user"></i>
+                        <div
+                            class="error-message"
+                            id="nameError"
+                        >
+                            Please enter your name.
+                        </div>
 
                     </div>
 
+                    <!-- Mobile -->
 
-                    <div>
+                    <div class="form-group">
 
-                        <h2>
-                            Personal Information
-                        </h2>
+                        <label for="mobile">
+                            Mobile Number
+                            <span class="required">*</span>
+                        </label>
 
-                        <p>
-                            Keep your account information accurate and up to date.
-                        </p>
+                        <input
+                            type="tel"
+                            id="mobile"
+                            name="mobile"
+                            class="form-control"
+                            value="{{ mobile or '' }}"
+                            maxlength="10"
+                            inputmode="numeric"
+                            autocomplete="tel"
+                            placeholder="10-digit mobile number"
+                            required
+                        >
+
+                        <div class="input-help">
+                            Enter a valid 10-digit Indian mobile number.
+                        </div>
+
+                        <div
+                            class="error-message"
+                            id="mobileError"
+                        >
+                            Enter a valid 10-digit mobile number.
+                        </div>
+
+                    </div>
+
+                    <!-- Email -->
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-control"
+                            value="{{ email or '' }}"
+                            maxlength="150"
+                            autocomplete="email"
+                            placeholder="example@email.com"
+                        >
+
+                        <div class="input-help">
+                            Used for account communication.
+                        </div>
+
+                    </div>
+
+                    <!-- Role -->
+
+                    <div class="form-group">
+
+                        <label for="role">
+                            Account Role
+                        </label>
+
+                        <input
+                            type="text"
+                            id="role"
+                            class="form-control"
+                            value="{{ role or session.get('role', 'Farmer')|title }}"
+                            disabled
+                        >
+
+                        <div class="input-help">
+                            Account role cannot be changed here.
+                        </div>
+
+                    </div>
+
+                    <!-- Location -->
+
+                    <div class="form-group full-width">
+
+                        <label for="location">
+                            Location
+                        </label>
+
+                        <input
+                            type="text"
+                            id="location"
+                            name="location"
+                            class="form-control"
+                            value="{{ location or '' }}"
+                            maxlength="200"
+                            autocomplete="address-level2"
+                            placeholder="Enter your village, city or district"
+                        >
+
+                        <div class="input-help">
+                            Your location helps provide relevant farming information.
+                        </div>
+
+                    </div>
+
+                    <!-- Profile Photo -->
+
+                    <div class="form-group full-width">
+
+                        <label for="profile">
+                            Profile Photo
+                        </label>
+
+                        <input
+                            type="file"
+                            id="profile"
+                            name="profile"
+                            accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                        >
+
+                        <div class="photo-info">
+                            JPG, JPEG or PNG - Maximum 5 MB recommended.
+                        </div>
+
+                        <div
+                            class="error-message"
+                            id="photoError"
+                        >
+                            Please select a valid JPG, JPEG or PNG image under 5 MB.
+                        </div>
 
                     </div>
 
                 </div>
 
+                <!-- ================= PERSONALIZATION ================= -->
 
+                <div class="personalization-box">
 
-                <!-- =================================================
-                     FORM
-                ================================================== -->
+                    <h3>
+                        Smart Personalization
+                    </h3>
 
-                <form
-                    method="POST"
-                    enctype="multipart/form-data"
-                    id="profileForm"
-                    class="profile-form">
+                    <p>
+                        Your profile information helps KisanVision360+
+                        provide more relevant farming services.
+                    </p>
 
+                    <div class="tags">
 
-                    <!-- =================================================
-                         PROFILE PHOTO
-                    ================================================== -->
+                        <span class="tag">
+                            Weather Updates
+                        </span>
 
-                    <div class="profile-photo-section">
+                        <span class="tag">
+                            Crop Recommendations
+                        </span>
 
+                        <span class="tag">
+                            Market Prices
+                        </span>
 
-                        <div class="profile-photo-box">
+                        <span class="tag">
+                            Government Schemes
+                        </span>
 
+                        <span class="tag">
+                            Farm Reports
+                        </span>
 
-                            <img
-                                id="profilePreview"
-                                src="{{ profile_pic if profile_pic else url_for('static', filename='images/farmer.jpg') }}"
-                                alt="Profile Photo"
-                                class="edit-profile-image">
-
-
-                            <label
-                                for="profilePhoto"
-                                class="photo-camera"
-                                title="Change Profile Photo">
-
-                                <i class="fa-solid fa-camera"></i>
-
-                            </label>
-
-                        </div>
-
-
-
-                        <div class="photo-info">
-
-
-                            <h3>
-                                Profile Photo
-                            </h3>
-
-
-                            <p>
-                                Upload a clear photo for your
-                                KisanVision360+ profile.
-                            </p>
-
-
-                            <label
-                                for="profilePhoto"
-                                class="upload-photo-btn">
-
-                                <i class="fa-solid fa-upload"></i>
-
-                                Choose Photo
-
-                            </label>
-
-
-                            <input
-                                type="file"
-                                id="profilePhoto"
-                                name="profile"
-                                accept="image/png,image/jpeg,image/jpg"
-                                hidden>
-
-
-                            <small>
-                                JPG, JPEG or PNG â€¢ Maximum 5 MB recommended
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- =================================================
-                         FORM GRID
-                    ================================================== -->
-
-                    <div class="form-grid">
-
-
-                        <!-- FULL NAME -->
-
-                        <div class="form-group">
-
-
-                            <label for="name">
-
-                                <i class="fa-solid fa-user"></i>
-
-                                Full Name
-
-                            </label>
-
-
-                            <input
-                                type="text"
-                                id="name"
-                                name="name"
-                                value="{{ name if name else '' }}"
-                                placeholder="Enter your full name"
-                                autocomplete="name"
-                                maxlength="100"
-                                required>
-
-
-                            <p class="field-help">
-                                Use the name you want displayed across the application.
-                            </p>
-
-                        </div>
-
-
-
-                        <!-- MOBILE -->
-
-                        <div class="form-group">
-
-
-                            <label for="mobile">
-
-                                <i class="fa-solid fa-phone"></i>
-
-                                Mobile Number
-
-                            </label>
-
-
-                            <input
-                                type="tel"
-                                id="mobile"
-                                name="mobile"
-                                value="{{ mobile if mobile else '' }}"
-                                placeholder="Enter 10-digit mobile number"
-                                maxlength="10"
-                                inputmode="numeric"
-                                autocomplete="tel"
-                                required>
-
-
-                            <div
-                                id="mobileStatus"
-                                class="mobile-status">
-
-                            </div>
-
-                        </div>
-
-
-
-                        <!-- EMAIL -->
-
-                        <div class="form-group">
-
-
-                            <label for="email">
-
-                                <i class="fa-solid fa-envelope"></i>
-
-                                Email Address
-
-                            </label>
-
-
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                value="{{ email if email else '' }}"
-                                placeholder="Enter email address"
-                                autocomplete="email">
-
-
-                            <p class="field-help">
-                                Optional, but useful for account recovery and communication.
-                            </p>
-
-                        </div>
-
-
-
-                        <!-- LOCATION -->
-
-                        <div class="form-group">
-
-
-                            <label for="location">
-
-                                <i class="fa-solid fa-location-dot"></i>
-
-                                Location
-
-                            </label>
-
-
-                            <input
-                                type="text"
-                                id="location"
-                                name="location"
-                                value="{{ location if location else 'Nagpur' }}"
-                                placeholder="Enter your village, city or district"
-                                autocomplete="address-level2"
-                                maxlength="150">
-
-
-                            <p class="field-help">
-                                Used for location-aware weather, market and farming insights.
-                            </p>
-
-                        </div>
-
-
-
-                        <!-- ROLE -->
-
-                        <div class="form-group full-width">
-
-
-                            <label for="role">
-
-                                <i class="fa-solid fa-user-tag"></i>
-
-                                Account Role
-
-                            </label>
-
-
-                            <input
-                                type="text"
-                                id="role"
-                                value="{{ role if role else session.get('role', 'Farmer') }}"
-                                disabled>
-
-
-                            <p class="field-help">
-                                Your role is managed by the KisanVision360+ account system.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- =================================================
-                         SMART PERSONALIZATION
-                    ================================================== -->
-
-                    <div class="personalization-card">
-
-
-                        <div class="personalization-header">
-
-                            <i class="fa-solid fa-wand-magic-sparkles"></i>
-
-                            <strong>
-                                Smart Personalization
-                            </strong>
-
-                        </div>
-
-
-                        <p>
-
-                            KisanVision360+ can use your profile information
-                            to connect relevant farming services and reduce
-                            unnecessary manual input.
-
-                        </p>
-
-
-                        <div class="personalization-tags">
-
-                            <span>
-                                <i class="fa-solid fa-cloud-sun"></i>
-                                Weather
-                            </span>
-
-                            <span>
-                                <i class="fa-solid fa-seedling"></i>
-                                Crop Advisor
-                            </span>
-
-                            <span>
-                                <i class="fa-solid fa-droplet"></i>
-                                Irrigation
-                            </span>
-
-                            <span>
-                                <i class="fa-solid fa-chart-line"></i>
-                                Market
-                            </span>
-
-                            <span>
-                                <i class="fa-solid fa-landmark"></i>
-                                Schemes
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- =================================================
-                         SECURITY
-                    ================================================== -->
-
-                    <div class="security-strip">
-
-                        <i class="fa-solid fa-shield-halved"></i>
-
-                        <span>
-                            Profile changes are submitted securely
-                            through your KisanVision360+ account.
+                        <span class="tag">
+                            Smart Irrigation
                         </span>
 
                     </div>
 
+                </div>
 
+                <!-- ================= SECURITY ================= -->
 
-                    <!-- =================================================
-                         FORM BUTTONS
-                    ================================================== -->
+                <div class="security-strip">
 
-                    <div class="form-actions">
-
-
-                        <a
-                            href="/profile"
-                            class="cancel-btn">
-
-                            <i class="fa-solid fa-xmark"></i>
-
-                            Cancel
-
-                        </a>
-
-
-
-                        <button
-                            type="submit"
-                            class="save-btn"
-                            id="saveButton">
-
-                            <i class="fa-solid fa-floppy-disk"></i>
-
-                            <span id="saveButtonText">
-                                Save Changes
-                            </span>
-
-                        </button>
-
-                    </div>
-
-
-                </form>
-
-            </div>
-
-
-
-            <!-- =====================================================
-                 INFORMATION CARD
-            ====================================================== -->
-
-            <div class="info-card">
-
-
-                <div class="info-icon">
-
-                    <i class="fa-solid fa-circle-info"></i>
+                    <strong>Privacy:</strong>
+                    Your profile information is stored securely
+                    and is used only for KisanVision360+ services.
 
                 </div>
 
+                <!-- ================= ACTIONS ================= -->
 
-                <div>
+                <div class="form-actions">
 
-                    <h3>
-                        Why Your Profile Matters
-                    </h3>
+                    <a
+                        href="{{ url_for('profile.profile') }}"
+                        class="btn btn-cancel"
+                    >
+                        Cancel
+                    </a>
 
-
-                    <p>
-
-                        Your profile information can be connected with
-                        farm location, weather, crop recommendations,
-                        market information, irrigation planning,
-                        government schemes and notifications.
-
-                        Keep your information updated for better
-                        personalization.
-
-                    </p>
+                    <button
+                        type="submit"
+                        class="btn btn-save"
+                        id="saveButton"
+                    >
+                        Save Changes
+                    </button>
 
                 </div>
 
-            </div>
-
-
-
-            <!-- =====================================================
-                 FOOTER
-            ====================================================== -->
-
-            <footer class="edit-footer">
-
-                <i class="fa-solid fa-leaf"></i>
-
-                <strong>
-                    KisanVision360+
-                </strong>
-
-                <span>
-                    â€¢
-                </span>
-
-                AI Powered Smart Farming Platform
-
-                <span>
-                    â€¢
-                </span>
-
-                Made in India ðŸ‡®ðŸ‡³
-
-            </footer>
-
+            </form>
 
         </div>
 
+    </div>
 
-    </main>
-{% endblock %}
+</div>
 
-{% block scripts %}
 <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form = document.getElementById("profileForm");
+
+    const nameInput = document.getElementById("name");
+    const mobileInput = document.getElementById("mobile");
+    const emailInput = document.getElementById("email");
+    const locationInput = document.getElementById("location");
+    const profileInput = document.getElementById("profile");
+
+    const nameError = document.getElementById("nameError");
+    const mobileError = document.getElementById("mobileError");
+    const photoError = document.getElementById("photoError");
+
+    const saveButton = document.getElementById("saveButton");
+
+    const completionBar = document.getElementById("completionBar");
+    const completionText = document.getElementById("completionText");
+
+    const profilePreview = document.getElementById("profilePreview");
+    const avatarPlaceholder = document.getElementById("avatarPlaceholder");
+
+    const headerName = document.getElementById("headerName");
 
 
-/* =========================================================
-   ELEMENTS
-========================================================= */
+    /* ======================================================
+       MOBILE - ONLY NUMBERS
+    ====================================================== */
 
-const profilePhoto =
-    document.getElementById("profilePhoto");
+    mobileInput.addEventListener("input", function () {
 
-const profilePreview =
-    document.getElementById("profilePreview");
+        this.value = this.value.replace(/\D/g, "").slice(0, 10);
 
-const profileForm =
-    document.getElementById("profileForm");
+        validateMobile();
+        updateCompletion();
 
-const mobileInput =
-    document.getElementById("mobile");
-
-const mobileStatus =
-    document.getElementById("mobileStatus");
-
-const saveButton =
-    document.getElementById("saveButton");
-
-const saveButtonText =
-    document.getElementById("saveButtonText");
-
-const nameInput =
-    document.getElementById("name");
-
-const emailInput =
-    document.getElementById("email");
-
-const locationInput =
-    document.getElementById("location");
-
-const completionValue =
-    document.getElementById("completionValue");
-
-const completionBar =
-    document.getElementById("completionBar");
+    });
 
 
+    /* ======================================================
+       NAME
+    ====================================================== */
 
-/* =========================================================
-   PROFILE PHOTO PREVIEW
-========================================================= */
+    nameInput.addEventListener("input", function () {
 
-if (profilePhoto && profilePreview) {
+        validateName();
 
-    profilePhoto.addEventListener(
-        "change",
-        function () {
+        if (headerName) {
+            headerName.textContent =
+                this.value.trim() || "Farmer";
+        }
 
-            const file = this.files[0];
+        updateCompletion();
+
+    });
 
 
-            if (!file) {
+    /* ======================================================
+       EMAIL
+    ====================================================== */
 
-                return;
+    emailInput.addEventListener("input", function () {
+        updateCompletion();
+    });
 
+
+    /* ======================================================
+       LOCATION
+    ====================================================== */
+
+    locationInput.addEventListener("input", function () {
+        updateCompletion();
+    });
+
+
+    /* ======================================================
+       VALIDATE NAME
+    ====================================================== */
+
+    function validateName() {
+
+        const value = nameInput.value.trim();
+
+        if (!value) {
+
+            nameInput.classList.add("invalid");
+            nameInput.classList.remove("valid");
+
+            nameError.style.display = "block";
+
+            return false;
+        }
+
+        nameInput.classList.remove("invalid");
+        nameInput.classList.add("valid");
+
+        nameError.style.display = "none";
+
+        return true;
+    }
+
+
+    /* ======================================================
+       VALIDATE MOBILE
+    ====================================================== */
+
+    function validateMobile() {
+
+        const value = mobileInput.value.trim();
+
+        const valid =
+            /^[6-9]\d{9}$/.test(value);
+
+        if (!valid) {
+
+            mobileInput.classList.add("invalid");
+            mobileInput.classList.remove("valid");
+
+            mobileError.style.display = "block";
+
+            return false;
+        }
+
+        mobileInput.classList.remove("invalid");
+        mobileInput.classList.add("valid");
+
+        mobileError.style.display = "none";
+
+        return true;
+    }
+
+
+    /* ======================================================
+       VALIDATE PHOTO
+    ====================================================== */
+
+    profileInput.addEventListener("change", function () {
+
+        photoError.style.display = "none";
+
+        const file = this.files[0];
+
+        if (!file) {
+            updateCompletion();
+            return;
+        }
+
+        const allowedTypes = [
+            "image/jpeg",
+            "image/png"
+        ];
+
+        const maxSize = 5 * 1024 * 1024;
+
+        if (
+            !allowedTypes.includes(file.type) ||
+            file.size > maxSize
+        ) {
+
+            photoError.style.display = "block";
+
+            this.value = "";
+
+            return;
+        }
+
+
+        /* Preview */
+
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+
+            profilePreview.src =
+                event.target.result;
+
+            profilePreview.style.display =
+                "block";
+
+            if (avatarPlaceholder) {
+                avatarPlaceholder.style.display =
+                    "none";
             }
 
+        };
 
-            /* IMAGE TYPE */
+        reader.readAsDataURL(file);
+
+        updateCompletion();
+
+    });
+
+
+    /* ======================================================
+       PROFILE COMPLETION
+    ====================================================== */
+
+    function updateCompletion() {
+
+        let completed = 0;
+
+        const total = 5;
+
+        if (nameInput.value.trim()) {
+            completed++;
+        }
+
+        if (/^[6-9]\d{9}$/.test(
+            mobileInput.value.trim()
+        )) {
+            completed++;
+        }
+
+        if (emailInput.value.trim()) {
+            completed++;
+        }
+
+        if (locationInput.value.trim()) {
+            completed++;
+        }
+
+        if (
+            profileInput.files &&
+            profileInput.files.length > 0
+        ) {
+            completed++;
+        }
+        else if (
+            profilePreview &&
+            profilePreview.style.display !== "none" &&
+            profilePreview.src
+        ) {
+            completed++;
+        }
+
+        const percentage =
+            Math.round((completed / total) * 100);
+
+        completionBar.style.width =
+            percentage + "%";
+
+        completionText.textContent =
+            percentage + "%";
+    }
+
+
+    /* ======================================================
+       FORM SUBMIT
+    ====================================================== */
+
+    form.addEventListener("submit", function (event) {
+
+        const validName = validateName();
+        const validMobile = validateMobile();
+
+        const file = profileInput.files[0];
+
+        if (file) {
 
             const allowedTypes = [
                 "image/jpeg",
                 "image/png"
             ];
 
-
-            if (!allowedTypes.includes(file.type)) {
-
-                alert(
-                    "Please select a JPG, JPEG or PNG image."
-                );
-
-                this.value = "";
-
-                return;
-
-            }
-
-
-            /* IMAGE SIZE */
-
-            const maxSize =
-                5 * 1024 * 1024;
-
-
-            if (file.size > maxSize) {
-
-                alert(
-                    "Profile photo should be less than 5 MB."
-                );
-
-                this.value = "";
-
-                return;
-
-            }
-
-
-            /* PREVIEW */
-
-            const imageURL =
-                URL.createObjectURL(file);
-
-
-            profilePreview.src =
-                imageURL;
-
-        }
-    );
-
-}
-
-
-
-/* =========================================================
-   MOBILE NUMBER
-========================================================= */
-
-if (mobileInput && mobileStatus) {
-
-    mobileInput.addEventListener(
-        "input",
-        function () {
-
-            this.value =
-                this.value
-                    .replace(/\D/g, "")
-                    .slice(0, 10);
-
-
-            validateMobile();
-
-            updateCompletion();
-
-        }
-    );
-
-}
-
-
-function validateMobile() {
-
-    if (!mobileInput || !mobileStatus) {
-
-        return true;
-
-    }
-
-
-    const value =
-        mobileInput.value.trim();
-
-
-    if (!value) {
-
-        mobileStatus.textContent = "";
-
-        mobileStatus.className =
-            "mobile-status";
-
-        return false;
-
-    }
-
-
-    if (/^[6-9]\d{9}$/.test(value)) {
-
-        mobileStatus.innerHTML =
-            '<i class="fa-solid fa-circle-check"></i> Valid mobile number';
-
-        mobileStatus.className =
-            "mobile-status valid";
-
-        return true;
-
-    }
-
-
-    mobileStatus.innerHTML =
-        '<i class="fa-solid fa-circle-exclamation"></i> Enter a valid 10-digit Indian mobile number';
-
-    mobileStatus.className =
-        "mobile-status invalid";
-
-    return false;
-
-}
-
-
-
-/* =========================================================
-   PROFILE COMPLETION
-========================================================= */
-
-function updateCompletion() {
-
-    const fields = [
-        nameInput,
-        mobileInput,
-        emailInput,
-        locationInput
-    ];
-
-
-    let completed = 0;
-
-
-    fields.forEach(
-        function (field) {
+            const maxSize = 5 * 1024 * 1024;
 
             if (
-                field &&
-                field.value.trim() !== ""
-            ) {
-
-                completed++;
-
-            }
-
-        }
-    );
-
-
-    /*
-       Photo is treated as an additional
-       profile-completion factor.
-    */
-
-    let score =
-        Math.round(
-            (completed / fields.length) * 80
-        );
-
-
-    if (
-        profilePhoto &&
-        profilePhoto.files &&
-        profilePhoto.files.length > 0
-    ) {
-
-        score += 20;
-
-    }
-    else {
-
-        /*
-           Existing photo means profile is
-           still mostly complete.
-        */
-
-        score += 10;
-
-    }
-
-
-    score =
-        Math.min(
-            100,
-            Math.max(0, score)
-        );
-
-
-    if (completionValue) {
-
-        completionValue.textContent =
-            score + "%";
-
-    }
-
-
-    if (completionBar) {
-
-        completionBar.style.width =
-            score + "%";
-
-    }
-
-}
-
-
-
-/* =========================================================
-   WATCH PROFILE FIELDS
-========================================================= */
-
-[
-    nameInput,
-    emailInput,
-    locationInput
-].forEach(
-    function (field) {
-
-        if (field) {
-
-            field.addEventListener(
-                "input",
-                updateCompletion
-            );
-
-        }
-
-    }
-);
-
-
-
-/* =========================================================
-   FORM SUBMIT VALIDATION
-========================================================= */
-
-if (profileForm) {
-
-    profileForm.addEventListener(
-        "submit",
-        function (event) {
-
-            /* MOBILE */
-
-            if (!validateMobile()) {
-
-                event.preventDefault();
-
-                if (mobileInput) {
-
-                    mobileInput.focus();
-
-                }
-
-                return;
-
-            }
-
-
-            /* NAME */
-
-            if (
-                !nameInput ||
-                nameInput.value.trim().length < 2
+                !allowedTypes.includes(file.type) ||
+                file.size > maxSize
             ) {
 
                 event.preventDefault();
 
-                alert(
-                    "Please enter your full name."
-                );
-
-                if (nameInput) {
-
-                    nameInput.focus();
-
-                }
+                photoError.style.display =
+                    "block";
 
                 return;
-
             }
-
-
-            /* PROFILE IMAGE */
-
-            if (
-                profilePhoto &&
-                profilePhoto.files &&
-                profilePhoto.files.length > 0
-            ) {
-
-                const file =
-                    profilePhoto.files[0];
-
-
-                if (
-                    ![
-                        "image/jpeg",
-                        "image/png"
-                    ].includes(file.type)
-                ) {
-
-                    event.preventDefault();
-
-                    alert(
-                        "Only JPG, JPEG or PNG profile photos are allowed."
-                    );
-
-                    return;
-
-                }
-
-
-                if (
-                    file.size >
-                    5 * 1024 * 1024
-                ) {
-
-                    event.preventDefault();
-
-                    alert(
-                        "Profile photo must be less than 5 MB."
-                    );
-
-                    return;
-
-                }
-
-            }
-
-
-            /* PREVENT DOUBLE SUBMIT */
-
-            if (saveButton) {
-
-                saveButton.disabled =
-                    true;
-
-            }
-
-
-            if (saveButtonText) {
-
-                saveButtonText.textContent =
-                    "Saving...";
-
-            }
-
         }
-    );
-
-}
 
 
+        if (!validName || !validMobile) {
 
-/* =========================================================
-   INITIALIZE
-========================================================= */
+            event.preventDefault();
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+            if (!validName) {
+                nameInput.focus();
+            }
+            else {
+                mobileInput.focus();
+            }
 
-        updateCompletion();
-
-        validateMobile();
-
-    }
-);
+            return;
+        }
 
 
+        saveButton.disabled = true;
+
+        saveButton.textContent =
+            "Saving...";
+
+    });
+
+
+    /* ======================================================
+       INITIAL STATE
+    ====================================================== */
+
+    validateName();
+    validateMobile();
+    updateCompletion();
+
+});
 </script>
+
 {% endblock %}
 

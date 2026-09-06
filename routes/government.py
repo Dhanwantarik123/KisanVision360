@@ -1,6 +1,6 @@
 ﻿# ============================================================
-# KISANVISION360+ â€” GOVERNMENT SCHEMES ROUTE
-# File: routes/government.py
+# KISANVISION360+
+# GOVERNMENT SCHEME INTELLIGENCE ROUTES
 # ============================================================
 
 from flask import (
@@ -8,15 +8,20 @@ from flask import (
     render_template,
     request,
     jsonify,
-    session,
-    redirect,
-    url_for,
-    flash,
+    session
 )
 
-from database.db import get_db_connection
+from utils.schemes import (
+    get_schemes,
+    get_scheme,
+    search_schemes,
+    get_schemes_by_category,
+    recommend_schemes,
+    get_scheme_categories,
+    get_scheme_statistics,
+    is_official_scheme
+)
 
-from datetime import datetime
 import logging
 
 
@@ -24,1404 +29,599 @@ import logging
 # BLUEPRINT
 # ============================================================
 
-government_bp = Blueprint("government", __name__)
+government_bp = Blueprint(
+    "government",
+    __name__
+)
 
 logger = logging.getLogger(__name__)
 
 
 # ============================================================
-# CONSTANTS
+# PREPARE SCHEME FOR HTML
 # ============================================================
 
-DEFAULT_SCHEMES = [
-    {
-        "name": "PM-KISAN",
-        "department": "Ministry of Agriculture & Farmers Welfare",
-        "purpose": "Income support for eligible farmer families.",
-        "eligibility": "Eligible landholding farmer families as per scheme rules.",
-        "link": "https://pmkisan.gov.in/",
-        "category": "Income Support",
-    },
-    {
-        "name": "Pradhan Mantri Fasal Bima Yojana",
-        "department": "Ministry of Agriculture & Farmers Welfare",
-        "purpose": "Crop insurance support against notified crop risks.",
-        "eligibility": "Farmers cultivating notified crops in notified areas, subject to scheme rules.",
-        "link": "https://pmfby.gov.in/",
-        "category": "Crop Insurance",
-    },
-    {
-        "name": "Kisan Credit Card",
-        "department": "Government of India / Banking System",
-        "purpose": "Agricultural credit support for farming and allied activities.",
-        "eligibility": "Eligible farmers and agricultural borrowers as per lending rules.",
-        "link": "https://www.myscheme.gov.in/",
-        "category": "Credit",
-    },
-    {
-        "name": "PM Krishi Sinchai Yojana",
-        "department": "Government of India",
-        "purpose": "Support for improved irrigation and water-use efficiency.",
-        "eligibility": "Eligibility varies according to the applicable component and state guidelines.",
-        "link": "https://pmksy.gov.in/",
-        "category": "Irrigation",
-    },
-    {
-        "name": "Soil Health Card",
-        "department": "Ministry of Agriculture & Farmers Welfare",
-        "purpose": "Soil testing and nutrient-management recommendations.",
-        "eligibility": "Farmers can access soil testing and recommendations through applicable government facilities.",
-        "link": "https://soilhealth.dac.gov.in/",
-        "category": "Soil",
-    },
-    {
-        "name": "e-NAM",
-        "department": "Ministry of Agriculture & Farmers Welfare",
-        "purpose": "Online agricultural market platform for improved market access.",
-        "eligibility": "Participation depends on applicable mandi and platform rules.",
-        "link": "https://www.enam.gov.in/",
-        "category": "Market",
-    },
-    {
-        "name": "PM-KUSUM",
-        "department": "Ministry of New and Renewable Energy",
-        "purpose": "Support for solar energy applications in agriculture.",
-        "eligibility": "Eligibility depends on the applicable component and state implementation.",
-        "link": "https://pmkusum.mnre.gov.in/",
-        "category": "Energy",
-    },
-    {
-        "name": "Agriculture Infrastructure Fund",
-        "department": "Government of India",
-        "purpose": "Financing support for agricultural infrastructure projects.",
-        "eligibility": "Eligible beneficiaries and projects according to AIF guidelines.",
-        "link": "https://agriinfra.dac.gov.in/",
-        "category": "Infrastructure",
-    },
-]
+def prepare_scheme(scheme):
 
+    item = dict(scheme)
 
-# ============================================================
-# FARMER ACCESS
-# ============================================================
-
-def farmer_required():
-    """
-    Allow only logged-in farmers.
-    """
-
-    role = str(session.get("role", "")).strip().lower()
-
-    if role != "farmer":
-        return False
-
-    return bool(
-        session.get("user_id")
-        or session.get("id")
-        or session.get("user")
+    # Your database uses "purpose".
+    # HTML can use "benefit".
+    item["benefit"] = item.get(
+        "purpose",
+        ""
     )
 
+    # Smart discovery score.
+    category = item.get(
+        "category",
+        ""
+    ).lower()
 
-# ============================================================
-# DATABASE HELPERS
-# ============================================================
+    score_map = {
 
-def table_exists(cursor, table_name):
-    """
-    Check whether a PostgreSQL table exists.
-    """
+        "financial support": 92,
 
-    try:
-        cursor.execute(
-            """
-            SELECT EXISTS (
-                SELECT 1
-                FROM information_schema.tables
-                WHERE table_schema = 'public'
-                  AND table_name = %s
-            )
-            """,
-            (table_name,),
-        )
+        "crop insurance": 90,
 
-        row = cursor.fetchone()
+        "credit & finance": 88,
 
-        if isinstance(row, dict):
-            return bool(row.get("exists"))
+        "irrigation": 87,
 
-        return bool(row[0])
+        "solar & energy": 86,
 
-    except Exception:
-        return False
+        "soil & fertilizer": 84,
 
+        "marketing": 84,
 
-def ensure_scheme_table():
-    """
-    Create government_schemes table if it does not exist.
+        "farm machinery": 82,
 
-    This makes the module easier to deploy on a fresh PostgreSQL
-    database.
-    """
+        "horticulture": 81,
 
-    conn = None
+        "organic farming": 80,
 
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
+        "natural farming": 80,
 
-        cursor.execute(
-            """
-            CREATE TABLE IF NOT EXISTS government_schemes (
-                id BIGSERIAL PRIMARY KEY,
-                name VARCHAR(255) NOT NULL,
-                department VARCHAR(255),
-                purpose TEXT,
-                eligibility TEXT,
-                link TEXT,
-                category VARCHAR(100),
-                state VARCHAR(100) DEFAULT 'All India',
-                active BOOLEAN DEFAULT TRUE,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-            """
-        )
+        "sustainable agriculture": 80,
 
-        cursor.execute(
-            """
-            CREATE INDEX IF NOT EXISTS idx_government_schemes_category
-            ON government_schemes(category)
-            """
-        )
+        "livestock": 78,
 
-        cursor.execute(
-            """
-            CREATE INDEX IF NOT EXISTS idx_government_schemes_active
-            ON government_schemes(active)
-            """
-        )
+        "fisheries": 78,
 
-        conn.commit()
+        "crop development": 78,
 
-        cursor.close()
+        "crop protection": 78,
 
-    except Exception as exc:
-        if conn:
-            conn.rollback()
+        "infrastructure": 80,
 
-        logger.warning(
-            "Government scheme table initialization failed: %s",
-            exc,
-        )
+        "agriculture development": 76,
 
-    finally:
-        if conn:
-            conn.close()
+        "farmer organization": 76,
 
+        "allied agriculture": 75
 
-# ============================================================
-# USER / FARMER PROFILE
-# ============================================================
-
-def get_current_user_id():
-    """
-    Get logged-in user ID from session.
-    """
-
-    user_id = (
-        session.get("user_id")
-        or session.get("id")
-        or session.get("user_id")
-    )
-
-    try:
-        return int(user_id)
-    except (TypeError, ValueError):
-        return None
-
-
-def get_farmer_profile():
-    """
-    Fetch farmer profile information.
-
-    Uses LEFT JOIN so the route continues working even when
-    farmer_profiles has not been completed yet.
-    """
-
-    user_id = get_current_user_id()
-
-    if not user_id:
-        return {}
-
-    conn = None
-
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-
-        cursor.execute(
-            """
-            SELECT
-                u.id,
-                u.name,
-                u.email,
-                u.mobile,
-                u.location,
-
-                fp.id AS farmer_profile_id,
-                fp.farm_size,
-                fp.land_size,
-                fp.soil_type,
-                fp.irrigation_type,
-                fp.primary_crop,
-                fp.water_source,
-                fp.state,
-                fp.district
-
-            FROM users u
-
-            LEFT JOIN farmer_profiles fp
-                ON fp.user_id = u.id
-
-            WHERE u.id = %s
-
-            LIMIT 1
-            """,
-            (user_id,),
-        )
-
-        row = cursor.fetchone()
-
-        cursor.close()
-
-        if not row:
-            return {}
-
-        if isinstance(row, dict):
-            return dict(row)
-
-        columns = [
-            "id",
-            "name",
-            "email",
-            "mobile",
-            "location",
-            "farmer_profile_id",
-            "farm_size",
-            "land_size",
-            "soil_type",
-            "irrigation_type",
-            "primary_crop",
-            "water_source",
-            "state",
-            "district",
-        ]
-
-        return dict(zip(columns, row))
-
-    except Exception as exc:
-        logger.warning(
-            "Unable to load farmer profile: %s",
-            exc,
-        )
-
-        return {}
-
-    finally:
-        if conn:
-            conn.close()
-
-
-# ============================================================
-# SCHEME DATA
-# ============================================================
-
-def get_schemes_from_database():
-    """
-    Get active schemes from PostgreSQL.
-
-    If database contains no schemes, return the built-in
-    official-reference list.
-    """
-
-    ensure_scheme_table()
-
-    conn = None
-
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-
-        cursor.execute(
-            """
-            SELECT
-                id,
-                name,
-                department,
-                purpose,
-                eligibility,
-                link,
-                category,
-                state,
-                active,
-                created_at,
-                updated_at
-            FROM government_schemes
-            WHERE active = TRUE
-            ORDER BY name ASC
-            """
-        )
-
-        rows = cursor.fetchall()
-
-        cursor.close()
-
-        schemes = []
-
-        for row in rows:
-
-            if isinstance(row, dict):
-                scheme = dict(row)
-
-            else:
-                columns = [
-                    "id",
-                    "name",
-                    "department",
-                    "purpose",
-                    "eligibility",
-                    "link",
-                    "category",
-                    "state",
-                    "active",
-                    "created_at",
-                    "updated_at",
-                ]
-
-                scheme = dict(zip(columns, row))
-
-            schemes.append(scheme)
-
-        if schemes:
-            return schemes
-
-    except Exception as exc:
-        logger.warning(
-            "Unable to read government schemes: %s",
-            exc,
-        )
-
-    finally:
-        if conn:
-            conn.close()
-
-    return DEFAULT_SCHEMES.copy()
-
-
-# ============================================================
-# SCHEME MATCHING ENGINE
-# ============================================================
-
-def normalize_text(value):
-    if value is None:
-        return ""
-
-    return str(value).strip().lower()
-
-
-def calculate_scheme_match(scheme, profile):
-    """
-    Explainable rule-based scheme matching.
-
-    This is NOT fake AI. It uses farmer profile attributes
-    to calculate a transparent relevance score.
-    """
-
-    score = 50
-
-    reasons = []
-
-    category = normalize_text(
-        scheme.get("category")
-    )
-
-    name = normalize_text(
-        scheme.get("name")
-    )
-
-    purpose = normalize_text(
-        scheme.get("purpose")
-    )
-
-    primary_crop = normalize_text(
-        profile.get("primary_crop")
-    )
-
-    soil_type = normalize_text(
-        profile.get("soil_type")
-    )
-
-    irrigation = normalize_text(
-        profile.get("irrigation_type")
-    )
-
-    water_source = normalize_text(
-        profile.get("water_source")
-    )
-
-    state = normalize_text(
-        profile.get("state")
-    )
-
-    location = normalize_text(
-        profile.get("location")
-    )
-
-    # --------------------------------------------------------
-    # IRRIGATION
-    # --------------------------------------------------------
-
-    if category == "irrigation":
-        score += 25
-        reasons.append(
-            "Useful for irrigation and water-management needs."
-        )
-
-    if irrigation:
-        if irrigation in {
-            "drip",
-            "sprinkler",
-            "micro irrigation",
-            "micro-irrigation",
-        }:
-            score += 8
-            reasons.append(
-                "Your irrigation profile may benefit from water-efficiency support."
-            )
-
-    # --------------------------------------------------------
-    # SOIL
-    # --------------------------------------------------------
-
-    if category == "soil":
-        score += 25
-        reasons.append(
-            "Useful for improving soil and nutrient management."
-        )
-
-    if soil_type:
-        score += 5
-
-    # --------------------------------------------------------
-    # CROP INSURANCE
-    # --------------------------------------------------------
-
-    if category == "crop insurance":
-        score += 20
-        reasons.append(
-            "Relevant for managing agricultural crop risk."
-        )
-
-    if primary_crop:
-        score += 8
-        reasons.append(
-            f"Your primary crop is {profile.get('primary_crop')}."
-        )
-
-    # --------------------------------------------------------
-    # MARKET
-    # --------------------------------------------------------
-
-    if category == "market":
-        score += 18
-        reasons.append(
-            "Can improve agricultural market access."
-        )
-
-    # --------------------------------------------------------
-    # CREDIT
-    # --------------------------------------------------------
-
-    if category == "credit":
-        score += 18
-        reasons.append(
-            "May be useful for agricultural credit requirements."
-        )
-
-    # --------------------------------------------------------
-    # ENERGY
-    # --------------------------------------------------------
-
-    if category == "energy":
-        score += 15
-        reasons.append(
-            "May be relevant for agricultural energy requirements."
-        )
-
-    # --------------------------------------------------------
-    # INFRASTRUCTURE
-    # --------------------------------------------------------
-
-    if category == "infrastructure":
-        score += 15
-        reasons.append(
-            "Can be relevant for farm infrastructure development."
-        )
-
-    # --------------------------------------------------------
-    # INCOME
-    # --------------------------------------------------------
-
-    if category == "income support":
-        score += 20
-        reasons.append(
-            "Relevant to farmer income-support programs."
-        )
-
-    # --------------------------------------------------------
-    # LOCATION
-    # --------------------------------------------------------
-
-    if state:
-        scheme_state = normalize_text(
-            scheme.get("state")
-        )
-
-        if scheme_state in {"", "all india", "india"}:
-            score += 5
-
-        elif state == scheme_state:
-            score += 10
-            reasons.append(
-                "The scheme location matches your profile."
-            )
-
-    elif location:
-        score += 2
-
-    # --------------------------------------------------------
-    # TEXT MATCHING
-    # --------------------------------------------------------
-
-    combined_text = (
-        name + " " +
-        purpose + " " +
-        category
-    )
-
-    if primary_crop and primary_crop in combined_text:
-        score += 5
-
-    if water_source and (
-        water_source in combined_text
-        or "water" in combined_text
-        or "irrigation" in combined_text
-    ):
-        score += 4
-
-    score = max(0, min(100, score))
-
-    if score >= 85:
-        level = "Highly Relevant"
-    elif score >= 70:
-        level = "Relevant"
-    elif score >= 55:
-        level = "Potentially Useful"
-    else:
-        level = "General Information"
-
-    return {
-        "score": score,
-        "level": level,
-        "reasons": reasons[:4],
     }
 
-
-# ============================================================
-# ENRICH SCHEMES
-# ============================================================
-
-def enrich_schemes(schemes, profile):
-    result = []
-
-    for scheme in schemes:
-
-        item = dict(scheme)
-
-        match = calculate_scheme_match(
-            item,
-            profile,
-        )
-
-        item["match_score"] = match["score"]
-        item["match_level"] = match["level"]
-        item["match_reasons"] = match["reasons"]
-
-        result.append(item)
-
-    result.sort(
-        key=lambda x: x.get("match_score", 0),
-        reverse=True,
+    item["match_score"] = score_map.get(
+        category,
+        75
     )
 
-    return result
+    item["official_verified"] = (
+        is_official_scheme(item)
+    )
+
+    return item
 
 
 # ============================================================
-# MAIN GOVERNMENT SCHEMES PAGE
+# PREPARE ALL SCHEMES
 # ============================================================
 
-@government_bp.route("/government", methods=["GET"])
+def prepare_schemes(schemes):
+
+    return [
+        prepare_scheme(scheme)
+        for scheme in schemes
+    ]
+
+
+# ============================================================
+# GOVERNMENT PAGE
+# ============================================================
+
+@government_bp.route(
+    "/government"
+)
 def government():
 
-    if not farmer_required():
-        flash(
-            "Please login as a farmer to access government schemes.",
-            "warning",
-        )
-
-        return redirect(
-            url_for("auth.login")
-        )
-
-    try:
-        profile = get_farmer_profile()
-
-        schemes = get_schemes_from_database()
-
-        schemes = enrich_schemes(
-            schemes,
-            profile,
-        )
-
-        categories = sorted(
-            {
-                str(s.get("category", "")).strip()
-                for s in schemes
-                if s.get("category")
-            }
-        )
-
-        return render_template(
-            "government.html",
-            schemes=schemes,
-            categories=categories,
-            profile=profile,
-            language=session.get(
-                "language",
-                "en",
-            ),
-        )
-
-    except Exception as exc:
-
-        logger.exception(
-            "Government schemes page error"
-        )
-
-        return render_template(
-            "government.html",
-            schemes=DEFAULT_SCHEMES,
-            categories=[
-                "Income Support",
-                "Crop Insurance",
-                "Credit",
-                "Irrigation",
-                "Soil",
-                "Market",
-                "Energy",
-                "Infrastructure",
-            ],
-            profile={},
-            language=session.get(
-                "language",
-                "en",
-            ),
-            error="Unable to load live scheme data.",
-        )
-
-
-# ============================================================
-# API â€” ALL SCHEMES
-# ============================================================
-
-@government_bp.route(
-    "/api/government/schemes",
-    methods=["GET"],
-)
-def api_government_schemes():
-
-    if not farmer_required():
-        return jsonify({
-            "success": False,
-            "message": "Farmer login required.",
-        }), 401
-
     try:
 
-        profile = get_farmer_profile()
+        schemes = get_schemes()
 
-        schemes = get_schemes_from_database()
+        # Search
+        search = request.args.get(
+            "search",
+            ""
+        ).strip()
 
-        schemes = enrich_schemes(
-            schemes,
-            profile,
-        )
+        # Category
+        category = request.args.get(
+            "category",
+            ""
+        ).strip()
 
-        search = normalize_text(
-            request.args.get("search")
-        )
-
-        category = normalize_text(
-            request.args.get("category")
-        )
-
+        # Apply search
         if search:
+
+            schemes = search_schemes(
+                search
+            )
+
+        # Apply category
+        if category and category.lower() != "all":
+
             schemes = [
                 scheme
                 for scheme in schemes
-                if (
-                    search in normalize_text(
-                        scheme.get("name")
-                    )
-                    or search in normalize_text(
-                        scheme.get("purpose")
-                    )
-                    or search in normalize_text(
-                        scheme.get("department")
-                    )
-                    or search in normalize_text(
-                        scheme.get("category")
-                    )
-                )
+                if scheme.get(
+                    "category",
+                    ""
+                ).lower()
+                == category.lower()
             ]
 
-        if category and category != "all":
-            schemes = [
-                scheme
-                for scheme in schemes
-                if normalize_text(
-                    scheme.get("category")
-                ) == category
-            ]
+        schemes = prepare_schemes(
+            schemes
+        )
 
-        return jsonify({
-            "success": True,
-            "count": len(schemes),
-            "schemes": schemes,
-            "generated_at": datetime.utcnow().isoformat(),
-        })
+        categories = get_scheme_categories()
 
-    except Exception as exc:
+        statistics = get_scheme_statistics()
+
+        # ----------------------------------------------------
+        # FARMER PROFILE
+        # ----------------------------------------------------
+
+        farmer_name = session.get(
+            "name",
+            "किसान"
+        )
+
+        farmer_role = session.get(
+            "role",
+            "farmer"
+        )
+
+        farmer_state = session.get(
+            "state",
+            "Maharashtra"
+        )
+
+        farmer_district = session.get(
+            "district",
+            "Nagpur"
+        )
+
+        profile = {
+
+            "name":
+                farmer_name,
+
+            "role":
+                farmer_role,
+
+            "state":
+                farmer_state,
+
+            "district":
+                farmer_district
+
+        }
+
+        # ----------------------------------------------------
+        # RENDER
+        # ----------------------------------------------------
+
+        return render_template(
+
+            "government.html",
+
+            schemes=schemes,
+
+            categories=categories,
+
+            profile=profile,
+
+            statistics=statistics,
+
+            total_schemes=len(
+                schemes
+            ),
+
+            search_query=search,
+
+            selected_category=category
+
+        )
+
+    except Exception as e:
 
         logger.exception(
-            "Government scheme API error"
+            "Government page error"
+        )
+
+        return render_template(
+
+            "government.html",
+
+            schemes=[],
+
+            categories=[],
+
+            profile={},
+
+            statistics={
+
+                "total": 0,
+
+                "categories": 0,
+
+                "departments": 0,
+
+                "official_links": 0
+
+            },
+
+            total_schemes=0,
+
+            search_query="",
+
+            selected_category="",
+
+            error=str(e)
+
+        )
+
+
+# ============================================================
+# API - ALL SCHEMES
+# ============================================================
+
+@government_bp.route(
+    "/api/government/schemes"
+)
+def government_schemes_api():
+
+    try:
+
+        search = request.args.get(
+            "search",
+            ""
+        ).strip()
+
+        category = request.args.get(
+            "category",
+            ""
+        ).strip()
+
+        schemes = get_schemes()
+
+        # Search
+        if search:
+
+            schemes = search_schemes(
+                search
+            )
+
+        # Category
+        if category and category.lower() != "all":
+
+            schemes = [
+                scheme
+                for scheme in schemes
+                if scheme.get(
+                    "category",
+                    ""
+                ).lower()
+                == category.lower()
+            ]
+
+        schemes = prepare_schemes(
+            schemes
         )
 
         return jsonify({
-            "success": False,
-            "message": "Unable to load government schemes.",
-            "error": str(exc),
+
+            "success":
+                True,
+
+            "count":
+                len(schemes),
+
+            "schemes":
+                schemes
+
+        })
+
+    except Exception as e:
+
+        logger.exception(
+            "Government schemes API error"
+        )
+
+        return jsonify({
+
+            "success":
+                False,
+
+            "count":
+                0,
+
+            "schemes":
+                [],
+
+            "error":
+                str(e)
+
         }), 500
 
 
 # ============================================================
-# API â€” PERSONALIZED SCHEMES
+# API - SINGLE SCHEME
 # ============================================================
 
 @government_bp.route(
-    "/api/government/recommendations",
-    methods=["GET"],
+    "/api/government/schemes/<string:scheme_name>"
 )
-def api_government_recommendations():
-
-    if not farmer_required():
-        return jsonify({
-            "success": False,
-            "message": "Farmer login required.",
-        }), 401
+def government_scheme_detail(
+    scheme_name
+):
 
     try:
 
-        profile = get_farmer_profile()
-
-        schemes = get_schemes_from_database()
-
-        schemes = enrich_schemes(
-            schemes,
-            profile,
+        scheme = get_scheme(
+            scheme_name
         )
 
-        limit = request.args.get(
-            "limit",
-            5,
-        )
+        if not scheme:
 
-        try:
-            limit = int(limit)
-        except (TypeError, ValueError):
-            limit = 5
-
-        limit = max(
-            1,
-            min(limit, 20),
-        )
-
-        recommendations = schemes[:limit]
-
-        return jsonify({
-            "success": True,
-            "profile": profile,
-            "recommendations": recommendations,
-            "count": len(recommendations),
-        })
-
-    except Exception as exc:
-
-        logger.exception(
-            "Government recommendation error"
-        )
-
-        return jsonify({
-            "success": False,
-            "message": "Unable to generate scheme recommendations.",
-            "error": str(exc),
-        }), 500
-
-
-# ============================================================
-# API â€” SINGLE SCHEME
-# ============================================================
-
-@government_bp.route(
-    "/api/government/schemes/<int:scheme_id>",
-    methods=["GET"],
-)
-def api_single_scheme(scheme_id):
-
-    if not farmer_required():
-        return jsonify({
-            "success": False,
-            "message": "Farmer login required.",
-        }), 401
-
-    conn = None
-
-    try:
-
-        ensure_scheme_table()
-
-        conn = get_db_connection()
-        cursor = conn.cursor()
-
-        cursor.execute(
-            """
-            SELECT
-                id,
-                name,
-                department,
-                purpose,
-                eligibility,
-                link,
-                category,
-                state,
-                active,
-                created_at,
-                updated_at
-            FROM government_schemes
-            WHERE id = %s
-              AND active = TRUE
-            LIMIT 1
-            """,
-            (scheme_id,),
-        )
-
-        row = cursor.fetchone()
-
-        cursor.close()
-
-        if not row:
             return jsonify({
-                "success": False,
-                "message": "Scheme not found.",
+
+                "success":
+                    False,
+
+                "message":
+                    "Scheme not found"
+
             }), 404
 
-        if isinstance(row, dict):
-            scheme = dict(row)
-        else:
-            columns = [
-                "id",
-                "name",
-                "department",
-                "purpose",
-                "eligibility",
-                "link",
-                "category",
-                "state",
-                "active",
-                "created_at",
-                "updated_at",
-            ]
-
-            scheme = dict(
-                zip(columns, row)
-            )
-
-        match = calculate_scheme_match(
-            scheme,
-            get_farmer_profile(),
+        scheme = prepare_scheme(
+            scheme
         )
 
-        scheme.update({
-            "match_score": match["score"],
-            "match_level": match["level"],
-            "match_reasons": match["reasons"],
-        })
-
         return jsonify({
-            "success": True,
-            "scheme": scheme,
+
+            "success":
+                True,
+
+            "scheme":
+                scheme
+
         })
 
-    except Exception as exc:
+    except Exception as e:
 
         logger.exception(
-            "Single scheme API error"
+            "Scheme detail error"
         )
 
         return jsonify({
-            "success": False,
-            "message": "Unable to load scheme.",
-            "error": str(exc),
-        }), 500
 
-    finally:
-        if conn:
-            conn.close()
+            "success":
+                False,
+
+            "message":
+                str(e)
+
+        }), 500
 
 
 # ============================================================
-# API â€” FARMER PROFILE FOR SCHEME MATCHING
+# API - CATEGORIES
 # ============================================================
 
 @government_bp.route(
-    "/api/government/profile",
-    methods=["GET"],
+    "/api/government/categories"
 )
-def api_government_profile():
-
-    if not farmer_required():
-        return jsonify({
-            "success": False,
-            "message": "Farmer login required.",
-        }), 401
+def government_categories_api():
 
     try:
 
-        profile = get_farmer_profile()
+        categories = get_scheme_categories()
 
         return jsonify({
-            "success": True,
-            "profile": profile,
+
+            "success":
+                True,
+
+            "categories":
+                categories
+
         })
 
-    except Exception as exc:
+    except Exception as e:
 
         return jsonify({
-            "success": False,
-            "message": "Unable to load farmer profile.",
-            "error": str(exc),
+
+            "success":
+                False,
+
+            "categories":
+                [],
+
+            "error":
+                str(e)
+
         }), 500
 
 
 # ============================================================
-# API â€” CATEGORIES
+# API - RECOMMENDATIONS
 # ============================================================
 
 @government_bp.route(
-    "/api/government/categories",
-    methods=["GET"],
+    "/api/government/recommendations"
 )
-def api_government_categories():
-
-    if not farmer_required():
-        return jsonify({
-            "success": False,
-            "message": "Farmer login required.",
-        }), 401
+def government_recommendations_api():
 
     try:
 
-        schemes = get_schemes_from_database()
+        need = request.args.get(
+            "need",
+            ""
+        ).strip()
 
-        categories = sorted(
-            {
-                str(
-                    scheme.get(
-                        "category",
-                        "",
-                    )
-                ).strip()
-                for scheme in schemes
-                if scheme.get("category")
-            }
+        if not need:
+
+            return jsonify({
+
+                "success":
+                    True,
+
+                "count":
+                    0,
+
+                "recommendations":
+                    []
+
+            })
+
+        recommendations = recommend_schemes(
+            need
+        )
+
+        recommendations = prepare_schemes(
+            recommendations
         )
 
         return jsonify({
-            "success": True,
-            "categories": categories,
-        })
 
-    except Exception as exc:
+            "success":
+                True,
 
-        return jsonify({
-            "success": False,
-            "message": "Unable to load categories.",
-            "error": str(exc),
-        }), 500
-
-
-# ============================================================
-# ADMIN â€” ADD SCHEME
-# ============================================================
-
-@government_bp.route(
-    "/api/government/schemes",
-    methods=["POST"],
-)
-def create_scheme():
-
-    role = str(
-        session.get("role", "")
-    ).strip().lower()
-
-    if role != "admin":
-        return jsonify({
-            "success": False,
-            "message": "Admin access required.",
-        }), 403
-
-    data = request.get_json(
-        silent=True
-    ) or {}
-
-    name = str(
-        data.get("name", "")
-    ).strip()
-
-    if not name:
-        return jsonify({
-            "success": False,
-            "message": "Scheme name is required.",
-        }), 400
-
-    conn = None
-
-    try:
-
-        ensure_scheme_table()
-
-        conn = get_db_connection()
-        cursor = conn.cursor()
-
-        cursor.execute(
-            """
-            INSERT INTO government_schemes (
-                name,
-                department,
-                purpose,
-                eligibility,
-                link,
-                category,
-                state,
-                active
-            )
-            VALUES (
-                %s, %s, %s, %s,
-                %s, %s, %s, TRUE
-            )
-            RETURNING id
-            """,
-            (
-                name,
-                data.get("department"),
-                data.get("purpose"),
-                data.get("eligibility"),
-                data.get("link"),
-                data.get("category"),
-                data.get(
-                    "state",
-                    "All India",
+            "count":
+                len(
+                    recommendations
                 ),
-            ),
-        )
 
-        row = cursor.fetchone()
+            "recommendations":
+                recommendations
 
-        conn.commit()
+        })
 
-        cursor.close()
-
-        scheme_id = (
-            row["id"]
-            if isinstance(row, dict)
-            else row[0]
-        )
-
-        return jsonify({
-            "success": True,
-            "message": "Government scheme added successfully.",
-            "scheme_id": scheme_id,
-        }), 201
-
-    except Exception as exc:
-
-        if conn:
-            conn.rollback()
+    except Exception as e:
 
         logger.exception(
-            "Unable to create scheme"
+            "Recommendation API error"
         )
 
         return jsonify({
-            "success": False,
-            "message": "Unable to create scheme.",
-            "error": str(exc),
-        }), 500
 
-    finally:
-        if conn:
-            conn.close()
+            "success":
+                False,
+
+            "count":
+                0,
+
+            "recommendations":
+                [],
+
+            "error":
+                str(e)
+
+        }), 500
 
 
 # ============================================================
-# ADMIN â€” UPDATE SCHEME
+# API - STATISTICS
 # ============================================================
 
 @government_bp.route(
-    "/api/government/schemes/<int:scheme_id>",
-    methods=["PUT"],
+    "/api/government/statistics"
 )
-def update_scheme(scheme_id):
-
-    role = str(
-        session.get("role", "")
-    ).strip().lower()
-
-    if role != "admin":
-        return jsonify({
-            "success": False,
-            "message": "Admin access required.",
-        }), 403
-
-    data = request.get_json(
-        silent=True
-    ) or {}
-
-    conn = None
+def government_statistics_api():
 
     try:
 
-        ensure_scheme_table()
-
-        conn = get_db_connection()
-        cursor = conn.cursor()
-
-        cursor.execute(
-            """
-            UPDATE government_schemes
-            SET
-                name = COALESCE(%s, name),
-                department = COALESCE(%s, department),
-                purpose = COALESCE(%s, purpose),
-                eligibility = COALESCE(%s, eligibility),
-                link = COALESCE(%s, link),
-                category = COALESCE(%s, category),
-                state = COALESCE(%s, state),
-                active = COALESCE(%s, active),
-                updated_at = CURRENT_TIMESTAMP
-            WHERE id = %s
-            """,
-            (
-                data.get("name"),
-                data.get("department"),
-                data.get("purpose"),
-                data.get("eligibility"),
-                data.get("link"),
-                data.get("category"),
-                data.get("state"),
-                data.get("active"),
-                scheme_id,
-            ),
-        )
-
-        if cursor.rowcount == 0:
-            conn.rollback()
-
-            return jsonify({
-                "success": False,
-                "message": "Scheme not found.",
-            }), 404
-
-        conn.commit()
-
-        cursor.close()
+        statistics = get_scheme_statistics()
 
         return jsonify({
-            "success": True,
-            "message": "Government scheme updated successfully.",
+
+            "success":
+                True,
+
+            "statistics":
+                statistics
+
         })
 
-    except Exception as exc:
-
-        if conn:
-            conn.rollback()
-
-        logger.exception(
-            "Unable to update scheme"
-        )
+    except Exception as e:
 
         return jsonify({
-            "success": False,
-            "message": "Unable to update scheme.",
-            "error": str(exc),
-        }), 500
 
-    finally:
-        if conn:
-            conn.close()
+            "success":
+                False,
+
+            "error":
+                str(e)
+
+        }), 500
 
 
 # ============================================================
-# ADMIN â€” DELETE / DEACTIVATE SCHEME
+# API - HEALTH
 # ============================================================
 
 @government_bp.route(
-    "/api/government/schemes/<int:scheme_id>",
-    methods=["DELETE"],
-)
-def delete_scheme(scheme_id):
-
-    role = str(
-        session.get("role", "")
-    ).strip().lower()
-
-    if role != "admin":
-        return jsonify({
-            "success": False,
-            "message": "Admin access required.",
-        }), 403
-
-    conn = None
-
-    try:
-
-        ensure_scheme_table()
-
-        conn = get_db_connection()
-        cursor = conn.cursor()
-
-        # Soft delete keeps historical records safe.
-        cursor.execute(
-            """
-            UPDATE government_schemes
-            SET
-                active = FALSE,
-                updated_at = CURRENT_TIMESTAMP
-            WHERE id = %s
-            """,
-            (scheme_id,),
-        )
-
-        if cursor.rowcount == 0:
-            conn.rollback()
-
-            return jsonify({
-                "success": False,
-                "message": "Scheme not found.",
-            }), 404
-
-        conn.commit()
-
-        cursor.close()
-
-        return jsonify({
-            "success": True,
-            "message": "Government scheme removed successfully.",
-        })
-
-    except Exception as exc:
-
-        if conn:
-            conn.rollback()
-
-        logger.exception(
-            "Unable to delete scheme"
-        )
-
-        return jsonify({
-            "success": False,
-            "message": "Unable to delete scheme.",
-            "error": str(exc),
-        }), 500
-
-    finally:
-        if conn:
-            conn.close()
-
-
-# ============================================================
-# HEALTH CHECK
-# ============================================================
-
-@government_bp.route(
-    "/api/government/health",
-    methods=["GET"],
+    "/api/government/health"
 )
 def government_health():
 
-    conn = None
-
     try:
 
-        conn = get_db_connection()
-        cursor = conn.cursor()
-
-        cursor.execute(
-            "SELECT 1"
-        )
-
-        cursor.fetchone()
-
-        cursor.close()
+        schemes = get_schemes()
 
         return jsonify({
-            "success": True,
-            "service": "government_schemes",
-            "database": "connected",
-            "status": "healthy",
-            "timestamp": datetime.utcnow().isoformat(),
+
+            "success":
+                True,
+
+            "status":
+                "healthy",
+
+            "scheme_count":
+                len(schemes),
+
+            "message":
+                "Government Scheme Intelligence Service is working."
+
         })
 
-    except Exception as exc:
+    except Exception as e:
 
         return jsonify({
-            "success": False,
-            "service": "government_schemes",
-            "database": "disconnected",
-            "status": "error",
-            "error": str(exc),
+
+            "success":
+                False,
+
+            "status":
+                "error",
+
+            "scheme_count":
+                0,
+
+            "error":
+                str(e)
+
         }), 500
-
-    finally:
-        if conn:
-            conn.close()
-
-
-# ============================================================
-# BLUEPRINT EXPORT
-# ============================================================
-
-__all__ = [
-    "government_bp",
-]
