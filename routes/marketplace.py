@@ -170,232 +170,14 @@ def execute_fetchall(
 # =========================================================
 
 def create_marketplace_tables():
-
-    conn = None
-
+    """Backward-compatible wrapper around the central DB initializer."""
     try:
-
-        conn = get_db()
-
-        with conn.cursor() as cur:
-
-            # -------------------------------------------------
-            # PRODUCTS
-            # -------------------------------------------------
-
-            cur.execute("""
-                CREATE TABLE IF NOT EXISTS products (
-
-                    id BIGSERIAL PRIMARY KEY,
-
-                    farmer_id BIGINT,
-
-                    product_name VARCHAR(255) NOT NULL,
-
-                    category VARCHAR(100),
-
-                    description TEXT,
-
-                    price NUMERIC(12,2)
-                        DEFAULT 0,
-
-                    quantity NUMERIC(12,2)
-                        DEFAULT 0,
-
-                    unit VARCHAR(30)
-                        DEFAULT 'Kg',
-
-                    image VARCHAR(500)
-                        DEFAULT 'no-image.png',
-
-                    location VARCHAR(255),
-
-                    status VARCHAR(30)
-                        DEFAULT 'active',
-
-                    created_at TIMESTAMP
-                        DEFAULT CURRENT_TIMESTAMP,
-
-                    updated_at TIMESTAMP
-                        DEFAULT CURRENT_TIMESTAMP
-                )
-            """)
-
-            # -------------------------------------------------
-            # CART
-            # -------------------------------------------------
-
-            cur.execute("""
-                CREATE TABLE IF NOT EXISTS cart (
-
-                    id BIGSERIAL PRIMARY KEY,
-
-                    consumer_id BIGINT NOT NULL,
-
-                    product_id BIGINT NOT NULL,
-
-                    quantity NUMERIC(12,2)
-                        DEFAULT 1,
-
-                    created_at TIMESTAMP
-                        DEFAULT CURRENT_TIMESTAMP,
-
-                    UNIQUE (
-                        consumer_id,
-                        product_id
-                    )
-                )
-            """)
-
-            # -------------------------------------------------
-            # WISHLIST
-            # -------------------------------------------------
-
-            cur.execute("""
-                CREATE TABLE IF NOT EXISTS wishlist (
-
-                    id BIGSERIAL PRIMARY KEY,
-
-                    consumer_id BIGINT NOT NULL,
-
-                    product_id BIGINT NOT NULL,
-
-                    created_at TIMESTAMP
-                        DEFAULT CURRENT_TIMESTAMP,
-
-                    UNIQUE (
-                        consumer_id,
-                        product_id
-                    )
-                )
-            """)
-
-            # -------------------------------------------------
-            # ORDERS
-            # -------------------------------------------------
-
-            cur.execute("""
-                CREATE TABLE IF NOT EXISTS orders (
-
-                    id BIGSERIAL PRIMARY KEY,
-
-                    consumer_id BIGINT NOT NULL,
-
-                    farmer_id BIGINT NOT NULL,
-
-                    total_amount NUMERIC(12,2)
-                        DEFAULT 0,
-
-                    status VARCHAR(50)
-                        DEFAULT 'Pending',
-
-                    delivery_address TEXT,
-
-                    city VARCHAR(100),
-
-                    pincode VARCHAR(10),
-
-                    payment_method VARCHAR(100)
-                        DEFAULT 'Cash on Delivery',
-
-                    created_at TIMESTAMP
-                        DEFAULT CURRENT_TIMESTAMP,
-
-                    updated_at TIMESTAMP
-                        DEFAULT CURRENT_TIMESTAMP
-                )
-            """)
-
-            # -------------------------------------------------
-            # ORDER ITEMS
-            # -------------------------------------------------
-
-            cur.execute("""
-                CREATE TABLE IF NOT EXISTS order_items (
-
-                    id BIGSERIAL PRIMARY KEY,
-
-                    order_id BIGINT NOT NULL,
-
-                    product_id BIGINT NOT NULL,
-
-                    quantity NUMERIC(12,2)
-                        DEFAULT 1,
-
-                    price NUMERIC(12,2)
-                        DEFAULT 0,
-
-                    total NUMERIC(12,2)
-                        DEFAULT 0
-                )
-            """)
-
-            # -------------------------------------------------
-            # INDEXES
-            # -------------------------------------------------
-
-            cur.execute("""
-                CREATE INDEX IF NOT EXISTS
-                idx_products_farmer
-                ON products(farmer_id)
-            """)
-
-            cur.execute("""
-                CREATE INDEX IF NOT EXISTS
-                idx_products_status
-                ON products(status)
-            """)
-
-            cur.execute("""
-                CREATE INDEX IF NOT EXISTS
-                idx_products_category
-                ON products(category)
-            """)
-
-            cur.execute("""
-                CREATE INDEX IF NOT EXISTS
-                idx_cart_consumer
-                ON cart(consumer_id)
-            """)
-
-            cur.execute("""
-                CREATE INDEX IF NOT EXISTS
-                idx_wishlist_consumer
-                ON wishlist(consumer_id)
-            """)
-
-            cur.execute("""
-                CREATE INDEX IF NOT EXISTS
-                idx_orders_consumer
-                ON orders(consumer_id)
-            """)
-
-            cur.execute("""
-                CREATE INDEX IF NOT EXISTS
-                idx_orders_farmer
-                ON orders(farmer_id)
-            """)
-
-        conn.commit()
-
-        print(
-            "Marketplace PostgreSQL tables ready."
-        )
-
+        from database.db import init_db
+        init_db()
+        return True
     except Exception as e:
-
-        if conn:
-            conn.rollback()
-
-        print(
-            "MARKETPLACE TABLE ERROR:",
-            repr(e)
-        )
-
-    finally:
-
-        if conn:
-            conn.close()
+        print("MARKETPLACE TABLE INIT ERROR:", repr(e))
+        return False
 
 
 # =========================================================
@@ -498,7 +280,7 @@ def farmer_marketplace():
             conn,
             """
             SELECT *
-            FROM products
+            FROM marketplace_products
             WHERE farmer_id = %s
             ORDER BY id DESC
             """,
@@ -563,7 +345,7 @@ def farmer_products():
             conn,
             """
             SELECT *
-            FROM products
+            FROM marketplace_products
             WHERE farmer_id = %s
             ORDER BY id DESC
             """,
@@ -610,7 +392,7 @@ def farmer_products():
 # ADD PRODUCT
 # =========================================================
 
-@marketplace_bp.route("/marketplace/add-product", methods=["GET", "POST"])
+@marketplace_bp.route("/add-product", methods=["GET", "POST"])
 def add_product():
 
     if not farmer_only():
@@ -759,7 +541,7 @@ def add_product():
 
             cur.execute(
                 """
-                INSERT INTO products
+                INSERT INTO marketplace_products
                 (
                     farmer_id,
                     product_name,
@@ -867,7 +649,7 @@ def edit_product(product_id):
             conn,
             """
             SELECT *
-            FROM products
+            FROM marketplace_products
             WHERE id = %s
               AND farmer_id = %s
             """,
@@ -1020,7 +802,7 @@ def edit_product(product_id):
 
             cur.execute(
                 """
-                UPDATE products
+                UPDATE marketplace_products
                 SET
                     product_name = %s,
                     category = %s,
@@ -1117,7 +899,7 @@ def delete_product(product_id):
             conn,
             """
             SELECT id
-            FROM products
+            FROM marketplace_products
             WHERE id = %s
               AND farmer_id = %s
             """,
@@ -1159,7 +941,7 @@ def delete_product(product_id):
                 AND order_id IN (
                     SELECT id
                     FROM orders
-                    WHERE status = 'Cancelled'
+                    WHERE delivery_status = 'Cancelled'
                 )
                 """,
                 (product_id,)
@@ -1167,7 +949,7 @@ def delete_product(product_id):
 
             cur.execute(
                 """
-                DELETE FROM products
+                DELETE FROM marketplace_products
                 WHERE id = %s
                   AND farmer_id = %s
                 """,
@@ -1232,7 +1014,7 @@ def product_status(product_id):
             conn,
             """
             SELECT status, quantity
-            FROM products
+            FROM marketplace_products
             WHERE id = %s
               AND farmer_id = %s
             """,
@@ -1292,7 +1074,7 @@ def product_status(product_id):
 
             cur.execute(
                 """
-                UPDATE products
+                UPDATE marketplace_products
                 SET
                     status = %s,
                     updated_at = CURRENT_TIMESTAMP
@@ -1366,7 +1148,7 @@ def consumer_marketplace():
             SELECT
                 p.*,
                 u.name AS farmer_name
-            FROM products p
+            FROM marketplace_products p
             LEFT JOIN users u
                 ON p.farmer_id = u.id
             WHERE LOWER(
@@ -1463,7 +1245,7 @@ def consumer_marketplace():
             conn,
             """
             SELECT DISTINCT category
-            FROM products
+            FROM marketplace_products
             WHERE category IS NOT NULL
               AND TRIM(category) <> ''
             ORDER BY category
@@ -1528,7 +1310,7 @@ def product_details(product_id):
                 p.*,
                 u.name AS farmer_name,
                 u.mobile AS farmer_mobile
-            FROM products p
+            FROM marketplace_products p
             LEFT JOIN users u
                 ON p.farmer_id = u.id
             WHERE p.id = %s
@@ -1652,7 +1434,7 @@ def add_to_cart():
             conn,
             """
             SELECT *
-            FROM products
+            FROM marketplace_products
             WHERE id = %s
               AND LOWER(
                     COALESCE(
@@ -1688,7 +1470,7 @@ def add_to_cart():
             """
             SELECT *
             FROM cart
-            WHERE consumer_id = %s
+            WHERE user_id = %s
               AND product_id = %s
             """,
             (
@@ -1750,7 +1532,7 @@ def add_to_cart():
                     """
                     INSERT INTO cart
                     (
-                        consumer_id,
+                        user_id,
                         product_id,
                         quantity
                     )
@@ -1778,7 +1560,7 @@ def add_to_cart():
                 0
             ) AS count
             FROM cart
-            WHERE consumer_id = %s
+            WHERE user_id = %s
             """,
             (
                 session["user_id"],
@@ -1859,13 +1641,13 @@ def cart():
 
             FROM cart c
 
-            JOIN products p
+            JOIN marketplace_products p
                 ON c.product_id = p.id
 
             LEFT JOIN users u
                 ON p.farmer_id = u.id
 
-            WHERE c.consumer_id = %s
+            WHERE c.user_id = %s
 
             ORDER BY c.id DESC
             """,
@@ -1989,10 +1771,10 @@ def update_cart():
                 p.quantity AS stock,
                 p.status
             FROM cart c
-            JOIN products p
+            JOIN marketplace_products p
                 ON c.product_id = p.id
             WHERE c.id = %s
-              AND c.consumer_id = %s
+              AND c.user_id = %s
             """,
             (
                 cart_id,
@@ -2032,7 +1814,7 @@ def update_cart():
                 UPDATE cart
                 SET quantity = %s
                 WHERE id = %s
-                  AND consumer_id = %s
+                  AND user_id = %s
                 """,
                 (
                     quantity,
@@ -2089,7 +1871,7 @@ def remove_cart_item_internal(
                 """
                 DELETE FROM cart
                 WHERE id = %s
-                  AND consumer_id = %s
+                  AND user_id = %s
                 """,
                 (
                     cart_id,
@@ -2194,7 +1976,7 @@ def clear_cart():
             cur.execute(
                 """
                 DELETE FROM cart
-                WHERE consumer_id = %s
+                WHERE user_id = %s
                 """,
                 (
                     session["user_id"],
@@ -2275,7 +2057,7 @@ def add_to_wishlist():
             conn,
             """
             SELECT id
-            FROM products
+            FROM marketplace_products
             WHERE id = %s
             """,
             (
@@ -2296,7 +2078,7 @@ def add_to_wishlist():
                 """
                 INSERT INTO wishlist
                 (
-                    consumer_id,
+                    user_id,
                     product_id
                 )
                 VALUES
@@ -2306,7 +2088,7 @@ def add_to_wishlist():
                 )
                 ON CONFLICT
                 (
-                    consumer_id,
+                    user_id,
                     product_id
                 )
                 DO NOTHING
@@ -2382,10 +2164,10 @@ def wishlist():
 
             FROM wishlist w
 
-            JOIN products p
+            JOIN marketplace_products p
                 ON w.product_id = p.id
 
-            WHERE w.consumer_id = %s
+            WHERE w.user_id = %s
 
             ORDER BY w.id DESC
             """,
@@ -2472,7 +2254,7 @@ def remove_from_wishlist():
                 """
                 DELETE FROM wishlist
                 WHERE id = %s
-                  AND consumer_id = %s
+                  AND user_id = %s
                 """,
                 (
                     wishlist_id,
@@ -2546,10 +2328,10 @@ def checkout():
 
             FROM cart c
 
-            JOIN products p
+            JOIN marketplace_products p
                 ON c.product_id = p.id
 
-            WHERE c.consumer_id = %s
+            WHERE c.user_id = %s
 
             ORDER BY c.id DESC
             """,
@@ -2803,10 +2585,10 @@ def checkout():
                     """
                     INSERT INTO orders
                     (
-                        consumer_id,
+                        buyer_id,
                         farmer_id,
                         total_amount,
-                        status,
+                        delivery_status,
                         delivery_address,
                         city,
                         pincode,
@@ -2867,7 +2649,7 @@ def checkout():
                     # Stock-safe update
                     cur.execute(
                         """
-                        UPDATE products
+                        UPDATE marketplace_products
                         SET
                             quantity =
                                 quantity - %s,
@@ -2906,7 +2688,7 @@ def checkout():
                             product_id,
                             quantity,
                             price,
-                            total
+                            total_amount
                         )
                         VALUES
                         (
@@ -2935,7 +2717,7 @@ def checkout():
             cur.execute(
                 """
                 DELETE FROM cart
-                WHERE consumer_id = %s
+                WHERE user_id = %s
                 """,
                 (
                     session["user_id"],
@@ -2956,24 +2738,25 @@ def checkout():
         )
 
     except Exception as e:
-
         if conn:
             conn.rollback()
 
-        print(
-            "CHECKOUT ERROR:",
-            repr(e)
-        )
+        import traceback
+
+        print("=" * 60)
+        print("CHECKOUT ERROR")
+        print("ERROR TYPE:", type(e).__name__)
+        print("ERROR:", repr(e))
+        traceback.print_exc()
+        print("=" * 60)
 
         flash(
-            f"Unable to place order: {str(e)}",
+            f"Unable to place order: {type(e).__name__}: {str(e)}",
             "danger"
         )
 
         return redirect(
-            url_for(
-                "marketplace.checkout"
-            )
+            url_for("marketplace.checkout")
         )
 
     finally:
@@ -3005,7 +2788,7 @@ def buy_now(product_id):
             conn,
             """
             SELECT *
-            FROM products
+            FROM marketplace_products
             WHERE id = %s
               AND LOWER(
                     COALESCE(
@@ -3093,24 +2876,50 @@ def place_order(product_id):
 
         conn = get_db()
 
-        product = execute_fetchone(
-            conn,
+        cur.execute(
             """
-            SELECT
-                id,
-                product_name,
-                price,
-                quantity,
+            INSERT INTO orders
+            (
+                buyer_id,
                 farmer_id,
-                status
-            FROM products
-            WHERE id = %s
-            FOR UPDATE
+                product_id,
+                quantity,
+                price,
+                total_amount,
+                delivery_status,
+                delivery_address,
+                city,
+                pincode,
+                payment_method
+            )
+            VALUES
+            (
+                %s, %s, %s, %s, %s, %s,
+                'Pending',
+                %s, %s, %s, %s
+            )
+            RETURNING id
             """,
             (
+                session["user_id"],
+                farmer_id,
                 product_id,
+                qty,
+                price,
+                total,
+                address,
+                city,
+                pincode,
+                payment_method
             )
         )
+
+        order_row = cur.fetchone()
+
+        if not order_row:
+            raise ValueError("Order ID was not generated.")
+
+        order_id = order_row["id"]
 
         product = row_to_dict(
             product
@@ -3273,7 +3082,7 @@ def place_order(product_id):
 
             cur.execute(
                 """
-                UPDATE products
+                UPDATE marketplace_products
                 SET
                     quantity =
                         quantity - %s,
@@ -3316,10 +3125,10 @@ def place_order(product_id):
                 """
                 INSERT INTO orders
                 (
-                    consumer_id,
+                    buyer_id,
                     farmer_id,
                     total_amount,
-                    status,
+                    delivery_status,
                     delivery_address,
                     city,
                     pincode,
@@ -3349,7 +3158,8 @@ def place_order(product_id):
                 )
             )
 
-            order_id = cur.fetchone()[0]
+            order_row = cur.fetchone()
+            order_id = order_row["id"]
 
             # -------------------------------------------------
             # ORDER ITEM
@@ -3363,7 +3173,7 @@ def place_order(product_id):
                     product_id,
                     quantity,
                     price,
-                    total
+                    total_amount
                 )
                 VALUES
                 (
@@ -3445,10 +3255,10 @@ def consumer_orders():
             """
             SELECT
                 o.id,
-                o.consumer_id,
+                o.buyer_id,
                 o.farmer_id,
                 o.total_amount,
-                o.status,
+                o.delivery_status AS status,
                 o.delivery_address,
                 o.city,
                 o.pincode,
@@ -3466,7 +3276,7 @@ def consumer_orders():
             LEFT JOIN users u
                 ON o.farmer_id = u.id
 
-            WHERE o.consumer_id = %s
+            WHERE o.buyer_id = %s
 
             ORDER BY o.id DESC
             """,
@@ -3491,7 +3301,7 @@ def consumer_orders():
                     oi.product_id,
                     oi.quantity,
                     oi.price,
-                    oi.total,
+                    oi.total_amount AS total,
 
                     p.product_name,
                     p.image,
@@ -3500,7 +3310,7 @@ def consumer_orders():
 
                 FROM order_items oi
 
-                LEFT JOIN products p
+                LEFT JOIN marketplace_products p
                     ON p.id = oi.product_id
 
                 WHERE oi.order_id = %s
@@ -3566,6 +3376,7 @@ def consumer_order_details(order_id):
             """
             SELECT
                 o.*,
+                o.delivery_status AS status,
 
                 COALESCE(
                     o.payment_method,
@@ -3581,7 +3392,7 @@ def consumer_order_details(order_id):
                 ON o.farmer_id = u.id
 
             WHERE o.id = %s
-              AND o.consumer_id = %s
+              AND o.buyer_id = %s
             """,
             (
                 order_id,
@@ -3614,7 +3425,7 @@ def consumer_order_details(order_id):
                 oi.product_id,
                 oi.quantity,
                 oi.price,
-                oi.total,
+                oi.total_amount AS total,
 
                 p.product_name,
                 p.category,
@@ -3623,7 +3434,7 @@ def consumer_order_details(order_id):
 
             FROM order_items oi
 
-            LEFT JOIN products p
+            LEFT JOIN marketplace_products p
                 ON p.id = oi.product_id
 
             WHERE oi.order_id = %s
@@ -3691,6 +3502,7 @@ def edit_consumer_order(order_id):
             """
             SELECT
                 o.*,
+                o.delivery_status AS status,
 
                 COALESCE(
                     o.payment_method,
@@ -3700,7 +3512,7 @@ def edit_consumer_order(order_id):
             FROM orders o
 
             WHERE o.id = %s
-              AND o.consumer_id = %s
+              AND o.buyer_id = %s
             """,
             (
                 order_id,
@@ -3845,7 +3657,7 @@ def edit_consumer_order(order_id):
                         updated_at =
                             CURRENT_TIMESTAMP
                     WHERE id = %s
-                      AND consumer_id = %s
+                      AND buyer_id = %s
                     """,
                     (
                         delivery_address,
@@ -3927,10 +3739,10 @@ def cancel_consumer_order(order_id):
             """
             SELECT
                 id,
-                status
+                delivery_status AS status
             FROM orders
             WHERE id = %s
-              AND consumer_id = %s
+              AND buyer_id = %s
             FOR UPDATE
             """,
             (
@@ -4008,7 +3820,7 @@ def cancel_consumer_order(order_id):
 
                 cur.execute(
                     """
-                    UPDATE products
+                    UPDATE marketplace_products
                     SET
                         quantity =
                             quantity + %s,
@@ -4033,11 +3845,11 @@ def cancel_consumer_order(order_id):
                 """
                 UPDATE orders
                 SET
-                    status = 'Cancelled',
+                    delivery_status = 'Cancelled',
                     updated_at =
                         CURRENT_TIMESTAMP
                 WHERE id = %s
-                  AND consumer_id = %s
+                  AND buyer_id = %s
                 """,
                 (
                     order_id,
@@ -4106,10 +3918,10 @@ def farmer_orders():
             """
             SELECT
                 o.id,
-                o.consumer_id,
+                o.buyer_id,
                 o.farmer_id,
                 o.total_amount,
-                o.status,
+                o.delivery_status AS status,
                 o.delivery_address,
                 o.city,
                 o.pincode,
@@ -4123,7 +3935,7 @@ def farmer_orders():
             FROM orders o
 
             LEFT JOIN users u
-                ON o.consumer_id = u.id
+                ON o.buyer_id = u.id
 
             WHERE o.farmer_id = %s
 
@@ -4151,7 +3963,7 @@ def farmer_orders():
                     oi.product_id,
                     oi.quantity,
                     oi.price,
-                    oi.total,
+                    oi.total_amount AS total,
 
                     p.product_name,
                     p.image,
@@ -4159,7 +3971,7 @@ def farmer_orders():
 
                 FROM order_items oi
 
-                LEFT JOIN products p
+                LEFT JOIN marketplace_products p
                     ON oi.product_id = p.id
 
                 WHERE oi.order_id = %s
@@ -4251,7 +4063,7 @@ def update_order_status(order_id):
             """
             SELECT
                 id,
-                status
+                delivery_status AS status
             FROM orders
             WHERE id = %s
               AND farmer_id = %s
@@ -4316,7 +4128,7 @@ def update_order_status(order_id):
 
                     cur.execute(
                         """
-                        UPDATE products
+                        UPDATE marketplace_products
                         SET
                             quantity =
                                 quantity + %s,
@@ -4343,7 +4155,7 @@ def update_order_status(order_id):
                 """
                 UPDATE orders
                 SET
-                    status = %s,
+                    delivery_status = %s,
                     updated_at =
                         CURRENT_TIMESTAMP
                 WHERE id = %s
@@ -4408,10 +4220,10 @@ def consumer_reports():
             """
             SELECT COUNT(*) AS count
             FROM orders
-            WHERE consumer_id = %s
+            WHERE buyer_id = %s
               AND LOWER(
                     COALESCE(
-                        status,
+                        delivery_status,
                         ''
                     )
                   ) != 'cancelled'
@@ -4442,10 +4254,10 @@ def consumer_reports():
                 0
             ) AS total
             FROM orders
-            WHERE consumer_id = %s
+            WHERE buyer_id = %s
               AND LOWER(
                     COALESCE(
-                        status,
+                        delivery_status,
                         ''
                     )
                   ) != 'cancelled'
@@ -4473,10 +4285,10 @@ def consumer_reports():
             """
             SELECT COUNT(*) AS count
             FROM orders
-            WHERE consumer_id = %s
+            WHERE buyer_id = %s
               AND LOWER(
                     COALESCE(
-                        status,
+                        delivery_status,
                         ''
                     )
                   ) = 'delivered'
@@ -4504,10 +4316,10 @@ def consumer_reports():
             """
             SELECT COUNT(*) AS count
             FROM orders
-            WHERE consumer_id = %s
+            WHERE buyer_id = %s
               AND LOWER(
                     COALESCE(
-                        status,
+                        delivery_status,
                         ''
                     )
                   )
@@ -4542,10 +4354,10 @@ def consumer_reports():
             """
             SELECT COUNT(*) AS count
             FROM orders
-            WHERE consumer_id = %s
+            WHERE buyer_id = %s
               AND LOWER(
                     COALESCE(
-                        status,
+                        delivery_status,
                         ''
                     )
                   ) = 'cancelled'
@@ -4578,10 +4390,10 @@ def consumer_reports():
             FROM order_items oi
             JOIN orders o
                 ON oi.order_id = o.id
-            WHERE o.consumer_id = %s
+            WHERE o.buyer_id = %s
               AND LOWER(
                     COALESCE(
-                        o.status,
+                        o.delivery_status AS status,
                         ''
                     )
                   ) != 'cancelled'
@@ -4618,7 +4430,7 @@ def consumer_reports():
                 ) AS quantity,
 
                 SUM(
-                    oi.total
+                    oi.total_amount
                 ) AS amount
 
             FROM order_items oi
@@ -4626,13 +4438,13 @@ def consumer_reports():
             JOIN orders o
                 ON oi.order_id = o.id
 
-            LEFT JOIN products p
+            LEFT JOIN marketplace_products p
                 ON oi.product_id = p.id
 
-            WHERE o.consumer_id = %s
+            WHERE o.buyer_id = %s
               AND LOWER(
                     COALESCE(
-                        o.status,
+                        o.delivery_status AS status,
                         ''
                     )
                   ) != 'cancelled'
@@ -4656,10 +4468,10 @@ def consumer_reports():
             SELECT
                 id,
                 total_amount,
-                status,
+                delivery_status,
                 created_at
             FROM orders
-            WHERE consumer_id = %s
+            WHERE buyer_id = %s
             ORDER BY id DESC
             LIMIT 10
             """,
@@ -4751,7 +4563,7 @@ def marketplace_summary():
             conn,
             """
             SELECT COUNT(*) AS count
-            FROM products
+            FROM marketplace_products
             WHERE LOWER(
                 COALESCE(status, 'active')
             ) = 'active'
@@ -4763,7 +4575,7 @@ def marketplace_summary():
             conn,
             """
             SELECT COUNT(*) AS count
-            FROM products
+            FROM marketplace_products
             WHERE farmer_id = %s
               AND quantity > 0
               AND quantity <= 5
@@ -4781,7 +4593,7 @@ def marketplace_summary():
                 0
             ) AS count
             FROM cart
-            WHERE consumer_id = %s
+            WHERE user_id = %s
             """,
             (
                 session["user_id"],
