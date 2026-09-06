@@ -11,3 +11,4 @@ psycopg2-binary
 python-dotenv
 mysql-connector-python==9.0.0
 openai>=1.0.0
+keras==2.15.0
