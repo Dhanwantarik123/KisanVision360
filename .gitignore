@@ -18,3 +18,4 @@ dataset_filtered/
 KerasCache/
 dataset_clean/
 dataset_filtered/
+.env
