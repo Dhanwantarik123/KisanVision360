@@ -1,0 +1,2976 @@
+﻿{% extends "base.html" %}
+
+{% block title %}KisanVision360+ | Farmer Tools & Machinery{% endblock %}
+
+{% block head %}
+<link rel="stylesheet"
+          href="{{ url_for('static', filename='css/tools.css') }}">
+<style>
+
+        :root {
+            --green-dark: #0b3d12;
+            --green: #1b5e20;
+            --green-light: #43a047;
+            --green-soft: #e8f5e9;
+
+            --orange: #fb8c00;
+            --orange-soft: #fff3e0;
+
+            --blue: #1565c0;
+            --blue-soft: #e3f2fd;
+
+            --purple: #6a1b9a;
+            --teal: #00897b;
+
+            --red: #c62828;
+
+            --text: #1f2937;
+            --muted: #64748b;
+
+            --white: #ffffff;
+            --border: #e2e8f0;
+
+            --shadow:
+                0 12px 35px rgba(15,23,42,0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background:
+                linear-gradient(
+                    135deg,
+                    #f4fbf4,
+                    #f8fafc
+                );
+            color: var(--text);
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+        }
+
+        .main-content {
+            padding-bottom: 50px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .topbar h1 {
+            margin: 0;
+            color: var(--green-dark);
+            font-size: clamp(24px, 4vw, 34px);
+        }
+
+        .topbar p {
+            margin: 6px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .language-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            box-shadow:
+                0 5px 18px rgba(15,23,42,0.04);
+        }
+
+        .status-icon {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: var(--green-soft);
+            color: var(--green);
+            flex-shrink: 0;
+        }
+
+        .status-item strong {
+            display: block;
+            font-size: 10px;
+        }
+
+        .status-item span {
+            display: block;
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 9px;
+        }
+
+        .machinery-hero {
+            position: relative;
+            overflow: hidden;
+            padding: 30px;
+            border-radius: 24px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #0b3d12,
+                    #1b5e20 55%,
+                    #43a047
+                );
+            color: white;
+            box-shadow:
+                0 18px 45px rgba(27,94,32,0.20);
+        }
+
+        .machinery-hero::after {
+            content: "🚜";
+            position: absolute;
+            right: 30px;
+            bottom: -20px;
+            font-size: 130px;
+            opacity: 0.10;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 760px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 11px;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.14);
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .machinery-hero h2 {
+            margin: 12px 0 8px;
+            font-size: clamp(24px, 4vw, 36px);
+        }
+
+        .machinery-hero p {
+            margin: 0;
+            max-width: 680px;
+            color: rgba(255,255,255,0.84);
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .control-panel {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 12px;
+            margin: 20px 0;
+            padding: 15px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow:
+                0 6px 20px rgba(15,23,42,0.05);
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 14px 12px 38px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            outline: none;
+            font-size: 12px;
+        }
+
+        .search-box input:focus {
+            border-color: var(--green-light);
+            box-shadow:
+                0 0 0 3px rgba(67,160,71,0.10);
+        }
+
+        .category-filter {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            border: none;
+            padding: 9px 12px;
+            border-radius: 9px;
+            cursor: pointer;
+            background: #f1f5f9;
+            color: #475569;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .filter-btn.active {
+            background: var(--green);
+            color: white;
+        }
+
+        .tool-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            padding: 15px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        .stat-card i {
+            color: var(--green);
+            font-size: 16px;
+        }
+
+        .stat-card strong {
+            display: block;
+            margin-top: 7px;
+            color: var(--green-dark);
+            font-size: 20px;
+        }
+
+        .stat-card span {
+            color: var(--muted);
+            font-size: 9px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            margin: 25px 0 14px;
+        }
+
+        .section-title h2 {
+            margin: 0;
+            color: var(--green-dark);
+            font-size: 21px;
+        }
+
+        .section-title p {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .result-count {
+            padding: 7px 11px;
+            border-radius: 20px;
+            color: var(--green);
+            background: var(--green-soft);
+            font-size: 9px;
+            font-weight: 800;
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(270px, 1fr)
+                );
+            gap: 20px;
+        }
+
+        .tool-card {
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow:
+                0 18px 40px rgba(15,23,42,0.13);
+        }
+
+        .tool-image-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-image {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .tool-card:hover .tool-image {
+            transform: scale(1.04);
+        }
+
+        .tool-stage {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 6px 9px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.93);
+            color: var(--green-dark);
+            font-size: 8px;
+            font-weight: 800;
+            box-shadow:
+                0 3px 10px rgba(0,0,0,0.12);
+        }
+
+        .tool-card-body {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            padding: 18px;
+        }
+
+        .tool-card h2 {
+            margin: 0 0 7px;
+            color: var(--green-dark);
+            font-size: 18px;
+        }
+
+        .tool-category {
+            display: inline-block;
+            width: fit-content;
+            padding: 5px 9px;
+            border-radius: 20px;
+            background: var(--green-soft);
+            color: var(--green);
+            font-size: 8px;
+            font-weight: 800;
+        }
+
+        .tool-use {
+            min-height: 56px;
+            margin: 12px 0;
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .tool-meta {
+            padding: 10px;
+            border-radius: 11px;
+            background: #f8fafc;
+        }
+
+        .tool-meta p {
+            margin: 4px 0;
+            font-size: 10px;
+        }
+
+        .tool-price {
+            color: var(--green);
+            font-weight: 800;
+        }
+
+        .tool-rent {
+            color: var(--teal);
+        }
+
+        .tool-subsidy {
+            color: var(--blue);
+        }
+
+        .tool-intelligence {
+            margin-top: 13px;
+            padding: 11px;
+            border-radius: 11px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #f0fdf4,
+                    #f8fafc
+                );
+            border: 1px solid #dcfce7;
+        }
+
+        .tool-intelligence strong {
+            display: block;
+            color: var(--green-dark);
+            font-size: 9px;
+        }
+
+        .tool-intelligence span {
+            display: block;
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 9px;
+            line-height: 1.5;
+        }
+
+        .tool-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 7px;
+            margin-top: auto;
+            padding-top: 15px;
+        }
+
+        .tool-buttons a,
+        .tool-buttons button {
+            width: 100%;
+            min-height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 8px 6px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 800;
+            transition:
+                transform 0.15s,
+                opacity 0.15s;
+        }
+
+        .tool-buttons a:hover,
+        .tool-buttons button:hover {
+            transform: translateY(-1px);
+            opacity: 0.88;
+        }
+
+        .buy-btn {
+            background: var(--green);
+            color: white;
+        }
+
+        .rent-btn {
+            background: var(--teal);
+            color: white;
+        }
+
+        .emi-btn {
+            background: var(--blue);
+            color: white;
+        }
+
+        .compare-btn {
+            background: var(--orange);
+            color: white;
+        }
+
+        .review-btn {
+            background: var(--purple);
+            color: white;
+        }
+
+        .details-btn {
+            background: #455a64;
+            color: white;
+        }
+
+        .decision-center {
+            margin-top: 25px;
+            padding: 24px;
+            border-radius: 20px;
+            background: #0f172a;
+            color: white;
+        }
+
+        .decision-center h2 {
+            margin: 0 0 7px;
+            font-size: 18px;
+        }
+
+        .decision-center > p {
+            margin: 0 0 18px;
+            color: #cbd5e1;
+            font-size: 10px;
+            line-height: 1.6;
+        }
+
+        .decision-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 9px;
+        }
+
+        .decision-item {
+            padding: 14px;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            background: rgba(255,255,255,0.06);
+        }
+
+        .decision-item i {
+            color: #86efac;
+            font-size: 15px;
+        }
+
+        .decision-item strong {
+            display: block;
+            margin-top: 8px;
+            font-size: 9px;
+        }
+
+        .decision-item span {
+            display: block;
+            margin-top: 4px;
+            color: #94a3b8;
+            font-size: 8px;
+            line-height: 1.5;
+        }
+
+        .empty-tools {
+            display: none;
+            padding: 45px 20px;
+            text-align: center;
+            background: white;
+            border: 2px dashed var(--border);
+            border-radius: 18px;
+        }
+
+        .empty-tools i {
+            color: #94a3b8;
+            font-size: 32px;
+        }
+
+        .empty-tools h3 {
+            margin: 10px 0 5px;
+        }
+
+        .empty-tools p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 25px;
+            padding: 11px 17px;
+            background: #455a64;
+            color: white;
+            border-radius: 9px;
+            text-decoration: none;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .kv-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(15,23,42,0.65);
+            backdrop-filter: blur(5px);
+        }
+
+        .kv-modal.active {
+            display: flex;
+        }
+
+        .modal-card {
+            width: min(470px, 100%);
+            padding: 24px;
+            background: white;
+            border-radius: 20px;
+            box-shadow:
+                0 25px 70px rgba(0,0,0,0.25);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: var(--green-dark);
+        }
+
+        .close-modal {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 50%;
+            background: #f1f5f9;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            margin-top: 15px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .modal-result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            background: var(--green-soft);
+            color: var(--green-dark);
+            font-weight: 700;
+        }
+
+        [dir="rtl"] .search-box i {
+            left: auto;
+            right: 13px;
+        }
+
+        [dir="rtl"] .search-box input {
+            padding-left: 14px;
+            padding-right: 38px;
+        }
+
+        @media (max-width: 1050px) {
+            .decision-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 850px) {
+            .status-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tool-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .control-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .topbar {
+                align-items: flex-start;
+            }
+
+            .language-status {
+                font-size: 8px;
+            }
+
+            .machinery-hero {
+                padding: 23px;
+            }
+
+            .machinery-hero::after {
+                display: none;
+            }
+
+            .status-bar {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .tool-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .decision-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .status-bar,
+            .tool-stats,
+            .decision-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tool-buttons {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+    </style>
+{% endblock %}
+
+{% block page_title %}Farmer Tools & Machinery{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<div class="main-content">
+
+        <div class="topbar">
+
+            <div>
+
+                <h1>
+                    🧠 Farmer Tools & Machinery
+                </h1>
+
+                <p>
+                    Machinery discovery, finance,
+                    comparison and farm-use intelligence
+                </p>
+
+            </div>
+
+            <div class="language-status">
+
+                <i class="fa-solid fa-language"></i>
+
+                {{ session.get('language', 'en')|upper }}
+
+                <span>•</span>
+
+                Global Language
+
+            </div>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="status-bar">
+
+            <div class="status-item">
+
+                <div class="status-icon">
+                    <i class="fa-solid fa-tractor"></i>
+                </div>
+
+                <div>
+                    <strong>Machinery Center</strong>
+                    <span>9 tools available</span>
+                </div>
+
+            </div>
+
+            <div class="status-item">
+
+                <div class="status-icon">
+                    <i class="fa-solid fa-calculator"></i>
+                </div>
+
+                <div>
+                    <strong>EMI Planning</strong>
+                    <span>Estimate ownership cost</span>
+                </div>
+
+            </div>
+
+            <div class="status-item">
+
+                <div class="status-icon">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                </div>
+
+                <div>
+                    <strong>Compare</strong>
+                    <span>Build your shortlist</span>
+                </div>
+
+            </div>
+
+            <div class="status-item">
+
+                <div class="status-icon">
+                    <i class="fa-solid fa-landmark"></i>
+                </div>
+
+                <div>
+                    <strong>Subsidy</strong>
+                    <span>Check applicable schemes</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- HERO -->
+
+        <section class="machinery-hero">
+
+            <div class="hero-content">
+
+                <div class="hero-badge">
+                    <i class="fa-solid fa-brain"></i>
+                    FARM MACHINERY INTELLIGENCE
+                </div>
+
+                <h2>
+                    Choose the right machine
+                    for your farm
+                </h2>
+
+                <p>
+                    Explore agricultural machinery by farm
+                    operation, compare options, estimate EMI,
+                    check reviews and connect machinery
+                    decisions with finance and government
+                    subsidy planning.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- SEARCH -->
+
+        <div class="control-panel">
+
+            <div class="search-box">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="text"
+                    id="toolSearch"
+                    placeholder="Search tractor, irrigation, harvesting..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+            <div class="category-filter">
+
+                <button
+                    type="button"
+                    class="filter-btn active"
+                    data-filter="all">
+                    All
+                </button>
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    data-filter="crop preparation">
+                    Preparation
+                </button>
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    data-filter="sowing">
+                    Sowing
+                </button>
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    data-filter="irrigation">
+                    Irrigation
+                </button>
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    data-filter="harvesting">
+                    Harvesting
+                </button>
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    data-filter="crop protection">
+                    Protection
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- STATS -->
+
+        <div class="tool-stats">
+
+            <div class="stat-card">
+
+                <i class="fa-solid fa-tractor"></i>
+
+                <strong id="totalTools">9</strong>
+
+                <span>Machinery Options</span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                <strong>EMI</strong>
+
+                <span>Finance Planning</span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <i class="fa-solid fa-scale-balanced"></i>
+
+                <strong id="compareCount">0</strong>
+
+                <span>Selected for Compare</span>
+
+            </div>
+
+            <div class="stat-card">
+
+                <i class="fa-solid fa-landmark"></i>
+
+                <strong>Subsidy</strong>
+
+                <span>Government Support</span>
+
+            </div>
+
+        </div>
+
+
+        <!-- SECTION -->
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>Machinery Catalog</h2>
+
+                <p>
+                    Select equipment according to your
+                    agricultural operation.
+                </p>
+
+            </div>
+
+            <div
+                class="result-count"
+                id="resultCount">
+                9 Tools
+            </div>
+
+        </div>
+
+
+        <!-- TOOL GRID -->
+
+        <div
+            class="tool-grid"
+            id="toolGrid">
+
+
+            <!-- TRACTOR -->
+
+            <article
+                class="tool-card"
+                data-name="tractor"
+                data-category="crop preparation">
+
+                <div class="tool-image-wrapper">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=800&q=80"
+                        class="tool-image"
+                        alt="Tractor"
+                        loading="lazy">
+
+                    <span class="tool-stage">
+                        CROP PREPARATION
+                    </span>
+
+                </div>
+
+                <div class="tool-card-body">
+
+                    <h2>🚜 Tractor</h2>
+
+                    <span class="tool-category">
+                        Crop Preparation
+                    </span>
+
+                    <p class="tool-use">
+                        Used for ploughing, tilling,
+                        transportation and other heavy
+                        farm operations.
+                    </p>
+
+                    <div class="tool-meta">
+
+                        <p class="tool-price">
+                            💰 Price: ₹5,00,000+
+                        </p>
+
+                        <p class="tool-rent">
+                            🚜 Rent: ₹1,000–₹2,500/day
+                        </p>
+
+                        <p class="tool-subsidy">
+                            🏛️ Government subsidy may be available
+                        </p>
+
+                    </div>
+
+                    <div class="tool-intelligence">
+
+                        <strong>
+                            <i class="fa-solid fa-lightbulb"></i>
+                            Smart Decision Tip
+                        </strong>
+
+                        <span>
+                            Compare ownership EMI with rental
+                            cost before purchasing.
+                        </span>
+
+                    </div>
+
+                    <div class="tool-buttons">
+
+                        <a
+                            href="https://www.indiamart.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="buy-btn">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            Buy
+                        </a>
+
+                        <a
+                            href="https://www.indiamart.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="rent-btn">
+                            <i class="fa-solid fa-truck"></i>
+                            Rent
+                        </a>
+
+                        <button
+                            type="button"
+                            class="emi-btn"
+                            onclick="calculateEMI('Tractor')">
+                            <i class="fa-solid fa-credit-card"></i>
+                            EMI
+                        </button>
+
+                        <button
+                            type="button"
+                            class="compare-btn"
+                            onclick="compareTool('Tractor')">
+                            <i class="fa-solid fa-scale-balanced"></i>
+                            Compare
+                        </button>
+
+                        <button
+                            type="button"
+                            class="review-btn"
+                            onclick="showReviews('Tractor')">
+                            <i class="fa-solid fa-star"></i>
+                            Reviews
+                        </button>
+
+                        <button
+                            type="button"
+                            class="details-btn"
+                            onclick="showDetails(
+                                'Tractor',
+                                'Heavy farm machine used for ploughing, tilling and transportation.'
+                            )">
+                            <i class="fa-solid fa-circle-info"></i>
+                            Details
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- ROTAVATOR -->
+
+            <article
+                class="tool-card"
+                data-name="rotavator"
+                data-category="soil preparation">
+
+                <div class="tool-image-wrapper">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1500595046743-cd271d694d30?auto=format&fit=crop&w=800&q=80"
+                        class="tool-image"
+                        alt="Rotavator"
+                        loading="lazy">
+
+                    <span class="tool-stage">
+                        SOIL PREPARATION
+                    </span>
+
+                </div>
+
+                <div class="tool-card-body">
+
+                    <h2>🔄 Rotavator</h2>
+
+                    <span class="tool-category">
+                        Soil Preparation
+                    </span>
+
+                    <p class="tool-use">
+                        Breaks soil clods and mixes
+                        crop residue into the soil.
+                    </p>
+
+                    <div class="tool-meta">
+
+                        <p class="tool-price">
+                            💰 Price: ₹1,20,000+
+                        </p>
+
+                        <p class="tool-rent">
+                            🚜 Rent: ₹800–₹1,500/day
+                        </p>
+
+                        <p class="tool-subsidy">
+                            🏛️ Subsidy may be available
+                        </p>
+
+                    </div>
+
+                    <div class="tool-intelligence">
+
+                        <strong>
+                            <i class="fa-solid fa-lightbulb"></i>
+                            Smart Decision Tip
+                        </strong>
+
+                        <span>
+                            Useful when repeated soil preparation
+                            makes rental or ownership economical.
+                        </span>
+
+                    </div>
+
+                    <div class="tool-buttons">
+
+                        <a
+                            href="https://www.indiamart.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="buy-btn">
+                            🛒 Buy
+                        </a>
+
+                        <a
+                            href="https://www.indiamart.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="rent-btn">
+                            🚜 Rent
+                        </a>
+
+                        <button
+                            type="button"
+                            class="emi-btn"
+                            onclick="calculateEMI('Rotavator')">
+                            💳 EMI
+                        </button>
+
+                        <button
+                            type="button"
+                            class="compare-btn"
+                            onclick="compareTool('Rotavator')">
+                            ⚖️ Compare
+                        </button>
+
+                        <button
+                            type="button"
+                            class="review-btn"
+                            onclick="showReviews('Rotavator')">
+                            ⭐ Reviews
+                        </button>
+
+                        <button
+                            type="button"
+                            class="details-btn"
+                            onclick="showDetails(
+                                'Rotavator',
+                                'Used for soil preparation and mixing crop residues.'
+                            )">
+                            ℹ️ Details
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- SEED DRILL -->
+
+            <article
+                class="tool-card"
+                data-name="seed drill"
+                data-category="sowing">
+
+                <div class="tool-image-wrapper">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=800&q=80"
+                        class="tool-image"
+                        alt="Seed Drill"
+                        loading="lazy">
+
+                    <span class="tool-stage">
+                        SOWING
+                    </span>
+
+                </div>
+
+                <div class="tool-card-body">
+
+                    <h2>🌱 Seed Drill</h2>
+
+                    <span class="tool-category">
+                        Sowing
+                    </span>
+
+                    <p class="tool-use">
+                        Places seeds at proper depth
+                        and spacing during sowing.
+                    </p>
+
+                    <div class="tool-meta">
+
+                        <p class="tool-price">
+                            💰 Price: ₹50,000+
+                        </p>
+
+                        <p class="tool-rent">
+                            🚜 Rent: ₹500–₹1,000/day
+                        </p>
+
+                        <p class="tool-subsidy">
+                            🏛️ Subsidy may be available
+                        </p>
+
+                    </div>
+
+                    <div class="tool-intelligence">
+
+                        <strong>
+                            <i class="fa-solid fa-lightbulb"></i>
+                            Smart Decision Tip
+                        </strong>
+
+                        <span>
+                            Accurate sowing can support uniform
+                            crop establishment.
+                        </span>
+
+                    </div>
+
+                    <div class="tool-buttons">
+
+                        <a
+                            href="https://www.indiamart.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="buy-btn">
+                            🛒 Buy
+                        </a>
+
+                        <a
+                            href="https://www.indiamart.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="rent-btn">
+                            🚜 Rent
+                        </a>
+
+                        <button
+                            type="button"
+                            class="emi-btn"
+                            onclick="calculateEMI('Seed Drill')">
+                            💳 EMI
+                        </button>
+
+                        <button
+                            type="button"
+                            class="compare-btn"
+                            onclick="compareTool('Seed Drill')">
+                            ⚖️ Compare
+                        </button>
+
+                        <button
+                            type="button"
+                            class="review-btn"
+                            onclick="showReviews('Seed Drill')">
+                            ⭐ Reviews
+                        </button>
+
+                        <button
+                            type="button"
+                            class="details-btn"
+                            onclick="showDetails(
+                                'Seed Drill',
+                                'Machine used for accurate seed placement during sowing.'
+                            )">
+                            ℹ️ Details
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- POWER SPRAYER -->
+
+            <article
+                class="tool-card"
+                data-name="power sprayer"
+                data-category="crop protection">
+
+                <div class="tool-image-wrapper">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=800&q=80"
+                        class="tool-image"
+                        alt="Power Sprayer"
+                        loading="lazy">
+
+                    <span class="tool-stage">
+                        CROP PROTECTION
+                    </span>
+
+                </div>
+
+                <div class="tool-card-body">
+
+                    <h2>💦 Power Sprayer</h2>
+
+                    <span class="tool-category">
+                        Crop Protection
+                    </span>
+
+                    <p class="tool-use">
+                        Used for spraying pesticides,
+                        insecticides, fungicides and
+                        liquid fertilizers.
+                    </p>
+
+                    <div class="tool-meta">
+
+                        <p class="tool-price">
+                            💰 Price: ₹8,000+
+                        </p>
+
+                        <p class="tool-rent">
+                            🚜 Rent: ₹300–₹700/day
+                        </p>
+
+                        <p class="tool-subsidy">
+                            🏛️ Subsidy may be available
+                        </p>
+
+                    </div>
+
+                    <div class="tool-intelligence">
+
+                        <strong>
+                            <i class="fa-solid fa-lightbulb"></i>
+                            Smart Decision Tip
+                        </strong>
+
+                        <span>
+                            Match sprayer capacity with field
+                            size and spraying frequency.
+                        </span>
+
+                    </div>
+
+                    <div class="tool-buttons">
+
+                        <a
+                            href="https://www.indiamart.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="buy-btn">
+                            🛒 Buy
+                        </a>
+
+                        <a
+                            href="https://www.indiamart.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="rent-btn">
+                            🚜 Rent
+                        </a>
+
+                        <button
+                            type="button"
+                            class="emi-btn"
+                            onclick="calculateEMI('Power Sprayer')">
+                            💳 EMI
+                        </button>
+
+                        <button
+                            type="button"
+                            class="compare-btn"
+                            onclick="compareTool('Power Sprayer')">
+                            ⚖️ Compare
+                        </button>
+
+                        <button
+                            type="button"
+                            class="review-btn"
+                            onclick="showReviews('Power Sprayer')">
+                            ⭐ Reviews
+                        </button>
+
+                        <button
+                            type="button"
+                            class="details-btn"
+                            onclick="showDetails(
+                                'Power Sprayer',
+                                'Used for applying crop protection chemicals and liquid fertilizers.'
+                            )">
+                            ℹ️ Details
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- WATER PUMP -->
+
+            <article
+                class="tool-card"
+                data-name="water pump"
+                data-category="irrigation">
+
+                <div class="tool-image-wrapper">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1530267981375-f0de937f5f13?auto=format&fit=crop&w=800&q=80"
+                        class="tool-image"
+                        alt="Water Pump"
+                        loading="lazy">
+
+                    <span class="tool-stage">
+                        IRRIGATION
+                    </span>
+
+                </div>
+
+                <div class="tool-card-body">
+
+                    <h2>💧 Water Pump</h2>
+
+                    <span class="tool-category">
+                        Irrigation
+                    </span>
+
+                    <p class="tool-use">
+                        Pumps water from wells, tanks
+                        and other water sources for
+                        irrigation.
+                    </p>
+
+                    <div class="tool-meta">
+
+                        <p class="tool-price">
+                            💰 Price: ₹10,000+
+                        </p>
+
+                        <p class="tool-rent">
+                            🚜 Rent: ₹400–₹800/day
+                        </p>
+
+                        <p class="tool-subsidy">
+                            🏛️ Subsidy may be available
+                        </p>
+
+                    </div>
+
+                    <div class="tool-intelligence">
+
+                        <strong>
+                            <i class="fa-solid fa-lightbulb"></i>
+                            Smart Decision Tip
+                        </strong>
+
+                        <span>
+                            Consider water source, field size
+                            and irrigation requirements.
+                        </span>
+
+                    </div>
+
+                    <div class="tool-buttons">
+
+                        <a
+                            href="https://www.indiamart.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="buy-btn">
+                            🛒 Buy
+                        </a>
+
+                        <a
+                            href="https://www.indiamart.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="rent-btn">
+                            🚜 Rent
+                        </a>
+
+                        <button
+                            type="button"
+                            class="emi-btn"
+                            onclick="calculateEMI('Water Pump')">
+                            💳 EMI
+                        </button>
+
+                        <button
+                            type="button"
+                            class="compare-btn"
+                            onclick="compareTool('Water Pump')">
+                            ⚖️ Compare
+                        </button>
+
+                        <button
+                            type="button"
+                            class="review-btn"
+                            onclick="showReviews('Water Pump')">
+                            ⭐ Reviews
+                        </button>
+
+                        <button
+                            type="button"
+                            class="details-btn"
+                            onclick="showDetails(
+                                'Water Pump',
+                                'Used to supply water from a source to agricultural fields.'
+                            )">
+                            ℹ️ Details
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- FERTILIZER SPREADER -->
+
+            <article
+                class="tool-card"
+                data-name="fertilizer spreader"
+                data-category="fertilization">
+
+                <div class="tool-image-wrapper">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1492496913980-501348b61469?auto=format&fit=crop&w=800&q=80"
+                        class="tool-image"
+                        alt="Fertilizer Spreader"
+                        loading="lazy">
+
+                    <span class="tool-stage">
+                        FERTILIZATION
+                    </span>
+
+                </div>
+
+                <div class="tool-card-body">
+
+                    <h2>🧪 Fertilizer Spreader</h2>
+
+                    <span class="tool-category">
+                        Fertilization
+                    </span>
+
+                    <p class="tool-use">
+                        Distributes fertilizer uniformly
+                        across agricultural fields.
+                    </p>
+
+                    <div class="tool-meta">
+
+                        <p class="tool-price">
+                            💰 Price: ₹15,000+
+                        </p>
+
+                        <p class="tool-rent">
+                            🚜 Rent: ₹300–₹700/day
+                        </p>
+
+                        <p class="tool-subsidy">
+                            🏛️ Subsidy may be available
+                        </p>
+
+                    </div>
+
+                    <div class="tool-intelligence">
+
+                        <strong>
+                            <i class="fa-solid fa-lightbulb"></i>
+                            Smart Decision Tip
+                        </strong>
+
+                        <span>
+                            Choose capacity according to field
+                            area and application frequency.
+                        </span>
+
+                    </div>
+
+                    <div class="tool-buttons">
+
+                        <a
+                            href="https://www.indiamart.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="buy-btn">
+                            🛒 Buy
+                        </a>
+
+                        <a
+                            href="https://www.indiamart.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="rent-btn">
+                            🚜 Rent
+                        </a>
+
+                        <button
+                            type="button"
+                            class="emi-btn"
+                            onclick="calculateEMI('Fertilizer Spreader')">
+                            💳 EMI
+                        </button>
+
+                        <button
+                            type="button"
+                            class="compare-btn"
+                            onclick="compareTool('Fertilizer Spreader')">
+                            ⚖️ Compare
+                        </button>
+
+                        <button
+                            type="button"
+                            class="review-btn"
+                            onclick="showReviews('Fertilizer Spreader')">
+                            ⭐ Reviews
+                        </button>
+
+                        <button
+                            type="button"
+                            class="details-btn"
+                            onclick="showDetails(
+                                'Fertilizer Spreader',
+                                'Used for uniform fertilizer application in fields.'
+                            )">
+                            ℹ️ Details
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- WEEDER -->
+
+            <article
+                class="tool-card"
+                data-name="weeder"
+                data-category="weed management">
+
+                <div class="tool-image-wrapper">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=800&q=80"
+                        class="tool-image"
+                        alt="Weeder"
+                        loading="lazy">
+
+                    <span class="tool-stage">
+                        WEED MANAGEMENT
+                    </span>
+
+                </div>
+
+                <div class="tool-card-body">
+
+                    <h2>🌿 Weeder</h2>
+
+                    <span class="tool-category">
+                        Weed Management
+                    </span>
+
+                    <p class="tool-use">
+                        Removes unwanted weeds from
+                        crop fields and supports crop growth.
+                    </p>
+
+                    <div class="tool-meta">
+
+                        <p class="tool-price">
+                            💰 Price: ₹5,000+
+                        </p>
+
+                        <p class="tool-rent">
+                            🚜 Rent: ₹200–₹500/day
+                        </p>
+
+                        <p class="tool-subsidy">
+                            🏛️ Subsidy may be available
+                        </p>
+
+                    </div>
+
+                    <div class="tool-intelligence">
+
+                        <strong>
+                            <i class="fa-solid fa-lightbulb"></i>
+                            Smart Decision Tip
+                        </strong>
+
+                        <span>
+                            Select the weeder according to crop
+                            spacing and field conditions.
+                        </span>
+
+                    </div>
+
+                    <div class="tool-buttons">
+
+                        <a
+                            href="https://www.indiamart.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="buy-btn">
+                            🛒 Buy
+                        </a>
+
+                        <a
+                            href="https://www.indiamart.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="rent-btn">
+                            🚜 Rent
+                        </a>
+
+                        <button
+                            type="button"
+                            class="emi-btn"
+                            onclick="calculateEMI('Weeder')">
+                            💳 EMI
+                        </button>
+
+                        <button
+                            type="button"
+                            class="compare-btn"
+                            onclick="compareTool('Weeder')">
+                            ⚖️ Compare
+                        </button>
+
+                        <button
+                            type="button"
+                            class="review-btn"
+                            onclick="showReviews('Weeder')">
+                            ⭐ Reviews
+                        </button>
+
+                        <button
+                            type="button"
+                            class="details-btn"
+                            onclick="showDetails(
+                                'Weeder',
+                                'Used for removing unwanted weeds from crop fields.'
+                            )">
+                            ℹ️ Details
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- THRESHER -->
+
+            <article
+                class="tool-card"
+                data-name="thresher"
+                data-category="harvesting">
+
+                <div class="tool-image-wrapper">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80"
+                        class="tool-image"
+                        alt="Thresher"
+                        loading="lazy">
+
+                    <span class="tool-stage">
+                        HARVESTING
+                    </span>
+
+                </div>
+
+                <div class="tool-card-body">
+
+                    <h2>🌾 Thresher</h2>
+
+                    <span class="tool-category">
+                        Harvesting
+                    </span>
+
+                    <p class="tool-use">
+                        Separates grain from harvested
+                        crop material after harvesting.
+                    </p>
+
+                    <div class="tool-meta">
+
+                        <p class="tool-price">
+                            💰 Price: ₹80,000+
+                        </p>
+
+                        <p class="tool-rent">
+                            🚜 Rent: ₹1,000–₹2,000/day
+                        </p>
+
+                        <p class="tool-subsidy">
+                            🏛️ Subsidy may be available
+                        </p>
+
+                    </div>
+
+                    <div class="tool-intelligence">
+
+                        <strong>
+                            <i class="fa-solid fa-lightbulb"></i>
+                            Smart Decision Tip
+                        </strong>
+
+                        <span>
+                            Compare seasonal harvesting demand
+                            with purchase and rental costs.
+                        </span>
+
+                    </div>
+
+                    <div class="tool-buttons">
+
+                        <a
+                            href="https://www.indiamart.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="buy-btn">
+                            🛒 Buy
+                        </a>
+
+                        <a
+                            href="https://www.indiamart.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="rent-btn">
+                            🚜 Rent
+                        </a>
+
+                        <button
+                            type="button"
+                            class="emi-btn"
+                            onclick="calculateEMI('Thresher')">
+                            💳 EMI
+                        </button>
+
+                        <button
+                            type="button"
+                            class="compare-btn"
+                            onclick="compareTool('Thresher')">
+                            ⚖️ Compare
+                        </button>
+
+                        <button
+                            type="button"
+                            class="review-btn"
+                            onclick="showReviews('Thresher')">
+                            ⭐ Reviews
+                        </button>
+
+                        <button
+                            type="button"
+                            class="details-btn"
+                            onclick="showDetails(
+                                'Thresher',
+                                'Separates grain from harvested crops.'
+                            )">
+                            ℹ️ Details
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- SOIL MOISTURE METER -->
+
+            <article
+                class="tool-card"
+                data-name="soil moisture meter"
+                data-category="smart farming">
+
+                <div class="tool-image-wrapper">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=800&q=80"
+                        class="tool-image"
+                        alt="Soil Moisture Meter"
+                        loading="lazy">
+
+                    <span class="tool-stage">
+                        SMART FARMING
+                    </span>
+
+                </div>
+
+                <div class="tool-card-body">
+
+                    <h2>📡 Soil Moisture Meter</h2>
+
+                    <span class="tool-category">
+                        Smart Farming
+                    </span>
+
+                    <p class="tool-use">
+                        Measures soil moisture to help
+                        farmers decide when irrigation
+                        may be required.
+                    </p>
+
+                    <div class="tool-meta">
+
+                        <p class="tool-price">
+                            💰 Price: ₹1,000+
+                        </p>
+
+                        <p class="tool-rent">
+                            🚜 Rent: ₹100–₹300/day
+                        </p>
+
+                        <p class="tool-subsidy">
+                            🏛️ Check applicable schemes
+                        </p>
+
+                    </div>
+
+                    <div class="tool-intelligence">
+
+                        <strong>
+                            <i class="fa-solid fa-lightbulb"></i>
+                            Smart Decision Tip
+                        </strong>
+
+                        <span>
+                            Can support irrigation decisions when
+                            combined with field observations.
+                        </span>
+
+                    </div>
+
+                    <div class="tool-buttons">
+
+                        <a
+                            href="https://www.indiamart.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="buy-btn">
+                            🛒 Buy
+                        </a>
+
+                        <a
+                            href="https://www.indiamart.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="rent-btn">
+                            🚜 Rent
+                        </a>
+
+                        <button
+                            type="button"
+                            class="emi-btn"
+                            onclick="calculateEMI('Soil Moisture Meter')">
+                            💳 EMI
+                        </button>
+
+                        <button
+                            type="button"
+                            class="compare-btn"
+                            onclick="compareTool('Soil Moisture Meter')">
+                            ⚖️ Compare
+                        </button>
+
+                        <button
+                            type="button"
+                            class="review-btn"
+                            onclick="showReviews('Soil Moisture Meter')">
+                            ⭐ Reviews
+                        </button>
+
+                        <button
+                            type="button"
+                            class="details-btn"
+                            onclick="showDetails(
+                                'Soil Moisture Meter',
+                                'Measures soil moisture for better irrigation decisions.'
+                            )">
+                            ℹ️ Details
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- FARM TRAILER -->
+
+            <article
+                class="tool-card"
+                data-name="farm trailer"
+                data-category="transportation">
+
+                <div class="tool-image-wrapper">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=800&q=80"
+                        class="tool-image"
+                        alt="Farm Trailer"
+                        loading="lazy">
+
+                    <span class="tool-stage">
+                        TRANSPORTATION
+                    </span>
+
+                </div>
+
+                <div class="tool-card-body">
+
+                    <h2>🚚 Farm Trailer</h2>
+
+                    <span class="tool-category">
+                        Transportation
+                    </span>
+
+                    <p class="tool-use">
+                        Used for transporting crops,
+                        fertilizer, seeds and farm materials.
+                    </p>
+
+                    <div class="tool-meta">
+
+                        <p class="tool-price">
+                            💰 Price: ₹1,50,000+
+                        </p>
+
+                        <p class="tool-rent">
+                            🚜 Rent: ₹700–₹1,500/day
+                        </p>
+
+                        <p class="tool-subsidy">
+                            🏛️ Subsidy may be available
+                        </p>
+
+                    </div>
+
+                    <div class="tool-intelligence">
+
+                        <strong>
+                            <i class="fa-solid fa-lightbulb"></i>
+                            Smart Decision Tip
+                        </strong>
+
+                        <span>
+                            Consider load capacity and frequency
+                            of transportation before purchase.
+                        </span>
+
+                    </div>
+
+                    <div class="tool-buttons">
+
+                        <a
+                            href="https://www.indiamart.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="buy-btn">
+                            🛒 Buy
+                        </a>
+
+                        <a
+                            href="https://www.indiamart.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="rent-btn">
+                            🚜 Rent
+                        </a>
+
+                        <button
+                            type="button"
+                            class="emi-btn"
+                            onclick="calculateEMI('Farm Trailer')">
+                            💳 EMI
+                        </button>
+
+                        <button
+                            type="button"
+                            class="compare-btn"
+                            onclick="compareTool('Farm Trailer')">
+                            ⚖️ Compare
+                        </button>
+
+                        <button
+                            type="button"
+                            class="review-btn"
+                            onclick="showReviews('Farm Trailer')">
+                            ⭐ Reviews
+                        </button>
+
+                        <button
+                            type="button"
+                            class="details-btn"
+                            onclick="showDetails(
+                                'Farm Trailer',
+                                'Used for transporting agricultural products and farm materials.'
+                            )">
+                            ℹ️ Details
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </div>
+
+
+        <!-- EMPTY -->
+
+        <div
+            class="empty-tools"
+            id="emptyTools">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <h3>
+                No machinery found
+            </h3>
+
+            <p>
+                Try another machine name or category.
+            </p>
+
+        </div>
+
+
+        <!-- DECISION CENTER -->
+
+        <section class="decision-center">
+
+            <h2>
+                <i class="fa-solid fa-brain"></i>
+                Machinery Decision Center
+            </h2>
+
+            <p>
+                KisanVision360+ connects machinery decisions
+                with the rest of your farm planning instead
+                of treating equipment as a separate module.
+            </p>
+
+            <div class="decision-grid">
+
+                <div class="decision-item">
+                    <i class="fa-solid fa-seedling"></i>
+                    <strong>Crop Plan</strong>
+                    <span>
+                        Identify machinery required for
+                        planned crops.
+                    </span>
+                </div>
+
+                <div class="decision-item">
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                    <strong>Finance</strong>
+                    <span>
+                        Compare EMI, investment and
+                        rental cost.
+                    </span>
+                </div>
+
+                <div class="decision-item">
+                    <i class="fa-solid fa-landmark"></i>
+                    <strong>Subsidy</strong>
+                    <span>
+                        Check applicable government
+                        support programs.
+                    </span>
+                </div>
+
+                <div class="decision-item">
+                    <i class="fa-solid fa-star"></i>
+                    <strong>Reviews</strong>
+                    <span>
+                        Consider farmer experience before
+                        making a decision.
+                    </span>
+                </div>
+
+                <div class="decision-item">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                    <strong>Compare</strong>
+                    <span>
+                        Build a shortlist before selecting
+                        equipment.
+                    </span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- IMPORTANT FIX -->
+
+        <a
+            href="{{ url_for('farmer.farmer') }}"
+            class="back-btn">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Dashboard
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- MODAL -->
+
+<div
+    class="kv-modal"
+    id="kvModal"
+    role="dialog"
+    aria-modal="true"
+    aria-hidden="true">
+
+    <div class="modal-card">
+
+        <div class="modal-header">
+
+            <h3 id="modalTitle">
+                Machinery Information
+            </h3>
+
+            <button
+                type="button"
+                class="close-modal"
+                onclick="closeModal()"
+                aria-label="Close">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+        <div
+            class="modal-body"
+            id="modalBody">
+        </div>
+
+        <div
+            class="modal-result"
+            id="modalResult"
+            style="display:none;">
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+"use strict";
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const toolCards =
+    Array.from(
+        document.querySelectorAll(".tool-card")
+    );
+
+const searchInput =
+    document.getElementById("toolSearch");
+
+const resultCount =
+    document.getElementById("resultCount");
+
+const emptyTools =
+    document.getElementById("emptyTools");
+
+const compareCount =
+    document.getElementById("compareCount");
+
+const modal =
+    document.getElementById("kvModal");
+
+const modalTitle =
+    document.getElementById("modalTitle");
+
+const modalBody =
+    document.getElementById("modalBody");
+
+const modalResult =
+    document.getElementById("modalResult");
+
+
+let currentFilter = "all";
+
+
+/* =========================================================
+   SEARCH + FILTER
+========================================================= */
+
+function filterTools() {
+
+    const query =
+        searchInput.value
+            .toLowerCase()
+            .trim();
+
+    let visible = 0;
+
+    toolCards.forEach(
+        function(card) {
+
+            const name =
+                (
+                    card.dataset.name || ""
+                ).toLowerCase();
+
+            const category =
+                (
+                    card.dataset.category || ""
+                ).toLowerCase();
+
+            const content =
+                card.innerText.toLowerCase();
+
+            const matchesSearch =
+                !query ||
+                name.includes(query) ||
+                category.includes(query) ||
+                content.includes(query);
+
+            const matchesCategory =
+                currentFilter === "all" ||
+                category.includes(currentFilter);
+
+            const show =
+                matchesSearch &&
+                matchesCategory;
+
+            card.style.display =
+                show ? "" : "none";
+
+            if (show) {
+                visible++;
+            }
+
+        }
+    );
+
+    resultCount.textContent =
+        visible +
+        " Tool" +
+        (visible !== 1 ? "s" : "");
+
+    emptyTools.style.display =
+        visible === 0
+            ? "block"
+            : "none";
+
+}
+
+
+/* =========================================================
+   SEARCH EVENT
+========================================================= */
+
+searchInput.addEventListener(
+    "input",
+    filterTools
+);
+
+
+/* =========================================================
+   CATEGORY BUTTONS
+========================================================= */
+
+document.querySelectorAll(
+    ".filter-btn"
+).forEach(
+    function(button) {
+
+        button.addEventListener(
+            "click",
+            function() {
+
+                document.querySelectorAll(
+                    ".filter-btn"
+                ).forEach(
+                    function(btn) {
+
+                        btn.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
+
+                button.classList.add(
+                    "active"
+                );
+
+                currentFilter =
+                    button.dataset.filter ||
+                    "all";
+
+                filterTools();
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   EMI CALCULATOR
+========================================================= */
+
+function calculateEMI(toolName) {
+
+    let amount =
+        prompt(
+            "Enter " +
+            toolName +
+            " price (₹)"
+        );
+
+    if (
+        amount === null ||
+        amount.trim() === ""
+    ) {
+        return;
+    }
+
+    amount =
+        parseFloat(
+            amount.replace(/,/g, "")
+        );
+
+    if (
+        !Number.isFinite(amount) ||
+        amount <= 0
+    ) {
+
+        alert(
+            "Please enter a valid price."
+        );
+
+        return;
+
+    }
+
+    let rate =
+        prompt(
+            "Annual interest rate (%)",
+            "8"
+        );
+
+    if (rate === null) {
+        return;
+    }
+
+    rate =
+        parseFloat(rate);
+
+    if (
+        !Number.isFinite(rate) ||
+        rate < 0
+    ) {
+
+        alert(
+            "Please enter a valid interest rate."
+        );
+
+        return;
+
+    }
+
+    let months =
+        prompt(
+            "Loan period in months",
+            "36"
+        );
+
+    if (months === null) {
+        return;
+    }
+
+    months =
+        parseInt(
+            months,
+            10
+        );
+
+    if (
+        !Number.isInteger(months) ||
+        months <= 0
+    ) {
+
+        alert(
+            "Please enter a valid loan period."
+        );
+
+        return;
+
+    }
+
+    const monthlyRate =
+        rate / 12 / 100;
+
+    let emi;
+
+    if (monthlyRate === 0) {
+
+        emi =
+            amount / months;
+
+    }
+
+    else {
+
+        const factor =
+            Math.pow(
+                1 + monthlyRate,
+                months
+            );
+
+        emi =
+            amount *
+            monthlyRate *
+            factor /
+            (factor - 1);
+
+    }
+
+    const totalPayment =
+        emi * months;
+
+    const totalInterest =
+        totalPayment - amount;
+
+    showModal(
+
+        "💳 " + toolName + " — EMI Planner",
+
+        "This is a planning estimate based on the price, " +
+        "interest rate and loan duration you entered.",
+
+        "Estimated EMI: ₹" +
+        Math.round(emi)
+            .toLocaleString("en-IN") +
+        " / month" +
+
+        "<br><br>Total payment: ₹" +
+        Math.round(totalPayment)
+            .toLocaleString("en-IN") +
+
+        "<br>Total interest: ₹" +
+        Math.max(
+            0,
+            Math.round(totalInterest)
+        ).toLocaleString("en-IN")
+
+    );
+
+}
+
+
+/* =========================================================
+   COMPARE
+========================================================= */
+
+function getCompareTools() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                "kisanvision360_compare"
+            ) || "[]"
+        );
+
+    }
+
+    catch (error) {
+
+        return [];
+
+    }
+
+}
+
+
+function saveCompareTools(tools) {
+
+    localStorage.setItem(
+        "kisanvision360_compare",
+        JSON.stringify(tools)
+    );
+
+}
+
+
+function updateCompareCount() {
+
+    const tools =
+        getCompareTools();
+
+    compareCount.textContent =
+        tools.length;
+
+}
+
+
+function compareTool(toolName) {
+
+    let tools =
+        getCompareTools();
+
+    if (!tools.includes(toolName)) {
+
+        tools.push(toolName);
+
+        saveCompareTools(tools);
+
+        showModal(
+
+            "⚖️ Added to Comparison",
+
+            "<strong>" +
+            toolName +
+            "</strong> has been added to your " +
+            "machinery comparison shortlist.",
+
+            "Selected: " +
+            tools.join(", ")
+
+        );
+
+    }
+
+    else {
+
+        showModal(
+
+            "⚖️ Already Selected",
+
+            toolName +
+            " is already present in your comparison shortlist.",
+
+            "Selected: " +
+            tools.join(", ")
+
+        );
+
+    }
+
+    updateCompareCount();
+
+}
+
+
+/* =========================================================
+   REVIEWS
+========================================================= */
+
+function showReviews(toolName) {
+
+    showModal(
+
+        "₹ " + toolName + " Reviews",
+
+        "Use the Machine Reviews section to see farmer " +
+        "experiences and submit your own review.",
+
+        "Review data can be connected to PostgreSQL " +
+        "for machine-wise ratings and review history."
+
+    );
+
+}
+
+
+/* =========================================================
+   DETAILS
+========================================================= */
+
+function showDetails(
+    toolName,
+    description
+) {
+
+    showModal(
+
+        "• " + toolName,
+
+        description,
+
+        "Decision support: compare purchase cost, " +
+        "rental availability, financing and applicable " +
+        "government support before making a purchase."
+
+    );
+
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+function showModal(
+    title,
+    body,
+    result
+) {
+
+    modalTitle.textContent =
+        title;
+
+    modalBody.innerHTML =
+        body;
+
+    if (result) {
+
+        modalResult.innerHTML =
+            result;
+
+        modalResult.style.display =
+            "block";
+
+    }
+
+    else {
+
+        modalResult.style.display =
+            "none";
+
+    }
+
+    modal.classList.add(
+        "active"
+    );
+
+    modal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+}
+
+
+function closeModal() {
+
+    modal.classList.remove(
+        "active"
+    );
+
+    modal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+}
+
+
+modal.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target === modal
+        ) {
+
+            closeModal();
+
+        }
+
+    }
+);
+
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeModal();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   GLOBAL LANGUAGE
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        const savedLanguage =
+            localStorage.getItem(
+                "kisanvision360_language"
+            );
+
+        if (savedLanguage) {
+
+            document.documentElement
+                .setAttribute(
+                    "lang",
+                    savedLanguage
+                );
+
+            const rtlLanguages = [
+                "ur",
+                "ks",
+                "sd"
+            ];
+
+            document.documentElement
+                .setAttribute(
+                    "dir",
+                    rtlLanguages.includes(
+                        savedLanguage
+                    )
+                        ? "rtl"
+                        : "ltr"
+                );
+
+        }
+
+        updateCompareCount();
+
+        filterTools();
+
+    }
+);
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+updateCompareCount();
+
+filterTools();
+
+</script>
+{% endblock %}

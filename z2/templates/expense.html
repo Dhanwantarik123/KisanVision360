@@ -1,0 +1,2415 @@
+﻿{% extends "base.html" %}
+
+{% block title %}KisanVision360+ | Farm Expense Intelligence{% endblock %}
+
+{% block head %}
+<link rel="stylesheet"
+          href="{{ url_for('static', filename='css/expense.css') }}">
+<style>
+
+        :root {
+            --green: #1b5e20;
+            --green2: #43a047;
+            --light-green: #e8f5e9;
+            --orange: #fb8c00;
+            --blue: #1565c0;
+            --red: #c62828;
+            --text: #263238;
+            --muted: #6b7280;
+            --border: #e1e8e3;
+            --bg: #f5f7f6;
+            --white: #ffffff;
+        }
+
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+
+        .expense-page {
+            width: 100%;
+            max-width: 1250px;
+            margin: auto;
+            padding: 28px;
+        }
+
+
+        /* =====================================================
+           TOPBAR
+        ====================================================== */
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+
+        .title-section {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+
+        .title-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--green),
+                    var(--green2)
+                );
+
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 22px;
+
+            box-shadow:
+                0 8px 20px rgba(27,94,32,.18);
+        }
+
+
+        .title-section h1 {
+            margin: 0;
+            font-size: 27px;
+            font-weight: 800;
+        }
+
+
+        .title-section p {
+            margin: 5px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           PROFILE
+        ====================================================== */
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+
+        .profile img {
+            width: 46px;
+            height: 46px;
+
+            object-fit: cover;
+            border-radius: 50%;
+
+            border: 3px solid white;
+
+            box-shadow:
+                0 3px 12px rgba(0,0,0,.1);
+        }
+
+
+        .profile h4 {
+            margin: 0;
+            font-size: 14px;
+        }
+
+
+        .profile span {
+            display: block;
+            margin-top: 3px;
+
+            color: var(--green);
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+
+        .profile span i {
+            font-size: 7px;
+        }
+
+
+        /* =====================================================
+           STATUS
+        ====================================================== */
+
+        .expense-status {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 13px 16px;
+            margin-bottom: 20px;
+
+            background: #f0f8f1;
+
+            border: 1px solid #d8e8da;
+
+            border-radius: 12px;
+
+            color: #37623b;
+
+            font-size: 12px;
+            font-weight: 650;
+        }
+
+
+        .expense-status i {
+            color: var(--green);
+        }
+
+
+        /* =====================================================
+           BANNER
+        ====================================================== */
+
+        .expense-banner {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+
+            padding: 26px;
+            margin-bottom: 22px;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    120deg,
+                    #e8f5e9,
+                    #fff8e7
+                );
+
+            border: 1px solid #dce8dd;
+        }
+
+
+        .banner-icon {
+            width: 62px;
+            height: 62px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 16px;
+
+            background: var(--green);
+
+            color: white;
+
+            font-size: 27px;
+        }
+
+
+        .expense-banner h2 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+
+        .expense-banner p {
+            margin: 7px 0 0;
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ====================================================== */
+
+        .expense-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 14px;
+
+            margin-bottom: 22px;
+        }
+
+
+        .summary-card {
+            padding: 18px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,.04);
+        }
+
+
+        .summary-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .summary-icon {
+            width: 39px;
+            height: 39px;
+
+            border-radius: 11px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--light-green);
+
+            color: var(--green);
+        }
+
+
+        .summary-card:nth-child(2) .summary-icon {
+            background: #fff3e0;
+            color: var(--orange);
+        }
+
+
+        .summary-card:nth-child(3) .summary-icon {
+            background: #e3f2fd;
+            color: var(--blue);
+        }
+
+
+        .summary-card:nth-child(4) .summary-icon {
+            background: #ffebee;
+            color: var(--red);
+        }
+
+
+        .summary-card span {
+            display: block;
+
+            margin-top: 13px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+
+        .summary-card strong {
+            display: block;
+
+            margin-top: 4px;
+
+            font-size: 21px;
+        }
+
+
+        /* =====================================================
+           MAIN GRID
+        ====================================================== */
+
+        .expense-grid {
+            display: grid;
+
+            grid-template-columns:
+                390px
+                minmax(0, 1fr);
+
+            gap: 22px;
+
+            align-items: start;
+        }
+
+
+        .form-card,
+        .history-card {
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 19px;
+
+            box-shadow:
+                0 7px 22px rgba(0,0,0,.04);
+        }
+
+
+        /* =====================================================
+           FORM
+        ====================================================== */
+
+        .form-card {
+            padding: 23px;
+        }
+
+
+        .form-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            margin-bottom: 20px;
+
+            padding-bottom: 17px;
+
+            border-bottom:
+                1px solid var(--border);
+        }
+
+
+        .form-icon {
+            width: 44px;
+            height: 44px;
+
+            border-radius: 12px;
+
+            background: var(--light-green);
+
+            color: var(--green);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .form-header h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+
+        .form-header p {
+            margin: 4px 0 0;
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            margin-bottom: 7px;
+
+            font-size: 12px;
+            font-weight: 750;
+        }
+
+
+        .form-group label i {
+            color: var(--green);
+        }
+
+
+        .form-group input {
+            width: 100%;
+            height: 47px;
+
+            border: 1px solid #d8e0da;
+
+            border-radius: 10px;
+
+            padding: 0 12px;
+
+            outline: none;
+
+            font-size: 13px;
+
+            transition: .2s;
+        }
+
+
+        .form-group input:focus {
+            border-color: var(--green);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(27,94,32,.08);
+        }
+
+
+        .amount-input {
+            height: 47px;
+
+            display: flex;
+            align-items: center;
+
+            border: 1px solid #d8e0da;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+        }
+
+
+        .amount-input span {
+            padding: 0 14px;
+
+            color: var(--green);
+
+            font-weight: 800;
+        }
+
+
+        .amount-input input {
+            height: 100%;
+
+            border: 0;
+
+            border-radius: 0;
+
+            box-shadow: none !important;
+        }
+
+
+        .expense-btn {
+            width: 100%;
+            min-height: 49px;
+
+            border: 0;
+
+            border-radius: 10px;
+
+            background: var(--green);
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            gap: 8px;
+
+            transition: .2s;
+        }
+
+
+        .expense-btn:hover {
+            background: #174f1b;
+
+            transform:
+                translateY(-1px);
+        }
+
+
+        .expense-btn:disabled {
+            opacity: .7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+
+        /* =====================================================
+           HISTORY
+        ====================================================== */
+
+        .history-card {
+            overflow: hidden;
+        }
+
+
+        .history-header {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 15px;
+
+            padding: 21px 22px;
+
+            border-bottom:
+                1px solid var(--border);
+        }
+
+
+        .history-title {
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+        }
+
+
+        .history-title i {
+            color: var(--green);
+        }
+
+
+        .history-title h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+
+        .history-subtitle {
+            margin: 4px 0 0;
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+
+        .expense-count {
+            padding: 7px 11px;
+
+            border-radius: 20px;
+
+            background: var(--light-green);
+
+            color: var(--green);
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            white-space: nowrap;
+        }
+
+
+        /* =====================================================
+           SEARCH
+        ====================================================== */
+
+        .history-tools {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 14px 20px;
+
+            background: #fafcfb;
+
+            border-bottom:
+                1px solid var(--border);
+        }
+
+
+        .history-search {
+            flex: 1;
+
+            min-width: 0;
+
+            height: 39px;
+
+            border:
+                1px solid #dce3de;
+
+            border-radius: 9px;
+
+            padding: 0 12px;
+
+            outline: none;
+
+            font-size: 12px;
+        }
+
+
+        .history-search:focus {
+            border-color: var(--green);
+        }
+
+
+        .history-filter {
+            height: 39px;
+
+            border:
+                1px solid #dce3de;
+
+            border-radius: 9px;
+
+            background: white;
+
+            padding: 0 10px;
+
+            font-size: 11px;
+
+            outline: none;
+        }
+
+
+        /* =====================================================
+           TABLE
+        ====================================================== */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+
+        th {
+            padding: 14px 18px;
+
+            text-align: left;
+
+            color: #66736a;
+
+            background: #f8faf8;
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+            letter-spacing: .4px;
+        }
+
+
+        td {
+            padding: 15px 18px;
+
+            border-top:
+                1px solid #edf1ee;
+
+            font-size: 12px;
+        }
+
+
+        tbody tr {
+            transition: .15s;
+        }
+
+
+        tbody tr:hover {
+            background: #f8fbf8;
+        }
+
+
+        .date {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            color: #657168;
+
+            white-space: nowrap;
+        }
+
+
+        .date i {
+            color: var(--green);
+        }
+
+
+        .description-cell {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+
+        .expense-small-icon {
+            width: 32px;
+            height: 32px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+
+            background: #ffebee;
+
+            color: var(--red);
+
+            font-size: 11px;
+        }
+
+
+        .description-cell span {
+            font-weight: 650;
+        }
+
+
+        .expense-amount {
+            color: var(--red);
+
+            white-space: nowrap;
+        }
+
+
+        .no-search-result {
+            display: none;
+
+            padding: 35px 20px;
+
+            text-align: center;
+
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           INTELLIGENCE
+        ====================================================== */
+
+        .intelligence-card {
+            margin-top: 22px;
+
+            padding: 20px;
+
+            border-radius: 17px;
+
+            background:
+                linear-gradient(
+                    120deg,
+                    #f1f8f2,
+                    #fff9ee
+                );
+
+            border: 1px solid #dce7de;
+        }
+
+
+        .intelligence-header {
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .intelligence-header i {
+            color: var(--orange);
+        }
+
+
+        .intelligence-header h3 {
+            margin: 0;
+
+            font-size: 15px;
+        }
+
+
+        .intelligence-card p {
+            margin: 0;
+
+            color: #68746c;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           FINANCE FLOW
+        ====================================================== */
+
+        .finance-flow {
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+
+        .flow-item {
+            text-align: center;
+
+            padding: 15px 8px;
+
+            background: white;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 13px;
+        }
+
+
+        .flow-item i {
+            display: block;
+
+            color: var(--green);
+
+            font-size: 16px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .flow-item span {
+            display: block;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            color: #56635a;
+        }
+
+
+        /* =====================================================
+           BACK
+        ====================================================== */
+
+        .back-section {
+            margin-top: 22px;
+        }
+
+
+        .back-section a {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            color: var(--green);
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 750;
+        }
+
+
+        .back-section a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ====================================================== */
+
+        .expense-footer {
+            padding: 30px 10px 10px;
+
+            text-align: center;
+
+            color: #788179;
+
+            font-size: 11px;
+        }
+
+
+        .expense-footer i {
+            color: var(--green);
+        }
+
+
+        .expense-footer span {
+            margin: 0 6px;
+        }
+
+
+        /* =====================================================
+           RTL
+        ====================================================== */
+
+        html[dir="rtl"] .title-section,
+        html[dir="rtl"] .profile,
+        html[dir="rtl"] .expense-banner,
+        html[dir="rtl"] .form-header,
+        html[dir="rtl"] .history-title,
+        html[dir="rtl"] .description-cell,
+        html[dir="rtl"] .intelligence-header {
+            direction: rtl;
+        }
+
+
+        html[dir="rtl"] th {
+            text-align: right;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 1000px) {
+
+            .expense-summary {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
+            .expense-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .expense-page {
+                padding: 14px;
+            }
+
+
+            .topbar {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+
+            .profile {
+                width: 100%;
+            }
+
+
+            .expense-banner {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+
+            .expense-summary {
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+
+            .finance-flow {
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+
+            .history-tools {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+
+            .history-search,
+            .history-filter {
+                width: 100%;
+            }
+
+
+            .form-card {
+                padding: 18px;
+            }
+
+        }
+
+
+        @media (max-width: 430px) {
+
+            .expense-summary {
+                grid-template-columns: 1fr;
+            }
+
+
+            .finance-flow {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+{% endblock %}
+
+{% block page_title %}Farm Expense Intelligence{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+
+
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="main-content">
+
+
+<div class="expense-page">
+
+
+    <!-- =====================================================
+         TOPBAR
+    ====================================================== -->
+
+    
+
+
+
+    <!-- =====================================================
+         STATUS
+    ====================================================== -->
+
+    <div class="expense-status">
+
+
+        <i class="fa-solid fa-chart-line"></i>
+
+
+        <span>
+            KisanVision360+ Farm Finance Module
+        </span>
+
+
+        <span>
+            â€¢
+        </span>
+
+
+        <span>
+            Record every major farming expense for better planning
+        </span>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         BANNER
+    ====================================================== -->
+
+    <section class="expense-banner">
+
+
+        <div class="banner-icon">
+
+            <i class="fa-solid fa-receipt"></i>
+
+        </div>
+
+
+        <div>
+
+
+            <h2>
+                Manage Farm Expenses
+            </h2>
+
+
+            <p>
+
+                Record seeds, fertilizer, labour, equipment,
+                irrigation, pesticides and other farming costs
+                to understand where your money is going.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         EXPENSE TOTAL
+    ====================================================== -->
+
+    {% set expense_total = namespace(value=0) %}
+
+
+    {% for row in expense_list %}
+
+        {% set expense_total.value =
+            expense_total.value + (row[2]|float) %}
+
+    {% endfor %}
+
+
+
+    <!-- =====================================================
+         SUMMARY
+    ====================================================== -->
+
+    <section class="expense-summary">
+
+
+        <!-- TOTAL RECORDS -->
+
+        <div class="summary-card">
+
+
+            <div class="summary-top">
+
+
+                <div class="summary-icon">
+
+                    <i class="fa-solid fa-receipt"></i>
+
+                </div>
+
+
+            </div>
+
+
+            <span>
+                Total Records
+            </span>
+
+
+            <strong>
+                {{ expense_list|length }}
+            </strong>
+
+        </div>
+
+
+
+        <!-- TOTAL EXPENSE -->
+
+        <div class="summary-card">
+
+
+            <div class="summary-top">
+
+
+                <div class="summary-icon">
+
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                </div>
+
+
+            </div>
+
+
+            <span>
+                Total Expenses
+            </span>
+
+
+            <strong>
+                â‚¹ {{ "%.2f"|format(expense_total.value) }}
+            </strong>
+
+        </div>
+
+
+
+        <!-- AVERAGE -->
+
+        <div class="summary-card">
+
+
+            <div class="summary-top">
+
+
+                <div class="summary-icon">
+
+                    <i class="fa-solid fa-chart-column"></i>
+
+                </div>
+
+
+            </div>
+
+
+            <span>
+                Average Expense
+            </span>
+
+
+            <strong>
+
+                â‚¹
+
+                {% if expense_list|length > 0 %}
+
+                    {{ "%.2f"|format(
+                        expense_total.value /
+                        expense_list|length
+                    ) }}
+
+                {% else %}
+
+                    0.00
+
+                {% endif %}
+
+            </strong>
+
+        </div>
+
+
+
+        <!-- STATUS -->
+
+        <div class="summary-card">
+
+
+            <div class="summary-top">
+
+
+                <div class="summary-icon">
+
+                    <i class="fa-solid fa-wallet"></i>
+
+                </div>
+
+
+            </div>
+
+
+            <span>
+                Finance Status
+            </span>
+
+
+            <strong id="financeStatus">
+                Ready
+            </strong>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         MAIN GRID
+    ====================================================== -->
+
+    <section class="expense-grid">
+
+
+        <!-- =================================================
+             ADD EXPENSE
+        ================================================== -->
+
+        <div class="form-card">
+
+
+            <div class="form-header">
+
+
+                <div class="form-icon">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Add New Expense
+                    </h2>
+
+
+                    <p>
+                        Record a farming cost
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <form
+                method="POST"
+                id="expenseForm">
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="form-group">
+
+
+                    <label for="description">
+
+                        <i class="fa-solid fa-file-lines"></i>
+
+                        Description
+
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="description"
+                        name="description"
+                        placeholder="e.g. Fertilizer Purchase"
+                        maxlength="150"
+                        autocomplete="off"
+                        required>
+
+                </div>
+
+
+
+                <!-- AMOUNT -->
+
+                <div class="form-group">
+
+
+                    <label for="amount">
+
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                        Amount
+
+                    </label>
+
+
+                    <div class="amount-input">
+
+
+                        <span>
+                            â‚¹
+                        </span>
+
+
+                        <input
+                            type="number"
+                            id="amount"
+                            name="amount"
+                            placeholder="Enter amount"
+                            step="0.01"
+                            min="0.01"
+                            required>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    type="submit"
+                    class="expense-btn"
+                    id="expenseButton">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Add Expense
+
+                </button>
+
+
+            </form>
+
+        </div>
+
+
+
+        <!-- =================================================
+             HISTORY
+        ================================================== -->
+
+        <div class="history-card">
+
+
+            <div class="history-header">
+
+
+                <div>
+
+
+                    <div class="history-title">
+
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+
+                        <h2>
+                            Expense History
+                        </h2>
+
+                    </div>
+
+
+                    <p class="history-subtitle">
+                        Your recorded farming expenses
+                    </p>
+
+                </div>
+
+
+                <span class="expense-count">
+
+                    {{ expense_list|length }}
+
+                    {{ "Expense"
+                       if expense_list|length == 1
+                       else "Expenses" }}
+
+                </span>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 SEARCH / SORT
+            ================================================== -->
+
+            <div class="history-tools">
+
+
+                <input
+                    type="search"
+                    id="expenseSearch"
+                    class="history-search"
+                    placeholder="Search expenses..."
+                    autocomplete="off">
+
+
+                <select
+                    id="expenseSort"
+                    class="history-filter">
+
+
+                    <option value="newest">
+                        Newest
+                    </option>
+
+
+                    <option value="oldest">
+                        Oldest
+                    </option>
+
+
+                    <option value="highest">
+                        Highest Amount
+                    </option>
+
+
+                    <option value="lowest">
+                        Lowest Amount
+                    </option>
+
+
+                </select>
+
+            </div>
+
+
+
+            {% if expense_list %}
+
+
+            <!-- =================================================
+                 TABLE
+            ================================================== -->
+
+            <div class="table-wrapper">
+
+
+                <table id="expenseTable">
+
+
+                    <thead>
+
+
+                        <tr>
+
+                            <th>
+                                Date
+                            </th>
+
+
+                            <th>
+                                Description
+                            </th>
+
+
+                            <th>
+                                Amount
+                            </th>
+
+                        </tr>
+
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                    {% for row in expense_list %}
+
+
+                        <tr
+                            data-description="{{ row[1]|default('', true)|lower }}"
+                            data-amount="{{ row[2]|default(0, true)|float }}"
+                            data-index="{{ loop.index0 }}">
+
+
+                            <!-- DATE -->
+
+                            <td>
+
+
+                                <span class="date">
+
+
+                                    <i class="fa-regular fa-calendar"></i>
+
+
+                                    {{ row[0] }}
+
+
+                                </span>
+
+
+                            </td>
+
+
+
+                            <!-- DESCRIPTION -->
+
+                            <td>
+
+
+                                <div class="description-cell">
+
+
+                                    <div class="expense-small-icon">
+
+                                        <i class="fa-solid fa-arrow-down"></i>
+
+                                    </div>
+
+
+                                    <span>
+                                        {{ row[1] }}
+                                    </span>
+
+
+                                </div>
+
+
+                            </td>
+
+
+
+                            <!-- AMOUNT -->
+
+                            <td>
+
+
+                                <strong class="expense-amount">
+
+                                    â‚¹
+                                    {{ "%.2f"|format(row[2]|float) }}
+
+                                </strong>
+
+
+                            </td>
+
+
+                        </tr>
+
+
+                    {% endfor %}
+
+
+                    </tbody>
+
+
+                </table>
+
+
+            </div>
+
+
+
+            <!-- NO SEARCH RESULT -->
+
+            <div
+                id="noSearchResult"
+                class="no-search-result">
+
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+
+                <br><br>
+
+
+                No matching expenses found.
+
+
+            </div>
+
+
+            {% else %}
+
+
+            <!-- =================================================
+                 EMPTY STATE
+            ================================================== -->
+
+            <div
+                class="empty-state"
+                style="
+                    padding:55px 20px;
+                    text-align:center;
+                ">
+
+
+                <div
+                    class="empty-icon"
+                    style="
+                        width:65px;
+                        height:65px;
+                        margin:auto;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        border-radius:18px;
+                        background:#e8f5e9;
+                        color:#1b5e20;
+                        font-size:25px;
+                    ">
+
+                    <i class="fa-solid fa-receipt"></i>
+
+                </div>
+
+
+                <h3>
+                    No Expenses Recorded
+                </h3>
+
+
+                <p
+                    style="
+                        color:#6b7280;
+                        font-size:12px;
+                    ">
+
+                    Start by adding your first farm expense.
+
+                </p>
+
+
+                <a
+                    href="#description"
+                    style="
+                        display:inline-flex;
+                        align-items:center;
+                        gap:7px;
+                        margin-top:10px;
+                        color:#1b5e20;
+                        text-decoration:none;
+                        font-weight:750;
+                        font-size:12px;
+                    ">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Add First Expense
+
+                </a>
+
+            </div>
+
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         SMART INTELLIGENCE
+    ====================================================== -->
+
+    <section class="intelligence-card">
+
+
+        <div class="intelligence-header">
+
+
+            <i class="fa-solid fa-lightbulb"></i>
+
+
+            <h3>
+                Smart Expense Insight
+            </h3>
+
+
+        </div>
+
+
+        <p id="expenseInsight">
+
+            Keep recording expenses consistently.
+            Your expense history can later be connected
+            with the Farm Calculator, Crop Advisor,
+            Cultivation Plan and Finance module to estimate
+            crop-wise profitability and cost efficiency.
+
+        </p>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FINANCE FLOW
+    ====================================================== -->
+
+    <section class="finance-flow">
+
+
+        <div class="flow-item">
+
+            <i class="fa-solid fa-seedling"></i>
+
+            <span>
+                Crop
+            </span>
+
+        </div>
+
+
+        <div class="flow-item">
+
+            <i class="fa-solid fa-receipt"></i>
+
+            <span>
+                Expenses
+            </span>
+
+        </div>
+
+
+        <div class="flow-item">
+
+            <i class="fa-solid fa-chart-pie"></i>
+
+            <span>
+                Cost Analysis
+            </span>
+
+        </div>
+
+
+        <div class="flow-item">
+
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+
+            <span>
+                Revenue
+            </span>
+
+        </div>
+
+
+        <div class="flow-item">
+
+            <i class="fa-solid fa-arrow-trend-up"></i>
+
+            <span>
+                Profit
+            </span>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         BACK
+    ====================================================== -->
+
+    <div class="back-section">
+
+
+        <!-- FIXED ENDPOINT -->
+
+        <a href="{{ url_for('finance.finance') }}">
+
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+
+            Back to Finance Dashboard
+
+
+        </a>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="expense-footer">
+
+
+        <i class="fa-solid fa-leaf"></i>
+
+
+        <strong>
+            KisanVision360+
+        </strong>
+
+
+        Smart Farming Finance
+
+
+        <span>
+            â€¢
+        </span>
+
+
+        Farm Cost Intelligence
+
+
+    </footer>
+
+
+</div>
+
+</main>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const expenseForm =
+    document.getElementById("expenseForm");
+
+
+const descriptionInput =
+    document.getElementById("description");
+
+
+const amountInput =
+    document.getElementById("amount");
+
+
+const expenseButton =
+    document.getElementById("expenseButton");
+
+
+const searchInput =
+    document.getElementById("expenseSearch");
+
+
+const sortSelect =
+    document.getElementById("expenseSort");
+
+
+const table =
+    document.getElementById("expenseTable");
+
+
+const noSearchResult =
+    document.getElementById("noSearchResult");
+
+
+
+/* =========================================================
+   FORM VALIDATION
+========================================================= */
+
+if (expenseForm) {
+
+    expenseForm.addEventListener(
+        "submit",
+        function(event) {
+
+
+            const description =
+                descriptionInput.value.trim();
+
+
+            const amount =
+                parseFloat(
+                    amountInput.value
+                );
+
+
+            if (description.length < 2) {
+
+                event.preventDefault();
+
+
+                alert(
+                    "Please enter a valid expense description."
+                );
+
+
+                descriptionInput.focus();
+
+
+                return;
+
+            }
+
+
+            if (
+                !Number.isFinite(amount) ||
+                amount <= 0
+            ) {
+
+                event.preventDefault();
+
+
+                alert(
+                    "Please enter a valid expense amount."
+                );
+
+
+                amountInput.focus();
+
+
+                return;
+
+            }
+
+
+            /*
+             Prevent double submission.
+            */
+
+            expenseButton.disabled = true;
+
+
+            expenseButton.innerHTML =
+                '<i class="fa-solid fa-spinner fa-spin"></i> Adding Expense...';
+
+        }
+    );
+
+}
+
+
+
+/* =========================================================
+   SEARCH EXPENSES
+========================================================= */
+
+function filterExpenses() {
+
+
+    if (!table) {
+        return;
+    }
+
+
+    const query =
+        (searchInput?.value || "")
+            .trim()
+            .toLowerCase();
+
+
+    const rows =
+        Array.from(
+            table.querySelectorAll(
+                "tbody tr"
+            )
+        );
+
+
+    let visibleCount = 0;
+
+
+    rows.forEach(
+        function(row) {
+
+
+            const description =
+                row.dataset.description || "";
+
+
+            const amount =
+                row.dataset.amount || "";
+
+
+            const date =
+                row.querySelector(".date")?.textContent
+                    .trim()
+                    .toLowerCase() || "";
+
+
+            const text =
+                description +
+                " " +
+                amount +
+                " " +
+                date;
+
+
+            const match =
+                text.includes(query);
+
+
+            row.style.display =
+                match ? "" : "none";
+
+
+            if (match) {
+
+                visibleCount++;
+
+            }
+
+        }
+    );
+
+
+    if (noSearchResult) {
+
+        noSearchResult.style.display =
+            visibleCount === 0
+                ? "block"
+                : "none";
+
+    }
+
+}
+
+
+
+/* =========================================================
+   SORT EXPENSES
+========================================================= */
+
+function sortExpenses() {
+
+
+    if (!table || !sortSelect) {
+        return;
+    }
+
+
+    const tbody =
+        table.querySelector("tbody");
+
+
+    if (!tbody) {
+        return;
+    }
+
+
+    const rows =
+        Array.from(
+            tbody.querySelectorAll(
+                "tr"
+            )
+        );
+
+
+    const mode =
+        sortSelect.value;
+
+
+    rows.sort(
+        function(a, b) {
+
+
+            /* =============================================
+               AMOUNT SORT
+            ============================================== */
+
+            if (
+                mode === "highest" ||
+                mode === "lowest"
+            ) {
+
+
+                const amountA =
+                    parseFloat(
+                        a.dataset.amount || 0
+                    );
+
+
+                const amountB =
+                    parseFloat(
+                        b.dataset.amount || 0
+                    );
+
+
+                return mode === "highest"
+                    ? amountB - amountA
+                    : amountA - amountB;
+
+            }
+
+
+
+            /* =============================================
+               ORIGINAL BACKEND ORDER
+            ============================================== */
+
+            const indexA =
+                parseInt(
+                    a.dataset.index || 0,
+                    10
+                );
+
+
+            const indexB =
+                parseInt(
+                    b.dataset.index || 0,
+                    10
+                );
+
+
+            /*
+             Backend normally sends newest first.
+             Therefore:
+
+             newest  -> smaller index first
+             oldest  -> larger index first
+            */
+
+            return mode === "newest"
+                ? indexA - indexB
+                : indexB - indexA;
+
+        }
+    );
+
+
+    rows.forEach(
+        function(row) {
+
+            tbody.appendChild(row);
+
+        }
+    );
+
+
+    filterExpenses();
+
+}
+
+
+
+/* =========================================================
+   SEARCH EVENT
+========================================================= */
+
+if (searchInput) {
+
+    searchInput.addEventListener(
+        "input",
+        filterExpenses
+    );
+
+}
+
+
+
+/* =========================================================
+   SORT EVENT
+========================================================= */
+
+if (sortSelect) {
+
+    sortSelect.addEventListener(
+        "change",
+        sortExpenses
+    );
+
+}
+
+
+
+/* =========================================================
+   FINANCE STATUS
+========================================================= */
+
+const financeStatus =
+    document.getElementById(
+        "financeStatus"
+    );
+
+
+const totalExpense =
+    {{ expense_total.value|float }};
+
+
+if (financeStatus) {
+
+
+    if (totalExpense <= 0) {
+
+        financeStatus.textContent =
+            "No Data";
+
+    }
+
+    else if (totalExpense < 10000) {
+
+        financeStatus.textContent =
+            "Stable";
+
+    }
+
+    else if (totalExpense < 50000) {
+
+        financeStatus.textContent =
+            "Monitor";
+
+    }
+
+    else {
+
+        financeStatus.textContent =
+            "Review";
+
+    }
+
+}
+
+
+
+/* =========================================================
+   SMART INSIGHT
+========================================================= */
+
+const insight =
+    document.getElementById(
+        "expenseInsight"
+    );
+
+
+const expenseCount =
+    {{ expense_list|length }};
+
+
+if (insight) {
+
+
+    if (expenseCount === 0) {
+
+        insight.textContent =
+            "No expense data is available yet. Add your first expense to start building your farm financial history.";
+
+    }
+
+
+    else if (expenseCount === 1) {
+
+        insight.textContent =
+            "You have recorded one expense. Continue adding all major farm costs so KisanVision360+ can provide better financial analysis later.";
+
+    }
+
+
+    else {
+
+        insight.textContent =
+            "You have recorded " +
+            expenseCount +
+            " expenses totaling â‚¹" +
+            Math.round(
+                totalExpense
+            ).toLocaleString("en-IN") +
+            ". Consistent expense tracking helps compare cultivation costs with expected crop revenue.";
+
+    }
+
+}
+
+
+
+/* =========================================================
+   INITIAL FILTER
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        filterExpenses();
+
+    }
+);
+
+
+</script>
+{% endblock %}
+

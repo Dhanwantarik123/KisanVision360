@@ -147,7 +147,7 @@
 
                             <i class="fa-solid fa-seedling"></i>
 
-                            Seed Cost (â‚¹)
+                            Seed Cost (₹)
 
                         </label>
 
@@ -172,7 +172,7 @@
 
                             <i class="fa-solid fa-flask"></i>
 
-                            Fertilizer Cost (â‚¹)
+                            Fertilizer Cost (₹)
 
                         </label>
 
@@ -197,7 +197,7 @@
 
                             <i class="fa-solid fa-person-digging"></i>
 
-                            Labour Cost (â‚¹)
+                            Labour Cost (₹)
 
                         </label>
 
@@ -222,7 +222,7 @@
 
                             <i class="fa-solid fa-droplet"></i>
 
-                            Irrigation Cost (â‚¹)
+                            Irrigation Cost (₹)
 
                         </label>
 
@@ -247,7 +247,7 @@
 
                             <i class="fa-solid fa-bug"></i>
 
-                            Pesticide Cost (â‚¹)
+                            Pesticide Cost (₹)
 
                         </label>
 
@@ -272,7 +272,7 @@
 
                             <i class="fa-solid fa-box"></i>
 
-                            Other Cost (â‚¹)
+                            Other Cost (₹)
 
                         </label>
 
@@ -322,7 +322,7 @@
 
                             <i class="fa-solid fa-indian-rupee-sign"></i>
 
-                            Selling Price / Quintal (â‚¹)
+                            Selling Price / Quintal (₹)
 
                         </label>
 
@@ -425,7 +425,7 @@
 
                                 <strong>
 
-                                    â‚¹ {{ "%.2f"|format(
+                                    ₹ {{ "%.2f"|format(
                                         result.expense|default(0)
                                     ) }}
 
@@ -475,7 +475,7 @@
 
                                 <strong>
 
-                                    â‚¹ {{ "%.2f"|format(
+                                    ₹ {{ "%.2f"|format(
                                         result.income|default(0)
                                     ) }}
 
@@ -514,14 +514,14 @@
 
                                 <strong>
 
-                                    â‚¹ {{ "%.2f"|format(
+                                    ₹ {{ "%.2f"|format(
                                         result.profit|default(0)
                                     ) }}
 
                                 </strong>
 
                                 <small>
-                                    Income âˆ’ total expense
+                                    Income − total expense
                                 </small>
 
                             </div>
@@ -617,7 +617,7 @@
                                 </h4>
 
                                 <strong>
-                                    â‚¹ {{ "%.2f"|format(cost_per_acre) }}
+                                    ₹ {{ "%.2f"|format(cost_per_acre) }}
                                 </strong>
 
                             </div>
@@ -631,7 +631,7 @@
                                 </h4>
 
                                 <strong>
-                                    â‚¹ {{ "%.2f"|format(income_per_acre) }}
+                                    ₹ {{ "%.2f"|format(income_per_acre) }}
                                 </strong>
 
                             </div>
@@ -645,7 +645,7 @@
                                 </h4>
 
                                 <strong>
-                                    â‚¹ {{ "%.2f"|format(profit_per_acre) }}
+                                    ₹ {{ "%.2f"|format(profit_per_acre) }}
                                 </strong>
 
                             </div>
@@ -697,7 +697,7 @@
 
                                 <strong>
 
-                                    â‚¹ {{ "%.2f"|format(
+                                    ₹ {{ "%.2f"|format(
                                         expense_value / yield_value
                                         if yield_value > 0
                                         else 0
@@ -732,7 +732,7 @@
 
                                 {% if profit_value < 0 %}
 
-                                    âš ï¸ Your current estimate shows a loss.
+                                    ⚠️ Your current estimate shows a loss.
                                     Consider reducing avoidable cultivation
                                     expenses, improving expected yield, or
                                     checking current market prices before
@@ -740,21 +740,21 @@
 
                                 {% elif roi < 10 %}
 
-                                    ðŸ’¡ Your farm is estimated to be profitable,
+                                    💡 Your farm is estimated to be profitable,
                                     but the return on investment is relatively
                                     low. Compare current mandi prices and
                                     review major cost components before selling.
 
                                 {% elif roi < 25 %}
 
-                                    âœ… Your estimate shows a moderate return.
+                                    ✅ Your estimate shows a moderate return.
                                     Maintaining production efficiency and
                                     monitoring market prices can help improve
                                     the final farm income.
 
                                 {% else %}
 
-                                    ðŸŒ± Your estimate shows a strong return.
+                                    🌱 Your estimate shows a strong return.
                                     Continue monitoring weather, crop health,
                                     irrigation and market conditions because
                                     actual farm profit can change during the
@@ -781,7 +781,7 @@
 
                                 Estimated farm profit:
 
-                                â‚¹ {{ "%.2f"|format(profit_value) }}
+                                ₹ {{ "%.2f"|format(profit_value) }}
 
                             </div>
 
@@ -835,7 +835,7 @@
                                 </strong>
 
                                 <span>
-                                    â‚¹{{ "%.0f"|format(expense_value) }}
+                                    ₹{{ "%.0f"|format(expense_value) }}
                                 </span>
 
                             </div>
@@ -867,7 +867,7 @@
                                 </strong>
 
                                 <span>
-                                    â‚¹{{ "%.0f"|format(income_value) }}
+                                    ₹{{ "%.0f"|format(income_value) }}
                                 </span>
 
                             </div>
@@ -883,7 +883,7 @@
                                 </strong>
 
                                 <span>
-                                    â‚¹{{ "%.0f"|format(profit_value) }}
+                                    ₹{{ "%.0f"|format(profit_value) }}
                                 </span>
 
                             </div>
@@ -971,9 +971,9 @@
                 KisanVision360+
             </strong>
 
-            â€¢ Farm Economics & Financial Intelligence
+            • Farm Economics & Financial Intelligence
 
-            â€¢ Â© 2026
+            • © 2026
 
         </footer>
 

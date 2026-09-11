@@ -118,7 +118,9 @@ app.config["DEFAULT_CITY"] = os.getenv(
     "Nagpur"
 )
 
+from routes.tools import tools_bp
 
+app.register_blueprint(tools_bp)
 # ============================================================
 # MAIL CONFIGURATION
 # ============================================================

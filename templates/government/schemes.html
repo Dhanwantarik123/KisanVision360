@@ -1357,7 +1357,7 @@
                             <span class="score-value">
 
                                 <span class="score-number">
-                                    â€”
+                                    —
                                 </span>
 
                                 %
@@ -1529,7 +1529,7 @@
 
             AI Score:
             <span id="modalScore">
-                â€”
+                —
             </span>%
 
         </div>
@@ -1955,7 +1955,7 @@ function calculateSchemeScore(card) {
     if (
         data.benefit.includes("financial") ||
         data.benefit.includes("subsid") ||
-        data.benefit.includes("â‚¹") ||
+        data.benefit.includes("₹") ||
         data.description.includes("financial") ||
         data.description.includes("income")
     ) {
@@ -2443,7 +2443,7 @@ function openSchemeDetails(button) {
     const score =
         card.querySelector(
             ".score-number"
-        )?.innerText || "â€”";
+        )?.innerText || "—";
 
 
     document.getElementById(

@@ -146,7 +146,7 @@
                 </span>
 
                 <strong id="wishlistValue">
-                    â‚¹0
+                    ₹0
                 </strong>
 
             </div>
@@ -247,23 +247,23 @@
                 </option>
 
                 <option value="name-asc">
-                    Name: A â†’ Z
+                    Name: A → Z
                 </option>
 
                 <option value="name-desc">
-                    Name: Z â†’ A
+                    Name: Z → A
                 </option>
 
                 <option value="price-low">
-                    Price: Low â†’ High
+                    Price: Low → High
                 </option>
 
                 <option value="price-high">
-                    Price: High â†’ Low
+                    Price: High → Low
                 </option>
 
                 <option value="stock-high">
-                    Stock: High â†’ Low
+                    Stock: High → Low
                 </option>
 
             </select>
@@ -492,7 +492,7 @@
 
                         <div class="price">
 
-                            â‚¹{{ item.price|default(0, true) }}
+                            ₹{{ item.price|default(0, true) }}
 
                         </div>
 
@@ -848,7 +848,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (wishlistValue) {
 
         wishlistValue.textContent =
-            "â‚¹" +
+            "₹" +
             totalValue.toLocaleString(
                 "en-IN",
                 {

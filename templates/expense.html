@@ -1118,7 +1118,7 @@
 
 
         <span>
-            â€¢
+            •
         </span>
 
 
@@ -1244,7 +1244,7 @@
 
 
             <strong>
-                â‚¹ {{ "%.2f"|format(expense_total.value) }}
+                ₹ {{ "%.2f"|format(expense_total.value) }}
             </strong>
 
         </div>
@@ -1276,7 +1276,7 @@
 
             <strong>
 
-                â‚¹
+                ₹
 
                 {% if expense_list|length > 0 %}
 
@@ -1421,7 +1421,7 @@
 
 
                         <span>
-                            â‚¹
+                            ₹
                         </span>
 
 
@@ -1656,7 +1656,7 @@
 
                                 <strong class="expense-amount">
 
-                                    â‚¹
+                                    ₹
                                     {{ "%.2f"|format(row[2]|float) }}
 
                                 </strong>
@@ -1926,7 +1926,7 @@
 
 
         <span>
-            â€¢
+            •
         </span>
 
 
@@ -2384,7 +2384,7 @@ if (insight) {
         insight.textContent =
             "You have recorded " +
             expenseCount +
-            " expenses totaling â‚¹" +
+            " expenses totaling ₹" +
             Math.round(
                 totalExpense
             ).toLocaleString("en-IN") +

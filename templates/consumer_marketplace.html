@@ -387,22 +387,22 @@
 
 
                 <option value="0-100">
-                    Under â‚¹100
+                    Under ₹100
                 </option>
 
 
                 <option value="100-500">
-                    â‚¹100 - â‚¹500
+                    ₹100 - ₹500
                 </option>
 
 
                 <option value="500-1000">
-                    â‚¹500 - â‚¹1000
+                    ₹500 - ₹1000
                 </option>
 
 
                 <option value="1000+">
-                    Above â‚¹1000
+                    Above ₹1000
                 </option>
 
 
@@ -712,7 +712,7 @@
                         <div class="rating-row">
 
                             <span class="stars">
-                                â˜…â˜…â˜…â˜…â˜…
+                                ★★★★★
                             </span>
 
 
@@ -760,7 +760,7 @@
 
                                 <strong class="product-price">
 
-                                    â‚¹{{ "%.2f"|format(
+                                    ₹{{ "%.2f"|format(
                                         product.price|default(0)|float
                                     ) }}
 
@@ -1010,7 +1010,7 @@
 
                             <div class="buy-price">
 
-                                â‚¹{{ "%.2f"|format(
+                                ₹{{ "%.2f"|format(
                                     product.price|default(0)|float
                                 ) }}
 
@@ -1132,7 +1132,7 @@
                                 <strong
                                     id="buyTotal-{{ product.id }}">
 
-                                    â‚¹{{ "%.2f"|format(
+                                    ₹{{ "%.2f"|format(
                                         product.price|default(0)|float
                                     ) }}
 
@@ -1361,7 +1361,7 @@
 
         <div>
 
-            Â© 2026 KisanVision360
+            © 2026 KisanVision360
 
         </div>
 
@@ -2343,7 +2343,7 @@ function updateBuyTotal(
     if (totalElement) {
 
         totalElement.textContent =
-            "â‚¹" +
+            "₹" +
             total.toFixed(2);
 
     }

@@ -1,0 +1,1972 @@
+﻿{% extends "base.html" %}
+
+{% block title %}KisanVision360+ | Help Center{% endblock %}
+
+{% block head %}
+<style>
+
+        :root {
+
+            --kv-green: #1b5e20;
+            --kv-green-2: #43a047;
+            --kv-light-green: #e8f5e9;
+
+            --kv-orange: #fb8c00;
+            --kv-blue: #1565c0;
+            --kv-red: #c62828;
+
+            --kv-text: #263238;
+            --kv-muted: #68746c;
+
+            --kv-border: #dfe8e1;
+            --kv-bg: #f5f8f5;
+            --kv-white: #ffffff;
+
+        }
+
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f4f8f5,
+                    #f8faf9,
+                    #eef7ef
+                );
+
+            color: var(--kv-text);
+
+            font-family:
+                Inter,
+                Arial,
+                Helvetica,
+                sans-serif;
+
+        }
+
+
+        /* =====================================================
+           MAIN CONTENT
+        ===================================================== */
+
+        .main-content {
+
+            min-height: 100vh;
+
+        }
+
+
+        .help-page {
+
+            max-width: 1400px;
+
+            margin: auto;
+
+            padding: 25px;
+
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .help-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 20px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .help-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+        }
+
+
+        .help-title-icon {
+
+            width: 56px;
+            height: 56px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--kv-green),
+                    var(--kv-green-2)
+                );
+
+            color: white;
+
+            font-size: 23px;
+
+            box-shadow:
+                0 8px 20px
+                rgba(27,94,32,.18);
+
+        }
+
+
+        .help-title h1 {
+
+            margin: 0;
+
+            color: var(--kv-green);
+
+            font-size: 28px;
+
+            font-weight: 850;
+
+        }
+
+
+        .help-title p {
+
+            margin: 5px 0 0;
+
+            color: var(--kv-muted);
+
+            font-size: 13px;
+
+        }
+
+
+        .help-user {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 8px 13px;
+
+            background: white;
+
+            border: 1px solid var(--kv-border);
+
+            border-radius: 30px;
+
+        }
+
+
+        .help-user-icon {
+
+            width: 36px;
+            height: 36px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: var(--kv-light-green);
+
+            color: var(--kv-green);
+
+        }
+
+
+        .help-user strong {
+
+            display: block;
+
+            font-size: 12px;
+
+        }
+
+
+        .help-user small {
+
+            display: block;
+
+            margin-top: 2px;
+
+            color: var(--kv-green);
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            text-transform: capitalize;
+
+        }
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .help-hero {
+
+            position: relative;
+
+            overflow: hidden;
+
+            padding: 30px;
+
+            margin-bottom: 22px;
+
+            border-radius: 22px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1b5e20,
+                    #2e7d32 55%,
+                    #43a047
+                );
+
+            box-shadow:
+                0 12px 30px
+                rgba(27,94,32,.20);
+
+        }
+
+
+        .help-hero::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 180px;
+            height: 180px;
+
+            right: -50px;
+            top: -70px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,.08);
+
+        }
+
+
+        .help-hero-content {
+
+            position: relative;
+
+            z-index: 2;
+
+            max-width: 800px;
+
+        }
+
+
+        .help-hero h2 {
+
+            margin: 0 0 8px;
+
+            font-size: 25px;
+
+        }
+
+
+        .help-hero p {
+
+            margin: 0;
+
+            line-height: 1.7;
+
+            font-size: 13px;
+
+            opacity: .92;
+
+        }
+
+
+        .help-badges {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            margin-top: 17px;
+
+        }
+
+
+        .help-badge {
+
+            padding: 7px 11px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,255,255,.13);
+
+            border:
+                1px solid
+                rgba(255,255,255,.20);
+
+            font-size: 10px;
+
+        }
+
+
+        /* =====================================================
+           QUICK HELP
+        ===================================================== */
+
+        .quick-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0,1fr));
+
+            gap: 14px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .quick-card {
+
+            display: block;
+
+            padding: 18px;
+
+            background: white;
+
+            border:
+                1px solid var(--kv-border);
+
+            border-radius: 16px;
+
+            color: var(--kv-text);
+
+            text-decoration: none;
+
+            transition: .2s;
+
+        }
+
+
+        .quick-card:hover {
+
+            transform:
+                translateY(-3px);
+
+            border-color:
+                #b9d1bc;
+
+            box-shadow:
+                0 10px 25px
+                rgba(0,0,0,.07);
+
+        }
+
+
+        .quick-icon {
+
+            width: 43px;
+            height: 43px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 12px;
+
+            border-radius: 12px;
+
+            background:
+                var(--kv-light-green);
+
+            color:
+                var(--kv-green);
+
+            font-size: 17px;
+
+        }
+
+
+        .quick-card:nth-child(2)
+        .quick-icon {
+
+            background: #e3f2fd;
+
+            color: var(--kv-blue);
+
+        }
+
+
+        .quick-card:nth-child(3)
+        .quick-icon {
+
+            background: #fff3e0;
+
+            color: var(--kv-orange);
+
+        }
+
+
+        .quick-card:nth-child(4)
+        .quick-icon {
+
+            background: #f3e5f5;
+
+            color: #7b1fa2;
+
+        }
+
+
+        .quick-card h3 {
+
+            margin: 0 0 5px;
+
+            font-size: 14px;
+
+        }
+
+
+        .quick-card p {
+
+            margin: 0;
+
+            color: var(--kv-muted);
+
+            font-size: 10px;
+
+            line-height: 1.6;
+
+        }
+
+
+        /* =====================================================
+           SECTION
+        ===================================================== */
+
+        .section {
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .section-title {
+
+            margin-bottom: 13px;
+
+        }
+
+
+        .section-title span {
+
+            color: var(--kv-green);
+
+            font-size: 9px;
+
+            font-weight: 850;
+
+            letter-spacing: .8px;
+
+        }
+
+
+        .section-title h2 {
+
+            margin: 5px 0 4px;
+
+            font-size: 21px;
+
+        }
+
+
+        .section-title p {
+
+            margin: 0;
+
+            color: var(--kv-muted);
+
+            font-size: 11px;
+
+        }
+
+
+        /* =====================================================
+           FAQ
+        ===================================================== */
+
+        .faq-container {
+
+            display: grid;
+
+            gap: 10px;
+
+        }
+
+
+        .faq-item {
+
+            overflow: hidden;
+
+            background: white;
+
+            border:
+                1px solid var(--kv-border);
+
+            border-radius: 14px;
+
+        }
+
+
+        .faq-question {
+
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 17px 18px;
+
+            border: 0;
+
+            background: white;
+
+            color: var(--kv-text);
+
+            text-align: left;
+
+            cursor: pointer;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+        }
+
+
+        .faq-question:hover {
+
+            background:
+                #f7faf7;
+
+        }
+
+
+        .faq-question i {
+
+            color:
+                var(--kv-green);
+
+            transition:
+                transform .2s;
+
+        }
+
+
+        .faq-answer {
+
+            display: none;
+
+            padding:
+                0 18px 18px;
+
+            color:
+                var(--kv-muted);
+
+            font-size: 11px;
+
+            line-height: 1.8;
+
+        }
+
+
+        .faq-item.active
+        .faq-answer {
+
+            display: block;
+
+        }
+
+
+        .faq-item.active
+        .faq-question i {
+
+            transform:
+                rotate(180deg);
+
+        }
+
+
+        /* =====================================================
+           MODULE HELP
+        ===================================================== */
+
+        .module-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0,1fr));
+
+            gap: 14px;
+
+        }
+
+
+        .module-card {
+
+            padding: 17px;
+
+            background: white;
+
+            border:
+                1px solid var(--kv-border);
+
+            border-radius: 15px;
+
+            transition: .2s;
+
+        }
+
+
+        .module-card:hover {
+
+            transform:
+                translateY(-2px);
+
+            border-color:
+                #bfd7c2;
+
+        }
+
+
+        .module-icon {
+
+            width: 40px;
+            height: 40px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 10px;
+
+            border-radius: 11px;
+
+            background:
+                var(--kv-light-green);
+
+            color:
+                var(--kv-green);
+
+        }
+
+
+        .module-card h3 {
+
+            margin: 0 0 5px;
+
+            font-size: 13px;
+
+        }
+
+
+        .module-card p {
+
+            margin: 0;
+
+            color:
+                var(--kv-muted);
+
+            font-size: 10px;
+
+            line-height: 1.6;
+
+        }
+
+
+        .module-card a {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            margin-top: 10px;
+
+            color:
+                var(--kv-green);
+
+            text-decoration: none;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+        }
+
+
+        /* =====================================================
+           CONTACT
+        ===================================================== */
+
+        .contact-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3,1fr);
+
+            gap: 14px;
+
+        }
+
+
+        .contact-card {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            padding: 17px;
+
+            background: white;
+
+            border:
+                1px solid var(--kv-border);
+
+            border-radius: 15px;
+
+        }
+
+
+        .contact-icon {
+
+            width: 43px;
+            height: 43px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border-radius: 12px;
+
+            background:
+                var(--kv-light-green);
+
+            color:
+                var(--kv-green);
+
+        }
+
+
+        .contact-card strong {
+
+            display: block;
+
+            font-size: 12px;
+
+        }
+
+
+        .contact-card span {
+
+            display: block;
+
+            margin-top: 3px;
+
+            color:
+                var(--kv-muted);
+
+            font-size: 10px;
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .help-footer {
+
+            padding:
+                25px 10px 10px;
+
+            text-align: center;
+
+            color:
+                #78827b;
+
+            font-size: 10px;
+
+        }
+
+
+        .help-footer i {
+
+            color:
+                var(--kv-green);
+
+        }
+
+
+        .help-footer span {
+
+            margin:
+                0 6px;
+
+        }
+
+
+        /* =====================================================
+           RTL
+        ===================================================== */
+
+        html[dir="rtl"]
+        .faq-question {
+
+            text-align: right;
+
+        }
+
+
+        html[dir="rtl"]
+        .help-title,
+        html[dir="rtl"]
+        .help-user {
+
+            direction: rtl;
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media(max-width:1100px) {
+
+            .quick-grid {
+
+                grid-template-columns:
+                    repeat(2,1fr);
+
+            }
+
+            .module-grid {
+
+                grid-template-columns:
+                    repeat(2,1fr);
+
+            }
+
+        }
+
+
+        @media(max-width:800px) {
+
+            .help-page {
+
+                padding: 18px;
+
+            }
+
+            .contact-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+        }
+
+
+        @media(max-width:600px) {
+
+            .help-page {
+
+                padding: 14px;
+
+            }
+
+            .help-header {
+
+                align-items:
+                    flex-start;
+
+                flex-direction:
+                    column;
+
+            }
+
+            .quick-grid,
+            .module-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+            .help-hero {
+
+                padding: 22px;
+
+            }
+
+            .help-title h1 {
+
+                font-size: 23px;
+
+            }
+
+        }
+
+    </style>
+{% endblock %}
+
+{% block page_title %}Help Center{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+{% set role = session.get('role', '')|lower|trim %}
+
+
+<div class="dashboard-container">
+
+
+    <!-- =====================================================
+         EXISTING KISANVISION360 SIDEBAR
+    ====================================================== -->
+
+    
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="main-content">
+
+
+        <div class="help-page">
+
+
+            <!-- HEADER -->
+
+            <header class="help-header">
+
+                <div class="help-title">
+
+                    <div class="help-title-icon">
+
+                        <i class="fa-solid fa-circle-question"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h1>
+                            Help Center
+                        </h1>
+
+                        <p>
+                            Get help with KisanVision360+
+                            smart farming features.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="help-user">
+
+                    <div class="help-user-icon">
+
+                        <i class="fa-solid fa-user"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            {{ name|default(session.get('name', 'User'), true) }}
+                        </strong>
+
+                        <small>
+                            {{ role|default('user') }}
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+
+            <!-- HERO -->
+
+            <section class="help-hero">
+
+                <div class="help-hero-content">
+
+                    <h2>
+                        How can we help you? ðŸŒ¾
+                    </h2>
+
+                    <p>
+                        Learn how to use KisanVision360+ for
+                        weather monitoring, crop recommendations,
+                        disease detection, irrigation, marketplace,
+                        finance and other farming services.
+                    </p>
+
+
+                    <div class="help-badges">
+
+                        <span class="help-badge">
+                            <i class="fa-solid fa-cloud-sun"></i>
+                            Weather
+                        </span>
+
+                        <span class="help-badge">
+                            <i class="fa-solid fa-seedling"></i>
+                            Crop Advisor
+                        </span>
+
+                        <span class="help-badge">
+                            <i class="fa-solid fa-virus"></i>
+                            Disease Detection
+                        </span>
+
+                        <span class="help-badge">
+                            <i class="fa-solid fa-store"></i>
+                            Marketplace
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- QUICK HELP -->
+
+            <section class="section">
+
+                <div class="section-title">
+
+                    <span>
+                        QUICK ACCESS
+                    </span>
+
+                    <h2>
+                        Popular Help
+                    </h2>
+
+                    <p>
+                        Quickly open the features you may need.
+                    </p>
+
+                </div>
+
+
+                <div class="quick-grid">
+
+
+                    <a
+                        href="{{ url_for('chatbot.chatbot') }}"
+                        class="quick-card"
+                    >
+
+                        <div class="quick-icon">
+
+                            <i class="fa-solid fa-robot"></i>
+
+                        </div>
+
+                        <h3>
+                            AI Chatbot
+                        </h3>
+
+                        <p>
+                            Ask KisanVision360+ questions
+                            about farming and app features.
+                        </p>
+
+                    </a>
+
+
+
+                    <a
+                        href="{{ url_for('weather.weather') }}"
+                        class="quick-card"
+                    >
+
+                        <div class="quick-icon">
+
+                            <i class="fa-solid fa-cloud-sun"></i>
+
+                        </div>
+
+                        <h3>
+                            Weather
+                        </h3>
+
+                        <p>
+                            Check current weather and
+                            farming-related conditions.
+                        </p>
+
+                    </a>
+
+
+
+                    <a
+                        href="{{ url_for('disease.disease') }}"
+                        class="quick-card"
+                    >
+
+                        <div class="quick-icon">
+
+                            <i class="fa-solid fa-microscope"></i>
+
+                        </div>
+
+                        <h3>
+                            Disease Detection
+                        </h3>
+
+                        <p>
+                            Upload a crop image and
+                            analyze possible diseases.
+                        </p>
+
+                    </a>
+
+
+
+                    {% if role == 'farmer' %}
+
+                    <a
+                        href="{{ url_for('marketplace.farmer_marketplace') }}"
+                        class="quick-card"
+                    >
+
+                        <div class="quick-icon">
+
+                            <i class="fa-solid fa-store"></i>
+
+                        </div>
+
+                        <h3>
+                            Marketplace
+                        </h3>
+
+                        <p>
+                            Manage agricultural products,
+                            orders and selling.
+                        </p>
+
+                    </a>
+
+                    {% elif role == 'consumer' %}
+
+                    <a
+                        href="{{ url_for('marketplace.consumer_marketplace') }}"
+                        class="quick-card"
+                    >
+
+                        <div class="quick-icon">
+
+                            <i class="fa-solid fa-store"></i>
+
+                        </div>
+
+                        <h3>
+                            Marketplace
+                        </h3>
+
+                        <p>
+                            Browse agricultural products
+                            and manage purchases.
+                        </p>
+
+                    </a>
+
+                    {% else %}
+
+                    <a
+                        href="{{ url_for('farmer.farmer') }}"
+                        class="quick-card"
+                    >
+
+                        <div class="quick-icon">
+
+                            <i class="fa-solid fa-house"></i>
+
+                        </div>
+
+                        <h3>
+                            Dashboard
+                        </h3>
+
+                        <p>
+                            Return to your KisanVision360+
+                            dashboard.
+                        </p>
+
+                    </a>
+
+                    {% endif %}
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- FAQ -->
+
+            <section class="section">
+
+                <div class="section-title">
+
+                    <span>
+                        FREQUENTLY ASKED QUESTIONS
+                    </span>
+
+                    <h2>
+                        Common Questions
+                    </h2>
+
+                    <p>
+                        Find quick answers to common
+                        KisanVision360+ questions.
+                    </p>
+
+                </div>
+
+
+                <div class="faq-container">
+
+
+                    <div class="faq-item">
+
+                        <button
+                            class="faq-question"
+                            type="button"
+                        >
+
+                            <span>
+                                How do I use the Crop Advisor?
+                            </span>
+
+                            <i class="fa-solid fa-chevron-down"></i>
+
+                        </button>
+
+
+                        <div class="faq-answer">
+
+                            Open the Crop Advisor from the sidebar.
+                            Enter your farm information such as soil,
+                            location, season and available water.
+                            The system can then provide crop
+                            recommendations based on the available
+                            information.
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="faq-item">
+
+                        <button
+                            class="faq-question"
+                            type="button"
+                        >
+
+                            <span>
+                                How does Disease Detection work?
+                            </span>
+
+                            <i class="fa-solid fa-chevron-down"></i>
+
+                        </button>
+
+
+                        <div class="faq-answer">
+
+                            Open Disease Detection and upload a
+                            clear crop or leaf image. The trained
+                            CNN model analyzes the image and returns
+                            the predicted disease class when the
+                            image can be processed successfully.
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="faq-item">
+
+                        <button
+                            class="faq-question"
+                            type="button"
+                        >
+
+                            <span>
+                                How can I check market prices?
+                            </span>
+
+                            <i class="fa-solid fa-chevron-down"></i>
+
+                        </button>
+
+
+                        <div class="faq-answer">
+
+                            Open Market from the sidebar to view
+                            available agricultural market-price
+                            information. Use the information to
+                            compare prices before making selling
+                            decisions.
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="faq-item">
+
+                        <button
+                            class="faq-question"
+                            type="button"
+                        >
+
+                            <span>
+                                How do I sell products?
+                            </span>
+
+                            <i class="fa-solid fa-chevron-down"></i>
+
+                        </button>
+
+
+                        <div class="faq-answer">
+
+                            Farmers can open Marketplace, add an
+                            agricultural product, enter its name,
+                            category, price, quantity and location,
+                            and then manage the listing and received
+                            customer orders.
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="faq-item">
+
+                        <button
+                            class="faq-question"
+                            type="button"
+                        >
+
+                            <span>
+                                How do I change the application language?
+                            </span>
+
+                            <i class="fa-solid fa-chevron-down"></i>
+
+                        </button>
+
+
+                        <div class="faq-answer">
+
+                            Open Settings and use the central
+                            language option. The selected language
+                            is stored in the application session and
+                            is used throughout the application.
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="faq-item">
+
+                        <button
+                            class="faq-question"
+                            type="button"
+                        >
+
+                            <span>
+                                Where can I manage my account?
+                            </span>
+
+                            <i class="fa-solid fa-chevron-down"></i>
+
+                        </button>
+
+
+                        <div class="faq-answer">
+
+                            Open Profile or Settings from the sidebar
+                            to manage your account information and
+                            application preferences.
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- MODULES -->
+
+            <section class="section">
+
+                <div class="section-title">
+
+                    <span>
+                        KISANVISION360+ MODULES
+                    </span>
+
+                    <h2>
+                        Feature Guide
+                    </h2>
+
+                    <p>
+                        Understand what each major module does.
+                    </p>
+
+                </div>
+
+
+                <div class="module-grid">
+
+
+                    <div class="module-card">
+
+                        <div class="module-icon">
+
+                            <i class="fa-solid fa-cloud-sun"></i>
+
+                        </div>
+
+                        <h3>
+                            Weather
+                        </h3>
+
+                        <p>
+                            View weather information that can
+                            support farming decisions.
+                        </p>
+
+                        <a href="{{ url_for('weather.weather') }}">
+
+                            Open Weather
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+
+
+                    <div class="module-card">
+
+                        <div class="module-icon">
+
+                            <i class="fa-solid fa-seedling"></i>
+
+                        </div>
+
+                        <h3>
+                            Crop Advisor
+                        </h3>
+
+                        <p>
+                            Get crop recommendations using
+                            farm and environmental information.
+                        </p>
+
+                        <a href="{{ url_for('recommendation.recommendation') }}">
+
+                            Open Crop Advisor
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+
+
+                    <div class="module-card">
+
+                        <div class="module-icon">
+
+                            <i class="fa-solid fa-virus"></i>
+
+                        </div>
+
+                        <h3>
+                            Disease Detection
+                        </h3>
+
+                        <p>
+                            Analyze uploaded crop images using
+                            the disease classification model.
+                        </p>
+
+                        <a href="{{ url_for('disease.disease') }}">
+
+                            Open Disease Detection
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+
+
+                    <div class="module-card">
+
+                        <div class="module-icon">
+
+                            <i class="fa-solid fa-droplet"></i>
+
+                        </div>
+
+                        <h3>
+                            Smart Irrigation
+                        </h3>
+
+                        <p>
+                            Use available farm and weather
+                            information to support irrigation planning.
+                        </p>
+
+                        <a href="{{ url_for('irrigation.irrigation') }}">
+
+                            Open Irrigation
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+
+
+                    <div class="module-card">
+
+                        <div class="module-icon">
+
+                            <i class="fa-solid fa-chart-line"></i>
+
+                        </div>
+
+                        <h3>
+                            Market
+                        </h3>
+
+                        <p>
+                            Check available agricultural
+                            market-price information.
+                        </p>
+
+                        <a href="{{ url_for('market.market') }}">
+
+                            Open Market
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+
+
+                    <div class="module-card">
+
+                        <div class="module-icon">
+
+                            <i class="fa-solid fa-wallet"></i>
+
+                        </div>
+
+                        <h3>
+                            Finance
+                        </h3>
+
+                        <p>
+                            Manage farm income, expenses and
+                            financial calculations.
+                        </p>
+
+                        <a href="{{ url_for('finance.finance') }}">
+
+                            Open Finance
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- CONTACT -->
+
+            <section class="section">
+
+                <div class="section-title">
+
+                    <span>
+                        SUPPORT
+                    </span>
+
+                    <h2>
+                        Need More Help?
+                    </h2>
+
+                    <p>
+                        Use these options to continue working
+                        with KisanVision360+.
+                    </p>
+
+                </div>
+
+
+                <div class="contact-grid">
+
+
+                    <a
+                        href="{{ url_for('chatbot.chatbot') }}"
+                        class="contact-card"
+                        style="text-decoration:none;color:inherit;"
+                    >
+
+                        <div class="contact-icon">
+
+                            <i class="fa-solid fa-robot"></i>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Ask KisanVision360+
+                            </strong>
+
+                            <span>
+                                Open the AI farming assistant
+                            </span>
+
+                        </div>
+
+                    </a>
+
+
+
+                    <a
+                        href="{{ url_for('settings.settings') }}"
+                        class="contact-card"
+                        style="text-decoration:none;color:inherit;"
+                    >
+
+                        <div class="contact-icon">
+
+                            <i class="fa-solid fa-gear"></i>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Settings
+                            </strong>
+
+                            <span>
+                                Manage application preferences
+                            </span>
+
+                        </div>
+
+                    </a>
+
+
+
+                    {% if role == 'farmer' %}
+
+                    <a
+                        href="{{ url_for('farmer.farmer') }}"
+                        class="contact-card"
+                        style="text-decoration:none;color:inherit;"
+                    >
+
+                        <div class="contact-icon">
+
+                            <i class="fa-solid fa-house"></i>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Farmer Dashboard
+                            </strong>
+
+                            <span>
+                                Return to your dashboard
+                            </span>
+
+                        </div>
+
+                    </a>
+
+                    {% elif role == 'consumer' %}
+
+                    <a
+                        href="{{ url_for('consumer.consumer') }}"
+                        class="contact-card"
+                        style="text-decoration:none;color:inherit;"
+                    >
+
+                        <div class="contact-icon">
+
+                            <i class="fa-solid fa-house"></i>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Consumer Dashboard
+                            </strong>
+
+                            <span>
+                                Return to your dashboard
+                            </span>
+
+                        </div>
+
+                    </a>
+
+                    {% else %}
+
+                    <a
+                        href="{{ url_for('admin.admin') }}"
+                        class="contact-card"
+                        style="text-decoration:none;color:inherit;"
+                    >
+
+                        <div class="contact-icon">
+
+                            <i class="fa-solid fa-house"></i>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Admin Dashboard
+                            </strong>
+
+                            <span>
+                                Return to administration
+                            </span>
+
+                        </div>
+
+                    </a>
+
+                    {% endif %}
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- FOOTER -->
+
+            <footer class="help-footer">
+
+                <i class="fa-solid fa-leaf"></i>
+
+                <strong>
+                    KisanVision360+
+                </strong>
+
+                <span>â€¢</span>
+
+                Help Center
+
+                <span>â€¢</span>
+
+                Smart Farming Platform
+
+                <span>â€¢</span>
+
+                Â© 2026
+
+            </footer>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+
+<!-- =====================================================
+     CHATBOT
+====================================================== -->
+
+
+{% endblock %}
+
+{% block scripts %}
+<script
+    src="{{ url_for('static', filename='js/chatbot.js') }}">
+</script>
+<script>
+
+"use strict";
+
+
+/* =====================================================
+   FAQ ACCORDION
+===================================================== */
+
+document
+    .querySelectorAll(".faq-question")
+    .forEach(function(button) {
+
+        button.addEventListener(
+            "click",
+            function() {
+
+                const item =
+                    button.closest(".faq-item");
+
+                if (!item) {
+                    return;
+                }
+
+
+                const wasActive =
+                    item.classList.contains("active");
+
+
+                document
+                    .querySelectorAll(".faq-item")
+                    .forEach(function(other) {
+
+                        other.classList.remove(
+                            "active"
+                        );
+
+                    });
+
+
+                if (!wasActive) {
+
+                    item.classList.add(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+    });
+
+
+console.log(
+    "KisanVision360+ Help Center loaded."
+);
+
+</script>
+{% endblock %}
+
+

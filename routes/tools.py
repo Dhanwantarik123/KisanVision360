@@ -686,7 +686,7 @@ def calculate_water(data):
     if efficiency > 100:
         efficiency = 100
 
-    # 1 mm over 1 acre â‰ˆ 4046.86 litres.
+    # 1 mm over 1 acre ≈ 4046.86 litres.
     base_litres = (
         area_acres
         * water_mm

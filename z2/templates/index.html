@@ -1,0 +1,1541 @@
+﻿{% extends "base.html" %}
+
+{% block title %}KisanVision360+ | Smart Agriculture{% endblock %}
+
+{% block head %}
+<link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+<style>
+
+        /* =====================================================
+           KISANVISION360+ WELCOME PAGE
+        ===================================================== */
+
+        :root {
+
+            --green-dark: #1B5E20;
+            --green: #2E7D32;
+            --green-light: #43A047;
+
+            --orange: #FB8C00;
+
+            --lime: #7CFC00;
+
+            --white: #FFFFFF;
+
+        }
+
+
+        * {
+
+            margin: 0;
+            padding: 0;
+
+            box-sizing: border-box;
+
+            font-family:
+                "Segoe UI",
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                sans-serif;
+
+        }
+
+
+        html {
+
+            scroll-behavior: smooth;
+
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            overflow-x: hidden;
+
+            color: white;
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    rgba(0, 30, 5, 0.82),
+                    rgba(0, 0, 0, 0.58)
+                ),
+
+                url("{{ url_for(
+                    'static',
+                    filename='images/background.jpg'
+                ) }}");
+
+            background-size: cover;
+
+            background-position: center;
+
+            background-repeat: no-repeat;
+
+            background-attachment: fixed;
+
+        }
+
+
+        /* =====================================================
+           BACKGROUND
+        ===================================================== */
+
+        .background-overlay {
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 0;
+
+            pointer-events: none;
+
+            background:
+
+                radial-gradient(
+                    circle at 15% 20%,
+                    rgba(124,252,0,0.12),
+                    transparent 25%
+                ),
+
+                radial-gradient(
+                    circle at 85% 80%,
+                    rgba(251,140,0,0.12),
+                    transparent 25%
+                );
+
+        }
+
+
+        .background-circle {
+
+            position: fixed;
+
+            border-radius: 50%;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.07);
+
+            pointer-events: none;
+
+        }
+
+
+        .circle-one {
+
+            width: 350px;
+            height: 350px;
+
+            left: -170px;
+            top: -150px;
+
+        }
+
+
+        .circle-two {
+
+            width: 450px;
+            height: 450px;
+
+            right: -220px;
+            bottom: -230px;
+
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .top-nav {
+
+            position: relative;
+
+            z-index: 5;
+
+            width: 100%;
+
+            padding:
+                22px 5%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+        }
+
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            color: white;
+
+            text-decoration: none;
+
+        }
+
+
+        .brand-icon {
+
+            width: 40px;
+            height: 40px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background:
+                rgba(255,255,255,0.12);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.18);
+
+        }
+
+
+        .brand-icon i {
+
+            color:
+                var(--lime);
+
+            font-size: 18px;
+
+        }
+
+
+        .brand-name {
+
+            font-size: 19px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.3px;
+
+        }
+
+
+        .brand-name span {
+
+            color:
+                var(--lime);
+
+        }
+
+
+        .platform-badge {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding:
+                8px 13px;
+
+            border-radius: 30px;
+
+            background:
+                rgba(255,255,255,0.09);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.12);
+
+            color:
+                rgba(255,255,255,0.78);
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+        }
+
+
+        .status-dot {
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background:
+                #7CFC00;
+
+            box-shadow:
+                0 0 10px
+                rgba(124,252,0,0.8);
+
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .page-container {
+
+            position: relative;
+
+            z-index: 2;
+
+            min-height:
+                calc(100vh - 85px);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding:
+                20px 20px 35px;
+
+        }
+
+
+        .welcome-card {
+
+            width:
+                min(900px, 100%);
+
+            padding:
+                42px 45px;
+
+            border-radius: 32px;
+
+            background:
+                rgba(255,255,255,0.105);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.18);
+
+            backdrop-filter:
+                blur(22px);
+
+            -webkit-backdrop-filter:
+                blur(22px);
+
+            box-shadow:
+                0 30px 80px
+                rgba(0,0,0,0.42);
+
+            text-align: center;
+
+            animation:
+                cardEnter 0.8s ease;
+
+        }
+
+
+        @keyframes cardEnter {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(30px)
+                    scale(0.98);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           LOGO
+        ===================================================== */
+
+        .logo-wrapper {
+
+            position: relative;
+
+            display: inline-flex;
+
+            margin-bottom: 14px;
+
+        }
+
+
+        .logo-glow {
+
+            position: absolute;
+
+            inset: -15px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(124,252,0,0.08);
+
+            filter:
+                blur(15px);
+
+            animation:
+                logoGlow 3s ease-in-out infinite;
+
+        }
+
+
+        @keyframes logoGlow {
+
+            0%,
+            100% {
+
+                transform: scale(0.95);
+
+                opacity: 0.6;
+
+            }
+
+            50% {
+
+                transform: scale(1.08);
+
+                opacity: 1;
+
+            }
+
+        }
+
+
+        .logo {
+
+            position: relative;
+
+            z-index: 2;
+
+            width: 145px;
+            height: 145px;
+
+            object-fit: contain;
+
+            border-radius: 50%;
+
+            filter:
+                drop-shadow(
+                    0 0 25px
+                    rgba(255,255,255,0.22)
+                );
+
+            animation:
+                logoFloat 4s ease-in-out infinite;
+
+        }
+
+
+        @keyframes logoFloat {
+
+            0%,
+            100% {
+
+                transform:
+                    translateY(0);
+
+            }
+
+            50% {
+
+                transform:
+                    translateY(-6px);
+
+            }
+
+        }
+
+
+        /* =====================================================
+           TITLE
+        ===================================================== */
+
+        .main-title {
+
+            margin: 0;
+
+            font-size:
+                clamp(38px, 6vw, 62px);
+
+            line-height: 1.05;
+
+            font-weight: 850;
+
+            letter-spacing:
+                -2px;
+
+        }
+
+
+        .main-title span {
+
+            color:
+                var(--lime);
+
+        }
+
+
+        .subtitle {
+
+            margin:
+                12px auto 0;
+
+            max-width: 650px;
+
+            color:
+                rgba(255,255,255,0.82);
+
+            font-size: 16px;
+
+            line-height: 1.6;
+
+        }
+
+
+        .ai-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            margin-top: 15px;
+
+            padding:
+                7px 12px;
+
+            border-radius: 30px;
+
+            background:
+                rgba(67,160,71,0.15);
+
+            border:
+                1px solid
+                rgba(124,252,0,0.18);
+
+            color:
+                rgba(255,255,255,0.86);
+
+            font-size: 9px;
+
+            font-weight: 750;
+
+        }
+
+
+        .ai-badge i {
+
+            color:
+                var(--lime);
+
+        }
+
+
+        /* =====================================================
+           FEATURES
+        ===================================================== */
+
+        .feature-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 10px;
+
+            margin:
+                30px auto 25px;
+
+            max-width: 760px;
+
+        }
+
+
+        .feature-card {
+
+            padding:
+                16px 9px;
+
+            border-radius: 15px;
+
+            background:
+                rgba(255,255,255,0.075);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.10);
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease;
+
+        }
+
+
+        .feature-card:hover {
+
+            transform:
+                translateY(-4px);
+
+            background:
+                rgba(255,255,255,0.12);
+
+        }
+
+
+        .feature-icon {
+
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            margin:
+                0 auto 9px;
+
+            border-radius: 11px;
+
+            background:
+                rgba(124,252,0,0.10);
+
+            color:
+                var(--lime);
+
+            font-size: 15px;
+
+        }
+
+
+        .feature-card strong {
+
+            display: block;
+
+            font-size: 10px;
+
+            font-weight: 750;
+
+        }
+
+
+        .feature-card small {
+
+            display: block;
+
+            margin-top: 3px;
+
+            color:
+                rgba(255,255,255,0.52);
+
+            font-size: 8px;
+
+        }
+
+
+        /* =====================================================
+           INNOVATION STRIP
+        ===================================================== */
+
+        .innovation-strip {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            margin-bottom: 22px;
+
+        }
+
+
+        .innovation-item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            padding:
+                6px 9px;
+
+            border-radius: 20px;
+
+            color:
+                rgba(255,255,255,0.63);
+
+            font-size: 8px;
+
+            background:
+                rgba(0,0,0,0.12);
+
+        }
+
+
+        .innovation-item i {
+
+            color:
+                var(--orange);
+
+        }
+
+
+        /* =====================================================
+           START BUTTON
+        ===================================================== */
+
+        .start-button {
+
+            width:
+                min(520px, 100%);
+
+            height: 56px;
+
+            margin: 0 auto;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--green),
+                    var(--green-light)
+                );
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 15px;
+
+            font-weight: 800;
+
+            box-shadow:
+                0 12px 28px
+                rgba(27,94,32,0.30);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+
+        }
+
+
+        .start-button:hover {
+
+            color: white;
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 17px 35px
+                rgba(27,94,32,0.40);
+
+        }
+
+
+        .start-button i {
+
+            transition:
+                transform 0.2s ease;
+
+        }
+
+
+        .start-button:hover i {
+
+            transform:
+                translateX(5px);
+
+        }
+
+
+        /* =====================================================
+           LOGIN
+        ===================================================== */
+
+        .login-text {
+
+            margin-top: 15px;
+
+            color:
+                rgba(255,255,255,0.65);
+
+            font-size: 10px;
+
+        }
+
+
+        .login-link {
+
+            color:
+                var(--lime);
+
+            text-decoration: none;
+
+            font-weight: 800;
+
+        }
+
+
+        .login-link:hover {
+
+            text-decoration: underline;
+
+        }
+
+
+        /* =====================================================
+           TRUST
+        ===================================================== */
+
+        .trust-row {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            flex-wrap: wrap;
+
+            gap: 18px;
+
+            margin-top: 20px;
+
+            padding-top: 17px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.09);
+
+            color:
+                rgba(255,255,255,0.48);
+
+            font-size: 8px;
+
+        }
+
+
+        .trust-item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+        }
+
+
+        .trust-item i {
+
+            color:
+                var(--lime);
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+
+            margin-top: 14px;
+
+            color:
+                rgba(255,255,255,0.38);
+
+            font-size: 8px;
+
+            line-height: 1.7;
+
+        }
+
+
+        /* =====================================================
+           RTL
+        ===================================================== */
+
+        html[dir="rtl"] {
+
+            direction: rtl;
+
+        }
+
+
+        html[dir="rtl"]
+        .start-button i {
+
+            transform:
+                rotate(180deg);
+
+        }
+
+
+        html[dir="rtl"]
+        .start-button:hover i {
+
+            transform:
+                rotate(180deg)
+                translateX(5px);
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            body {
+
+                background-attachment:
+                    scroll;
+
+            }
+
+
+            .top-nav {
+
+                padding:
+                    15px 18px;
+
+            }
+
+
+            .brand-name {
+
+                font-size: 16px;
+
+            }
+
+
+            .platform-badge {
+
+                padding:
+                    7px 9px;
+
+                font-size: 7px;
+
+            }
+
+
+            .page-container {
+
+                min-height:
+                    calc(100vh - 70px);
+
+                padding:
+                    15px 12px 25px;
+
+            }
+
+
+            .welcome-card {
+
+                padding:
+                    28px 18px;
+
+                border-radius:
+                    24px;
+
+            }
+
+
+            .logo {
+
+                width: 110px;
+                height: 110px;
+
+            }
+
+
+            .main-title {
+
+                font-size: 39px;
+
+                letter-spacing:
+                    -1.2px;
+
+            }
+
+
+            .subtitle {
+
+                font-size: 13px;
+
+            }
+
+
+            .feature-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+                gap: 8px;
+
+                margin-top: 22px;
+
+            }
+
+
+            .feature-card {
+
+                padding:
+                    13px 7px;
+
+            }
+
+
+            .feature-card small {
+
+                font-size: 7px;
+
+            }
+
+
+            .innovation-strip {
+
+                gap: 6px;
+
+            }
+
+
+            .innovation-item {
+
+                font-size: 7px;
+
+            }
+
+
+        }
+
+
+        @media (max-width: 390px) {
+
+            .platform-badge {
+
+                display: none;
+
+            }
+
+
+            .welcome-card {
+
+                padding:
+                    23px 14px;
+
+            }
+
+
+            .main-title {
+
+                font-size: 34px;
+
+            }
+
+
+            .logo {
+
+                width: 95px;
+                height: 95px;
+
+            }
+
+
+            .trust-row {
+
+                gap: 10px;
+
+            }
+
+        }
+
+    </style>
+{% endblock %}
+
+{% block page_title %}Smart Agriculture{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<!-- =====================================================
+         BACKGROUND
+    ====================================================== -->
+
+    <div class="background-overlay"></div>
+
+    <div class="background-circle circle-one"></div>
+
+    <div class="background-circle circle-two"></div>
+
+
+    <!-- =====================================================
+         TOP NAVIGATION
+    ====================================================== -->
+
+    <header class="top-nav">
+
+
+        <a href="/" class="brand">
+
+
+            <div class="brand-icon">
+
+                <i class="fa-solid fa-seedling"></i>
+
+            </div>
+
+
+            <div class="brand-name">
+
+                Kisan<span>Vision360+</span>
+
+            </div>
+
+
+        </a>
+
+
+        <div class="platform-badge">
+
+            <span class="status-dot"></span>
+
+            AI AGRICULTURE PLATFORM
+
+        </div>
+
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN WELCOME
+    ====================================================== -->
+
+    <main class="page-container">
+
+
+        <section class="welcome-card">
+
+
+            <!-- =================================================
+                 LOGO
+            ================================================== -->
+
+            <div class="logo-wrapper">
+
+                <div class="logo-glow"></div>
+
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename='images/logo.png'
+                    ) }}"
+                    class="logo"
+                    alt="KisanVision360+ Logo">
+
+            </div>
+
+
+            <!-- =================================================
+                 TITLE
+            ================================================== -->
+
+            <h1 class="main-title">
+
+                Kisan<span>Vision360+</span>
+
+            </h1>
+
+
+            <p class="subtitle">
+
+                ðŸŒ¾ AI-Powered Smart Agriculture Platform
+
+                <br>
+
+                Intelligent farming decisions from
+                crop planning to market selling.
+
+            </p>
+
+
+            <div class="ai-badge">
+
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                Smart â€¢ Connected â€¢ Farmer-Centric
+
+            </div>
+
+
+            <!-- =================================================
+                 CORE FEATURES
+            ================================================== -->
+
+            <div class="feature-grid">
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+
+                        <i class="fa-solid fa-cloud-sun"></i>
+
+                    </div>
+
+                    <strong>
+                        Live Weather
+                    </strong>
+
+                    <small>
+                        Weather-aware farming
+                    </small>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+
+                        <i class="fa-solid fa-seedling"></i>
+
+                    </div>
+
+                    <strong>
+                        AI Crop Advisor
+                    </strong>
+
+                    <small>
+                        Smart crop decisions
+                    </small>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                    </div>
+
+                    <strong>
+                        Market Intelligence
+                    </strong>
+
+                    <small>
+                        Better selling decisions
+                    </small>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+
+                        <i class="fa-solid fa-robot"></i>
+
+                    </div>
+
+                    <strong>
+                        AI Assistant
+                    </strong>
+
+                    <small>
+                        Multilingual farm help
+                    </small>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 INNOVATION STRIP
+            ================================================== -->
+
+            <div class="innovation-strip">
+
+
+                <div class="innovation-item">
+
+                    <i class="fa-solid fa-droplet"></i>
+
+                    Smart Irrigation
+
+                </div>
+
+
+                <div class="innovation-item">
+
+                    <i class="fa-solid fa-microscope"></i>
+
+                    Disease Detection
+
+                </div>
+
+
+                <div class="innovation-item">
+
+                    <i class="fa-solid fa-landmark"></i>
+
+                    Government Schemes
+
+                </div>
+
+
+                <div class="innovation-item">
+
+                    <i class="fa-solid fa-store"></i>
+
+                    Farmer Marketplace
+
+                </div>
+
+
+                <div class="innovation-item">
+
+                    <i class="fa-solid fa-wallet"></i>
+
+                    Farm Finance
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 START
+            ================================================== -->
+
+            <a
+                href="/role"
+                class="start-button"
+                id="startButton"
+            >
+
+                <span>
+                    Get Started
+                </span>
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </a>
+
+
+            <!-- =================================================
+                 LOGIN
+            ================================================== -->
+
+            <div class="login-text">
+
+                Already have an account?
+
+                <a
+                    href="/login"
+                    class="login-link"
+                >
+                    Login
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 TRUST
+            ================================================== -->
+
+            <div class="trust-row">
+
+
+                <div class="trust-item">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    Secure Platform
+
+                </div>
+
+
+                <div class="trust-item">
+
+                    <i class="fa-solid fa-language"></i>
+
+                    20 Languages
+
+                </div>
+
+
+                <div class="trust-item">
+
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+
+                    Web + APK Ready
+
+                </div>
+
+
+                <div class="trust-item">
+
+                    <i class="fa-solid fa-leaf"></i>
+
+                    Made for Indian Farmers
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 FOOTER
+            ================================================== -->
+
+            <footer class="footer">
+
+                Â© 2026 KisanVision360+
+
+                <span>â€¢</span>
+
+                Smart Farming â€¢ Better Tomorrow
+
+                <br>
+
+                ðŸ‡®ðŸ‡³ Built for Indian Agriculture
+
+            </footer>
+
+
+        </section>
+
+
+    </main>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+        /* =====================================================
+           START BUTTON
+        ===================================================== */
+
+        const startButton =
+            document.getElementById("startButton");
+
+
+        startButton.addEventListener(
+            "click",
+            function () {
+
+                this.style.opacity = "0.75";
+
+            }
+        );
+
+
+        /* =====================================================
+           RESTORE GLOBAL LANGUAGE DIRECTION
+        ===================================================== */
+
+        const savedLanguage =
+            localStorage.getItem(
+                "kisanvision360_language"
+            );
+
+
+        const rtlLanguages = [
+            "ur",
+            "ks",
+            "sd"
+        ];
+
+
+        if (
+            savedLanguage &&
+            !this
+        ) {
+
+            document.documentElement
+                .setAttribute(
+                    "lang",
+                    savedLanguage
+                );
+
+            document.documentElement
+                .setAttribute(
+                    "dir",
+                    rtlLanguages.includes(
+                        savedLanguage
+                    )
+                    ? "rtl"
+                    : "ltr"
+                );
+
+        }
+
+
+    </script>
+{% endblock %}
+

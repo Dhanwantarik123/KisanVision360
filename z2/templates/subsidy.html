@@ -1,0 +1,1814 @@
+﻿{% extends "base.html" %}
+
+{% block title %}KisanVision360+ | Farm Machinery Subsidy{% endblock %}
+
+{% block head %}
+<link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/subsidy.css') }}">
+<style>
+
+        /* =====================================================
+           KISANVISION360+ SUBSIDY INTELLIGENCE
+        ===================================================== */
+
+        :root {
+
+            --green-dark: #0b3d12;
+            --green: #1b5e20;
+            --green-light: #43a047;
+            --green-soft: #e8f5e9;
+            --orange: #fb8c00;
+            --orange-soft: #fff3e0;
+            --blue: #1565c0;
+            --blue-soft: #e3f2fd;
+            --red: #c62828;
+            --text: #1f2937;
+            --muted: #64748b;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --shadow:
+                0 12px 35px rgba(15, 23, 42, 0.09);
+
+        }
+
+
+        * {
+
+            box-sizing: border-box;
+
+        }
+
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f4fbf4,
+                    #f8fafc
+                );
+
+            color: var(--text);
+
+        }
+
+
+        /* =====================================================
+           MAIN CONTAINER
+        ===================================================== */
+
+        .container {
+
+            width: min(
+                1180px,
+                94%
+            );
+
+            margin: 0 auto;
+
+            padding:
+                35px 0 50px;
+
+        }
+
+
+        /* =====================================================
+           TOP NAV
+        ===================================================== */
+
+        .topbar {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+
+        .brand-icon {
+
+            width: 46px;
+
+            height: 46px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 14px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--green),
+                    var(--green-light)
+                );
+
+            box-shadow:
+                0 8px 20px
+                rgba(27,94,32,0.20);
+
+        }
+
+
+        .brand-text strong {
+
+            display: block;
+
+            font-size: 17px;
+
+            color: var(--green-dark);
+
+        }
+
+
+        .brand-text span {
+
+            display: block;
+
+            margin-top: 3px;
+
+            font-size: 11px;
+
+            color: var(--muted);
+
+        }
+
+
+        .language-status {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding:
+                8px 13px;
+
+            border-radius: 30px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+        }
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+
+            position: relative;
+
+            overflow: hidden;
+
+            padding:
+                38px;
+
+            border-radius: 26px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0b3d12 0%,
+                    #1b5e20 55%,
+                    #43a047 100%
+                );
+
+            box-shadow:
+                0 20px 50px
+                rgba(27,94,32,0.20);
+
+        }
+
+
+        .hero::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 220px;
+
+            height: 220px;
+
+            right: -70px;
+
+            top: -80px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,0.08);
+
+        }
+
+
+        .hero-content {
+
+            position: relative;
+
+            z-index: 2;
+
+            max-width: 760px;
+
+        }
+
+
+        .hero-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding:
+                7px 12px;
+
+            margin-bottom: 13px;
+
+            border-radius: 30px;
+
+            background:
+                rgba(255,255,255,0.14);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.18);
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.4px;
+
+        }
+
+
+        .hero h1 {
+
+            margin: 0;
+
+            font-size:
+                clamp(27px, 5vw, 42px);
+
+            line-height: 1.1;
+
+        }
+
+
+        .hero p {
+
+            max-width: 680px;
+
+            margin:
+                13px 0 0;
+
+            color:
+                rgba(255,255,255,0.82);
+
+            font-size: 14px;
+
+            line-height: 1.7;
+
+        }
+
+
+        /* =====================================================
+           SMART FLOW
+        ===================================================== */
+
+        .smart-flow {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap: 10px;
+
+            margin:
+                20px 0;
+
+        }
+
+
+        .flow-item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 14px;
+
+            background: white;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 5px 18px
+                rgba(15,23,42,0.04);
+
+        }
+
+
+        .flow-icon {
+
+            width: 34px;
+
+            height: 34px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background:
+                var(--green-soft);
+
+            color:
+                var(--green);
+
+            font-size: 14px;
+
+        }
+
+
+        .flow-item strong {
+
+            display: block;
+
+            font-size: 11px;
+
+        }
+
+
+        .flow-item span {
+
+            display: block;
+
+            margin-top: 3px;
+
+            color: var(--muted);
+
+            font-size: 9px;
+
+        }
+
+
+        /* =====================================================
+           DISCOVERY CARD
+        ===================================================== */
+
+        .discovery {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr auto;
+
+            gap: 20px;
+
+            align-items: center;
+
+            margin:
+                22px 0;
+
+            padding: 24px;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff8ed,
+                    #ffffff
+                );
+
+            border:
+                1px solid
+                #fed7aa;
+
+        }
+
+
+        .discovery h2 {
+
+            margin:
+                0 0 7px;
+
+            font-size: 18px;
+
+            color:
+                #9a4d00;
+
+        }
+
+
+        .discovery p {
+
+            margin: 0;
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+            line-height: 1.6;
+
+        }
+
+
+        .discovery-icon {
+
+            width: 60px;
+
+            height: 60px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 18px;
+
+            background:
+                var(--orange-soft);
+
+            color:
+                var(--orange);
+
+            font-size: 25px;
+
+        }
+
+
+        /* =====================================================
+           SECTION HEADER
+        ===================================================== */
+
+        .section-header {
+
+            display: flex;
+
+            align-items: end;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin:
+                30px 0 15px;
+
+        }
+
+
+        .section-header h2 {
+
+            margin: 0;
+
+            font-size: 22px;
+
+            color: var(--green-dark);
+
+        }
+
+
+        .section-header p {
+
+            margin:
+                5px 0 0;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+        }
+
+
+        .scheme-count {
+
+            padding:
+                7px 12px;
+
+            border-radius: 20px;
+
+            color: var(--green);
+
+            background:
+                var(--green-soft);
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+        }
+
+
+        /* =====================================================
+           SCHEME GRID
+        ===================================================== */
+
+        .schemes-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 18px;
+
+        }
+
+
+        .scheme {
+
+            position: relative;
+
+            padding: 24px;
+
+            background: white;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 20px;
+
+            box-shadow:
+                var(--shadow);
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s;
+
+        }
+
+
+        .scheme:hover {
+
+            transform:
+                translateY(-4px);
+
+            box-shadow:
+                0 18px 45px
+                rgba(15,23,42,0.13);
+
+        }
+
+
+        .scheme-top {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 13px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .scheme-icon {
+
+            width: 46px;
+
+            height: 46px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 13px;
+
+            color:
+                var(--green);
+
+            background:
+                var(--green-soft);
+
+            font-size: 18px;
+
+        }
+
+
+        .scheme h2 {
+
+            margin: 0;
+
+            color:
+                var(--green-dark);
+
+            font-size: 17px;
+
+            line-height: 1.35;
+
+        }
+
+
+        .scheme-tag {
+
+            display: inline-block;
+
+            margin-top: 6px;
+
+            padding:
+                4px 8px;
+
+            border-radius: 20px;
+
+            background:
+                #f1f5f9;
+
+            color:
+                var(--muted);
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .scheme-description {
+
+            color:
+                var(--muted);
+
+            font-size: 12px;
+
+            line-height: 1.65;
+
+        }
+
+
+        .scheme-description strong {
+
+            color:
+                var(--text);
+
+        }
+
+
+        .scheme-action {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-top: 18px;
+
+            padding-top: 15px;
+
+            border-top:
+                1px solid
+                #f1f5f9;
+
+        }
+
+
+        .check {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            color:
+                #15803d;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+        }
+
+
+        .apply-btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding:
+                9px 13px;
+
+            border-radius: 9px;
+
+            text-decoration: none;
+
+            color: white;
+
+            background:
+                var(--green);
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            transition:
+                background 0.2s,
+                transform 0.2s;
+
+        }
+
+
+        .apply-btn:hover {
+
+            background:
+                var(--green-dark);
+
+            transform:
+                translateY(-1px);
+
+        }
+
+
+        /* =====================================================
+           INTELLIGENCE PANEL
+        ===================================================== */
+
+        .intelligence {
+
+            margin-top: 25px;
+
+            padding: 25px;
+
+            border-radius: 20px;
+
+            background:
+                #0f172a;
+
+            color: white;
+
+        }
+
+
+        .intelligence h2 {
+
+            margin:
+                0 0 8px;
+
+            font-size: 18px;
+
+        }
+
+
+        .intelligence > p {
+
+            margin:
+                0 0 20px;
+
+            color:
+                #cbd5e1;
+
+            font-size: 11px;
+
+            line-height: 1.6;
+
+        }
+
+
+        .intelligence-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 10px;
+
+        }
+
+
+        .intel-card {
+
+            padding: 16px;
+
+            border-radius: 13px;
+
+            background:
+                rgba(255,255,255,0.07);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.08);
+
+        }
+
+
+        .intel-card i {
+
+            color:
+                #86efac;
+
+            font-size: 16px;
+
+        }
+
+
+        .intel-card strong {
+
+            display: block;
+
+            margin-top: 9px;
+
+            font-size: 10px;
+
+        }
+
+
+        .intel-card span {
+
+            display: block;
+
+            margin-top: 4px;
+
+            color:
+                #94a3b8;
+
+            font-size: 9px;
+
+            line-height: 1.5;
+
+        }
+
+
+        /* =====================================================
+           INFORMATION NOTICE
+        ===================================================== */
+
+        .notice {
+
+            display: flex;
+
+            gap: 12px;
+
+            margin-top: 20px;
+
+            padding: 16px;
+
+            border-radius: 14px;
+
+            background:
+                var(--blue-soft);
+
+            color:
+                #0c4a6e;
+
+            border:
+                1px solid
+                #bfdbfe;
+
+        }
+
+
+        .notice i {
+
+            margin-top: 2px;
+
+        }
+
+
+        .notice strong {
+
+            display: block;
+
+            font-size: 11px;
+
+        }
+
+
+        .notice span {
+
+            display: block;
+
+            margin-top: 4px;
+
+            font-size: 10px;
+
+            line-height: 1.6;
+
+        }
+
+
+        /* =====================================================
+           EMPTY STATE
+        ===================================================== */
+
+        .empty {
+
+            padding: 50px 20px;
+
+            text-align: center;
+
+            border:
+                2px dashed
+                var(--border);
+
+            border-radius: 20px;
+
+            background: white;
+
+        }
+
+
+        .empty i {
+
+            font-size: 35px;
+
+            color:
+                #94a3b8;
+
+        }
+
+
+        .empty h3 {
+
+            margin:
+                12px 0 5px;
+
+        }
+
+
+        .empty p {
+
+            margin: 0;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+
+            margin-top: 35px;
+
+            padding-top: 18px;
+
+            text-align: center;
+
+            border-top:
+                1px solid
+                var(--border);
+
+            color:
+                #94a3b8;
+
+            font-size: 9px;
+
+        }
+
+
+        /* =====================================================
+           RTL
+        ===================================================== */
+
+        [dir="rtl"] .scheme-top,
+        [dir="rtl"] .notice,
+        [dir="rtl"] .flow-item {
+
+            text-align: right;
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .smart-flow {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+
+            }
+
+
+            .intelligence-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .container {
+
+                width: 92%;
+
+                padding-top: 20px;
+
+            }
+
+
+            .hero {
+
+                padding: 27px 22px;
+
+            }
+
+
+            .schemes-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .smart-flow {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+
+            .discovery {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .discovery-icon {
+
+                display: none;
+
+            }
+
+        }
+
+
+        @media (max-width: 480px) {
+
+            .topbar {
+
+                align-items: flex-start;
+
+            }
+
+
+            .language-status {
+
+                font-size: 9px;
+
+            }
+
+
+            .smart-flow {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .intelligence-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .scheme {
+
+                padding: 18px;
+
+            }
+
+
+            .scheme-action {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+
+            }
+
+
+            .apply-btn {
+
+                width: 100%;
+
+                justify-content: center;
+
+            }
+
+        }
+
+    </style>
+{% endblock %}
+
+{% block page_title %}Farm Machinery Subsidy{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<div class="container">
+
+
+    <!-- =================================================
+         TOP BAR
+    ================================================== -->
+
+    <div class="topbar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+
+                <i class="fa-solid fa-tractor"></i>
+
+            </div>
+
+            <div class="brand-text">
+
+                <strong>KisanVision360+</strong>
+
+                <span>
+                    Government Farm Support
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="language-status">
+
+            <i class="fa-solid fa-language"></i>
+
+            <span>
+                {{ session.get('language', 'en')|upper }}
+            </span>
+
+            <span>â€¢</span>
+
+            <span>
+                Global Language
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         HERO
+    ================================================== -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="hero-badge">
+
+                <i class="fa-solid fa-landmark"></i>
+
+                GOVERNMENT SUPPORT INTELLIGENCE
+
+            </div>
+
+
+            <h1>
+
+                ðŸ› Farm Machinery Subsidy Center
+
+            </h1>
+
+
+            <p>
+
+                Discover government-supported agriculture
+                schemes that can help farmers reduce machinery
+                investment costs and improve farm productivity.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         SMART FLOW
+    ================================================== -->
+
+    <div class="smart-flow">
+
+
+        <div class="flow-item">
+
+            <div class="flow-icon">
+
+                <i class="fa-solid fa-user-check"></i>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    Farmer Profile
+                </strong>
+
+                <span>
+                    Your farm details
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="flow-item">
+
+            <div class="flow-icon">
+
+                <i class="fa-solid fa-tractor"></i>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    Machinery Need
+                </strong>
+
+                <span>
+                    Identify equipment
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="flow-item">
+
+            <div class="flow-icon">
+
+                <i class="fa-solid fa-file-shield"></i>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    Scheme
+                </strong>
+
+                <span>
+                    Find support
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="flow-item">
+
+            <div class="flow-icon">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    Eligibility
+                </strong>
+
+                <span>
+                    Check requirements
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="flow-item">
+
+            <div class="flow-icon">
+
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    Benefit
+                </strong>
+
+                <span>
+                    Reduce investment
+                </span>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =================================================
+         SMART DISCOVERY
+    ================================================== -->
+
+    <section class="discovery">
+
+        <div>
+
+            <h2>
+
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                Smart Subsidy Discovery
+
+            </h2>
+
+
+            <p>
+
+                KisanVision360+ can later connect your farm
+                profile, machinery requirement, crop plan and
+                financial information to help you discover
+                relevant government support.
+
+            </p>
+
+        </div>
+
+
+        <div class="discovery-icon">
+
+            <i class="fa-solid fa-hand-holding-dollar"></i>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         SCHEMES
+    ================================================== -->
+
+    <div class="section-header">
+
+        <div>
+
+            <h2>
+                Available Subsidy Schemes
+            </h2>
+
+            <p>
+                Government and agriculture support programs
+            </p>
+
+        </div>
+
+
+        <div class="scheme-count">
+
+            {{ schemes|length }}
+
+            Scheme{{ 's' if schemes|length != 1 else '' }}
+
+        </div>
+
+    </div>
+
+
+
+    {% if schemes %}
+
+        <div class="schemes-grid">
+
+
+            {% for scheme in schemes %}
+
+
+            <article class="scheme">
+
+
+                <div class="scheme-top">
+
+
+                    <div class="scheme-icon">
+
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+
+                            {{ scheme }}
+
+                        </h2>
+
+
+                        <span class="scheme-tag">
+
+                            Farm Machinery Support
+
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="scheme-description">
+
+                    <strong>
+                        Farmer Support:
+                    </strong>
+
+                    Farmers can check the eligibility
+                    requirements and application process
+                    through the relevant agriculture department
+                    or official government portal.
+
+                </div>
+
+
+                <div class="scheme-action">
+
+
+                    <div class="check">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        Check official eligibility
+
+                    </div>
+
+
+                    <a
+                        href="https://www.india.gov.in/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="apply-btn"
+                    >
+
+                        Official Portal
+
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+                    </a>
+
+
+                </div>
+
+
+            </article>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+    {% else %}
+
+
+        <div class="empty">
+
+            <i class="fa-solid fa-file-circle-xmark"></i>
+
+            <h3>
+                No subsidy schemes available
+            </h3>
+
+            <p>
+                Government scheme information will appear
+                here when available.
+            </p>
+
+        </div>
+
+
+    {% endif %}
+
+
+
+    <!-- =================================================
+         CONNECTED INTELLIGENCE
+    ================================================== -->
+
+    <section class="intelligence">
+
+
+        <h2>
+
+            <i class="fa-solid fa-brain"></i>
+
+            Connected Farm Intelligence
+
+        </h2>
+
+
+        <p>
+
+            Subsidy information becomes more useful when
+            connected with the farmer's complete agricultural
+            decision-making process.
+
+        </p>
+
+
+        <div class="intelligence-grid">
+
+
+            <div class="intel-card">
+
+                <i class="fa-solid fa-seedling"></i>
+
+                <strong>
+                    Crop Planning
+                </strong>
+
+                <span>
+                    Understand crop and machinery requirements.
+                </span>
+
+            </div>
+
+
+            <div class="intel-card">
+
+                <i class="fa-solid fa-tractor"></i>
+
+                <strong>
+                    Machinery
+                </strong>
+
+                <span>
+                    Identify equipment required for farming.
+                </span>
+
+            </div>
+
+
+            <div class="intel-card">
+
+                <i class="fa-solid fa-wallet"></i>
+
+                <strong>
+                    Farm Finance
+                </strong>
+
+                <span>
+                    Compare investment and potential support.
+                </span>
+
+            </div>
+
+
+            <div class="intel-card">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                <strong>
+                    Farm Decision
+                </strong>
+
+                <span>
+                    Make better investment decisions.
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         IMPORTANT NOTICE
+    ================================================== -->
+
+    <div class="notice">
+
+        <i class="fa-solid fa-circle-info"></i>
+
+        <div>
+
+            <strong>
+                Important
+            </strong>
+
+            <span>
+
+                Subsidy availability, eligibility,
+                application deadlines and benefit amounts
+                can change. Always verify the latest
+                information on the relevant official
+                government or agriculture department portal
+                before applying.
+
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         FOOTER
+    ================================================== -->
+
+    <div class="footer">
+
+        KisanVision360+ â€¢ Smart Agriculture Platform
+
+        <br>
+
+        Government support information is provided for
+        farmer decision support.
+
+    </div>
+
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+"use strict";
+
+
+/* =========================================================
+   GLOBAL LANGUAGE RESTORE
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const savedLanguage =
+            localStorage.getItem(
+                "kisanvision360_language"
+            );
+
+
+        if (!savedLanguage) {
+
+            return;
+
+        }
+
+
+        document.documentElement
+            .setAttribute(
+                "lang",
+                savedLanguage
+            );
+
+
+        const rtlLanguages = [
+            "ur",
+            "ks",
+            "sd"
+        ];
+
+
+        document.documentElement
+            .setAttribute(
+                "dir",
+                rtlLanguages.includes(
+                    savedLanguage
+                )
+                    ? "rtl"
+                    : "ltr"
+            );
+
+    }
+);
+
+
+/* =========================================================
+   SCHEME CARD INTERACTION
+========================================================= */
+
+document.querySelectorAll(
+    ".scheme"
+).forEach(
+    function (card) {
+
+        card.addEventListener(
+            "mouseenter",
+            function () {
+
+                card.style.transition =
+                    "transform 0.2s ease";
+
+            }
+        );
+
+    }
+);
+
+</script>
+{% endblock %}
+

@@ -1,6 +1,6 @@
 -- ============================================================
 -- KISANVISION360+
--- CHATBOT DATABASE SCHEMA
+-- AI CHATBOT DATABASE SCHEMA
 -- PostgreSQL / Supabase
 -- ============================================================
 
@@ -46,7 +46,12 @@ CREATE TABLE IF NOT EXISTS chat_messages (
     language VARCHAR(10) NOT NULL DEFAULT 'en',
 
     created_at TIMESTAMP NOT NULL
-        DEFAULT CURRENT_TIMESTAMP
+        DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_chat_message_session
+        FOREIGN KEY (session_id)
+        REFERENCES chat_sessions(id)
+        ON DELETE CASCADE
 );
 
 
@@ -69,13 +74,20 @@ CREATE TABLE IF NOT EXISTS chat_feedback (
         DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT chat_feedback_rating_check
-        CHECK (rating IS NULL OR rating BETWEEN 1 AND 5)
+        CHECK (
+            rating IS NULL
+            OR rating BETWEEN 1 AND 5
+        ),
+
+    CONSTRAINT fk_chat_feedback_message
+        FOREIGN KEY (message_id)
+        REFERENCES chat_messages(id)
+        ON DELETE CASCADE
 );
 
 
 -- ============================================================
 -- 4. CHAT CONTEXT
--- Stores useful temporary farming context for the assistant
 -- ============================================================
 
 CREATE TABLE IF NOT EXISTS chat_context (
@@ -95,7 +107,12 @@ CREATE TABLE IF NOT EXISTS chat_context (
         DEFAULT CURRENT_TIMESTAMP,
 
     updated_at TIMESTAMP NOT NULL
-        DEFAULT CURRENT_TIMESTAMP
+        DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_chat_context_session
+        FOREIGN KEY (session_id)
+        REFERENCES chat_sessions(id)
+        ON DELETE CASCADE
 );
 
 
@@ -143,11 +160,56 @@ CREATE INDEX IF NOT EXISTS idx_chat_context_session
 ON chat_context(session_id);
 
 
+CREATE INDEX IF NOT EXISTS idx_chat_context_key
+ON chat_context(context_type, context_key);
+
+
 -- ============================================================
--- 6. SUPPORTED LANGUAGES
+-- 6. AUTO UPDATE TIMESTAMP FUNCTION
 -- ============================================================
 
--- The application supports these language codes:
+CREATE OR REPLACE FUNCTION update_chat_updated_at()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$;
+
+
+-- ============================================================
+-- 7. CHAT SESSION UPDATE TRIGGER
+-- ============================================================
+
+DROP TRIGGER IF EXISTS trg_chat_sessions_updated
+ON chat_sessions;
+
+CREATE TRIGGER trg_chat_sessions_updated
+BEFORE UPDATE ON chat_sessions
+FOR EACH ROW
+EXECUTE FUNCTION update_chat_updated_at();
+
+
+-- ============================================================
+-- 8. CHAT CONTEXT UPDATE TRIGGER
+-- ============================================================
+
+DROP TRIGGER IF EXISTS trg_chat_context_updated
+ON chat_context;
+
+CREATE TRIGGER trg_chat_context_updated
+BEFORE UPDATE ON chat_context
+FOR EACH ROW
+EXECUTE FUNCTION update_chat_updated_at();
+
+
+-- ============================================================
+-- 9. SUPPORTED LANGUAGES
+-- ============================================================
+
+-- Global application language support:
 --
 -- en   English
 -- hi   Hindi
@@ -171,55 +233,128 @@ ON chat_context(session_id);
 -- mni  Manipuri
 --
 -- Language is selected globally in the application.
--- It is NOT selected separately on every page.
+-- It does NOT need to be selected on every chatbot message.
 
 
 -- ============================================================
--- 7. OPTIONAL CHATBOT STATISTICS VIEW
+-- 10. CHATBOT STATISTICS VIEW
 -- ============================================================
 
 CREATE OR REPLACE VIEW chatbot_statistics AS
 SELECT
     COUNT(*) AS total_messages,
+
     COUNT(DISTINCT user_id) AS total_users,
+
     COUNT(DISTINCT session_id) AS total_sessions,
+
     COUNT(DISTINCT intent) AS total_intents
+
 FROM chat_messages;
 
 
 -- ============================================================
--- 8. OPTIONAL USER CHAT SUMMARY VIEW
+-- 11. USER CHAT SUMMARY VIEW
 -- ============================================================
 
 CREATE OR REPLACE VIEW chatbot_user_summary AS
 SELECT
     user_id,
+
     COUNT(*) AS total_messages,
+
     COUNT(DISTINCT session_id) AS total_sessions,
+
     MAX(created_at) AS last_message_at
+
 FROM chat_messages
+
 GROUP BY user_id;
 
 
 -- ============================================================
--- 9. COMMENTS
+-- 12. SESSION MESSAGE SUMMARY VIEW
+-- ============================================================
+
+CREATE OR REPLACE VIEW chatbot_session_summary AS
+SELECT
+    cs.id AS session_id,
+
+    cs.user_id,
+
+    cs.title,
+
+    cs.language,
+
+    cs.created_at,
+
+    cs.updated_at,
+
+    COUNT(cm.id) AS total_messages
+
+FROM chat_sessions cs
+
+LEFT JOIN chat_messages cm
+    ON cm.session_id = cs.id
+
+GROUP BY
+    cs.id,
+    cs.user_id,
+    cs.title,
+    cs.language,
+    cs.created_at,
+    cs.updated_at;
+
+
+-- ============================================================
+-- 13. TABLE COMMENTS
 -- ============================================================
 
 COMMENT ON TABLE chat_sessions IS
 'Stores KisanVision360+ AI chatbot conversation sessions.';
 
+
 COMMENT ON TABLE chat_messages IS
-'Stores user questions and chatbot responses.';
+'Stores user questions and AI chatbot responses.';
+
 
 COMMENT ON TABLE chat_feedback IS
-'Stores user ratings and feedback for chatbot responses.';
+'Stores ratings and feedback for chatbot responses.';
+
 
 COMMENT ON TABLE chat_context IS
-'Stores contextual farming information used by the chatbot.';
+'Stores temporary farming context used by the AI chatbot.';
+
+
+-- ============================================================
+-- 14. VERIFICATION
+-- ============================================================
+
+SELECT
+    'KisanVision360+ Chatbot Schema Ready'
+    AS status;
+
+
+-- ============================================================
+-- 15. VERIFY TABLES
+-- ============================================================
+
+SELECT table_name
+
+FROM information_schema.tables
+
+WHERE table_schema = 'public'
+
+AND table_name IN (
+    'chat_sessions',
+    'chat_messages',
+    'chat_feedback',
+    'chat_context'
+)
+
+ORDER BY table_name;
 
 
 -- ============================================================
 -- COMPLETE
 -- ============================================================
-
-SELECT 'KisanVision360+ Chatbot Schema Ready' AS status;

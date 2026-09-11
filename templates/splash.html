@@ -2,994 +2,1190 @@
 
 {% block title %}KisanVision360+ | Smart Agriculture{% endblock %}
 
+
 {% block head %}
+
+<meta charset="UTF-8">
+
 <link rel="stylesheet"
-          href="{{ url_for('static',
-          filename='css/splash.css') }}">
+      href="{{ url_for('static', filename='css/splash.css') }}">
+
 <style>
 
-        /* =====================================================
-           KISANVISION360+ PREMIUM SPLASH
-        ====================================================== */
+/* =========================================================
+   KISANVISION360+ PREMIUM SPLASH
+========================================================= */
 
-        :root {
+:root {
 
-            --green-dark: #0b3d12;
-            --green: #1b5e20;
-            --green-light: #43a047;
-            --green-soft: #81c784;
-            --orange: #fb8c00;
-            --white: #ffffff;
-            --muted: rgba(255,255,255,0.78);
+    --green-dark: #062b0b;
+    --green-deep: #0b3d12;
+    --green: #1b5e20;
+    --green-light: #43a047;
+    --green-soft: #81c784;
 
-        }
+    --orange: #fb8c00;
+    --orange-light: #ffb74d;
 
+    --white: #ffffff;
 
-        * {
+    --text-light: #e8f5e9;
 
-            box-sizing: border-box;
+    --muted: rgba(255,255,255,0.76);
 
-        }
+}
 
 
-        html,
-        body {
+/* =========================================================
+   GLOBAL
+========================================================= */
 
-            width: 100%;
-            height: 100%;
-            margin: 0;
+* {
 
-        }
+    box-sizing: border-box;
 
+}
 
-        body {
 
-            min-height: 100vh;
+html,
+body {
 
-            display: flex;
+    width: 100%;
+    height: 100%;
 
-            align-items: center;
+    margin: 0;
+    padding: 0;
 
-            justify-content: center;
+}
 
-            overflow: hidden;
 
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
+body {
 
-            background:
+    min-height: 100vh;
 
-                radial-gradient(
-                    circle at 15% 15%,
-                    rgba(129,199,132,0.35),
-                    transparent 28%
-                ),
+    display: flex;
 
-                radial-gradient(
-                    circle at 85% 80%,
-                    rgba(251,140,0,0.18),
-                    transparent 25%
-                ),
+    align-items: center;
 
-                linear-gradient(
-                    135deg,
-                    #062b0b 0%,
-                    #0b3d12 35%,
-                    #1b5e20 70%,
-                    #2e7d32 100%
-                );
+    justify-content: center;
 
-        }
+    overflow: hidden;
 
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-        /* =====================================================
-           BACKGROUND PARTICLES
-        ====================================================== */
+    background:
 
-        .background-decoration {
+        radial-gradient(
+            circle at 15% 15%,
+            rgba(129,199,132,0.35),
+            transparent 28%
+        ),
 
-            position: fixed;
+        radial-gradient(
+            circle at 85% 80%,
+            rgba(251,140,0,0.18),
+            transparent 25%
+        ),
 
-            inset: 0;
+        linear-gradient(
+            135deg,
+            var(--green-dark) 0%,
+            var(--green-deep) 35%,
+            var(--green) 70%,
+            #2e7d32 100%
+        );
 
-            pointer-events: none;
+}
 
-            overflow: hidden;
 
-        }
+/* =========================================================
+   BACKGROUND DECORATION
+========================================================= */
 
+.background-decoration {
 
-        .particle {
+    position: fixed;
 
-            position: absolute;
+    inset: 0;
 
-            width: 8px;
+    pointer-events: none;
 
-            height: 8px;
+    overflow: hidden;
 
-            border-radius: 50%;
+    z-index: 1;
 
-            background:
-                rgba(255,255,255,0.20);
+}
 
-            animation:
-                floatParticle
-                linear infinite;
 
-        }
+.particle {
 
+    position: absolute;
 
-        .particle:nth-child(1) {
+    width: 8px;
+    height: 8px;
 
-            left: 8%;
-            top: 20%;
-            animation-duration: 8s;
+    border-radius: 50%;
 
-        }
+    background:
+        rgba(255,255,255,0.20);
 
+    animation:
+        floatParticle
+        linear infinite;
 
-        .particle:nth-child(2) {
+}
 
-            left: 20%;
-            top: 75%;
-            width: 5px;
-            height: 5px;
-            animation-duration: 11s;
 
-        }
+.particle:nth-child(1) {
 
+    left: 8%;
+    top: 20%;
 
-        .particle:nth-child(3) {
+    animation-duration:
+        8s;
 
-            left: 78%;
-            top: 18%;
-            width: 6px;
-            height: 6px;
-            animation-duration: 9s;
+}
 
-        }
 
+.particle:nth-child(2) {
 
-        .particle:nth-child(4) {
+    left: 20%;
+    top: 75%;
 
-            left: 90%;
-            top: 65%;
-            width: 10px;
-            height: 10px;
-            animation-duration: 12s;
+    width: 5px;
+    height: 5px;
 
-        }
+    animation-duration:
+        11s;
 
+}
 
-        .particle:nth-child(5) {
 
-            left: 55%;
-            top: 90%;
-            width: 5px;
-            height: 5px;
-            animation-duration: 10s;
+.particle:nth-child(3) {
 
-        }
+    left: 78%;
+    top: 18%;
 
+    width: 6px;
+    height: 6px;
 
-        @keyframes floatParticle {
+    animation-duration:
+        9s;
 
-            0% {
+}
 
-                transform:
-                    translateY(30px);
 
-                opacity: 0;
+.particle:nth-child(4) {
 
-            }
+    left: 90%;
+    top: 65%;
 
-            20% {
+    width: 10px;
+    height: 10px;
 
-                opacity: 1;
+    animation-duration:
+        12s;
 
-            }
+}
 
-            80% {
 
-                opacity: 1;
+.particle:nth-child(5) {
 
-            }
+    left: 55%;
+    top: 90%;
 
-            100% {
+    width: 5px;
+    height: 5px;
 
-                transform:
-                    translateY(-100px);
+    animation-duration:
+        10s;
 
-                opacity: 0;
+}
 
-            }
 
-        }
+@keyframes floatParticle {
 
+    0% {
 
-        /* =====================================================
-           MAIN SPLASH CARD
-        ====================================================== */
+        transform:
+            translateY(30px);
 
-        .splash-wrapper {
+        opacity: 0;
 
-            position: relative;
+    }
 
-            z-index: 5;
+    20% {
 
-            width: min(
-                92%,
-                620px
-            );
+        opacity: 1;
 
-        }
+    }
 
+    80% {
 
-        .glass {
+        opacity: 1;
 
-            position: relative;
+    }
 
-            padding:
-                38px 34px 28px;
+    100% {
 
-            text-align: center;
+        transform:
+            translateY(-100px);
 
-            border:
-                1px solid
-                rgba(255,255,255,0.20);
+        opacity: 0;
 
-            border-radius: 30px;
+    }
 
-            background:
-                rgba(255,255,255,0.10);
+}
 
-            backdrop-filter:
-                blur(18px);
 
-            -webkit-backdrop-filter:
-                blur(18px);
+/* =========================================================
+   SPLASH WRAPPER
+========================================================= */
 
-            box-shadow:
-                0 30px 80px
-                rgba(0,0,0,0.30);
+.splash-wrapper {
 
-            animation:
-                cardAppear
-                0.8s ease forwards;
+    position: relative;
 
-        }
+    z-index: 5;
 
+    width:
+        min(92%, 620px);
 
-        @keyframes cardAppear {
+    max-height:
+        96vh;
 
-            from {
+}
 
-                opacity: 0;
 
-                transform:
-                    translateY(20px)
-                    scale(0.97);
+/* =========================================================
+   GLASS CARD
+========================================================= */
 
-            }
+.glass {
 
-            to {
+    position: relative;
 
-                opacity: 1;
+    padding:
+        38px 34px 28px;
 
-                transform:
-                    translateY(0)
-                    scale(1);
+    text-align:
+        center;
 
-            }
+    border:
+        1px solid
+        rgba(255,255,255,0.20);
 
-        }
+    border-radius:
+        30px;
 
+    background:
+        rgba(255,255,255,0.10);
 
-        /* =====================================================
-           LOGO
-        ====================================================== */
+    backdrop-filter:
+        blur(18px);
 
-        .logo-container {
+    -webkit-backdrop-filter:
+        blur(18px);
 
-            position: relative;
+    box-shadow:
+        0 30px 80px
+        rgba(0,0,0,0.30);
 
-            width: 110px;
+    animation:
+        cardAppear
+        0.8s ease forwards;
 
-            height: 110px;
+}
 
-            margin:
-                0 auto 18px;
 
-            display: flex;
+@keyframes cardAppear {
 
-            align-items: center;
+    from {
 
-            justify-content: center;
+        opacity: 0;
 
-        }
+        transform:
+            translateY(20px)
+            scale(0.97);
 
+    }
 
-        .logo-ring {
+    to {
 
-            position: absolute;
+        opacity: 1;
 
-            inset: 0;
+        transform:
+            translateY(0)
+            scale(1);
 
-            border:
-                2px solid
-                rgba(255,255,255,0.28);
+    }
 
-            border-top-color:
-                #81c784;
+}
 
-            border-radius: 50%;
 
-            animation:
-                logoSpin
-                5s linear infinite;
+/* =========================================================
+   LOGO
+========================================================= */
 
-        }
+.logo-container {
 
+    position: relative;
 
-        @keyframes logoSpin {
+    width: 110px;
+    height: 110px;
 
-            to {
+    margin:
+        0 auto 18px;
 
-                transform:
-                    rotate(360deg);
+    display: flex;
 
-            }
+    align-items: center;
 
-        }
+    justify-content: center;
 
+}
 
-        .logo {
 
-            position: relative;
+.logo-ring {
 
-            z-index: 2;
+    position: absolute;
 
-            width: 78px;
+    inset: 0;
 
-            height: 78px;
+    border:
+        2px solid
+        rgba(255,255,255,0.28);
 
-            object-fit: contain;
+    border-top-color:
+        var(--green-soft);
 
-            border-radius: 20px;
+    border-right-color:
+        var(--orange-light);
 
-            filter:
-                drop-shadow(
-                    0 8px 15px
-                    rgba(0,0,0,0.25)
-                );
+    border-radius:
+        50%;
 
-            animation:
-                logoPulse
-                2.5s ease-in-out infinite;
+    animation:
+        logoSpin
+        5s linear infinite;
 
-        }
+}
 
 
-        @keyframes logoPulse {
+@keyframes logoSpin {
 
-            0%,
-            100% {
+    to {
 
-                transform:
-                    scale(1);
+        transform:
+            rotate(360deg);
 
-            }
+    }
 
-            50% {
+}
 
-                transform:
-                    scale(1.04);
 
-            }
+.logo {
 
-        }
+    position: relative;
 
+    z-index: 2;
 
-        /* =====================================================
-           BRAND
-        ====================================================== */
+    width: 78px;
+    height: 78px;
 
-        .brand-title {
+    object-fit: contain;
 
-            margin: 0;
+    border-radius: 20px;
 
-            color: white;
+    filter:
+        drop-shadow(
+            0 8px 15px
+            rgba(0,0,0,0.25)
+        );
 
-            font-size:
-                clamp(30px, 6vw, 44px);
+    animation:
+        logoPulse
+        2.5s ease-in-out infinite;
 
-            font-weight: 900;
+}
 
-            letter-spacing:
-                -1px;
 
-            text-shadow:
-                0 5px 20px
-                rgba(0,0,0,0.25);
+@keyframes logoPulse {
 
-        }
+    0%,
+    100% {
 
+        transform:
+            scale(1);
 
-        .plus {
+    }
 
-            color:
-                #ffb74d;
+    50% {
 
-        }
+        transform:
+            scale(1.04);
 
+    }
 
-        .brand-tagline {
+}
 
-            margin:
-                8px 0 0;
 
-            color:
-                #c8e6c9;
+/* =========================================================
+   BRAND
+========================================================= */
 
-            font-size:
-                clamp(14px, 3vw, 18px);
+.brand-title {
 
-            font-weight: 700;
+    margin: 0;
 
-        }
+    color:
+        var(--white);
 
+    font-size:
+        clamp(30px, 6vw, 44px);
 
-        .description {
+    font-weight:
+        900;
 
-            max-width: 480px;
+    letter-spacing:
+        -1px;
 
-            margin:
-                15px auto 25px;
+    text-shadow:
+        0 5px 20px
+        rgba(0,0,0,0.25);
 
-            color:
-                var(--muted);
+}
 
-            font-size: 13px;
 
-            line-height: 1.65;
+.plus {
 
-        }
+    color:
+        var(--orange-light);
 
+}
 
-        /* =====================================================
-           FEATURE GRID
-        ====================================================== */
 
-        .feature-grid {
+.brand-tagline {
 
-            display: grid;
+    margin:
+        8px 0 0;
 
-            grid-template-columns:
-                repeat(4, 1fr);
+    color:
+        #c8e6c9;
 
-            gap: 10px;
+    font-size:
+        clamp(14px, 3vw, 18px);
 
-            margin:
-                0 auto 24px;
+    font-weight:
+        700;
 
-        }
+}
 
 
-        .feature {
+/* =========================================================
+   DESCRIPTION
+========================================================= */
 
-            min-height: 82px;
+.description {
 
-            display: flex;
+    max-width:
+        480px;
 
-            flex-direction: column;
+    margin:
+        15px auto 25px;
 
-            align-items: center;
+    color:
+        var(--muted);
 
-            justify-content: center;
+    font-size:
+        13px;
 
-            gap: 8px;
+    line-height:
+        1.65;
 
-            padding: 10px 6px;
+}
 
-            border:
-                1px solid
-                rgba(255,255,255,0.13);
 
-            border-radius: 15px;
+/* =========================================================
+   FEATURES
+========================================================= */
 
-            background:
-                rgba(255,255,255,0.07);
+.feature-grid {
 
-            transition:
-                transform 0.2s,
-                background 0.2s;
+    display: grid;
 
-        }
+    grid-template-columns:
+        repeat(4, 1fr);
 
+    gap:
+        10px;
 
-        .feature:hover {
+    margin:
+        0 auto 24px;
 
-            transform:
-                translateY(-3px);
+}
 
-            background:
-                rgba(255,255,255,0.13);
 
-        }
+.feature {
 
+    min-height:
+        82px;
 
-        .feature i {
+    display:
+        flex;
 
-            font-size: 21px;
+    flex-direction:
+        column;
 
-            color:
-                #a5d6a7;
+    align-items:
+        center;
 
-        }
+    justify-content:
+        center;
 
+    gap:
+        8px;
 
-        .feature:nth-child(3) i {
+    padding:
+        10px 6px;
 
-            color:
-                #ffb74d;
+    border:
+        1px solid
+        rgba(255,255,255,0.13);
 
-        }
+    border-radius:
+        15px;
 
+    background:
+        rgba(255,255,255,0.07);
 
-        .feature span {
+    transition:
+        transform 0.2s,
+        background 0.2s;
 
-            color: white;
+}
 
-            font-size: 10px;
 
-            font-weight: 700;
+.feature:hover {
 
-        }
+    transform:
+        translateY(-3px);
 
+    background:
+        rgba(255,255,255,0.13);
 
-        /* =====================================================
-           LOADING AREA
-        ====================================================== */
+}
 
-        .loading-section {
 
-            margin-top: 3px;
+.feature i {
 
-        }
+    font-size:
+        21px;
 
+    color:
+        var(--green-soft);
 
-        .loader {
+}
 
-            width: 40px;
 
-            height: 40px;
+.feature:nth-child(2) i {
 
-            margin:
-                0 auto 12px;
+    color:
+        #a5d6a7;
 
-            border:
-                3px solid
-                rgba(255,255,255,0.18);
+}
 
-            border-top-color:
-                #ffffff;
 
-            border-right-color:
-                #81c784;
+.feature:nth-child(3) i {
 
-            border-radius: 50%;
+    color:
+        var(--orange-light);
 
-            animation:
-                spinLoader
-                0.9s linear infinite;
+}
 
-        }
 
+.feature:nth-child(4) i {
 
-        @keyframes spinLoader {
+    color:
+        #90caf9;
 
-            to {
+}
 
-                transform:
-                    rotate(360deg);
 
-            }
+.feature span {
 
-        }
+    color:
+        rgba(255,255,255,0.90);
 
+    font-size:
+        10px;
 
-        .loading {
+    font-weight:
+        700;
 
-            margin: 0;
+}
 
-            color:
-                rgba(255,255,255,0.88);
 
-            font-size: 12px;
+/* =========================================================
+   LOADING
+========================================================= */
 
-            font-weight: 600;
+.loading-section {
 
-        }
+    margin-top:
+        3px;
 
+}
 
-        .loading-dots {
 
-            display: inline-flex;
+.loader {
 
-            margin-left: 2px;
+    width:
+        40px;
 
-        }
+    height:
+        40px;
 
+    margin:
+        0 auto 12px;
 
-        .loading-dots span {
+    border:
+        3px solid
+        rgba(255,255,255,0.18);
 
-            animation:
-                dotAnimation
-                1.2s infinite;
+    border-top-color:
+        var(--orange-light);
 
-        }
+    border-right-color:
+        var(--green-soft);
 
+    border-radius:
+        50%;
 
-        .loading-dots span:nth-child(2) {
+    animation:
+        spinLoader
+        0.9s linear infinite;
 
-            animation-delay:
-                0.2s;
+}
 
-        }
 
+@keyframes spinLoader {
 
-        .loading-dots span:nth-child(3) {
+    to {
 
-            animation-delay:
-                0.4s;
+        transform:
+            rotate(360deg);
 
-        }
+    }
 
+}
 
-        @keyframes dotAnimation {
 
-            0%,
-            60%,
-            100% {
+.loading {
 
-                opacity: 0.25;
+    margin:
+        0;
 
-            }
+    color:
+        rgba(255,255,255,0.88);
 
-            30% {
+    font-size:
+        12px;
 
-                opacity: 1;
+    font-weight:
+        600;
 
-            }
+}
 
-        }
 
+.loading-dots {
 
-        /* =====================================================
-           PROGRESS
-        ====================================================== */
+    display:
+        inline-flex;
 
-        .progress-container {
+    margin-left:
+        2px;
 
-            width: 100%;
+}
 
-            max-width: 300px;
 
-            height: 4px;
+.loading-dots span {
 
-            margin:
-                15px auto 0;
+    animation:
+        dotAnimation
+        1.2s infinite;
 
-            overflow: hidden;
+}
 
-            border-radius: 20px;
 
-            background:
-                rgba(255,255,255,0.12);
+.loading-dots span:nth-child(2) {
 
-        }
+    animation-delay:
+        0.2s;
 
+}
 
-        .progress-bar {
 
-            width: 0%;
+.loading-dots span:nth-child(3) {
 
-            height: 100%;
+    animation-delay:
+        0.4s;
 
-            border-radius: 20px;
+}
 
-            background:
-                linear-gradient(
-                    90deg,
-                    #81c784,
-                    #ffffff,
-                    #ffb74d
-                );
 
-            animation:
-                loadingProgress
-                3.7s
-                ease-in-out
-                forwards;
+@keyframes dotAnimation {
 
-        }
+    0%,
+    60%,
+    100% {
 
+        opacity:
+            0.25;
 
-        @keyframes loadingProgress {
+    }
 
-            0% {
+    30% {
 
-                width: 0%;
+        opacity:
+            1;
 
-            }
+    }
 
-            35% {
+}
 
-                width: 35%;
 
-            }
+/* =========================================================
+   PROGRESS BAR
+   60 SECONDS
+========================================================= */
 
-            70% {
+.progress-container {
 
-                width: 72%;
+    width:
+        100%;
 
-            }
+    max-width:
+        300px;
 
-            100% {
+    height:
+        4px;
 
-                width: 100%;
+    margin:
+        15px auto 0;
 
-            }
+    overflow:
+        hidden;
 
-        }
+    border-radius:
+        20px;
 
+    background:
+        rgba(255,255,255,0.12);
 
-        /* =====================================================
-           APP FLOW
-        ====================================================== */
+}
 
-        .flow {
 
-            display: flex;
+.progress-bar {
 
-            align-items: center;
+    width:
+        0%;
 
-            justify-content: center;
+    height:
+        100%;
 
-            gap: 8px;
+    border-radius:
+        20px;
 
-            margin-top: 18px;
+    background:
+        linear-gradient(
+            90deg,
+            var(--green-soft),
+            #ffffff,
+            var(--orange-light)
+        );
 
-            color:
-                rgba(255,255,255,0.62);
+    /*
+       IMPORTANT:
+       Progress takes exactly 60 seconds.
+    */
 
-            font-size: 9px;
+    animation:
+        loadingProgress
+        60s
+        linear
+        forwards;
 
-            font-weight: 700;
+}
 
-        }
 
+@keyframes loadingProgress {
 
-        .flow-step {
+    0% {
 
-            display: flex;
+        width:
+            0%;
 
-            align-items: center;
+    }
 
-            gap: 5px;
+    20% {
 
-        }
+        width:
+            20%;
 
+    }
 
-        .flow-step.active {
+    40% {
 
-            color: white;
+        width:
+            40%;
 
-        }
+    }
 
+    60% {
 
-        .flow-step i {
+        width:
+            60%;
 
-            font-size: 9px;
+    }
 
-        }
+    80% {
 
+        width:
+            80%;
 
-        .flow-arrow {
+    }
 
-            opacity: 0.5;
+    100% {
 
-        }
+        width:
+            100%;
 
+    }
 
-        /* =====================================================
-           FOOTER
-        ====================================================== */
+}
 
-        .footer {
 
-            margin-top: 22px;
+/* =========================================================
+   APPLICATION FLOW
+========================================================= */
 
-            padding-top: 15px;
+.flow {
 
-            border-top:
-                1px solid
-                rgba(255,255,255,0.10);
+    display:
+        flex;
 
-            color:
-                rgba(255,255,255,0.58);
+    align-items:
+        center;
 
-            font-size: 9px;
+    justify-content:
+        center;
 
-        }
+    gap:
+        8px;
 
+    margin-top:
+        18px;
 
-        .footer strong {
+    color:
+        rgba(255,255,255,0.62);
 
-            color:
-                rgba(255,255,255,0.80);
+    font-size:
+        9px;
 
-        }
+    font-weight:
+        700;
 
+}
 
-        /* =====================================================
-           ACCESSIBILITY
-        ====================================================== */
 
-        @media (
-            prefers-reduced-motion: reduce
-        ) {
+.flow-step {
 
-            *,
-            *::before,
-            *::after {
+    display:
+        flex;
 
-                animation-duration:
-                    0.01ms !important;
+    align-items:
+        center;
 
-                animation-iteration-count:
-                    1 !important;
+    gap:
+        5px;
 
-            }
+}
 
-        }
 
+.flow-step.active {
 
-        /* =====================================================
-           MOBILE
-        ====================================================== */
+    color:
+        #ffffff;
 
-        @media (max-width: 520px) {
+}
 
-            body {
 
-                padding: 12px;
+.flow-step i {
 
-            }
+    font-size:
+        9px;
 
+}
 
-            .glass {
 
-                padding:
-                    28px 18px 22px;
+.flow-arrow {
 
-                border-radius: 24px;
+    opacity:
+        0.5;
 
-            }
+}
 
 
-            .logo-container {
+/* =========================================================
+   FOOTER
+========================================================= */
 
-                width: 90px;
+.footer {
 
-                height: 90px;
+    margin-top:
+        22px;
 
-            }
+    padding-top:
+        15px;
 
+    border-top:
+        1px solid
+        rgba(255,255,255,0.10);
 
-            .logo {
+    color:
+        rgba(255,255,255,0.58);
 
-                width: 65px;
+    font-size:
+        9px;
 
-                height: 65px;
+}
 
-            }
 
+.footer strong {
 
-            .brand-title {
+    color:
+        rgba(255,255,255,0.90);
 
-                font-size: 29px;
+}
 
-            }
 
+.footer-separator {
 
-            .brand-tagline {
+    margin:
+        0 5px;
 
-                font-size: 13px;
+}
 
-            }
 
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
 
-            .description {
+@media (prefers-reduced-motion: reduce) {
 
-                font-size: 11px;
+    *,
+    *::before,
+    *::after {
 
-                margin-bottom: 20px;
+        animation-duration:
+            0.01ms !important;
 
-            }
+        animation-iteration-count:
+            1 !important;
 
+    }
 
-            .feature-grid {
+}
 
-                gap: 7px;
 
-            }
+/* =========================================================
+   MOBILE
+========================================================= */
 
+@media (max-width: 520px) {
 
-            .feature {
+    body {
 
-                min-height: 70px;
+        padding:
+            12px;
 
-            }
+    }
 
 
-            .feature i {
+    .splash-wrapper {
 
-                font-size: 17px;
+        width:
+            100%;
 
-            }
+    }
 
 
-            .feature span {
+    .glass {
 
-                font-size: 8px;
+        padding:
+            28px 18px 22px;
 
-            }
+        border-radius:
+            24px;
 
+    }
 
-            .flow {
 
-                gap: 5px;
+    .logo-container {
 
-                font-size: 8px;
+        width:
+            90px;
 
-            }
+        height:
+            90px;
 
-        }
+    }
 
 
-        @media (max-width: 350px) {
+    .logo {
 
-            .feature-grid {
+        width:
+            65px;
 
-                grid-template-columns:
-                    repeat(2, 1fr);
+        height:
+            65px;
 
-            }
+    }
 
 
-            .flow {
+    .brand-title {
 
-                flex-wrap: wrap;
+        font-size:
+            29px;
 
-            }
+    }
 
-        }
 
-    </style>
+    .brand-tagline {
+
+        font-size:
+            13px;
+
+    }
+
+
+    .description {
+
+        font-size:
+            11px;
+
+        margin-bottom:
+            20px;
+
+    }
+
+
+    .feature-grid {
+
+        gap:
+            7px;
+
+    }
+
+
+    .feature {
+
+        min-height:
+            70px;
+
+    }
+
+
+    .feature i {
+
+        font-size:
+            17px;
+
+    }
+
+
+    .feature span {
+
+        font-size:
+            8px;
+
+    }
+
+
+    .flow {
+
+        gap:
+            5px;
+
+        font-size:
+            8px;
+
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL DEVICES
+========================================================= */
+
+@media (max-width: 350px) {
+
+    .feature-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .flow {
+
+        flex-wrap:
+            wrap;
+
+    }
+
+
+    .glass {
+
+        padding:
+            24px 14px 18px;
+
+    }
+
+}
+
+</style>
+
 {% endblock %}
 
-{% block page_title %}Smart Agriculture{% endblock %}
-{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+
+{% block page_title %}
+Smart Agriculture
+{% endblock %}
+
+
+
+{% block page_subtitle %}
+Smart Agriculture Platform
+{% endblock %}
+
+
 
 {% block content %}
+
 <!-- =======================================================
      BACKGROUND DECORATION
 ======================================================== -->
 
-<div class="background-decoration">
+<div class="background-decoration"
+     aria-hidden="true">
 
     <span class="particle"></span>
 
@@ -1004,13 +1200,11 @@
 </div>
 
 
-
 <!-- =======================================================
-     SPLASH
+     SPLASH CARD
 ======================================================== -->
 
 <div class="splash-wrapper">
-
 
     <div class="glass">
 
@@ -1024,14 +1218,12 @@
             <div class="logo-ring"></div>
 
             <img
-                src="{{ url_for('static',
-                filename='images/logo.png') }}"
+                src="{{ url_for('static', filename='images/logo.png') }}"
                 class="logo"
                 alt="KisanVision360+ Logo"
                 onerror="this.style.display='none';">
 
         </div>
-
 
 
         <!-- =================================================
@@ -1062,22 +1254,20 @@
         </p>
 
 
-
         <!-- =================================================
              FEATURES
-        ================================================== -->
+        ================================================= -->
 
         <div class="feature-grid">
 
 
             <div class="feature">
 
-                <i class="fas fa-cloud-sun"></i>
+                <i class="fas fa-cloud-sun"
+                   aria-hidden="true"></i>
 
                 <span>
-
                     Live Weather
-
                 </span>
 
             </div>
@@ -1085,12 +1275,11 @@
 
             <div class="feature">
 
-                <i class="fas fa-seedling"></i>
+                <i class="fas fa-seedling"
+                   aria-hidden="true"></i>
 
                 <span>
-
                     Crop Intelligence
-
                 </span>
 
             </div>
@@ -1098,12 +1287,11 @@
 
             <div class="feature">
 
-                <i class="fas fa-chart-line"></i>
+                <i class="fas fa-chart-line"
+                   aria-hidden="true"></i>
 
                 <span>
-
                     Market Insights
-
                 </span>
 
             </div>
@@ -1111,19 +1299,17 @@
 
             <div class="feature">
 
-                <i class="fas fa-robot"></i>
+                <i class="fas fa-robot"
+                   aria-hidden="true"></i>
 
                 <span>
-
                     AI Assistant
-
                 </span>
 
             </div>
 
 
         </div>
-
 
 
         <!-- =================================================
@@ -1133,17 +1319,21 @@
         <div class="loading-section">
 
 
-            <div class="loader"></div>
+            <div class="loader"
+                 aria-hidden="true"></div>
 
 
             <p class="loading">
 
                 Preparing Smart Farming Experience
 
-                <span class="loading-dots">
+                <span class="loading-dots"
+                      aria-hidden="true">
 
                     <span>.</span>
+
                     <span>.</span>
+
                     <span>.</span>
 
                 </span>
@@ -1151,7 +1341,10 @@
             </p>
 
 
-            <div class="progress-container">
+            <!-- 60 SECOND PROGRESS -->
+
+            <div class="progress-container"
+                 aria-hidden="true">
 
                 <div class="progress-bar"></div>
 
@@ -1159,7 +1352,6 @@
 
 
         </div>
-
 
 
         <!-- =================================================
@@ -1171,14 +1363,16 @@
 
             <div class="flow-step active">
 
-                <i class="fa-solid fa-house"></i>
+                <i class="fa-solid fa-house"
+                   aria-hidden="true"></i>
 
                 Splash
 
             </div>
 
 
-            <span class="flow-arrow">
+            <span class="flow-arrow"
+                  aria-hidden="true">
 
                 <i class="fa-solid fa-chevron-right"></i>
 
@@ -1187,14 +1381,16 @@
 
             <div class="flow-step">
 
-                <i class="fa-solid fa-language"></i>
+                <i class="fa-solid fa-language"
+                   aria-hidden="true"></i>
 
                 Language
 
             </div>
 
 
-            <span class="flow-arrow">
+            <span class="flow-arrow"
+                  aria-hidden="true">
 
                 <i class="fa-solid fa-chevron-right"></i>
 
@@ -1203,7 +1399,8 @@
 
             <div class="flow-step">
 
-                <i class="fa-solid fa-lock"></i>
+                <i class="fa-solid fa-lock"
+                   aria-hidden="true"></i>
 
                 Login
 
@@ -1213,7 +1410,6 @@
         </div>
 
 
-
         <!-- =================================================
              FOOTER
         ================================================== -->
@@ -1221,18 +1417,20 @@
         <div class="footer">
 
             <strong>
-
                 KisanVision360+
-
             </strong>
 
-            <span> â€¢ </span>
+            <span class="footer-separator">
+                •
+            </span>
 
             Version 1.0
 
-            <span> â€¢ </span>
+            <span class="footer-separator">
+                •
+            </span>
 
-            Made in India ðŸ‡®ðŸ‡³
+            Made in India 
 
         </div>
 
@@ -1240,34 +1438,43 @@
     </div>
 
 </div>
+
 {% endblock %}
 
+
+
 {% block scripts %}
+
 <script>
+
+"use strict";
+
 
 /* =========================================================
    KISANVISION360+ SPLASH LOGIC
 ========================================================= */
 
-"use strict";
-
 
 /*
- * Main application flow:
- *
- * Splash
- *    â†“
- * Language Selection
- *    â†“
- * Login / Signup
- *
- * The meta-refresh above acts as a fallback.
- * JavaScript provides the primary redirect.
- */
+    APPLICATION FLOW
+
+    Splash
+       ↓
+    Language Selection
+       ↓
+    Login / Signup
+
+    Splash duration:
+    60 seconds
+*/
 
 
 let redirected = false;
 
+
+/* =========================================================
+   REDIRECT FUNCTION
+========================================================= */
 
 function goToLanguage() {
 
@@ -1287,28 +1494,30 @@ function goToLanguage() {
 }
 
 
-/*
- * Redirect after the splash animation.
- */
+/* =========================================================
+   REDIRECT AFTER EXACTLY 60 SECONDS
+========================================================= */
 
 window.setTimeout(
+
     goToLanguage,
-    4000
+
+    20000
+
 );
 
 
-/*
- * If the browser is restoring the page from
- * back-forward cache, immediately continue.
- */
+/* =========================================================
+   PAGE SHOW / BACK-FORWARD CACHE
+========================================================= */
 
 window.addEventListener(
-    "pageshow",
-    function (event) {
 
-        if (
-            event.persisted
-        ) {
+    "pageshow",
+
+    function(event) {
+
+        if (event.persisted) {
 
             window.location.href =
                 "/language";
@@ -1316,17 +1525,20 @@ window.addEventListener(
         }
 
     }
+
 );
 
 
-/*
- * Restore global language metadata if it exists.
- * Actual language selection happens on /language.
- */
+/* =========================================================
+   LANGUAGE METADATA
+========================================================= */
 
 document.addEventListener(
+
     "DOMContentLoaded",
-    function () {
+
+    function() {
+
 
         const savedLanguage =
             localStorage.getItem(
@@ -1334,46 +1546,60 @@ document.addEventListener(
             );
 
 
-        if (savedLanguage) {
+        if (!savedLanguage) {
+
+            return;
+
+        }
+
+
+        document.documentElement
+            .setAttribute(
+                "lang",
+                savedLanguage
+            );
+
+
+        const rtlLanguages = [
+
+            "ur",
+            "ks",
+            "sd",
+            "ar"
+
+        ];
+
+
+        if (
+
+            rtlLanguages.includes(
+                savedLanguage
+            )
+
+        ) {
 
             document.documentElement
                 .setAttribute(
-                    "lang",
-                    savedLanguage
+                    "dir",
+                    "rtl"
                 );
 
+        }
 
-            if (
-                [
-                    "ur",
-                    "ks",
-                    "sd"
-                ].includes(
-                    savedLanguage
-                )
-            ) {
+        else {
 
-                document.documentElement
-                    .setAttribute(
-                        "dir",
-                        "rtl"
-                    );
-
-            } else {
-
-                document.documentElement
-                    .setAttribute(
-                        "dir",
-                        "ltr"
-                    );
-
-            }
+            document.documentElement
+                .setAttribute(
+                    "dir",
+                    "ltr"
+                );
 
         }
 
     }
+
 );
 
 </script>
-{% endblock %}
 
+{% endblock %}

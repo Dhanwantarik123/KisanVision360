@@ -1,0 +1,1064 @@
+﻿{% extends "base.html" %}
+
+{% block title %}KisanVision360 | AI Disease Detection{% endblock %}
+
+{% block head %}
+<link rel="stylesheet"
+          href="{{ url_for('static', filename='css/disease.css') }}">
+{% endblock %}
+
+{% block page_title %}AI Disease Detection{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+
+
+
+<!-- =========================================================
+     MAIN CONTENT
+========================================================= -->
+
+<main class="main-content">
+
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <header class="disease-header">
+
+        <div class="header-left">
+
+            <div class="header-icon">
+                <i class="fa-solid fa-microscope"></i>
+            </div>
+
+            <div class="header-text">
+
+                <span class="header-small">
+                    KISANVISION360 AI
+                </span>
+
+                <h1>
+                    AI Crop Disease Detection
+                </h1>
+
+                <p>
+                    Detect crop diseases using artificial intelligence
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- AI STATUS -->
+
+        <div class="ai-status">
+
+            <span class="status-dot"></span>
+
+            <div>
+                <strong>AI System Active</strong>
+                <small>Disease model ready</small>
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         HERO SECTION
+    ====================================================== -->
+
+    <section class="hero-section">
+
+        <div class="hero-content">
+
+            <span class="hero-label">
+                <i class="fa-solid fa-robot"></i>
+                AI POWERED
+            </span>
+
+
+            <h2>
+                Protect Your Crops
+                <br>
+                with <span>Smart Diagnosis</span>
+            </h2>
+
+
+            <p>
+                Upload a clear image of your crop leaf.
+                Our AI model analyzes the image and provides
+                disease information, treatment and prevention guidance.
+            </p>
+
+
+            <!-- HERO FEATURES -->
+
+            <div class="hero-features">
+
+                <div class="hero-feature">
+
+                    <div class="feature-icon">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+
+                    <span>
+                        Fast Analysis
+                    </span>
+
+                </div>
+
+
+                <div class="hero-feature">
+
+                    <div class="feature-icon">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+
+                    <span>
+                        AI Prediction
+                    </span>
+
+                </div>
+
+
+                <div class="hero-feature">
+
+                    <div class="feature-icon">
+                        <i class="fa-solid fa-leaf"></i>
+                    </div>
+
+                    <span>
+                        Crop Protection
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- HERO GRAPHIC -->
+
+        <div class="hero-visual">
+
+            <div class="hero-circle circle-one"></div>
+
+            <div class="hero-circle circle-two"></div>
+
+            <div class="hero-main-icon">
+
+                <i class="fa-solid fa-seedling"></i>
+
+            </div>
+
+            <div class="floating-icon floating-one">
+                <i class="fa-solid fa-microscope"></i>
+            </div>
+
+            <div class="floating-icon floating-two">
+                <i class="fa-solid fa-shield-heart"></i>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         UPLOAD CARD
+    ====================================================== -->
+
+    <section class="upload-card">
+
+
+        <!-- SECTION HEADER -->
+
+        <div class="section-title">
+
+            <div class="section-icon">
+                <i class="fa-solid fa-camera"></i>
+            </div>
+
+            <div>
+
+                <h2>
+                    Upload Crop Leaf
+                </h2>
+
+                <p>
+                    Select a clear image for better prediction
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             FORM
+        ================================================== -->
+
+        <form
+            action="{{ url_for('disease.predict_disease') }}"
+            method="POST"
+            enctype="multipart/form-data"
+            id="diseaseForm">
+
+
+            <!-- ================= UPLOAD AREA ================= -->
+
+            <label
+                for="imageInput"
+                class="upload-area"
+                id="uploadArea">
+
+
+                <div class="upload-icon">
+
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                </div>
+
+
+                <h3>
+                    Choose Leaf Image
+                </h3>
+
+
+                <p id="uploadText">
+                    Click here or drag & drop your image
+                </p>
+
+
+                <span class="file-types">
+                    JPG / JPEG / PNG / WEBP
+                </span>
+
+
+                <input
+                    type="file"
+                    id="imageInput"
+                    name="image"
+                    accept="image/jpeg,image/jpg,image/png,image/webp"
+                    required>
+
+            </label>
+
+
+
+            <!-- =================================================
+                 IMAGE PREVIEW
+            ================================================== -->
+
+            <div
+                id="previewContainer"
+                class="preview-container"
+                style="display:none;">
+
+
+                <div class="preview-header">
+
+                    <div>
+
+                        <i class="fa-solid fa-image"></i>
+
+                        <strong>
+                            Selected Image
+                        </strong>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="remove-image"
+                        onclick="removeImage()"
+                        title="Remove image">
+
+                        <i class="fa-solid fa-xmark"></i>
+
+                    </button>
+
+                </div>
+
+
+                <div class="preview-image-wrapper">
+
+                    <img
+                        id="imagePreview"
+                        src=""
+                        alt="Selected crop image">
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 ANALYZE BUTTON
+            ================================================== -->
+
+            <button
+                type="submit"
+                class="detect-button"
+                id="detectButton">
+
+                <span class="button-content">
+
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                    <span>
+                        Analyze Crop
+                    </span>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </span>
+
+            </button>
+
+        </form>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         RESULT SECTION
+    ====================================================== -->
+
+    {% if image or image_url %}
+
+    <section class="result-card">
+
+
+        <!-- RESULT HEADER -->
+
+        <div class="result-header">
+
+            <div>
+
+                <span class="result-label">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    ANALYSIS COMPLETE
+
+                </span>
+
+
+                <h2>
+                    AI Diagnosis Result
+                </h2>
+
+                <p>
+                    Your crop image has been analyzed by the AI model.
+                </p>
+
+            </div>
+
+
+            <!-- CONFIDENCE -->
+
+            <div class="confidence-box">
+
+                <span>
+                    Confidence
+                </span>
+
+                <strong>
+                    {{ confidence|default(0) }}%
+                </strong>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             RESULT MAIN
+        ================================================== -->
+
+        <div class="result-main">
+
+
+            <!-- IMAGE -->
+
+            <div class="result-image">
+
+                {% if image_url %}
+
+                    <img
+                        src="{{ image_url }}"
+                        alt="Analyzed Crop Leaf">
+
+                {% elif image %}
+
+                    <img
+                        src="{{ url_for('static', filename='uploads/disease/' + image) }}"
+                        alt="Analyzed Crop Leaf">
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- PREDICTION -->
+
+            <div class="prediction">
+
+
+                <span class="prediction-label">
+                    <i class="fa-solid fa-brain"></i>
+                    AI Prediction
+                </span>
+
+
+                <h1>
+                    {{ prediction|default("Unknown") }}
+                </h1>
+
+
+
+                <!-- STATUS -->
+
+                <div class="status-row">
+
+                    <span class="status-title">
+                        Crop Status
+                    </span>
+
+
+                    {% if status == "Healthy" %}
+
+                        <span class="healthy">
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+                            Healthy
+
+                        </span>
+
+                    {% else %}
+
+                        <span class="disease-status">
+
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+
+                            {{ status|default("Disease Detected") }}
+
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+
+                <!-- CONFIDENCE -->
+
+                <div class="confidence">
+
+
+                    <div class="confidence-top">
+
+                        <span>
+                            AI Confidence
+                        </span>
+
+                        <strong>
+                            {{ confidence|default(0) }}%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="progress">
+
+                        <div
+                            class="progress-bar"
+                            style="width: {{ confidence|default(0) }}%;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             INFORMATION
+        ================================================== -->
+
+        <div class="info-box">
+
+
+            <!-- SYMPTOMS -->
+
+            <div class="info-card symptoms">
+
+                <div class="info-icon">
+
+                    <i class="fa-solid fa-eye"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Symptoms
+                    </h3>
+
+                    <p>
+                        {{ symptoms|default("No symptom information available.") }}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TREATMENT -->
+
+            <div class="info-card treatment">
+
+                <div class="info-icon">
+
+                    <i class="fa-solid fa-prescription-bottle-medical"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Treatment
+                    </h3>
+
+                    <p>
+                        {{ treatment|default("No treatment information available.") }}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PREVENTION -->
+
+            <div class="info-card prevention">
+
+                <div class="info-icon">
+
+                    <i class="fa-solid fa-shield-heart"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Prevention
+                    </h3>
+
+                    <p>
+                        {{ prevention|default("No prevention information available.") }}
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             NEW ANALYSIS
+        ================================================== -->
+
+        <div class="new-analysis">
+
+            <a href="{{ url_for('disease.disease') }}">
+
+                <i class="fa-solid fa-rotate"></i>
+
+                Analyze Another Image
+
+            </a>
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+
+
+    <!-- =====================================================
+         HOW IT WORKS
+    ====================================================== -->
+
+    <section class="how-section">
+
+
+        <div class="section-heading">
+
+            <span>
+                SIMPLE & FAST
+            </span>
+
+            <h2>
+                How AI Disease Detection Works
+            </h2>
+
+            <p>
+                Get crop health information in three simple steps.
+            </p>
+
+        </div>
+
+
+
+        <div class="steps">
+
+
+            <!-- STEP 1 -->
+
+            <div class="step-card">
+
+                <div class="step-number">
+                    01
+                </div>
+
+                <div class="step-icon">
+
+                    <i class="fa-solid fa-image"></i>
+
+                </div>
+
+                <h3>
+                    Upload Image
+                </h3>
+
+                <p>
+                    Upload a clear image of the affected crop leaf.
+                </p>
+
+            </div>
+
+
+
+            <!-- STEP 2 -->
+
+            <div class="step-card">
+
+                <div class="step-number">
+                    02
+                </div>
+
+                <div class="step-icon">
+
+                    <i class="fa-solid fa-brain"></i>
+
+                </div>
+
+                <h3>
+                    AI Analysis
+                </h3>
+
+                <p>
+                    The trained AI model analyzes the crop image.
+                </p>
+
+            </div>
+
+
+
+            <!-- STEP 3 -->
+
+            <div class="step-card">
+
+                <div class="step-number">
+                    03
+                </div>
+
+                <div class="step-icon">
+
+                    <i class="fa-solid fa-file-medical"></i>
+
+                </div>
+
+                <h3>
+                    Get Diagnosis
+                </h3>
+
+                <p>
+                    Receive disease status, treatment and prevention guidance.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         SAFETY NOTE
+    ====================================================== -->
+
+    <section class="safety-note">
+
+        <div class="safety-icon">
+
+            <i class="fa-solid fa-circle-info"></i>
+
+        </div>
+
+        <div>
+
+            <strong>
+                AI Decision Support
+            </strong>
+
+            <p>
+                Use AI results as decision support. For serious crop
+                problems, confirm the diagnosis with a qualified
+                agricultural expert.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="disease-footer">
+
+        <i class="fa-solid fa-leaf"></i>
+
+        <strong>
+            KisanVision360
+        </strong>
+
+        <span>â€¢</span>
+
+        AI Powered Smart Farming
+
+        <span>â€¢</span>
+
+        Made in India ðŸ‡®ðŸ‡³
+
+    </footer>
+
+
+</main>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+"use strict";
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const imageInput =
+    document.getElementById("imageInput");
+
+const previewContainer =
+    document.getElementById("previewContainer");
+
+const imagePreview =
+    document.getElementById("imagePreview");
+
+const diseaseForm =
+    document.getElementById("diseaseForm");
+
+const detectButton =
+    document.getElementById("detectButton");
+
+const uploadArea =
+    document.getElementById("uploadArea");
+
+const uploadText =
+    document.getElementById("uploadText");
+
+
+
+/* =========================================================
+   IMAGE PREVIEW
+========================================================= */
+
+if (imageInput) {
+
+    imageInput.addEventListener(
+        "change",
+        function () {
+
+            const file = this.files[0];
+
+            if (!file) {
+                return;
+            }
+
+
+            /* VALIDATE FILE TYPE */
+
+            if (!file.type.startsWith("image/")) {
+
+                alert(
+                    "Please select a valid image file."
+                );
+
+                this.value = "";
+
+                return;
+            }
+
+
+            /* VALIDATE SIZE - 10 MB */
+
+            if (file.size > 10 * 1024 * 1024) {
+
+                alert(
+                    "Image size should be less than 10 MB."
+                );
+
+                this.value = "";
+
+                return;
+            }
+
+
+            /* READ IMAGE */
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                function (event) {
+
+                    imagePreview.src =
+                        event.target.result;
+
+                    previewContainer.style.display =
+                        "block";
+
+
+                    if (uploadText) {
+
+                        uploadText.textContent =
+                            file.name;
+
+                    }
+
+                };
+
+
+            reader.readAsDataURL(file);
+
+        }
+    );
+
+}
+
+
+
+/* =========================================================
+   REMOVE IMAGE
+========================================================= */
+
+function removeImage() {
+
+    if (imageInput) {
+        imageInput.value = "";
+    }
+
+    if (imagePreview) {
+        imagePreview.src = "";
+    }
+
+    if (previewContainer) {
+
+        previewContainer.style.display =
+            "none";
+
+    }
+
+    if (uploadText) {
+
+        uploadText.textContent =
+            "Click here or drag & drop your image";
+
+    }
+
+}
+
+
+
+/* =========================================================
+   DRAG & DROP
+========================================================= */
+
+if (uploadArea) {
+
+
+    uploadArea.addEventListener(
+        "dragover",
+        function (event) {
+
+            event.preventDefault();
+
+            uploadArea.classList.add(
+                "drag-active"
+            );
+
+        }
+    );
+
+
+    uploadArea.addEventListener(
+        "dragleave",
+        function () {
+
+            uploadArea.classList.remove(
+                "drag-active"
+            );
+
+        }
+    );
+
+
+    uploadArea.addEventListener(
+        "drop",
+        function (event) {
+
+            event.preventDefault();
+
+            uploadArea.classList.remove(
+                "drag-active"
+            );
+
+
+            const files =
+                event.dataTransfer.files;
+
+
+            if (!files.length) {
+                return;
+            }
+
+
+            const file =
+                files[0];
+
+
+            if (!file.type.startsWith("image/")) {
+
+                alert(
+                    "Please drop a valid image file."
+                );
+
+                return;
+            }
+
+
+            imageInput.files =
+                files;
+
+
+            imageInput.dispatchEvent(
+                new Event("change")
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =========================================================
+   FORM SUBMIT
+========================================================= */
+
+if (diseaseForm) {
+
+    diseaseForm.addEventListener(
+        "submit",
+        function (event) {
+
+
+            if (
+                !imageInput ||
+                !imageInput.files.length
+            ) {
+
+                event.preventDefault();
+
+                alert(
+                    "Please select a crop image first."
+                );
+
+                return;
+
+            }
+
+
+            /* DISABLE BUTTON */
+
+            if (detectButton) {
+
+                detectButton.disabled = true;
+
+                detectButton.innerHTML =
+                    '<i class="fa-solid fa-spinner fa-spin"></i>' +
+                    '<span> Analyzing Crop...</span>';
+
+            }
+
+        }
+    );
+
+}
+
+</script>
+{% endblock %}
+
+

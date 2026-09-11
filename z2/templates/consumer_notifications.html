@@ -1,0 +1,1223 @@
+﻿{% extends "base.html" %}
+
+{% block title %}KisanVision360+ | Consumer Notifications{% endblock %}
+
+{% block head %}
+<link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/consumer_notifications.css'
+        ) }}"
+    >
+{% endblock %}
+
+{% block page_title %}Consumer Notifications{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+        
+
+
+        <!-- =================================================
+             SMART STATUS
+        ================================================== -->
+
+        <section class="consumer-status">
+
+
+            <div class="status-icon">
+
+                <i class="fa-solid fa-bag-shopping"></i>
+
+            </div>
+
+
+            <div class="status-text">
+
+                <strong>
+                    Consumer Alert Center
+                </strong>
+
+                <p>
+                    Stay updated about your orders,
+                    payments, delivery and marketplace activity.
+                </p>
+
+            </div>
+
+
+            <div class="status-live">
+
+                <span></span>
+
+                SYSTEM ACTIVE
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             QUICK STATS
+        ================================================== -->
+
+        <section class="summary-grid">
+
+
+            <div class="summary-card unread-card">
+
+                <div class="summary-icon">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        {{ notification_count|default(0) }}
+                    </strong>
+
+                    <span>
+                        Unread
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-card order-card">
+
+                <div class="summary-icon">
+
+                    <i class="fa-solid fa-box"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Shopping
+                    </strong>
+
+                    <span>
+                        Order Updates
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-card delivery-card">
+
+                <div class="summary-icon">
+
+                    <i class="fa-solid fa-truck"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Delivery
+                    </strong>
+
+                    <span>
+                        Delivery Alerts
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-card offer-card">
+
+                <div class="summary-icon">
+
+                    <i class="fa-solid fa-tag"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Offers
+                    </strong>
+
+                    <span>
+                        Special Deals
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =================================================
+             WEATHER CONTEXT
+        ================================================== -->
+
+        {% if weather %}
+
+        <section class="weather-banner">
+
+
+            <div class="weather-main">
+
+
+                <div class="weather-location">
+
+                    <div class="weather-icon">
+
+                        <i class="fa-solid fa-cloud-sun"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            {{ weather.city|default('Nagpur') }}
+                        </strong>
+
+                        <span>
+                            Live Weather
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="temperature">
+
+                    {{ weather.temperature|default('N/A') }}Â°C
+
+                </div>
+
+
+            </div>
+
+
+            <div class="weather-details">
+
+
+                <div>
+
+                    <i class="fa-solid fa-temperature-half"></i>
+
+                    <span>
+                        Feels Like
+                    </span>
+
+                    <strong>
+                        {{ weather.feels_like|default('N/A') }}Â°C
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <i class="fa-solid fa-droplet"></i>
+
+                    <span>
+                        Humidity
+                    </span>
+
+                    <strong>
+                        {{ weather.humidity|default('N/A') }}%
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <i class="fa-solid fa-wind"></i>
+
+                    <span>
+                        Wind
+                    </span>
+
+                    <strong>
+                        {{ weather.wind|default('N/A') }} m/s
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <i class="fa-solid fa-cloud"></i>
+
+                    <span>
+                        Cloud
+                    </span>
+
+                    <strong>
+                        {{ weather.clouds|default(0) }}%
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             NOTIFICATION PANEL
+        ================================================== -->
+
+        <section class="notification-panel">
+
+
+            <!-- HEADER -->
+
+            <div class="panel-header">
+
+
+                <div>
+
+                    <span class="section-label">
+                        PERSONAL ALERTS
+                    </span>
+
+                    <h2>
+
+                        <i class="fa-solid fa-bell"></i>
+
+                        Your Notifications
+
+                    </h2>
+
+                    <p>
+                        Important updates related to your consumer account.
+                    </p>
+
+                </div>
+
+
+                <div class="header-actions">
+
+
+                    <a
+                        href="{{ url_for(
+                            'consumer.consumer_mark_all_read'
+                        ) }}"
+                        class="mark-all-btn"
+                    >
+
+                        <i class="fa-solid fa-check-double"></i>
+
+                        Mark All Read
+
+                    </a>
+
+
+                    <a
+                        href="{{ url_for(
+                            'consumer.consumer_delete_read_notifications'
+                        ) }}"
+                        class="clear-read-btn"
+                        onclick="
+                            return confirm(
+                                'Clear all read notifications?'
+                            );
+                        "
+                    >
+
+                        <i class="fa-solid fa-broom"></i>
+
+                        Clear Read
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 SEARCH + FILTER
+            ================================================== -->
+
+            <div class="notification-tools">
+
+
+                <div class="search-box">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="text"
+                        id="notificationSearch"
+                        placeholder="Search your notifications..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="filter-btn active"
+                    data-filter="all"
+                >
+                    <i class="fa-solid fa-layer-group"></i>
+                    All
+                </button>
+
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    data-filter="unread"
+                >
+                    <i class="fa-solid fa-envelope"></i>
+                    Unread
+                </button>
+
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    data-filter="order"
+                >
+                    <i class="fa-solid fa-box"></i>
+                    Orders
+                </button>
+
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    data-filter="payment"
+                >
+                    <i class="fa-solid fa-credit-card"></i>
+                    Payments
+                </button>
+
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    data-filter="delivery"
+                >
+                    <i class="fa-solid fa-truck"></i>
+                    Delivery
+                </button>
+
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    data-filter="offer"
+                >
+                    <i class="fa-solid fa-tag"></i>
+                    Offers
+                </button>
+
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    data-filter="wishlist"
+                >
+                    <i class="fa-solid fa-heart"></i>
+                    Wishlist
+                </button>
+
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    data-filter="market"
+                >
+                    <i class="fa-solid fa-chart-line"></i>
+                    Market
+                </button>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 NOTIFICATION LIST
+            ================================================== -->
+
+            {% if notifications %}
+
+
+            <div
+                class="notification-list"
+                id="notificationList"
+            >
+
+
+                {% for item in notifications %}
+
+
+                {% set notification_type =
+                    item.notification_type|default('general')|lower|trim
+                %}
+
+
+                <article
+                    class="
+                        consumer-notification
+                        type-{{ notification_type }}
+                        {% if not item.is_read %}
+                            unread
+                        {% endif %}
+                    "
+                    data-type="{{ notification_type }}"
+                    data-unread="{% if not item.is_read %}true{% else %}false{% endif %}"
+                >
+
+
+                    <!-- ICON -->
+
+                    <div class="notification-icon">
+
+
+                        {% if notification_type == "order" %}
+
+                            <i class="fa-solid fa-box"></i>
+
+
+                        {% elif notification_type == "payment" %}
+
+                            <i class="fa-solid fa-credit-card"></i>
+
+
+                        {% elif notification_type == "delivery" %}
+
+                            <i class="fa-solid fa-truck"></i>
+
+
+                        {% elif notification_type == "offer" %}
+
+                            <i class="fa-solid fa-tag"></i>
+
+
+                        {% elif notification_type == "wishlist" %}
+
+                            <i class="fa-solid fa-heart"></i>
+
+
+                        {% elif notification_type == "market" %}
+
+                            <i class="fa-solid fa-chart-line"></i>
+
+
+                        {% elif notification_type == "product" %}
+
+                            <i class="fa-solid fa-store"></i>
+
+
+                        {% elif notification_type == "message" %}
+
+                            <i class="fa-solid fa-comments"></i>
+
+
+                        {% elif notification_type == "success" %}
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+
+                        {% elif notification_type == "warning" %}
+
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+
+
+                        {% else %}
+
+                            <i class="fa-solid fa-bell"></i>
+
+                        {% endif %}
+
+
+                    </div>
+
+
+                    <!-- CONTENT -->
+
+                    <div class="notification-content">
+
+
+                        <div class="notification-title">
+
+
+                            <h3>
+                                {{ item.title }}
+                            </h3>
+
+
+                            {% if not item.is_read %}
+
+                            <span class="new-badge">
+                                NEW
+                            </span>
+
+                            {% endif %}
+
+
+                        </div>
+
+
+                        <p>
+                            {{ item.message }}
+                        </p>
+
+
+                        <small>
+
+                            <i class="fa-regular fa-clock"></i>
+
+                            {{ item.created_at }}
+
+                        </small>
+
+
+                    </div>
+
+
+                    <!-- ACTIONS -->
+
+                    <div class="notification-actions">
+
+
+                        {% if not item.is_read %}
+
+                        <a
+                            href="{{ url_for(
+                                'consumer.consumer_mark_one_read',
+                                notification_id=item.id
+                            ) }}"
+                            class="action-btn read-btn"
+                            title="Mark as read"
+                            aria-label="Mark as read"
+                        >
+
+                            <i class="fa-solid fa-check"></i>
+
+                        </a>
+
+                        {% endif %}
+
+
+                        <a
+                            href="{{ url_for(
+                                'consumer.consumer_delete_notification',
+                                notification_id=item.id
+                            ) }}"
+                            class="action-btn delete-btn"
+                            title="Delete"
+                            aria-label="Delete notification"
+                            onclick="
+                                return confirm(
+                                    'Delete this notification?'
+                                );
+                            "
+                        >
+
+                            <i class="fa-solid fa-trash"></i>
+
+                        </a>
+
+
+                    </div>
+
+
+                </article>
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+            <!-- NO SEARCH RESULTS -->
+
+            <div
+                class="no-results"
+                id="noSearchResults"
+            >
+
+                <div class="no-results-icon">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                </div>
+
+                <h3>
+                    No matching notifications
+                </h3>
+
+                <p>
+                    Try another keyword or notification category.
+                </p>
+
+            </div>
+
+
+            {% else %}
+
+
+            <!-- =================================================
+                 EMPTY STATE
+            ================================================== -->
+
+            <div class="empty-state">
+
+
+                <div class="empty-icon">
+
+                    <i class="fa-solid fa-bell-slash"></i>
+
+                </div>
+
+
+                <h2>
+                    No Consumer Notifications
+                </h2>
+
+
+                <p>
+                    You are all caught up.
+                    New order, delivery and marketplace updates
+                    will appear here.
+                </p>
+
+
+                <a
+                    href="{{ url_for(
+                        'marketplace.consumer_marketplace'
+                    ) }}"
+                    class="shop-btn"
+                >
+
+                    <i class="fa-solid fa-store"></i>
+
+                    Explore Marketplace
+
+                </a>
+
+
+            </div>
+
+
+            {% endif %}
+
+
+        </section>
+
+
+        <!-- =================================================
+             CONSUMER SERVICES
+        ================================================== -->
+
+        <section class="consumer-services">
+
+
+            <div class="services-header">
+
+                <span>
+                    SHOPPING CENTER
+                </span>
+
+                <h2>
+                    Manage Your Shopping
+                </h2>
+
+                <p>
+                    Quickly access your consumer activities.
+                </p>
+
+            </div>
+
+
+            <div class="service-grid">
+
+
+                <a
+                    href="{{ url_for(
+                        'marketplace.consumer_marketplace'
+                    ) }}"
+                    class="service-card"
+                >
+
+                    <div class="service-icon marketplace">
+
+                        <i class="fa-solid fa-store"></i>
+
+                    </div>
+
+                    <strong>
+                        Marketplace
+                    </strong>
+
+                    <span>
+                        Browse products
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{{ url_for(
+                        'marketplace.cart'
+                    ) }}"
+                    class="service-card"
+                >
+
+                    <div class="service-icon cart">
+
+                        <i class="fa-solid fa-cart-shopping"></i>
+
+                    </div>
+
+                    <strong>
+                        Cart
+                    </strong>
+
+                    <span>
+                        View your cart
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{{ url_for(
+                        'marketplace.wishlist'
+                    ) }}"
+                    class="service-card"
+                >
+
+                    <div class="service-icon wishlist">
+
+                        <i class="fa-solid fa-heart"></i>
+
+                    </div>
+
+                    <strong>
+                        Wishlist
+                    </strong>
+
+                    <span>
+                        Saved products
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{{ url_for(
+                        'marketplace.consumer_orders'
+                    ) }}"
+                    class="service-card"
+                >
+
+                    <div class="service-icon orders">
+
+                        <i class="fa-solid fa-box"></i>
+
+                    </div>
+
+                    <strong>
+                        My Orders
+                    </strong>
+
+                    <span>
+                        Track purchases
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{{ url_for(
+                        'consumer.consumer_mandi'
+                    ) }}"
+                    class="service-card"
+                >
+
+                    <div class="service-icon market">
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                    </div>
+
+                    <strong>
+                        Mandi
+                    </strong>
+
+                    <span>
+                        Market prices
+                    </span>
+
+                </a>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer>
+
+            <i class="fa-solid fa-leaf"></i>
+
+            KisanVision360+
+
+            <span>•</span>
+
+            Consumer Notification Center
+
+            <span>•</span>
+
+            Made in India 🇮🇳
+
+        </footer>
+
+
+    </main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+/* =========================================================
+   LANGUAGE
+========================================================= */
+
+(function () {
+
+    const language =
+        "{{ session.get('language', 'en') }}";
+
+    const rtlLanguages =
+        ["ur", "ks", "sd"];
+
+    document.documentElement.lang =
+        language || "en";
+
+    document.documentElement.dir =
+        rtlLanguages.includes(language)
+            ? "rtl"
+            : "ltr";
+
+})();
+
+
+/* =========================================================
+   SEARCH + FILTER
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const searchInput =
+            document.getElementById(
+                "notificationSearch"
+            );
+
+        const cards =
+            Array.from(
+                document.querySelectorAll(
+                    ".consumer-notification"
+                )
+            );
+
+        const filterButtons =
+            document.querySelectorAll(
+                ".filter-btn"
+            );
+
+        const noResults =
+            document.getElementById(
+                "noSearchResults"
+            );
+
+        let currentFilter = "all";
+
+
+        function applyFilters() {
+
+            const search =
+                searchInput
+                    ? searchInput.value
+                        .toLowerCase()
+                        .trim()
+                    : "";
+
+
+            let visibleCount = 0;
+
+
+            cards.forEach(
+                function (card) {
+
+                    const text =
+                        card.innerText
+                            .toLowerCase();
+
+
+                    const type =
+                        card.dataset.type
+                        || "general";
+
+
+                    const unread =
+                        card.dataset.unread
+                        === "true";
+
+
+                    let matchesFilter = true;
+
+
+                    if (
+                        currentFilter ===
+                        "unread"
+                    ) {
+
+                        matchesFilter =
+                            unread;
+
+                    }
+
+                    else if (
+                        currentFilter !==
+                        "all"
+                    ) {
+
+                        matchesFilter =
+                            type === currentFilter;
+
+                    }
+
+
+                    const matchesSearch =
+                        text.includes(
+                            search
+                        );
+
+
+                    const visible =
+                        matchesFilter &&
+                        matchesSearch;
+
+
+                    card.classList.toggle(
+                        "hidden",
+                        !visible
+                    );
+
+
+                    if (visible) {
+
+                        visibleCount++;
+
+                    }
+
+                }
+            );
+
+
+            if (noResults) {
+
+                noResults.classList.toggle(
+                    "show",
+                    visibleCount === 0
+                );
+
+            }
+
+        }
+
+
+        if (searchInput) {
+
+            searchInput.addEventListener(
+                "input",
+                applyFilters
+            );
+
+        }
+
+
+        filterButtons.forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        filterButtons.forEach(
+                            function (btn) {
+
+                                btn.classList.remove(
+                                    "active"
+                                );
+
+                            }
+                        );
+
+
+                        this.classList.add(
+                            "active"
+                        );
+
+
+                        currentFilter =
+                            this.dataset.filter
+                            || "all";
+
+
+                        applyFilters();
+
+                    }
+                );
+
+            }
+        );
+
+
+        applyFilters();
+
+    }
+);
+
+
+/* =========================================================
+   KEYBOARD SEARCH
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (
+            event.key === "/" &&
+            ![
+                "INPUT",
+                "TEXTAREA",
+                "SELECT"
+            ].includes(
+                document.activeElement.tagName
+            )
+        ) {
+
+            event.preventDefault();
+
+            const search =
+                document.getElementById(
+                    "notificationSearch"
+                );
+
+            if (search) {
+                search.focus();
+            }
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   TEST NOTIFICATION
+   Optional browser/APK test helper.
+========================================================= */
+
+async function testConsumerNotification() {
+
+    try {
+
+        const response =
+            await fetch(
+                "{{ url_for(
+                    'consumer.consumer_test_notification'
+                ) }}",
+                {
+                    method: "GET",
+                    credentials: "same-origin"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (data.success) {
+
+            window.location.reload();
+
+        }
+        else {
+
+            alert(
+                data.message
+                || "Unable to create test notification."
+            );
+
+        }
+
+    }
+    catch (error) {
+
+        console.error(
+            "Consumer notification test error:",
+            error
+        );
+
+    }
+
+}
+
+</script>
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/chatbot.js'
+    ) }}"
+></script>
+{% endblock %}
+

@@ -213,7 +213,7 @@ CROP_DATA = {
         "water": "High",
         "fertilizer": "NPK + nitrogen-rich fertilizer",
         "pest_risk": "Medium",
-        "yield": "3.5â€“5.0 tonnes/hectare"
+        "yield": "3.5–5.0 tonnes/hectare"
     },
 
     "wheat": {
@@ -223,7 +223,7 @@ CROP_DATA = {
         "water": "Medium",
         "fertilizer": "NPK + nitrogen fertilizer",
         "pest_risk": "Low to Medium",
-        "yield": "3.0â€“4.5 tonnes/hectare"
+        "yield": "3.0–4.5 tonnes/hectare"
     },
 
     "cotton": {
@@ -233,7 +233,7 @@ CROP_DATA = {
         "water": "Medium",
         "fertilizer": "NPK + micronutrients",
         "pest_risk": "High",
-        "yield": "1.5â€“2.5 tonnes/hectare"
+        "yield": "1.5–2.5 tonnes/hectare"
     },
 
     "soybean": {
@@ -243,7 +243,7 @@ CROP_DATA = {
         "water": "Low to Medium",
         "fertilizer": "NPK + phosphorus",
         "pest_risk": "Medium",
-        "yield": "1.5â€“2.5 tonnes/hectare"
+        "yield": "1.5–2.5 tonnes/hectare"
     },
 
     "maize": {
@@ -253,7 +253,7 @@ CROP_DATA = {
         "water": "Medium",
         "fertilizer": "NPK + nitrogen",
         "pest_risk": "Medium",
-        "yield": "4.0â€“6.0 tonnes/hectare"
+        "yield": "4.0–6.0 tonnes/hectare"
     },
 
     "chickpea": {
@@ -263,7 +263,7 @@ CROP_DATA = {
         "water": "Low",
         "fertilizer": "Phosphorus-rich fertilizer",
         "pest_risk": "Low to Medium",
-        "yield": "1.2â€“2.0 tonnes/hectare"
+        "yield": "1.2–2.0 tonnes/hectare"
     },
 
     "sugarcane": {
@@ -273,7 +273,7 @@ CROP_DATA = {
         "water": "Very High",
         "fertilizer": "NPK + organic manure",
         "pest_risk": "Medium",
-        "yield": "70â€“100 tonnes/hectare"
+        "yield": "70–100 tonnes/hectare"
     },
 
     "tomato": {
@@ -283,7 +283,7 @@ CROP_DATA = {
         "water": "Medium",
         "fertilizer": "Balanced NPK + micronutrients",
         "pest_risk": "High",
-        "yield": "20â€“40 tonnes/hectare"
+        "yield": "20–40 tonnes/hectare"
     },
 
     "onion": {
@@ -293,7 +293,7 @@ CROP_DATA = {
         "water": "Medium",
         "fertilizer": "NPK + sulphur",
         "pest_risk": "Medium",
-        "yield": "15â€“25 tonnes/hectare"
+        "yield": "15–25 tonnes/hectare"
     },
 
     "millet": {
@@ -303,7 +303,7 @@ CROP_DATA = {
         "water": "Low",
         "fertilizer": "Balanced NPK",
         "pest_risk": "Low",
-        "yield": "1.5â€“2.5 tonnes/hectare"
+        "yield": "1.5–2.5 tonnes/hectare"
     }
 }
 
@@ -541,7 +541,7 @@ def generate_reason(
     if temperature is not None:
         reasons.append(
             f"Current weather temperature is approximately "
-            f"{temperature}Â°C."
+            f"{temperature}°C."
         )
 
     if not reasons:

@@ -1,0 +1,1605 @@
+﻿{% extends "base.html" %}
+
+{% block title %}KisanVision360+ | Smart Agriculture{% endblock %}
+
+
+{% block head %}
+
+<meta charset="UTF-8">
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/splash.css') }}">
+
+<style>
+
+/* =========================================================
+   KISANVISION360+ PREMIUM SPLASH
+========================================================= */
+
+:root {
+
+    --green-dark: #062b0b;
+    --green-deep: #0b3d12;
+    --green: #1b5e20;
+    --green-light: #43a047;
+    --green-soft: #81c784;
+
+    --orange: #fb8c00;
+    --orange-light: #ffb74d;
+
+    --white: #ffffff;
+
+    --text-light: #e8f5e9;
+
+    --muted: rgba(255,255,255,0.76);
+
+}
+
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+
+    box-sizing: border-box;
+
+}
+
+
+html,
+body {
+
+    width: 100%;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+}
+
+
+body {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    overflow: hidden;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+
+        radial-gradient(
+            circle at 15% 15%,
+            rgba(129,199,132,0.35),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 85% 80%,
+            rgba(251,140,0,0.18),
+            transparent 25%
+        ),
+
+        linear-gradient(
+            135deg,
+            var(--green-dark) 0%,
+            var(--green-deep) 35%,
+            var(--green) 70%,
+            #2e7d32 100%
+        );
+
+}
+
+
+/* =========================================================
+   BACKGROUND DECORATION
+========================================================= */
+
+.background-decoration {
+
+    position: fixed;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    overflow: hidden;
+
+    z-index: 1;
+
+}
+
+
+.particle {
+
+    position: absolute;
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,0.20);
+
+    animation:
+        floatParticle
+        linear infinite;
+
+}
+
+
+.particle:nth-child(1) {
+
+    left: 8%;
+    top: 20%;
+
+    animation-duration:
+        8s;
+
+}
+
+
+.particle:nth-child(2) {
+
+    left: 20%;
+    top: 75%;
+
+    width: 5px;
+    height: 5px;
+
+    animation-duration:
+        11s;
+
+}
+
+
+.particle:nth-child(3) {
+
+    left: 78%;
+    top: 18%;
+
+    width: 6px;
+    height: 6px;
+
+    animation-duration:
+        9s;
+
+}
+
+
+.particle:nth-child(4) {
+
+    left: 90%;
+    top: 65%;
+
+    width: 10px;
+    height: 10px;
+
+    animation-duration:
+        12s;
+
+}
+
+
+.particle:nth-child(5) {
+
+    left: 55%;
+    top: 90%;
+
+    width: 5px;
+    height: 5px;
+
+    animation-duration:
+        10s;
+
+}
+
+
+@keyframes floatParticle {
+
+    0% {
+
+        transform:
+            translateY(30px);
+
+        opacity: 0;
+
+    }
+
+    20% {
+
+        opacity: 1;
+
+    }
+
+    80% {
+
+        opacity: 1;
+
+    }
+
+    100% {
+
+        transform:
+            translateY(-100px);
+
+        opacity: 0;
+
+    }
+
+}
+
+
+/* =========================================================
+   SPLASH WRAPPER
+========================================================= */
+
+.splash-wrapper {
+
+    position: relative;
+
+    z-index: 5;
+
+    width:
+        min(92%, 620px);
+
+    max-height:
+        96vh;
+
+}
+
+
+/* =========================================================
+   GLASS CARD
+========================================================= */
+
+.glass {
+
+    position: relative;
+
+    padding:
+        38px 34px 28px;
+
+    text-align:
+        center;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.20);
+
+    border-radius:
+        30px;
+
+    background:
+        rgba(255,255,255,0.10);
+
+    backdrop-filter:
+        blur(18px);
+
+    -webkit-backdrop-filter:
+        blur(18px);
+
+    box-shadow:
+        0 30px 80px
+        rgba(0,0,0,0.30);
+
+    animation:
+        cardAppear
+        0.8s ease forwards;
+
+}
+
+
+@keyframes cardAppear {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(20px)
+            scale(0.97);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.logo-container {
+
+    position: relative;
+
+    width: 110px;
+    height: 110px;
+
+    margin:
+        0 auto 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+.logo-ring {
+
+    position: absolute;
+
+    inset: 0;
+
+    border:
+        2px solid
+        rgba(255,255,255,0.28);
+
+    border-top-color:
+        var(--green-soft);
+
+    border-right-color:
+        var(--orange-light);
+
+    border-radius:
+        50%;
+
+    animation:
+        logoSpin
+        5s linear infinite;
+
+}
+
+
+@keyframes logoSpin {
+
+    to {
+
+        transform:
+            rotate(360deg);
+
+    }
+
+}
+
+
+.logo {
+
+    position: relative;
+
+    z-index: 2;
+
+    width: 78px;
+    height: 78px;
+
+    object-fit: contain;
+
+    border-radius: 20px;
+
+    filter:
+        drop-shadow(
+            0 8px 15px
+            rgba(0,0,0,0.25)
+        );
+
+    animation:
+        logoPulse
+        2.5s ease-in-out infinite;
+
+}
+
+
+@keyframes logoPulse {
+
+    0%,
+    100% {
+
+        transform:
+            scale(1);
+
+    }
+
+    50% {
+
+        transform:
+            scale(1.04);
+
+    }
+
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.brand-title {
+
+    margin: 0;
+
+    color:
+        var(--white);
+
+    font-size:
+        clamp(30px, 6vw, 44px);
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        -1px;
+
+    text-shadow:
+        0 5px 20px
+        rgba(0,0,0,0.25);
+
+}
+
+
+.plus {
+
+    color:
+        var(--orange-light);
+
+}
+
+
+.brand-tagline {
+
+    margin:
+        8px 0 0;
+
+    color:
+        #c8e6c9;
+
+    font-size:
+        clamp(14px, 3vw, 18px);
+
+    font-weight:
+        700;
+
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.description {
+
+    max-width:
+        480px;
+
+    margin:
+        15px auto 25px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        13px;
+
+    line-height:
+        1.65;
+
+}
+
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.feature-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap:
+        10px;
+
+    margin:
+        0 auto 24px;
+
+}
+
+
+.feature {
+
+    min-height:
+        82px;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        8px;
+
+    padding:
+        10px 6px;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.13);
+
+    border-radius:
+        15px;
+
+    background:
+        rgba(255,255,255,0.07);
+
+    transition:
+        transform 0.2s,
+        background 0.2s;
+
+}
+
+
+.feature:hover {
+
+    transform:
+        translateY(-3px);
+
+    background:
+        rgba(255,255,255,0.13);
+
+}
+
+
+.feature i {
+
+    font-size:
+        21px;
+
+    color:
+        var(--green-soft);
+
+}
+
+
+.feature:nth-child(2) i {
+
+    color:
+        #a5d6a7;
+
+}
+
+
+.feature:nth-child(3) i {
+
+    color:
+        var(--orange-light);
+
+}
+
+
+.feature:nth-child(4) i {
+
+    color:
+        #90caf9;
+
+}
+
+
+.feature span {
+
+    color:
+        rgba(255,255,255,0.90);
+
+    font-size:
+        10px;
+
+    font-weight:
+        700;
+
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading-section {
+
+    margin-top:
+        3px;
+
+}
+
+
+.loader {
+
+    width:
+        40px;
+
+    height:
+        40px;
+
+    margin:
+        0 auto 12px;
+
+    border:
+        3px solid
+        rgba(255,255,255,0.18);
+
+    border-top-color:
+        var(--orange-light);
+
+    border-right-color:
+        var(--green-soft);
+
+    border-radius:
+        50%;
+
+    animation:
+        spinLoader
+        0.9s linear infinite;
+
+}
+
+
+@keyframes spinLoader {
+
+    to {
+
+        transform:
+            rotate(360deg);
+
+    }
+
+}
+
+
+.loading {
+
+    margin:
+        0;
+
+    color:
+        rgba(255,255,255,0.88);
+
+    font-size:
+        12px;
+
+    font-weight:
+        600;
+
+}
+
+
+.loading-dots {
+
+    display:
+        inline-flex;
+
+    margin-left:
+        2px;
+
+}
+
+
+.loading-dots span {
+
+    animation:
+        dotAnimation
+        1.2s infinite;
+
+}
+
+
+.loading-dots span:nth-child(2) {
+
+    animation-delay:
+        0.2s;
+
+}
+
+
+.loading-dots span:nth-child(3) {
+
+    animation-delay:
+        0.4s;
+
+}
+
+
+@keyframes dotAnimation {
+
+    0%,
+    60%,
+    100% {
+
+        opacity:
+            0.25;
+
+    }
+
+    30% {
+
+        opacity:
+            1;
+
+    }
+
+}
+
+
+/* =========================================================
+   PROGRESS BAR
+   60 SECONDS
+========================================================= */
+
+.progress-container {
+
+    width:
+        100%;
+
+    max-width:
+        300px;
+
+    height:
+        4px;
+
+    margin:
+        15px auto 0;
+
+    overflow:
+        hidden;
+
+    border-radius:
+        20px;
+
+    background:
+        rgba(255,255,255,0.12);
+
+}
+
+
+.progress-bar {
+
+    width:
+        0%;
+
+    height:
+        100%;
+
+    border-radius:
+        20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--green-soft),
+            #ffffff,
+            var(--orange-light)
+        );
+
+    /*
+       IMPORTANT:
+       Progress takes exactly 60 seconds.
+    */
+
+    animation:
+        loadingProgress
+        60s
+        linear
+        forwards;
+
+}
+
+
+@keyframes loadingProgress {
+
+    0% {
+
+        width:
+            0%;
+
+    }
+
+    20% {
+
+        width:
+            20%;
+
+    }
+
+    40% {
+
+        width:
+            40%;
+
+    }
+
+    60% {
+
+        width:
+            60%;
+
+    }
+
+    80% {
+
+        width:
+            80%;
+
+    }
+
+    100% {
+
+        width:
+            100%;
+
+    }
+
+}
+
+
+/* =========================================================
+   APPLICATION FLOW
+========================================================= */
+
+.flow {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        8px;
+
+    margin-top:
+        18px;
+
+    color:
+        rgba(255,255,255,0.62);
+
+    font-size:
+        9px;
+
+    font-weight:
+        700;
+
+}
+
+
+.flow-step {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        5px;
+
+}
+
+
+.flow-step.active {
+
+    color:
+        #ffffff;
+
+}
+
+
+.flow-step i {
+
+    font-size:
+        9px;
+
+}
+
+
+.flow-arrow {
+
+    opacity:
+        0.5;
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+
+    margin-top:
+        22px;
+
+    padding-top:
+        15px;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,0.10);
+
+    color:
+        rgba(255,255,255,0.58);
+
+    font-size:
+        9px;
+
+}
+
+
+.footer strong {
+
+    color:
+        rgba(255,255,255,0.90);
+
+}
+
+
+.footer-separator {
+
+    margin:
+        0 5px;
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration:
+            0.01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 520px) {
+
+    body {
+
+        padding:
+            12px;
+
+    }
+
+
+    .splash-wrapper {
+
+        width:
+            100%;
+
+    }
+
+
+    .glass {
+
+        padding:
+            28px 18px 22px;
+
+        border-radius:
+            24px;
+
+    }
+
+
+    .logo-container {
+
+        width:
+            90px;
+
+        height:
+            90px;
+
+    }
+
+
+    .logo {
+
+        width:
+            65px;
+
+        height:
+            65px;
+
+    }
+
+
+    .brand-title {
+
+        font-size:
+            29px;
+
+    }
+
+
+    .brand-tagline {
+
+        font-size:
+            13px;
+
+    }
+
+
+    .description {
+
+        font-size:
+            11px;
+
+        margin-bottom:
+            20px;
+
+    }
+
+
+    .feature-grid {
+
+        gap:
+            7px;
+
+    }
+
+
+    .feature {
+
+        min-height:
+            70px;
+
+    }
+
+
+    .feature i {
+
+        font-size:
+            17px;
+
+    }
+
+
+    .feature span {
+
+        font-size:
+            8px;
+
+    }
+
+
+    .flow {
+
+        gap:
+            5px;
+
+        font-size:
+            8px;
+
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL DEVICES
+========================================================= */
+
+@media (max-width: 350px) {
+
+    .feature-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .flow {
+
+        flex-wrap:
+            wrap;
+
+    }
+
+
+    .glass {
+
+        padding:
+            24px 14px 18px;
+
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+
+
+{% block page_title %}
+Smart Agriculture
+{% endblock %}
+
+
+
+{% block page_subtitle %}
+Smart Agriculture Platform
+{% endblock %}
+
+
+
+{% block content %}
+
+<!-- =======================================================
+     BACKGROUND DECORATION
+======================================================== -->
+
+<div class="background-decoration"
+     aria-hidden="true">
+
+    <span class="particle"></span>
+
+    <span class="particle"></span>
+
+    <span class="particle"></span>
+
+    <span class="particle"></span>
+
+    <span class="particle"></span>
+
+</div>
+
+
+<!-- =======================================================
+     SPLASH CARD
+======================================================== -->
+
+<div class="splash-wrapper">
+
+    <div class="glass">
+
+
+        <!-- =================================================
+             LOGO
+        ================================================== -->
+
+        <div class="logo-container">
+
+            <div class="logo-ring"></div>
+
+            <img
+                src="{{ url_for('static', filename='images/logo.png') }}"
+                class="logo"
+                alt="KisanVision360+ Logo"
+                onerror="this.style.display='none';">
+
+        </div>
+
+
+        <!-- =================================================
+             BRAND
+        ================================================== -->
+
+        <h1 class="brand-title">
+
+            KisanVision360<span class="plus">+</span>
+
+        </h1>
+
+
+        <div class="brand-tagline">
+
+            AI-Powered Smart Agriculture Platform
+
+        </div>
+
+
+        <p class="description">
+
+            Empowering farmers with intelligent crop
+            recommendations, live weather insights,
+            disease detection, market intelligence and
+            smart agricultural services.
+
+        </p>
+
+
+        <!-- =================================================
+             FEATURES
+        ================================================= -->
+
+        <div class="feature-grid">
+
+
+            <div class="feature">
+
+                <i class="fas fa-cloud-sun"
+                   aria-hidden="true"></i>
+
+                <span>
+                    Live Weather
+                </span>
+
+            </div>
+
+
+            <div class="feature">
+
+                <i class="fas fa-seedling"
+                   aria-hidden="true"></i>
+
+                <span>
+                    Crop Intelligence
+                </span>
+
+            </div>
+
+
+            <div class="feature">
+
+                <i class="fas fa-chart-line"
+                   aria-hidden="true"></i>
+
+                <span>
+                    Market Insights
+                </span>
+
+            </div>
+
+
+            <div class="feature">
+
+                <i class="fas fa-robot"
+                   aria-hidden="true"></i>
+
+                <span>
+                    AI Assistant
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             LOADING
+        ================================================== -->
+
+        <div class="loading-section">
+
+
+            <div class="loader"
+                 aria-hidden="true"></div>
+
+
+            <p class="loading">
+
+                Preparing Smart Farming Experience
+
+                <span class="loading-dots"
+                      aria-hidden="true">
+
+                    <span>.</span>
+
+                    <span>.</span>
+
+                    <span>.</span>
+
+                </span>
+
+            </p>
+
+
+            <!-- 60 SECOND PROGRESS -->
+
+            <div class="progress-container"
+                 aria-hidden="true">
+
+                <div class="progress-bar"></div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             APPLICATION FLOW
+        ================================================== -->
+
+        <div class="flow">
+
+
+            <div class="flow-step active">
+
+                <i class="fa-solid fa-house"
+                   aria-hidden="true"></i>
+
+                Splash
+
+            </div>
+
+
+            <span class="flow-arrow"
+                  aria-hidden="true">
+
+                <i class="fa-solid fa-chevron-right"></i>
+
+            </span>
+
+
+            <div class="flow-step">
+
+                <i class="fa-solid fa-language"
+                   aria-hidden="true"></i>
+
+                Language
+
+            </div>
+
+
+            <span class="flow-arrow"
+                  aria-hidden="true">
+
+                <i class="fa-solid fa-chevron-right"></i>
+
+            </span>
+
+
+            <div class="flow-step">
+
+                <i class="fa-solid fa-lock"
+                   aria-hidden="true"></i>
+
+                Login
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <div class="footer">
+
+            <strong>
+                KisanVision360+
+            </strong>
+
+            <span class="footer-separator">
+                •
+            </span>
+
+            Version 1.0
+
+            <span class="footer-separator">
+                •
+            </span>
+
+            Made in India 🇮🇳
+
+        </div>
+
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+
+{% block scripts %}
+
+<script>
+
+"use strict";
+
+
+/* =========================================================
+   KISANVISION360+ SPLASH LOGIC
+========================================================= */
+
+
+/*
+    APPLICATION FLOW
+
+    Splash
+       ↓
+    Language Selection
+       ↓
+    Login / Signup
+
+    Splash duration:
+    60 seconds
+*/
+
+
+let redirected = false;
+
+
+/* =========================================================
+   REDIRECT FUNCTION
+========================================================= */
+
+function goToLanguage() {
+
+    if (redirected) {
+
+        return;
+
+    }
+
+
+    redirected = true;
+
+
+    window.location.href =
+        "/language";
+
+}
+
+
+/* =========================================================
+   REDIRECT AFTER EXACTLY 60 SECONDS
+========================================================= */
+
+window.setTimeout(
+
+    goToLanguage,
+
+    20000
+
+);
+
+
+/* =========================================================
+   PAGE SHOW / BACK-FORWARD CACHE
+========================================================= */
+
+window.addEventListener(
+
+    "pageshow",
+
+    function(event) {
+
+        if (event.persisted) {
+
+            window.location.href =
+                "/language";
+
+        }
+
+    }
+
+);
+
+
+/* =========================================================
+   LANGUAGE METADATA
+========================================================= */
+
+document.addEventListener(
+
+    "DOMContentLoaded",
+
+    function() {
+
+
+        const savedLanguage =
+            localStorage.getItem(
+                "kisanvision360_language"
+            );
+
+
+        if (!savedLanguage) {
+
+            return;
+
+        }
+
+
+        document.documentElement
+            .setAttribute(
+                "lang",
+                savedLanguage
+            );
+
+
+        const rtlLanguages = [
+
+            "ur",
+            "ks",
+            "sd",
+            "ar"
+
+        ];
+
+
+        if (
+
+            rtlLanguages.includes(
+                savedLanguage
+            )
+
+        ) {
+
+            document.documentElement
+                .setAttribute(
+                    "dir",
+                    "rtl"
+                );
+
+        }
+
+        else {
+
+            document.documentElement
+                .setAttribute(
+                    "dir",
+                    "ltr"
+                );
+
+        }
+
+    }
+
+);
+
+</script>
+
+{% endblock %}

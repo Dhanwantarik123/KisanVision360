@@ -1,0 +1,1293 @@
+﻿{% extends "base.html" %}
+
+{% block title %}KisanVision360 | Machine Comparison{% endblock %}
+
+{% block head %}
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/compare.css') }}">
+<style>
+
+    /* =====================================================
+       KISANVISION360+ LANGUAGE / ACCESSIBILITY LAYER
+    ===================================================== */
+
+    .language-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 12px;
+        border-radius: 20px;
+        background: rgba(27, 94, 32, 0.08);
+        color: #1b5e20;
+        font-size: 12px;
+        font-weight: 700;
+        margin-top: 8px;
+    }
+
+    .language-status i {
+        font-size: 13px;
+    }
+
+    .smart-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 12px;
+        border-radius: 20px;
+        background: rgba(251, 140, 0, 0.10);
+        color: #e65100;
+        font-size: 12px;
+        font-weight: 700;
+        margin-top: 8px;
+        margin-left: 6px;
+    }
+
+    .comparison-note {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-top: 18px;
+        padding: 14px 16px;
+        border-radius: 14px;
+        background: #f7faf7;
+        border: 1px solid #e5eee5;
+    }
+
+    .comparison-note i {
+        color: #43a047;
+        margin-top: 3px;
+    }
+
+    .comparison-note strong {
+        display: block;
+        margin-bottom: 3px;
+    }
+
+    .comparison-note p {
+        margin: 0;
+        font-size: 13px;
+        color: #666;
+        line-height: 1.5;
+    }
+
+    .machine-score {
+        margin-top: 16px;
+        padding: 12px;
+        border-radius: 12px;
+        background: #f8faf8;
+        border: 1px solid #e8eee8;
+    }
+
+    .machine-score-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .score-value {
+        color: #1b5e20;
+    }
+
+    .score-bar {
+        width: 100%;
+        height: 8px;
+        background: #e6e6e6;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .score-fill {
+        height: 100%;
+        width: 0;
+        border-radius: 20px;
+        transition: width 1s ease;
+        background: #43a047;
+    }
+
+    .winner-row td {
+        background: rgba(67, 160, 71, 0.06);
+    }
+
+    .winner-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin-left: 7px;
+        padding: 3px 7px;
+        border-radius: 10px;
+        font-size: 10px;
+        font-weight: 800;
+        color: #1b5e20;
+        background: #e8f5e9;
+    }
+
+    .verdict-card {
+        position: relative;
+    }
+
+    .ai-recommendation {
+        margin-top: 12px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: rgba(67, 160, 71, 0.07);
+        border-left: 4px solid #43a047;
+    }
+
+    .ai-recommendation strong {
+        color: #1b5e20;
+    }
+
+    [dir="rtl"] .ai-recommendation {
+        border-left: 0;
+        border-right: 4px solid #43a047;
+    }
+
+    @media (max-width: 768px) {
+
+        .smart-badge {
+            margin-left: 0;
+            margin-top: 5px;
+        }
+
+        .comparison-note {
+            padding: 12px;
+        }
+
+    }
+
+</style>
+{% endblock %}
+
+{% block page_title %}Machine Comparison{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<div class="main-content">
+
+
+<!-- =====================================================
+     TOPBAR
+===================================================== -->
+
+
+
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="compare-hero">
+
+    <div>
+
+        <span class="hero-label">
+
+            <i class="fa-solid fa-tractor"></i>
+
+            <span data-i18n="smart_machine_selection">
+                SMART MACHINE SELECTION
+            </span>
+
+        </span>
+
+
+        <h2 data-i18n="compare_farm_machines">
+            Compare Farm Machines
+        </h2>
+
+
+        <p data-i18n="hero_description">
+            Compare price, horsepower, fuel type,
+            crop suitability and warranty before buying
+            agricultural machinery.
+        </p>
+
+    </div>
+
+
+    <div class="hero-icon">
+
+        <i class="fa-solid fa-gears"></i>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     MACHINE CARDS
+===================================================== -->
+
+<section class="machines">
+
+
+    <!-- =================================================
+         MAHINDRA
+    ================================================== -->
+
+    <div class="machine-card">
+
+        <div class="machine-image">
+
+            <i class="fa-solid fa-tractor"></i>
+
+        </div>
+
+
+        <div class="machine-content">
+
+            <span class="machine-brand">
+                MAHINDRA
+            </span>
+
+
+            <h2 data-i18n="mahindra_tractor">
+                Mahindra Tractor
+            </h2>
+
+
+            <p data-i18n="mahindra_description">
+                Reliable tractor suitable for
+                general agricultural operations.
+            </p>
+
+
+            <div class="machine-price">
+
+                <span data-i18n="starting_price">
+                    Starting Price
+                </span>
+
+                <strong>
+                    â‚¹6.5 Lakh
+                </strong>
+
+            </div>
+
+
+            <div class="machine-score">
+
+                <div class="machine-score-header">
+
+                    <span data-i18n="smart_suitability">
+                        Smart Suitability
+                    </span>
+
+                    <span class="score-value">
+                        88/100
+                    </span>
+
+                </div>
+
+                <div class="score-bar">
+
+                    <div
+                        class="score-fill"
+                        data-score="88">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         SWARAJ
+    ================================================== -->
+
+    <div class="machine-card">
+
+        <div class="machine-image">
+
+            <i class="fa-solid fa-tractor"></i>
+
+        </div>
+
+
+        <div class="machine-content">
+
+            <span class="machine-brand">
+                SWARAJ
+            </span>
+
+
+            <h2 data-i18n="swaraj_tractor">
+                Swaraj Tractor
+            </h2>
+
+
+            <p data-i18n="swaraj_description">
+                Powerful tractor designed for
+                demanding agricultural work.
+            </p>
+
+
+            <div class="machine-price">
+
+                <span data-i18n="starting_price">
+                    Starting Price
+                </span>
+
+                <strong>
+                    â‚¹6.8 Lakh
+                </strong>
+
+            </div>
+
+
+            <div class="machine-score">
+
+                <div class="machine-score-header">
+
+                    <span data-i18n="smart_suitability">
+                        Smart Suitability
+                    </span>
+
+                    <span class="score-value">
+                        84/100
+                    </span>
+
+                </div>
+
+                <div class="score-bar">
+
+                    <div
+                        class="score-fill"
+                        data-score="84">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     COMPARISON TABLE
+===================================================== -->
+
+<section class="comparison-section">
+
+
+    <div class="section-heading">
+
+        <span data-i18n="side_by_side">
+            SIDE-BY-SIDE COMPARISON
+        </span>
+
+
+        <h2 data-i18n="machine_specifications">
+            Machine Specifications
+        </h2>
+
+
+        <p data-i18n="specification_description">
+            Compare the important specifications of both tractors.
+        </p>
+
+    </div>
+
+
+
+    <div class="table-card">
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th data-i18n="feature">
+                            Feature
+                        </th>
+
+
+                        <th>
+
+                            <i class="fa-solid fa-tractor"></i>
+
+                            Mahindra Tractor
+
+                        </th>
+
+
+                        <th>
+
+                            <i class="fa-solid fa-tractor"></i>
+
+                            Swaraj Tractor
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    <!-- PRICE -->
+
+                    <tr>
+
+                        <td>
+
+                            <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                            <span data-i18n="price">
+                                Price
+                            </span>
+
+                        </td>
+
+                        <td>
+                            â‚¹6.5 Lakh
+                        </td>
+
+                        <td>
+                            â‚¹6.8 Lakh
+                        </td>
+
+                    </tr>
+
+
+
+                    <!-- HORSEPOWER -->
+
+                    <tr class="winner-row">
+
+                        <td>
+
+                            <i class="fa-solid fa-gauge-high"></i>
+
+                            <span data-i18n="horsepower">
+                                Horsepower
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <strong>
+                                45 HP
+                            </strong>
+
+                        </td>
+
+                        <td>
+
+                            <strong>
+                                50 HP
+                            </strong>
+
+                            <span class="winner-tag">
+
+                                <i class="fa-solid fa-trophy"></i>
+
+                                <span data-i18n="higher">
+                                    Higher
+                                </span>
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+
+
+                    <!-- FUEL -->
+
+                    <tr>
+
+                        <td>
+
+                            <i class="fa-solid fa-gas-pump"></i>
+
+                            <span data-i18n="fuel_type">
+                                Fuel Type
+                            </span>
+
+                        </td>
+
+                        <td data-i18n="diesel">
+                            Diesel
+                        </td>
+
+                        <td data-i18n="diesel">
+                            Diesel
+                        </td>
+
+                    </tr>
+
+
+
+                    <!-- CROPS -->
+
+                    <tr>
+
+                        <td>
+
+                            <i class="fa-solid fa-wheat-awn"></i>
+
+                            <span data-i18n="suitable_crops">
+                                Suitable Crops
+                            </span>
+
+                        </td>
+
+                        <td data-i18n="mahindra_crops">
+                            Wheat, Cotton
+                        </td>
+
+                        <td data-i18n="swaraj_crops">
+                            Sugarcane, Rice
+                        </td>
+
+                    </tr>
+
+
+
+                    <!-- WARRANTY -->
+
+                    <tr class="winner-row">
+
+                        <td>
+
+                            <i class="fa-solid fa-shield-halved"></i>
+
+                            <span data-i18n="warranty">
+                                Warranty
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            6 Years
+
+                            <span class="winner-tag">
+
+                                <i class="fa-solid fa-check"></i>
+
+                                <span data-i18n="better">
+                                    Better
+                                </span>
+
+                            </span>
+
+                        </td>
+
+                        <td>
+                            5 Years
+                        </td>
+
+                    </tr>
+
+
+
+                    <!-- SUITABILITY -->
+
+                    <tr>
+
+                        <td>
+
+                            <i class="fa-solid fa-ranking-star"></i>
+
+                            <span data-i18n="smart_score">
+                                Smart Score
+                            </span>
+
+                        </td>
+
+                        <td>
+                            <strong>88 / 100</strong>
+                        </td>
+
+                        <td>
+                            <strong>84 / 100</strong>
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="comparison-note">
+
+        <i class="fa-solid fa-circle-info"></i>
+
+        <div>
+
+            <strong data-i18n="comparison_note_title">
+                Comparison Note
+            </strong>
+
+            <p data-i18n="comparison_note">
+                Prices and specifications shown here are
+                indicative. Verify the latest model,
+                dealer price, warranty and specifications
+                before purchase.
+            </p>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     QUICK VERDICT
+===================================================== -->
+
+<section class="verdict-section">
+
+
+    <div class="verdict-card">
+
+
+        <div class="verdict-icon">
+
+            <i class="fa-solid fa-lightbulb"></i>
+
+        </div>
+
+
+        <div>
+
+            <span data-i18n="quick_comparison">
+                QUICK COMPARISON
+            </span>
+
+
+            <h2 data-i18n="which_better">
+                Which one is better?
+            </h2>
+
+
+            <p data-i18n="verdict">
+                Mahindra offers a lower listed price and
+                longer warranty, while Swaraj provides
+                higher horsepower.
+            </p>
+
+
+            <div class="ai-recommendation">
+
+                <strong>
+
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                    <span data-i18n="smart_recommendation">
+                        Smart Recommendation
+                    </span>
+
+                </strong>
+
+                <div
+                    style="margin-top:5px;"
+                    data-i18n="recommendation_text">
+
+                    For balanced farming use, Mahindra has
+                    the better overall value because of its
+                    lower listed price and longer warranty.
+                    Swaraj may be preferable when higher
+                    horsepower is the priority.
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     ACTIONS
+===================================================== -->
+
+<div class="page-actions">
+
+
+    <a href="/dealers"
+       class="dealer-btn">
+
+        <i class="fa-solid fa-location-dot"></i>
+
+        <span data-i18n="find_dealers">
+            Find Nearby Dealers
+        </span>
+
+    </a>
+
+
+    <a href="/tools"
+       class="back-btn">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        <span data-i18n="back_tools">
+            Back to Tools
+        </span>
+
+    </a>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <i class="fa-solid fa-leaf"></i>
+
+    <strong>
+        KisanVision360+
+    </strong>
+
+    <span>
+        â€¢
+    </span>
+
+    <span data-i18n="smart_farm_machinery">
+        Smart Farm Machinery
+    </span>
+
+    <span>
+        â€¢
+    </span>
+
+    Â© 2026
+
+</footer>
+
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+const CURRENT_LANGUAGE =
+    "{{ session.get('language', 'en') }}".toLowerCase();
+
+
+/*
+    IMPORTANT:
+    This page does NOT provide a separate language selector.
+
+    Language is selected once in the main KisanVision360+
+    language setup and stored in the session.
+
+    The same language is then used across the application.
+*/
+
+
+const translations = {
+
+    en: {
+
+        machine_comparison: "Machine Comparison",
+        compare_subtitle: "Compare farm machines and choose the right one",
+        app_language: "App Language",
+        smart_comparison: "Smart Comparison",
+        farmer: "Farmer",
+
+        smart_machine_selection: "SMART MACHINE SELECTION",
+        compare_farm_machines: "Compare Farm Machines",
+
+        hero_description:
+            "Compare price, horsepower, fuel type, crop suitability and warranty before buying agricultural machinery.",
+
+        mahindra_tractor: "Mahindra Tractor",
+        mahindra_description:
+            "Reliable tractor suitable for general agricultural operations.",
+
+        swaraj_tractor: "Swaraj Tractor",
+        swaraj_description:
+            "Powerful tractor designed for demanding agricultural work.",
+
+        starting_price: "Starting Price",
+        smart_suitability: "Smart Suitability",
+
+        side_by_side: "SIDE-BY-SIDE COMPARISON",
+        machine_specifications: "Machine Specifications",
+        specification_description:
+            "Compare the important specifications of both tractors.",
+
+        feature: "Feature",
+        price: "Price",
+        horsepower: "Horsepower",
+        fuel_type: "Fuel Type",
+        suitable_crops: "Suitable Crops",
+        warranty: "Warranty",
+        smart_score: "Smart Score",
+
+        diesel: "Diesel",
+        mahindra_crops: "Wheat, Cotton",
+        swaraj_crops: "Sugarcane, Rice",
+
+        higher: "Higher",
+        better: "Better",
+
+        comparison_note_title: "Comparison Note",
+        comparison_note:
+            "Prices and specifications shown here are indicative. Verify the latest model, dealer price, warranty and specifications before purchase.",
+
+        quick_comparison: "QUICK COMPARISON",
+        which_better: "Which one is better?",
+
+        verdict:
+            "Mahindra offers a lower listed price and longer warranty, while Swaraj provides higher horsepower.",
+
+        smart_recommendation: "Smart Recommendation",
+
+        recommendation_text:
+            "For balanced farming use, Mahindra has the better overall value because of its lower listed price and longer warranty. Swaraj may be preferable when higher horsepower is the priority.",
+
+        find_dealers: "Find Nearby Dealers",
+        back_tools: "Back to Tools",
+        smart_farm_machinery: "Smart Farm Machinery"
+
+    },
+
+
+    hi: {
+
+        machine_comparison: "à¤®à¤¶à¥€à¤¨ à¤¤à¥à¤²à¤¨à¤¾",
+        compare_subtitle: "à¤•à¥ƒà¤·à¤¿ à¤®à¤¶à¥€à¤¨à¥‹à¤‚ à¤•à¥€ à¤¤à¥à¤²à¤¨à¤¾ à¤•à¤°à¥‡à¤‚ à¤”à¤° à¤¸à¤¹à¥€ à¤®à¤¶à¥€à¤¨ à¤šà¥à¤¨à¥‡à¤‚",
+        app_language: "à¤à¤ª à¤­à¤¾à¤·à¤¾",
+        smart_comparison: "à¤¸à¥à¤®à¤¾à¤°à¥à¤Ÿ à¤¤à¥à¤²à¤¨à¤¾",
+        farmer: "à¤•à¤¿à¤¸à¤¾à¤¨",
+
+        smart_machine_selection: "à¤¸à¥à¤®à¤¾à¤°à¥à¤Ÿ à¤®à¤¶à¥€à¤¨ à¤šà¤¯à¤¨",
+        compare_farm_machines: "à¤•à¥ƒà¤·à¤¿ à¤®à¤¶à¥€à¤¨à¥‹à¤‚ à¤•à¥€ à¤¤à¥à¤²à¤¨à¤¾ à¤•à¤°à¥‡à¤‚",
+
+        hero_description:
+            "à¤•à¥ƒà¤·à¤¿ à¤®à¤¶à¥€à¤¨ à¤–à¤°à¥€à¤¦à¤¨à¥‡ à¤¸à¥‡ à¤ªà¤¹à¤²à¥‡ à¤•à¥€à¤®à¤¤, à¤¹à¥‰à¤°à¥à¤¸à¤ªà¤¾à¤µà¤°, à¤ˆà¤‚à¤§à¤¨, à¤«à¤¸à¤² à¤‰à¤ªà¤¯à¥à¤•à¥à¤¤à¤¤à¤¾ à¤”à¤° à¤µà¤¾à¤°à¤‚à¤Ÿà¥€ à¤•à¥€ à¤¤à¥à¤²à¤¨à¤¾ à¤•à¤°à¥‡à¤‚à¥¤",
+
+        mahindra_tractor: "à¤®à¤¹à¤¿à¤‚à¤¦à¥à¤°à¤¾ à¤Ÿà¥à¤°à¥ˆà¤•à¥à¤Ÿà¤°",
+        mahindra_description:
+            "à¤¸à¤¾à¤®à¤¾à¤¨à¥à¤¯ à¤•à¥ƒà¤·à¤¿ à¤•à¤¾à¤°à¥à¤¯à¥‹à¤‚ à¤•à¥‡ à¤²à¤¿à¤ à¤‰à¤ªà¤¯à¥à¤•à¥à¤¤ à¤µà¤¿à¤¶à¥à¤µà¤¸à¤¨à¥€à¤¯ à¤Ÿà¥à¤°à¥ˆà¤•à¥à¤Ÿà¤°à¥¤",
+
+        swaraj_tractor: "à¤¸à¥à¤µà¤°à¤¾à¤œ à¤Ÿà¥à¤°à¥ˆà¤•à¥à¤Ÿà¤°",
+        swaraj_description:
+            "à¤•à¤ à¤¿à¤¨ à¤•à¥ƒà¤·à¤¿ à¤•à¤¾à¤°à¥à¤¯à¥‹à¤‚ à¤•à¥‡ à¤²à¤¿à¤ à¤¬à¤¨à¤¾à¤¯à¤¾ à¤—à¤¯à¤¾ à¤¶à¤•à¥à¤¤à¤¿à¤¶à¤¾à¤²à¥€ à¤Ÿà¥à¤°à¥ˆà¤•à¥à¤Ÿà¤°à¥¤",
+
+        starting_price: "à¤¶à¥à¤°à¥à¤†à¤¤à¥€ à¤•à¥€à¤®à¤¤",
+        smart_suitability: "à¤¸à¥à¤®à¤¾à¤°à¥à¤Ÿ à¤‰à¤ªà¤¯à¥à¤•à¥à¤¤à¤¤à¤¾",
+
+        side_by_side: "à¤¸à¤¾à¤®à¤¨à¥‡-à¤¸à¤¾à¤®à¤¨à¥‡ à¤¤à¥à¤²à¤¨à¤¾",
+        machine_specifications: "à¤®à¤¶à¥€à¤¨ à¤µà¤¿à¤¨à¤¿à¤°à¥à¤¦à¥‡à¤¶",
+        specification_description:
+            "à¤¦à¥‹à¤¨à¥‹à¤‚ à¤Ÿà¥à¤°à¥ˆà¤•à¥à¤Ÿà¤°à¥‹à¤‚ à¤•à¥‡ à¤®à¤¹à¤¤à¥à¤µà¤ªà¥‚à¤°à¥à¤£ à¤µà¤¿à¤¨à¤¿à¤°à¥à¤¦à¥‡à¤¶à¥‹à¤‚ à¤•à¥€ à¤¤à¥à¤²à¤¨à¤¾ à¤•à¤°à¥‡à¤‚à¥¤",
+
+        feature: "à¤µà¤¿à¤¶à¥‡à¤·à¤¤à¤¾",
+        price: "à¤•à¥€à¤®à¤¤",
+        horsepower: "à¤¹à¥‰à¤°à¥à¤¸à¤ªà¤¾à¤µà¤°",
+        fuel_type: "à¤ˆà¤‚à¤§à¤¨ à¤ªà¥à¤°à¤•à¤¾à¤°",
+        suitable_crops: "à¤‰à¤ªà¤¯à¥à¤•à¥à¤¤ à¤«à¤¸à¤²à¥‡à¤‚",
+        warranty: "à¤µà¤¾à¤°à¤‚à¤Ÿà¥€",
+        smart_score: "à¤¸à¥à¤®à¤¾à¤°à¥à¤Ÿ à¤¸à¥à¤•à¥‹à¤°",
+
+        diesel: "à¤¡à¥€à¤œà¤²",
+        mahindra_crops: "à¤—à¥‡à¤¹à¥‚à¤‚, à¤•à¤ªà¤¾à¤¸",
+        swaraj_crops: "à¤—à¤¨à¥à¤¨à¤¾, à¤šà¤¾à¤µà¤²",
+
+        higher: "à¤…à¤§à¤¿à¤•",
+        better: "à¤¬à¥‡à¤¹à¤¤à¤°",
+
+        comparison_note_title: "à¤¤à¥à¤²à¤¨à¤¾ à¤¨à¥‹à¤Ÿ",
+        comparison_note:
+            "à¤¯à¤¹à¤¾à¤‚ à¤¦à¤¿à¤–à¤¾à¤ˆ à¤—à¤ˆ à¤•à¥€à¤®à¤¤à¥‡à¤‚ à¤”à¤° à¤µà¤¿à¤¨à¤¿à¤°à¥à¤¦à¥‡à¤¶ à¤…à¤¨à¥à¤®à¤¾à¤¨à¤¿à¤¤ à¤¹à¥ˆà¤‚à¥¤ à¤–à¤°à¥€à¤¦à¤¨à¥‡ à¤¸à¥‡ à¤ªà¤¹à¤²à¥‡ à¤¨à¤µà¥€à¤¨à¤¤à¤® à¤®à¥‰à¤¡à¤², à¤¡à¥€à¤²à¤° à¤•à¥€à¤®à¤¤, à¤µà¤¾à¤°à¤‚à¤Ÿà¥€ à¤”à¤° à¤µà¤¿à¤¨à¤¿à¤°à¥à¤¦à¥‡à¤¶à¥‹à¤‚ à¤•à¥€ à¤ªà¥à¤·à¥à¤Ÿà¤¿ à¤•à¤°à¥‡à¤‚à¥¤",
+
+        quick_comparison: "à¤¤à¥à¤µà¤°à¤¿à¤¤ à¤¤à¥à¤²à¤¨à¤¾",
+        which_better: "à¤•à¥Œà¤¨ à¤¸à¤¾ à¤¬à¥‡à¤¹à¤¤à¤° à¤¹à¥ˆ?",
+
+        verdict:
+            "à¤®à¤¹à¤¿à¤‚à¤¦à¥à¤°à¤¾ à¤•à¥€ à¤¸à¥‚à¤šà¥€à¤¬à¤¦à¥à¤§ à¤•à¥€à¤®à¤¤ à¤•à¤® à¤”à¤° à¤µà¤¾à¤°à¤‚à¤Ÿà¥€ à¤²à¤‚à¤¬à¥€ à¤¹à¥ˆ, à¤œà¤¬à¤•à¤¿ à¤¸à¥à¤µà¤°à¤¾à¤œ à¤…à¤§à¤¿à¤• à¤¹à¥‰à¤°à¥à¤¸à¤ªà¤¾à¤µà¤° à¤ªà¥à¤°à¤¦à¤¾à¤¨ à¤•à¤°à¤¤à¤¾ à¤¹à¥ˆà¥¤",
+
+        smart_recommendation: "à¤¸à¥à¤®à¤¾à¤°à¥à¤Ÿ à¤¸à¥à¤à¤¾à¤µ",
+
+        recommendation_text:
+            "à¤¸à¤‚à¤¤à¥à¤²à¤¿à¤¤ à¤–à¥‡à¤¤à¥€ à¤•à¥‡ à¤²à¤¿à¤ à¤®à¤¹à¤¿à¤‚à¤¦à¥à¤°à¤¾ à¤¬à¥‡à¤¹à¤¤à¤° à¤®à¥‚à¤²à¥à¤¯ à¤ªà¥à¤°à¤¦à¤¾à¤¨ à¤•à¤°à¤¤à¤¾ à¤¹à¥ˆ à¤•à¥à¤¯à¥‹à¤‚à¤•à¤¿ à¤‡à¤¸à¤•à¥€ à¤•à¥€à¤®à¤¤ à¤•à¤® à¤”à¤° à¤µà¤¾à¤°à¤‚à¤Ÿà¥€ à¤²à¤‚à¤¬à¥€ à¤¹à¥ˆà¥¤ à¤¯à¤¦à¤¿ à¤…à¤§à¤¿à¤• à¤¹à¥‰à¤°à¥à¤¸à¤ªà¤¾à¤µà¤° à¤ªà¥à¤°à¤¾à¤¥à¤®à¤¿à¤•à¤¤à¤¾ à¤¹à¥ˆ à¤¤à¥‹ à¤¸à¥à¤µà¤°à¤¾à¤œ à¤¬à¥‡à¤¹à¤¤à¤° à¤µà¤¿à¤•à¤²à¥à¤ª à¤¹à¥‹ à¤¸à¤•à¤¤à¤¾ à¤¹à¥ˆà¥¤",
+
+        find_dealers: "à¤¨à¤œà¤¦à¥€à¤•à¥€ à¤¡à¥€à¤²à¤° à¤–à¥‹à¤œà¥‡à¤‚",
+        back_tools: "à¤Ÿà¥‚à¤²à¥à¤¸ à¤ªà¤° à¤µà¤¾à¤ªà¤¸ à¤œà¤¾à¤à¤‚",
+        smart_farm_machinery: "à¤¸à¥à¤®à¤¾à¤°à¥à¤Ÿ à¤•à¥ƒà¤·à¤¿ à¤®à¤¶à¥€à¤¨à¤°à¥€"
+
+    },
+
+
+    mr: {
+
+        machine_comparison: "à¤®à¤¶à¥€à¤¨ à¤¤à¥à¤²à¤¨à¤¾",
+        compare_subtitle: "à¤•à¥ƒà¤·à¥€ à¤®à¤¶à¥€à¤¨à¤šà¥€ à¤¤à¥à¤²à¤¨à¤¾ à¤•à¤°à¤¾ à¤†à¤£à¤¿ à¤¯à¥‹à¤—à¥à¤¯ à¤®à¤¶à¥€à¤¨ à¤¨à¤¿à¤µà¤¡à¤¾",
+        app_language: "à¤…à¥…à¤ª à¤­à¤¾à¤·à¤¾",
+        smart_comparison: "à¤¸à¥à¤®à¤¾à¤°à¥à¤Ÿ à¤¤à¥à¤²à¤¨à¤¾",
+        farmer: "à¤¶à¥‡à¤¤à¤•à¤°à¥€",
+
+        smart_machine_selection: "à¤¸à¥à¤®à¤¾à¤°à¥à¤Ÿ à¤®à¤¶à¥€à¤¨ à¤¨à¤¿à¤µà¤¡",
+        compare_farm_machines: "à¤•à¥ƒà¤·à¥€ à¤®à¤¶à¥€à¤¨à¤šà¥€ à¤¤à¥à¤²à¤¨à¤¾ à¤•à¤°à¤¾",
+
+        hero_description:
+            "à¤•à¥ƒà¤·à¥€ à¤®à¤¶à¥€à¤¨ à¤–à¤°à¥‡à¤¦à¥€ à¤•à¤°à¤£à¥à¤¯à¤¾à¤ªà¥‚à¤°à¥à¤µà¥€ à¤•à¤¿à¤‚à¤®à¤¤, à¤¹à¥‰à¤°à¥à¤¸à¤ªà¥‰à¤µà¤°, à¤‡à¤‚à¤§à¤¨, à¤ªà¤¿à¤•à¤¾à¤‚à¤šà¥€ à¤‰à¤ªà¤¯à¥à¤•à¥à¤¤à¤¤à¤¾ à¤†à¤£à¤¿ à¤µà¥‰à¤°à¤‚à¤Ÿà¥€à¤šà¥€ à¤¤à¥à¤²à¤¨à¤¾ à¤•à¤°à¤¾.",
+
+        mahindra_tractor: "à¤®à¤¹à¤¿à¤‚à¤¦à¥à¤°à¤¾ à¤Ÿà¥à¤°à¥…à¤•à¥à¤Ÿà¤°",
+        mahindra_description:
+            "à¤¸à¤¾à¤®à¤¾à¤¨à¥à¤¯ à¤¶à¥‡à¤¤à¥€à¤šà¥à¤¯à¤¾ à¤•à¤¾à¤®à¤¾à¤‚à¤¸à¤¾à¤ à¥€ à¤¯à¥‹à¤—à¥à¤¯ à¤†à¤£à¤¿ à¤µà¤¿à¤¶à¥à¤µà¤¾à¤¸à¤¾à¤°à¥à¤¹ à¤Ÿà¥à¤°à¥…à¤•à¥à¤Ÿà¤°.",
+
+        swaraj_tractor: "à¤¸à¥à¤µà¤°à¤¾à¤œ à¤Ÿà¥à¤°à¥…à¤•à¥à¤Ÿà¤°",
+        swaraj_description:
+            "à¤•à¤ à¥€à¤£ à¤¶à¥‡à¤¤à¥€à¤šà¥à¤¯à¤¾ à¤•à¤¾à¤®à¤¾à¤‚à¤¸à¤¾à¤ à¥€ à¤¤à¤¯à¤¾à¤° à¤•à¥‡à¤²à¥‡à¤²à¤¾ à¤¶à¤•à¥à¤¤à¤¿à¤¶à¤¾à¤²à¥€ à¤Ÿà¥à¤°à¥…à¤•à¥à¤Ÿà¤°.",
+
+        starting_price: "à¤¸à¥à¤°à¥à¤µà¤¾à¤¤à¥€à¤šà¥€ à¤•à¤¿à¤‚à¤®à¤¤",
+        smart_suitability: "à¤¸à¥à¤®à¤¾à¤°à¥à¤Ÿ à¤‰à¤ªà¤¯à¥à¤•à¥à¤¤à¤¤à¤¾",
+
+        side_by_side: "à¤¸à¤®à¥‹à¤°à¤¾à¤¸à¤®à¥‹à¤° à¤¤à¥à¤²à¤¨à¤¾",
+        machine_specifications: "à¤®à¤¶à¥€à¤¨à¤šà¥€ à¤®à¤¾à¤¹à¤¿à¤¤à¥€",
+        specification_description:
+            "à¤¦à¥‹à¤¨à¥à¤¹à¥€ à¤Ÿà¥à¤°à¥…à¤•à¥à¤Ÿà¤°à¤šà¥à¤¯à¤¾ à¤®à¤¹à¤¤à¥à¤¤à¥à¤µà¤¾à¤šà¥à¤¯à¤¾ à¤µà¥ˆà¤¶à¤¿à¤·à¥à¤Ÿà¥à¤¯à¤¾à¤‚à¤šà¥€ à¤¤à¥à¤²à¤¨à¤¾ à¤•à¤°à¤¾.",
+
+        feature: "à¤µà¥ˆà¤¶à¤¿à¤·à¥à¤Ÿà¥à¤¯",
+        price: "à¤•à¤¿à¤‚à¤®à¤¤",
+        horsepower: "à¤¹à¥‰à¤°à¥à¤¸à¤ªà¥‰à¤µà¤°",
+        fuel_type: "à¤‡à¤‚à¤§à¤¨ à¤ªà¥à¤°à¤•à¤¾à¤°",
+        suitable_crops: "à¤¯à¥‹à¤—à¥à¤¯ à¤ªà¤¿à¤•à¥‡",
+        warranty: "à¤µà¥‰à¤°à¤‚à¤Ÿà¥€",
+        smart_score: "à¤¸à¥à¤®à¤¾à¤°à¥à¤Ÿ à¤¸à¥à¤•à¥‹à¤…à¤°",
+
+        diesel: "à¤¡à¤¿à¤à¥‡à¤²",
+        mahindra_crops: "à¤—à¤¹à¥‚, à¤•à¤¾à¤ªà¥‚à¤¸",
+        swaraj_crops: "à¤Šà¤¸, à¤¤à¤¾à¤‚à¤¦à¥‚à¤³",
+
+        higher: "à¤œà¤¾à¤¸à¥à¤¤",
+        better: "à¤šà¤¾à¤‚à¤—à¤²à¥‡",
+
+        comparison_note_title: "à¤¤à¥à¤²à¤¨à¤¾ à¤¸à¥‚à¤šà¤¨à¤¾",
+        comparison_note:
+            "à¤¯à¥‡à¤¥à¥‡ à¤¦à¤¾à¤–à¤µà¤²à¥‡à¤²à¥à¤¯à¤¾ à¤•à¤¿à¤‚à¤®à¤¤à¥€ à¤†à¤£à¤¿ à¤®à¤¾à¤¹à¤¿à¤¤à¥€ à¤…à¤‚à¤¦à¤¾à¤œà¥‡ à¤†à¤¹à¥‡à¤¤. à¤–à¤°à¥‡à¤¦à¥€ à¤•à¤°à¤£à¥à¤¯à¤¾à¤ªà¥‚à¤°à¥à¤µà¥€ à¤¨à¤µà¥€à¤¨à¤¤à¤® à¤®à¥‰à¤¡à¥‡à¤², à¤¡à¥€à¤²à¤° à¤•à¤¿à¤‚à¤®à¤¤, à¤µà¥‰à¤°à¤‚à¤Ÿà¥€ à¤†à¤£à¤¿ à¤®à¤¾à¤¹à¤¿à¤¤à¥€ à¤¤à¤ªà¤¾à¤¸à¤¾.",
+
+        quick_comparison: "à¤¤à¥à¤µà¤°à¤¿à¤¤ à¤¤à¥à¤²à¤¨à¤¾",
+        which_better: "à¤•à¥‹à¤£à¤¤à¤¾ à¤šà¤¾à¤‚à¤—à¤²à¤¾ à¤†à¤¹à¥‡?",
+
+        verdict:
+            "à¤®à¤¹à¤¿à¤‚à¤¦à¥à¤°à¤¾à¤šà¥€ à¤•à¤¿à¤‚à¤®à¤¤ à¤•à¤®à¥€ à¤†à¤£à¤¿ à¤µà¥‰à¤°à¤‚à¤Ÿà¥€ à¤œà¤¾à¤¸à¥à¤¤ à¤†à¤¹à¥‡, à¤¤à¤° à¤¸à¥à¤µà¤°à¤¾à¤œ à¤…à¤§à¤¿à¤• à¤¹à¥‰à¤°à¥à¤¸à¤ªà¥‰à¤µà¤° à¤¦à¥‡à¤¤à¥‡.",
+
+        smart_recommendation: "à¤¸à¥à¤®à¤¾à¤°à¥à¤Ÿ à¤¶à¤¿à¤«à¤¾à¤°à¤¸",
+
+        recommendation_text:
+            "à¤¸à¤‚à¤¤à¥à¤²à¤¿à¤¤ à¤¶à¥‡à¤¤à¥€à¤¸à¤¾à¤ à¥€ à¤®à¤¹à¤¿à¤‚à¤¦à¥à¤°à¤¾ à¤…à¤§à¤¿à¤• à¤šà¤¾à¤‚à¤—à¤²à¤¾ à¤ªà¤°à¥à¤¯à¤¾à¤¯ à¤†à¤¹à¥‡ à¤•à¤¾à¤°à¤£ à¤¤à¥à¤¯à¤¾à¤šà¥€ à¤•à¤¿à¤‚à¤®à¤¤ à¤•à¤®à¥€ à¤†à¤£à¤¿ à¤µà¥‰à¤°à¤‚à¤Ÿà¥€ à¤œà¤¾à¤¸à¥à¤¤ à¤†à¤¹à¥‡. à¤…à¤§à¤¿à¤• à¤¹à¥‰à¤°à¥à¤¸à¤ªà¥‰à¤µà¤° à¤†à¤µà¤¶à¥à¤¯à¤• à¤…à¤¸à¤²à¥à¤¯à¤¾à¤¸ à¤¸à¥à¤µà¤°à¤¾à¤œ à¤¯à¥‹à¤—à¥à¤¯ à¤ªà¤°à¥à¤¯à¤¾à¤¯ à¤ à¤°à¥‚ à¤¶à¤•à¤¤à¥‹.",
+
+        find_dealers: "à¤œà¤µà¤³à¤šà¥‡ à¤¡à¥€à¤²à¤° à¤¶à¥‹à¤§à¤¾",
+        back_tools: "à¤Ÿà¥‚à¤²à¥à¤¸à¤µà¤° à¤ªà¤°à¤¤ à¤œà¤¾",
+        smart_farm_machinery: "à¤¸à¥à¤®à¤¾à¤°à¥à¤Ÿ à¤•à¥ƒà¤·à¥€ à¤®à¤¶à¥€à¤¨à¤°à¥€"
+
+    },
+
+
+    kn: {
+
+        machine_comparison: "à²¯à²‚à²¤à³à²° à²¹à³‹à²²à²¿à²•à³†",
+        compare_subtitle: "à²•à³ƒà²·à²¿ à²¯à²‚à²¤à³à²°à²—à²³à²¨à³à²¨à³ à²¹à³‹à²²à²¿à²¸à²¿ à²¸à²°à²¿à²¯à²¾à²¦à²¦à²¨à³à²¨à³ à²†à²¯à³à²•à³†à²®à²¾à²¡à²¿",
+        app_language: "à²†à²ªà³ à²­à²¾à²·à³†",
+        smart_comparison: "à²¸à³à²®à²¾à²°à³à²Ÿà³ à²¹à³‹à²²à²¿à²•à³†",
+        farmer: "à²°à³ˆà²¤",
+
+        smart_machine_selection: "à²¸à³à²®à²¾à²°à³à²Ÿà³ à²¯à²‚à²¤à³à²° à²†à²¯à³à²•à³†",
+        compare_farm_machines: "à²•à³ƒà²·à²¿ à²¯à²‚à²¤à³à²°à²—à²³à²¨à³à²¨à³ à²¹à³‹à²²à²¿à²¸à²¿",
+
+        hero_description:
+            "à²•à³ƒà²·à²¿ à²¯à²‚à²¤à³à²° à²–à²°à³€à²¦à²¿à²¸à³à²µ à²®à³Šà²¦à²²à³ à²¬à³†à²²à³†, à²¹à²¾à²°à³à²¸à³â€Œà²ªà²µà²°à³, à²‡à²‚à²§à²¨, à²¬à³†à²³à³† à²¹à³Šà²‚à²¦à²¾à²£à²¿à²•à³† à²®à²¤à³à²¤à³ à²µà²¾à²°à²‚à²Ÿà²¿à²¯à²¨à³à²¨à³ à²¹à³‹à²²à²¿à²¸à²¿.",
+
+        mahindra_tractor: "à²®à²¹à³€à²‚à²¦à³à²°à²¾ à²Ÿà³à²°à³à²¯à²¾à²•à³à²Ÿà²°à³",
+        mahindra_description:
+            "à²¸à²¾à²®à²¾à²¨à³à²¯ à²•à³ƒà²·à²¿ à²•à³†à²²à²¸à²—à²³à²¿à²—à³† à²¸à³‚à²•à³à²¤à²µà²¾à²¦ à²µà²¿à²¶à³à²µà²¾à²¸à²¾à²°à³à²¹ à²Ÿà³à²°à³à²¯à²¾à²•à³à²Ÿà²°à³.",
+
+        swaraj_tractor: "à²¸à³à²µà²°à²¾à²œà³ à²Ÿà³à²°à³à²¯à²¾à²•à³à²Ÿà²°à³",
+        swaraj_description:
+            "à²•à² à²¿à²£ à²•à³ƒà²·à²¿ à²•à³†à²²à²¸à²—à²³à²¿à²—à²¾à²—à²¿ à²µà²¿à²¨à³à²¯à²¾à²¸à²—à³Šà²³à²¿à²¸à²¿à²¦ à²¶à²•à³à²¤à²¿à²¶à²¾à²²à²¿ à²Ÿà³à²°à³à²¯à²¾à²•à³à²Ÿà²°à³.",
+
+        starting_price: "à²†à²°à²‚à²­à²¿à²• à²¬à³†à²²à³†",
+        smart_suitability: "à²¸à³à²®à²¾à²°à³à²Ÿà³ à²¹à³Šà²‚à²¦à²¾à²£à²¿à²•à³†",
+
+        side_by_side: "à²ªà²•à³à²•à²ªà²•à³à²•à²¦ à²¹à³‹à²²à²¿à²•à³†",
+        machine_specifications: "à²¯à²‚à²¤à³à²°à²¦ à²µà²¿à²µà²°à²—à²³à³",
+        specification_description:
+            "à²Žà²°à²¡à³‚ à²Ÿà³à²°à³à²¯à²¾à²•à³à²Ÿà²°à³â€Œà²—à²³ à²ªà³à²°à²®à³à²– à²µà²¿à²µà²°à²—à²³à²¨à³à²¨à³ à²¹à³‹à²²à²¿à²¸à²¿.",
+
+        feature: "à²µà³ˆà²¶à²¿à²·à³à²Ÿà³à²¯",
+        price: "à²¬à³†à²²à³†",
+        horsepower: "à²¹à²¾à²°à³à²¸à³â€Œà²ªà²µà²°à³",
+        fuel_type: "à²‡à²‚à²§à²¨ à²ªà³à²°à²•à²¾à²°",
+        suitable_crops: "à²¸à³‚à²•à³à²¤ à²¬à³†à²³à³†à²—à²³à³",
+        warranty: "à²µà²¾à²°à²‚à²Ÿà²¿",
+        smart_score: "à²¸à³à²®à²¾à²°à³à²Ÿà³ à²¸à³à²•à³‹à²°à³",
+
+        diesel: "à²¡à³€à²¸à³†à²²à³",
+        mahindra_crops: "à²—à³‹à²§à²¿, à²¹à²¤à³à²¤à²¿",
+        swaraj_crops: "à²•à²¬à³à²¬à³, à²…à²•à³à²•à²¿",
+
+        higher: "à²¹à³†à²šà³à²šà³",
+        better: "à²‰à²¤à³à²¤à²®",
+
+        comparison_note_title: "à²¹à³‹à²²à²¿à²•à³† à²¸à³‚à²šà²¨à³†",
+        comparison_note:
+            "à²‡à²²à³à²²à²¿ à²¤à³‹à²°à²¿à²¸à²¿à²°à³à²µ à²¬à³†à²²à³†à²—à²³à³ à²®à²¤à³à²¤à³ à²µà²¿à²µà²°à²—à²³à³ à²¸à³‚à²šà²•à²µà²¾à²—à²¿à²µà³†. à²–à²°à³€à²¦à²¿à²¸à³à²µ à²®à³Šà²¦à²²à³ à²‡à²¤à³à²¤à³€à²šà²¿à²¨ à²®à²¾à²¦à²°à²¿, à²¡à³€à²²à²°à³ à²¬à³†à²²à³† à²®à²¤à³à²¤à³ à²µà²¾à²°à²‚à²Ÿà²¿à²¯à²¨à³à²¨à³ à²ªà²°à²¿à²¶à³€à²²à²¿à²¸à²¿.",
+
+        quick_comparison: "à²¤à³à²µà²°à²¿à²¤ à²¹à³‹à²²à²¿à²•à³†",
+        which_better: "à²¯à²¾à²µà³à²¦à³ à²‰à²¤à³à²¤à²®?",
+
+        verdict:
+            "à²®à²¹à³€à²‚à²¦à³à²°à²¾ à²•à²¡à²¿à²®à³† à²¬à³†à²²à³† à²®à²¤à³à²¤à³ à²¹à³†à²šà³à²šà³ à²µà²¾à²°à²‚à²Ÿà²¿ à²¨à³€à²¡à³à²¤à³à²¤à²¦à³†, à²†à²¦à²°à³† à²¸à³à²µà²°à²¾à²œà³ à²¹à³†à²šà³à²šà²¿à²¨ à²¹à²¾à²°à³à²¸à³â€Œà²ªà²µà²°à³ à²¨à³€à²¡à³à²¤à³à²¤à²¦à³†.",
+
+        smart_recommendation: "à²¸à³à²®à²¾à²°à³à²Ÿà³ à²¶à²¿à²«à²¾à²°à²¸à³",
+
+        recommendation_text:
+            "à²¸à²®à²¤à³‹à²²à²¿à²¤ à²•à³ƒà²·à²¿à²—à²¾à²—à²¿ à²®à²¹à³€à²‚à²¦à³à²°à²¾ à²‰à²¤à³à²¤à²® à²®à³Œà²²à³à²¯à²µà²¨à³à²¨à³ à²¨à³€à²¡à³à²¤à³à²¤à²¦à³†. à²¹à³†à²šà³à²šà²¿à²¨ à²¹à²¾à²°à³à²¸à³â€Œà²ªà²µà²°à³ à²…à²—à²¤à³à²¯à²µà²¿à²¦à³à²¦à²°à³† à²¸à³à²µà²°à²¾à²œà³ à²‰à²¤à³à²¤à²® à²†à²¯à³à²•à³†à²¯à²¾à²—à²¬à²¹à³à²¦à³.",
+
+        find_dealers: "à²¹à²¤à³à²¤à²¿à²°à²¦ à²¡à³€à²²à²°à³â€Œà²—à²³à²¨à³à²¨à³ à²¹à³à²¡à³à²•à²¿",
+        back_tools: "à²Ÿà³‚à²²à³à²¸à³â€Œà²—à³† à²¹à²¿à²‚à²¤à²¿à²°à³à²—à²¿",
+        smart_farm_machinery: "à²¸à³à²®à²¾à²°à³à²Ÿà³ à²•à³ƒà²·à²¿ à²¯à²‚à²¤à³à²°à³‹à²ªà²•à²°à²£à²—à²³à³"
+
+    },
+
+
+    te: {
+
+        machine_comparison: "à°¯à°‚à°¤à±à°°à°¾à°² à°ªà±‹à°²à°¿à°•",
+        compare_subtitle: "à°µà±à°¯à°µà°¸à°¾à°¯ à°¯à°‚à°¤à±à°°à°¾à°²à°¨à± à°ªà±‹à°²à±à°šà°¿ à°¸à°°à±ˆà°¨à°¦à°¾à°¨à±à°¨à°¿ à°Žà°‚à°šà±à°•à±‹à°‚à°¡à°¿",
+        app_language: "à°¯à°¾à°ªà± à°­à°¾à°·",
+        smart_comparison: "à°¸à±à°®à°¾à°°à±à°Ÿà± à°ªà±‹à°²à°¿à°•",
+        farmer: "à°°à±ˆà°¤à±",
+
+        smart_machine_selection: "à°¸à±à°®à°¾à°°à±à°Ÿà± à°¯à°‚à°¤à±à°° à°Žà°‚à°ªà°¿à°•",
+        compare_farm_machines: "à°µà±à°¯à°µà°¸à°¾à°¯ à°¯à°‚à°¤à±à°°à°¾à°²à°¨à± à°ªà±‹à°²à±à°šà°‚à°¡à°¿",
+
+        hero_description:
+            "à°µà±à°¯à°µà°¸à°¾à°¯ à°¯à°‚à°¤à±à°°à°‚ à°•à±Šà°¨à±à°—à±‹à°²à± à°®à±à°‚à°¦à± à°§à°°, à°¹à°¾à°°à±à°¸à±â€Œà°ªà°µà°°à±, à°‡à°‚à°§à°¨à°‚, à°ªà°‚à°Ÿ à°…à°¨à±à°•à±‚à°²à°¤ à°®à°°à°¿à°¯à± à°µà°¾à°°à°‚à°Ÿà±€à°¨à°¿ à°ªà±‹à°²à±à°šà°‚à°¡à°¿.",
+
+        mahindra_tractor: "à°®à°¹à±€à°‚à°¦à±à°°à°¾ à°Ÿà±à°°à°¾à°•à±à°Ÿà°°à±",
+        mahindra_description:
+            "à°¸à°¾à°§à°¾à°°à°£ à°µà±à°¯à°µà°¸à°¾à°¯ à°ªà°¨à±à°²à°•à± à°…à°¨à±à°•à±‚à°²à°®à±ˆà°¨ à°¨à°®à±à°®à°•à°®à±ˆà°¨ à°Ÿà±à°°à°¾à°•à±à°Ÿà°°à±.",
+
+        swaraj_tractor: "à°¸à±à°µà°°à°¾à°œà± à°Ÿà±à°°à°¾à°•à±à°Ÿà°°à±",
+        swaraj_description:
+            "à°•à° à°¿à°¨à°®à±ˆà°¨ à°µà±à°¯à°µà°¸à°¾à°¯ à°ªà°¨à±à°² à°•à±‹à°¸à°‚ à°°à±‚à°ªà±Šà°‚à°¦à°¿à°‚à°šà°¿à°¨ à°¶à°•à±à°¤à°¿à°µà°‚à°¤à°®à±ˆà°¨ à°Ÿà±à°°à°¾à°•à±à°Ÿà°°à±.",
+
+        starting_price: "à°ªà±à°°à°¾à°°à°‚à°­ à°§à°°",
+        smart_suitability: "à°¸à±à°®à°¾à°°à±à°Ÿà± à°…à°¨à±à°•à±‚à°²à°¤",
+
+        side_by_side: "à°ªà°•à±à°•à°ªà°•à±à°•à°¨ à°ªà±‹à°²à°¿à°•",
+        machine_specifications: "à°¯à°‚à°¤à±à°° à°µà°¿à°µà°°à°¾à°²à±",
+        specification_description:
+            "à°°à±†à°‚à°¡à± à°Ÿà±à°°à°¾à°•à±à°Ÿà°°à±à°² à°®à±à°–à±à°¯à°®à±ˆà°¨ à°µà°¿à°µà°°à°¾à°²à°¨à± à°ªà±‹à°²à±à°šà°‚à°¡à°¿.",
+
+        feature: "à°«à±€à°šà°°à±",
+        price: "à°§à°°",
+        horsepower: "à°¹à°¾à°°à±à°¸à±â€Œà°ªà°µà°°à±",
+        fuel_type: "à°‡à°‚à°§à°¨ à°°à°•à°‚",
+        suitable_crops: "à°…à°¨à±à°•à±‚à°² à°ªà°‚à°Ÿà°²à±",
+        warranty: "à°µà°¾à°°à°‚à°Ÿà±€",
+        smart_score: "à°¸à±à°®à°¾à°°à±à°Ÿà± à°¸à±à°•à±‹à°°à±",
+
+        diesel: "à°¡à±€à°œà°¿à°²à±",
+        mahindra_crops: "à°—à±‹à°§à±à°®, à°ªà°¤à±à°¤à°¿",
+        swaraj_crops: "à°šà±†à°°à°•à±, à°µà°°à°¿",
+
+        higher: "à°Žà°•à±à°•à±à°µ",
+        better: "à°®à±†à°°à±à°—à±ˆà°¨",
+
+        comparison_note_title: "à°ªà±‹à°²à°¿à°• à°—à°®à°¨à°¿à°•",
+        comparison_note:
+            "à°‡à°•à±à°•à°¡ à°šà±‚à°ªà°¿à°¨ à°§à°°à°²à± à°®à°°à°¿à°¯à± à°µà°¿à°µà°°à°¾à°²à± à°¸à±‚à°šà°¿à°•à°¾à°¤à±à°®à°•à°®à±ˆà°¨à°µà°¿. à°•à±Šà°¨à±à°—à±‹à°²à± à°®à±à°‚à°¦à± à°¤à°¾à°œà°¾ à°®à±‹à°¡à°²à±, à°¡à±€à°²à°°à± à°§à°° à°®à°°à°¿à°¯à± à°µà°¾à°°à°‚à°Ÿà±€à°¨à°¿ à°¨à°¿à°°à±à°§à°¾à°°à°¿à°‚à°šà°‚à°¡à°¿.",
+
+        quick_comparison: "à°¤à±à°µà°°à°¿à°¤ à°ªà±‹à°²à°¿à°•",
+        which_better: "à°à°¦à°¿ à°®à°‚à°šà°¿à°¦à°¿?",
+
+        verdict:
+            "à°®à°¹à±€à°‚à°¦à±à°°à°¾ à°¤à°•à±à°•à±à°µ à°§à°° à°®à°°à°¿à°¯à± à°Žà°•à±à°•à±à°µ à°µà°¾à°°à°‚à°Ÿà±€ à°…à°‚à°¦à°¿à°¸à±à°¤à±à°‚à°¦à°¿, à°¸à±à°µà°°à°¾à°œà± à°Žà°•à±à°•à±à°µ à°¹à°¾à°°à±à°¸à±â€Œà°ªà°µà°°à± à°…à°‚à°¦à°¿à°¸à±à°¤à±à°‚à°¦à°¿.",
+
+        smart_recommendation: "à°¸à±à°®à°¾à°°à±à°Ÿà± à°¸à°¿à°«à°¾à°°à±à°¸à±",
+
+        recommendation_text:
+            "à°¸à°®à°¤à±à°²à±à°¯ à°µà±à°¯à°µà°¸à°¾à°¯ à°‰à°ªà°¯à±‹à°—à°‚ à°•à±‹à°¸à°‚ à°®à°¹à±€à°‚à°¦à±à°°à°¾ à°®à°‚à°šà°¿ à°µà°¿à°²à±à°µà°¨à± à°…à°‚à°¦à°¿à°¸à±à°¤à±à°‚à°¦à°¿. à°Žà°•à±à°•à±à°µ à°¹à°¾à°°à±à°¸à±â€Œà°ªà°µà°°à± à°…à°µà°¸à°°à°®à±ˆà°¤à±‡ à°¸à±à°µà°°à°¾à°œà± à°®à°‚à°šà°¿ à°Žà°‚à°ªà°¿à°• à°•à°¾à°µà°šà±à°šà±.",
+
+        find_dealers: "à°¸à°®à±€à°ª à°¡à±€à°²à°°à±à°²à°¨à± à°•à°¨à±à°—à±Šà°¨à°‚à°¡à°¿",
+        back_tools: "à°Ÿà±‚à°²à±à°¸à±â€Œà°•à± à°¤à°¿à°°à°¿à°—à°¿ à°µà±†à°³à±à°³à°‚à°¡à°¿",
+        smart_farm_machinery: "à°¸à±à°®à°¾à°°à±à°Ÿà± à°µà±à°¯à°µà°¸à°¾à°¯ à°¯à°‚à°¤à±à°°à°¾à°²à±"
+
+    }
+
+};
+
+
+/* =====================================================
+   LANGUAGE FALLBACK
+===================================================== */
+
+const activeTranslations =
+    translations[CURRENT_LANGUAGE] || translations.en;
+
+
+/* =====================================================
+   APPLY TRANSLATIONS
+===================================================== */
+
+document.querySelectorAll("[data-i18n]").forEach(element => {
+
+    const key = element.getAttribute("data-i18n");
+
+    if (
+        activeTranslations[key] &&
+        typeof activeTranslations[key] === "string"
+    ) {
+        element.textContent = activeTranslations[key];
+    }
+
+});
+
+
+/* =====================================================
+   RTL LANGUAGES
+===================================================== */
+
+const rtlLanguages = [
+    "ur",
+    "ks",
+    "sd"
+];
+
+if (rtlLanguages.includes(CURRENT_LANGUAGE)) {
+
+    document.documentElement.setAttribute("dir", "rtl");
+
+} else {
+
+    document.documentElement.setAttribute("dir", "ltr");
+
+}
+
+
+/* =====================================================
+   LANGUAGE NAME DISPLAY
+===================================================== */
+
+const languageNames = {
+
+    en: "English",
+    hi: "Hindi",
+    mr: "Marathi",
+    kn: "Kannada",
+    te: "Telugu",
+    ta: "Tamil",
+    ml: "Malayalam",
+    gu: "Gujarati",
+    pa: "Punjabi",
+    bn: "Bengali",
+    as: "Assamese",
+    or: "Odia",
+    ur: "Urdu",
+    ne: "Nepali",
+    sa: "Sanskrit",
+    kok: "Konkani",
+    mai: "Maithili",
+    ks: "Kashmiri",
+    sd: "Sindhi",
+    mni: "Manipuri"
+
+};
+
+const languageElement =
+    document.getElementById("currentLanguage");
+
+if (languageElement) {
+
+    languageElement.textContent =
+        languageNames[CURRENT_LANGUAGE] ||
+        languageNames.en;
+
+}
+
+
+/* =====================================================
+   SMART MACHINE SCORE ANIMATION
+===================================================== */
+
+document.querySelectorAll(".score-fill").forEach(bar => {
+
+    const score =
+        Number(bar.getAttribute("data-score")) || 0;
+
+    setTimeout(() => {
+
+        bar.style.width =
+            Math.min(score, 100) + "%";
+
+    }, 300);
+
+});
+
+
+/* =====================================================
+   SAVE LANGUAGE FOR PAGE CONSISTENCY
+===================================================== */
+
+try {
+
+    localStorage.setItem(
+        "kisanvision360_language",
+        CURRENT_LANGUAGE
+    );
+
+} catch (error) {
+
+    console.warn(
+        "Language preference could not be stored locally."
+    );
+
+}
+
+</script>
+{% endblock %}
+

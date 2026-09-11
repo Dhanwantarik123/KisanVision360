@@ -1596,7 +1596,17 @@
                     </span>
                 </a>
 
+                    <div class="kv-nav-title">
+                            Tools
+                    </div>
 
+                <a href="{{ url_for('tools.tools') }}"
+                class="kv-nav-link {% if request.endpoint == 'tools.tools' %}active{% endif %}">
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-toolbox"></i>
+                    </span>
+                    <span class="kv-nav-text">Farmer Tools</span>
+                </a>
                 <a
                     href="/notifications"
                     class="kv-nav-link"
@@ -1654,7 +1664,7 @@
 
 
                 <a
-                    href="/marketplace/add-product"
+                    href="/add-product"
                     class="kv-nav-link"
                 >
                     <span class="kv-nav-icon">
@@ -1668,7 +1678,7 @@
 
 
                 <a
-                    href="/orders"
+                    href="{{ url_for('marketplace.farmer_orders') }}"
                     class="kv-nav-link"
                 >
                     <span class="kv-nav-icon">
@@ -2257,11 +2267,11 @@
 
             KisanVision360+
 
-            <span>â€¢</span>
+            <span>•</span>
 
             AI-Powered Smart Farming Platform
 
-            <span>â€¢</span>
+            <span>•</span>
 
             {{ current_role|capitalize if current_role else 'Guest' }}
 

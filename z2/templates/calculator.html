@@ -1,0 +1,1075 @@
+﻿{% extends "base.html" %}
+
+{% block title %}KisanVision360+ | Farm Economics{% endblock %}
+
+{% block head %}
+<link rel="stylesheet"
+          href="{{ url_for('static', filename='css/calculator.css') }}">
+{% endblock %}
+
+{% block page_title %}Farm Economics{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<main class="main-content">
+
+    <div class="kv-finance-page">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================= -->
+
+        
+
+
+
+        <!-- =================================================
+             AI BANNER
+        ================================================= -->
+
+        <section class="kv-economics-banner">
+
+            <div>
+
+                <span class="kv-economics-label">
+                    KISANVISION360+ FARM INTELLIGENCE
+                </span>
+
+                <h2>
+                    Farm Cost & Profit Intelligence
+                </h2>
+
+                <p>
+                    Estimate your cultivation expense, expected
+                    income, profit, cost per acre and return on
+                    investment before making farming decisions.
+                </p>
+
+            </div>
+
+
+            <div class="kv-economics-badge">
+
+                <i class="fa-solid fa-chart-pie"></i>
+
+                Financial Planning
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             CALCULATOR PANEL
+        ================================================= -->
+
+        <section class="kv-calculator-panel">
+
+
+            <div class="kv-panel-title">
+
+                <div class="kv-panel-title-icon">
+
+                    <i class="fa-solid fa-calculator"></i>
+
+                </div>
+
+                <div>
+
+                    <h2>
+                        Farm Cost & Profit Calculator
+                    </h2>
+
+                    <p>
+                        Enter your estimated cultivation details
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 FARM ECONOMICS FORM
+            ================================================= -->
+
+            <form method="POST"
+                  onsubmit="return validateFarmForm();">
+
+
+                <div class="kv-form-grid">
+
+
+                    <!-- LAND -->
+
+                    <div class="kv-form-group">
+
+                        <label for="land">
+
+                            <i class="fa-solid fa-landmark"></i>
+
+                            Land Area (Acre)
+
+                        </label>
+
+                        <input
+                            type="number"
+                            name="land"
+                            id="land"
+                            step="0.01"
+                            min="0.01"
+                            required
+                            placeholder="Example: 2">
+
+                    </div>
+
+
+
+                    <!-- SEED -->
+
+                    <div class="kv-form-group">
+
+                        <label for="seed">
+
+                            <i class="fa-solid fa-seedling"></i>
+
+                            Seed Cost (â‚¹)
+
+                        </label>
+
+                        <input
+                            type="number"
+                            name="seed"
+                            id="seed"
+                            step="0.01"
+                            min="0"
+                            required
+                            placeholder="Example: 5000">
+
+                    </div>
+
+
+
+                    <!-- FERTILIZER -->
+
+                    <div class="kv-form-group">
+
+                        <label for="fertilizer">
+
+                            <i class="fa-solid fa-flask"></i>
+
+                            Fertilizer Cost (â‚¹)
+
+                        </label>
+
+                        <input
+                            type="number"
+                            name="fertilizer"
+                            id="fertilizer"
+                            step="0.01"
+                            min="0"
+                            required
+                            placeholder="Example: 4000">
+
+                    </div>
+
+
+
+                    <!-- LABOUR -->
+
+                    <div class="kv-form-group">
+
+                        <label for="labour">
+
+                            <i class="fa-solid fa-person-digging"></i>
+
+                            Labour Cost (â‚¹)
+
+                        </label>
+
+                        <input
+                            type="number"
+                            name="labour"
+                            id="labour"
+                            step="0.01"
+                            min="0"
+                            required
+                            placeholder="Example: 6000">
+
+                    </div>
+
+
+
+                    <!-- IRRIGATION -->
+
+                    <div class="kv-form-group">
+
+                        <label for="irrigation">
+
+                            <i class="fa-solid fa-droplet"></i>
+
+                            Irrigation Cost (â‚¹)
+
+                        </label>
+
+                        <input
+                            type="number"
+                            name="irrigation"
+                            id="irrigation"
+                            step="0.01"
+                            min="0"
+                            required
+                            placeholder="Example: 2000">
+
+                    </div>
+
+
+
+                    <!-- PESTICIDE -->
+
+                    <div class="kv-form-group">
+
+                        <label for="pesticide">
+
+                            <i class="fa-solid fa-bug"></i>
+
+                            Pesticide Cost (â‚¹)
+
+                        </label>
+
+                        <input
+                            type="number"
+                            name="pesticide"
+                            id="pesticide"
+                            step="0.01"
+                            min="0"
+                            required
+                            placeholder="Example: 1500">
+
+                    </div>
+
+
+
+                    <!-- OTHER -->
+
+                    <div class="kv-form-group">
+
+                        <label for="other">
+
+                            <i class="fa-solid fa-box"></i>
+
+                            Other Cost (â‚¹)
+
+                        </label>
+
+                        <input
+                            type="number"
+                            name="other"
+                            id="other"
+                            step="0.01"
+                            min="0"
+                            required
+                            placeholder="Example: 1000">
+
+                    </div>
+
+
+
+                    <!-- YIELD -->
+
+                    <div class="kv-form-group">
+
+                        <label for="yield_per_acre">
+
+                            <i class="fa-solid fa-wheat-awn"></i>
+
+                            Expected Yield / Acre (Quintal)
+
+                        </label>
+
+                        <input
+                            type="number"
+                            name="yield_per_acre"
+                            id="yield_per_acre"
+                            step="0.01"
+                            min="0"
+                            required
+                            placeholder="Example: 10">
+
+                    </div>
+
+
+
+                    <!-- SELLING PRICE -->
+
+                    <div class="kv-form-group">
+
+                        <label for="selling_price">
+
+                            <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                            Selling Price / Quintal (â‚¹)
+
+                        </label>
+
+                        <input
+                            type="number"
+                            name="selling_price"
+                            id="selling_price"
+                            step="0.01"
+                            min="0"
+                            required
+                            placeholder="Example: 5000">
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- CALCULATE BUTTON -->
+
+                <button
+                    type="submit"
+                    class="kv-calculate-btn">
+
+                    <i class="fa-solid fa-calculator"></i>
+
+                    Calculate Farm Economics
+
+                </button>
+
+
+            </form>
+
+
+
+            <!-- =================================================
+                 RESULT
+            ================================================= -->
+
+            {% if result %}
+
+
+                {% if result.error %}
+
+
+                    <div class="kv-error">
+
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        {{ result.error }}
+
+                    </div>
+
+
+                {% else %}
+
+
+                    <section class="kv-result-section">
+
+
+                        <!-- RESULT HEADER -->
+
+                        <div class="kv-result-heading">
+
+                            <div>
+
+                                <h2>
+
+                                    <i class="fa-solid fa-chart-line"></i>
+
+                                    Farm Calculation Result
+
+                                </h2>
+
+                            </div>
+
+                            <span>
+                                ESTIMATE
+                            </span>
+
+                        </div>
+
+
+
+                        <!-- =================================================
+                             MAIN RESULT CARDS
+                        ================================================= -->
+
+                        <div class="kv-result-grid">
+
+
+                            <!-- EXPENSE -->
+
+                            <div class="kv-result-card">
+
+                                <span>
+                                    Total Expense
+                                </span>
+
+                                <strong>
+
+                                    â‚¹ {{ "%.2f"|format(
+                                        result.expense|default(0)
+                                    ) }}
+
+                                </strong>
+
+                                <small>
+                                    Total cultivation cost
+                                </small>
+
+                            </div>
+
+
+
+                            <!-- YIELD -->
+
+                            <div class="kv-result-card">
+
+                                <span>
+                                    Total Expected Yield
+                                </span>
+
+                                <strong>
+
+                                    {{ "%.2f"|format(
+                                        result["yield"]|default(0)
+                                    ) }}
+
+                                    Q
+
+                                </strong>
+
+                                <small>
+                                    Expected production
+                                </small>
+
+                            </div>
+
+
+
+                            <!-- INCOME -->
+
+                            <div class="kv-result-card">
+
+                                <span>
+                                    Expected Income
+                                </span>
+
+                                <strong>
+
+                                    â‚¹ {{ "%.2f"|format(
+                                        result.income|default(0)
+                                    ) }}
+
+                                </strong>
+
+                                <small>
+                                    Expected selling revenue
+                                </small>
+
+                            </div>
+
+
+
+                            <!-- PROFIT / LOSS -->
+
+                            <div class="kv-result-card
+                                {% if result.profit|default(0) >= 0 %}
+                                    profit
+                                {% else %}
+                                    loss
+                                {% endif %}">
+
+                                <span>
+
+                                    {% if result.profit|default(0) >= 0 %}
+
+                                        Estimated Profit
+
+                                    {% else %}
+
+                                        Estimated Loss
+
+                                    {% endif %}
+
+                                </span>
+
+                                <strong>
+
+                                    â‚¹ {{ "%.2f"|format(
+                                        result.profit|default(0)
+                                    ) }}
+
+                                </strong>
+
+                                <small>
+                                    Income âˆ’ total expense
+                                </small>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- =================================================
+                             CALCULATE VALUES
+                        ================================================= -->
+
+                        {% set land_value = request.form.get(
+                            'land', 0
+                        )|float %}
+
+                        {% set expense_value = result.expense|default(
+                            0
+                        )|float %}
+
+                        {% set income_value = result.income|default(
+                            0
+                        )|float %}
+
+                        {% set profit_value = result.profit|default(
+                            0
+                        )|float %}
+
+                        {% set yield_value = result["yield"]|default(
+                            0
+                        )|float %}
+
+
+
+                        <!-- =================================================
+                             PER ACRE CALCULATIONS
+                        ================================================= -->
+
+                        {% if land_value > 0 %}
+
+                            {% set cost_per_acre =
+                                expense_value / land_value
+                            %}
+
+                            {% set income_per_acre =
+                                income_value / land_value
+                            %}
+
+                            {% set profit_per_acre =
+                                profit_value / land_value
+                            %}
+
+                        {% else %}
+
+                            {% set cost_per_acre = 0 %}
+                            {% set income_per_acre = 0 %}
+                            {% set profit_per_acre = 0 %}
+
+                        {% endif %}
+
+
+
+                        <!-- =================================================
+                             ROI
+                        ================================================= -->
+
+                        {% if expense_value > 0 %}
+
+                            {% set roi =
+                                (profit_value / expense_value) * 100
+                            %}
+
+                        {% else %}
+
+                            {% set roi = 0 %}
+
+                        {% endif %}
+
+
+
+                        <!-- =================================================
+                             ECONOMIC METRICS
+                        ================================================= -->
+
+                        <div class="kv-metrics">
+
+
+                            <div class="kv-metric">
+
+                                <h4>
+                                    Cost / Acre
+                                </h4>
+
+                                <strong>
+                                    â‚¹ {{ "%.2f"|format(cost_per_acre) }}
+                                </strong>
+
+                            </div>
+
+
+
+                            <div class="kv-metric">
+
+                                <h4>
+                                    Income / Acre
+                                </h4>
+
+                                <strong>
+                                    â‚¹ {{ "%.2f"|format(income_per_acre) }}
+                                </strong>
+
+                            </div>
+
+
+
+                            <div class="kv-metric">
+
+                                <h4>
+                                    Profit / Acre
+                                </h4>
+
+                                <strong>
+                                    â‚¹ {{ "%.2f"|format(profit_per_acre) }}
+                                </strong>
+
+                            </div>
+
+
+
+                            <div class="kv-metric">
+
+                                <h4>
+                                    Expected ROI
+                                </h4>
+
+                                <strong>
+                                    {{ "%.2f"|format(roi) }}%
+                                </strong>
+
+                            </div>
+
+
+
+                            <div class="kv-metric">
+
+                                <h4>
+                                    Yield / Acre
+                                </h4>
+
+                                <strong>
+
+                                    {{ "%.2f"|format(
+                                        result["yield"]|default(0)|float /
+                                        land_value
+                                        if land_value > 0
+                                        else 0
+                                    ) }}
+
+                                    Q
+
+                                </strong>
+
+                            </div>
+
+
+
+                            <div class="kv-metric">
+
+                                <h4>
+                                    Break-even Price / Quintal
+                                </h4>
+
+                                <strong>
+
+                                    â‚¹ {{ "%.2f"|format(
+                                        expense_value / yield_value
+                                        if yield_value > 0
+                                        else 0
+                                    ) }}
+
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- =================================================
+                             AI INSIGHT
+                        ================================================= -->
+
+                        <div class="kv-ai-insight">
+
+
+                            <div class="kv-ai-title">
+
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                                KisanVision360+ Farm Economics Insight
+
+                            </div>
+
+
+                            <p>
+
+                                {% if profit_value < 0 %}
+
+                                    âš ï¸ Your current estimate shows a loss.
+                                    Consider reducing avoidable cultivation
+                                    expenses, improving expected yield, or
+                                    checking current market prices before
+                                    finalizing the selling decision.
+
+                                {% elif roi < 10 %}
+
+                                    ðŸ’¡ Your farm is estimated to be profitable,
+                                    but the return on investment is relatively
+                                    low. Compare current mandi prices and
+                                    review major cost components before selling.
+
+                                {% elif roi < 25 %}
+
+                                    âœ… Your estimate shows a moderate return.
+                                    Maintaining production efficiency and
+                                    monitoring market prices can help improve
+                                    the final farm income.
+
+                                {% else %}
+
+                                    ðŸŒ± Your estimate shows a strong return.
+                                    Continue monitoring weather, crop health,
+                                    irrigation and market conditions because
+                                    actual farm profit can change during the
+                                    cultivation cycle.
+
+                                {% endif %}
+
+                            </p>
+
+                        </div>
+
+
+
+                        <!-- =================================================
+                             PROFIT / LOSS MESSAGE
+                        ================================================= -->
+
+                        {% if profit_value >= 0 %}
+
+
+                            <div class="kv-profit-message success">
+
+                                <i class="fa-solid fa-circle-check"></i>
+
+                                Estimated farm profit:
+
+                                â‚¹ {{ "%.2f"|format(profit_value) }}
+
+                            </div>
+
+
+                        {% else %}
+
+
+                            <div class="kv-profit-message loss">
+
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                                Estimated farming cost is higher than
+                                the expected income.
+
+                            </div>
+
+
+                        {% endif %}
+
+
+
+                        <!-- =================================================
+                             ECONOMICS FLOW
+                        ================================================= -->
+
+                        <div class="kv-economics-flow">
+
+
+                            <div class="kv-flow-item">
+
+                                <i class="fa-solid fa-landmark"></i>
+
+                                <strong>
+                                    Land
+                                </strong>
+
+                                <span>
+                                    {{ land_value }} Acre
+                                </span>
+
+                            </div>
+
+
+
+                            <div class="kv-flow-item">
+
+                                <i class="fa-solid fa-coins"></i>
+
+                                <strong>
+                                    Investment
+                                </strong>
+
+                                <span>
+                                    â‚¹{{ "%.0f"|format(expense_value) }}
+                                </span>
+
+                            </div>
+
+
+
+                            <div class="kv-flow-item">
+
+                                <i class="fa-solid fa-wheat-awn"></i>
+
+                                <strong>
+                                    Production
+                                </strong>
+
+                                <span>
+                                    {{ "%.2f"|format(yield_value) }} Q
+                                </span>
+
+                            </div>
+
+
+
+                            <div class="kv-flow-item">
+
+                                <i class="fa-solid fa-store"></i>
+
+                                <strong>
+                                    Revenue
+                                </strong>
+
+                                <span>
+                                    â‚¹{{ "%.0f"|format(income_value) }}
+                                </span>
+
+                            </div>
+
+
+
+                            <div class="kv-flow-item">
+
+                                <i class="fa-solid fa-chart-line"></i>
+
+                                <strong>
+                                    Result
+                                </strong>
+
+                                <span>
+                                    â‚¹{{ "%.0f"|format(profit_value) }}
+                                </span>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </section>
+
+
+                {% endif %}
+
+
+            {% endif %}
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             BOTTOM ACTIONS
+        ================================================= -->
+
+        <div class="kv-bottom-actions">
+
+
+            <!-- IMPORTANT FIX -->
+            <!-- BEFORE: url_for('finance.finance') -->
+            <!-- NOW:    url_for('finance.finance') -->
+
+            <a href="{{ url_for('finance.finance') }}">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Back to Finance
+
+            </a>
+
+
+
+            <a href="/market">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                Check Market Prices
+
+            </a>
+
+
+
+            <a href="/irrigation">
+
+                <i class="fa-solid fa-droplet"></i>
+
+                Smart Irrigation
+
+            </a>
+
+
+
+            <a href="/recommendation">
+
+                <i class="fa-solid fa-seedling"></i>
+
+                AI Crop Advisor
+
+            </a>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================= -->
+
+        <footer class="kv-footer">
+
+            <i class="fa-solid fa-leaf"></i>
+
+            <strong>
+                KisanVision360+
+            </strong>
+
+            â€¢ Farm Economics & Financial Intelligence
+
+            â€¢ Â© 2026
+
+        </footer>
+
+
+    </div>
+
+</main>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+function validateFarmForm() {
+
+    const land =
+        parseFloat(
+            document.getElementById("land").value
+        ) || 0;
+
+
+    const yieldPerAcre =
+        parseFloat(
+            document.getElementById("yield_per_acre").value
+        ) || 0;
+
+
+    const sellingPrice =
+        parseFloat(
+            document.getElementById("selling_price").value
+        ) || 0;
+
+
+    if (land <= 0) {
+
+        alert("Please enter a valid land area.");
+
+        return false;
+
+    }
+
+
+    if (yieldPerAcre <= 0) {
+
+        alert(
+            "Expected yield per acre must be greater than 0."
+        );
+
+        return false;
+
+    }
+
+
+    if (sellingPrice <= 0) {
+
+        alert(
+            "Selling price must be greater than 0."
+        );
+
+        return false;
+
+    }
+
+
+    return true;
+
+}
+
+
+
+/* =====================================================
+   AUTO FOCUS
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const land =
+            document.getElementById("land");
+
+
+        if (land) {
+
+            land.focus();
+
+        }
+
+    }
+);
+
+</script>
+{% endblock %}
+

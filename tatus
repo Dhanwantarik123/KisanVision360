@@ -1,0 +1,13 @@
+[1mdiff --git a/routes/disease.py b/routes/disease.py[m
+[1mindex a528db52..c6f7202a 100644[m
+[1m--- a/routes/disease.py[m
+[1m+++ b/routes/disease.py[m
+[36m@@ -80,7 +80,7 @@[m [mBASE_DIR = Path([m
+ MODEL_PATH = ([m
+     BASE_DIR[m
+     / "ai_models"[m
+[31m-    / "disease_model.keras"[m
+[32m+[m[32m    / "disease_model.h5"[m
+ )[m
+ [m
+ [m

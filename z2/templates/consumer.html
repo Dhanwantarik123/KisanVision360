@@ -1,0 +1,1966 @@
+﻿{% extends "base.html" %}
+
+{% set weather_data = weather if weather is defined else {} %}
+
+{% block title %}KisanVision360+ | Consumer Dashboard{% endblock %}
+
+{% block head %}
+<link rel="stylesheet"
+          href="{{ url_for('static', filename='css/consumer.css') }}">
+{% endblock %}
+
+{% block page_title %}Consumer Dashboard{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+        
+
+
+
+        <!-- =================================================
+             SMART STATUS BAR
+        ================================================== -->
+
+        <section class="farm-status-bar">
+
+
+            <!-- MARKETPLACE -->
+
+            <div class="status-item">
+
+                <div class="status-icon market-status">
+
+                    <i class="fa-solid fa-store"></i>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Marketplace
+                    </span>
+
+                    <strong class="status-online">
+
+                        <i class="fa-solid fa-circle"></i>
+
+                        Live
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ORDERS -->
+
+            <div class="status-item">
+
+                <div class="status-icon order-status">
+
+                    <i class="fa-solid fa-box"></i>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Orders
+                    </span>
+
+                    <strong>
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        Active
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- FARM PRODUCTS -->
+
+            <div class="status-item">
+
+                <div class="status-icon crop-status">
+
+                    <i class="fa-solid fa-seedling"></i>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Farm Products
+                    </span>
+
+                    <strong>
+                        Fresh Products
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- WEATHER -->
+
+            <div class="status-item">
+
+                <div class="status-icon weather-status">
+
+                    <i class="fa-solid fa-cloud-sun"></i>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Weather
+                    </span>
+
+                    <strong>
+                        Live Data
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             WEATHER
+        ================================================== -->
+
+        <section class="weather-summary">
+
+
+            <div class="weather-glow glow-one"></div>
+
+            <div class="weather-glow glow-two"></div>
+
+
+
+            <div class="weather-main">
+
+
+                <!-- WEATHER CONTENT -->
+
+                <div class="weather-content">
+
+
+                    <span class="weather-location">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+
+                        {{ weather_data.city|default('Your Location', true) }},
+
+                        {{ weather_data.country|default('India', true) }}
+
+
+                        <span class="location-live">
+
+                            <i class="fa-solid fa-circle"></i>
+
+                            Live
+
+                        </span>
+
+                    </span>
+
+
+
+                    <div class="weather-temperature">
+
+                        <h1>
+
+                            {{ weather_data.temperature|default('--', true) }}
+
+                        </h1>
+
+                        <span>
+                            Â°C
+                        </span>
+
+                    </div>
+
+
+
+                    <p class="weather-description">
+
+                        <i class="fa-solid fa-cloud-sun"></i>
+
+
+                        {{ weather_data.description|default(
+                            'Weather information unavailable',
+                            true
+                        ) }}
+
+                    </p>
+
+
+
+                    <div class="weather-intelligence">
+
+                        <span>
+
+                            <i class="fa-solid fa-brain"></i>
+
+                            Smart Weather
+
+                        </span>
+
+
+                        <span>
+
+                            <i class="fa-solid fa-cart-shopping"></i>
+
+                            Shopping Insights
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- WEATHER IMAGE -->
+
+                <div class="weather-visual">
+
+                    <div class="weather-orbit orbit-one"></div>
+
+                    <div class="weather-orbit orbit-two"></div>
+
+
+                    <img
+                        src="https://openweathermap.org/img/wn/{{ weather_data.icon|default('01d', true) }}@4x.png"
+                        alt="Current Weather"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 WEATHER CARDS
+            ================================================== -->
+
+            <div class="weather-grid">
+
+
+                <!-- FEELS LIKE -->
+
+                <div class="weather-card">
+
+                    <div class="weather-icon">
+
+                        <i class="fa-solid fa-temperature-half"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Feels Like
+                        </h3>
+
+                        <p>
+
+                            {{ weather_data.feels_like|default('--', true) }}
+
+                            Â°C
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- HUMIDITY -->
+
+                <div class="weather-card">
+
+                    <div class="weather-icon">
+
+                        <i class="fa-solid fa-droplet"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Humidity
+                        </h3>
+
+                        <p>
+
+                            {{ weather_data.humidity|default('--', true) }}
+
+                            %
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- WIND -->
+
+                <div class="weather-card">
+
+                    <div class="weather-icon">
+
+                        <i class="fa-solid fa-wind"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Wind Speed
+                        </h3>
+
+                        <p>
+
+                            {{ weather_data.wind|default('--', true) }}
+
+                            m/s
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- CLOUD -->
+
+                <div class="weather-card">
+
+                    <div class="weather-icon">
+
+                        <i class="fa-solid fa-cloud"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+                            Cloud Cover
+                        </h3>
+
+                        <p>
+
+                            {{ weather_data.clouds|default('--', true) }}
+
+                            %
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             CONSUMER HERO
+        ================================================== -->
+
+        <section class="hero">
+
+
+            <div class="hero-background-shape shape-one"></div>
+
+            <div class="hero-background-shape shape-two"></div>
+
+
+
+            <!-- HERO TEXT -->
+
+            <div class="hero-text">
+
+
+                <span class="hero-label">
+
+                    <i class="fa-solid fa-basket-shopping"></i>
+
+                    Smart Farm Marketplace
+
+                </span>
+
+
+
+                <h1>
+
+                    Fresh From
+
+                    <span>Farm To Your Home</span>
+
+                </h1>
+
+
+
+                <p>
+
+                    Discover fresh agricultural products directly
+                    from farmers. Compare products, manage your
+                    cart, place orders and support local farming.
+
+                </p>
+
+
+
+                <div class="hero-buttons">
+
+
+                    <a
+                        href="{{ url_for('marketplace.consumer_marketplace') }}"
+                        class="primary-btn"
+                    >
+
+                        <i class="fa-solid fa-store"></i>
+
+                        Explore Marketplace
+
+                    </a>
+
+
+
+                    <a
+                        href="{{ url_for('marketplace.cart') }}"
+                        class="secondary-btn"
+                    >
+
+                        <i class="fa-solid fa-cart-shopping"></i>
+
+                        View Cart
+
+                    </a>
+
+                </div>
+
+
+
+                <div class="hero-trust">
+
+
+                    <span>
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        Direct From Farmers
+
+                    </span>
+
+
+                    <span>
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        Fresh Products
+
+                    </span>
+
+
+                    <span>
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        Secure Orders
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- HERO IMAGE -->
+
+            <div class="hero-image">
+
+
+                <div class="hero-image-overlay"></div>
+
+
+                <img
+                    src="{{ url_for('static', filename='images/farm-banner.png') }}"
+                    alt="Farm Products"
+                    onerror="this.style.display='none';"
+                >
+
+
+
+                <!-- FLOATING CARD -->
+
+                <div class="hero-floating-card weather-float">
+
+                    <i class="fa-solid fa-seedling"></i>
+
+
+                    <div>
+
+                        <strong>
+                            Farm Fresh
+                        </strong>
+
+                        <small>
+                            Direct From Farmers
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="hero-floating-card ai-float">
+
+                    <i class="fa-solid fa-truck-fast"></i>
+
+
+                    <div>
+
+                        <strong>
+                            Easy Shopping
+                        </strong>
+
+                        <small>
+                            Simple & Convenient
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             QUICK SHOPPING SERVICES
+        ================================================== -->
+
+        <section class="features-section">
+
+
+            <div class="section-heading">
+
+
+                <div>
+
+                    <span class="section-kicker">
+
+                        CONSUMER SERVICES
+
+                    </span>
+
+
+                    <h2>
+
+                        Smart Shopping Services
+
+                    </h2>
+
+
+                    <p>
+
+                        Everything you need for a simple farm-to-home
+                        shopping experience.
+
+                    </p>
+
+                </div>
+
+
+
+                <div class="section-counter">
+
+                    <strong>
+                        06
+                    </strong>
+
+                    <span>
+                        Services
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="features">
+
+
+
+                <!-- MARKETPLACE -->
+
+                <a
+                    href="{{ url_for('marketplace.consumer_marketplace') }}"
+                    class="feature-link"
+                >
+
+                    <div class="card service-card">
+
+
+                        <div class="service-top">
+
+
+                            <div class="feature-icon">
+
+                                🛒
+
+                            </div>
+
+
+                            <span class="service-number">
+
+                                01
+
+                            </span>
+
+                        </div>
+
+
+
+                        <h3>
+
+                            Farm Marketplace
+
+                        </h3>
+
+
+
+                        <p>
+
+                            Browse fresh farm products directly
+                            from farmers.
+
+                        </p>
+
+
+
+                        <span class="service-action">
+
+                            Shop Now
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- ORDERS -->
+
+                <a
+                    href="{{ url_for('marketplace.consumer_orders') }}"
+                    class="feature-link"
+                >
+
+                    <div class="card service-card">
+
+
+                        <div class="service-top">
+
+
+                            <div class="feature-icon">
+
+                                📦
+
+                            </div>
+
+
+                            <span class="service-number">
+
+                                02
+
+                            </span>
+
+                        </div>
+
+
+
+                        <h3>
+
+                            My Orders
+
+                        </h3>
+
+
+
+                        <p>
+
+                            Track your purchases and check
+                            order status.
+
+                        </p>
+
+
+
+                        <span class="service-action">
+
+                            View Orders
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- CART -->
+
+                <a
+                    href="{{ url_for('marketplace.cart') }}"
+                    class="feature-link"
+                >
+
+                    <div class="card service-card">
+
+
+                        <div class="service-top">
+
+
+                            <div class="feature-icon">
+
+                                🛍️
+
+                            </div>
+
+
+                            <span class="service-number">
+
+                                03
+
+                            </span>
+
+                        </div>
+
+
+
+                        <h3>
+
+                            Shopping Cart
+
+                        </h3>
+
+
+
+                        <p>
+
+                            Review selected farm products before
+                            placing your order.
+
+                        </p>
+
+
+
+                        <span class="service-action">
+
+                            Open Cart
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- WISHLIST -->
+
+                <a
+                    href="{{ url_for('marketplace.wishlist') }}"
+                    class="feature-link"
+                >
+
+                    <div class="card service-card">
+
+
+                        <div class="service-top">
+
+
+                            <div class="feature-icon">
+
+                                ❤️
+
+                            </div>
+
+
+                            <span class="service-number">
+
+                                04
+
+                            </span>
+
+                        </div>
+
+
+
+                        <h3>
+
+                            Wishlist
+
+                        </h3>
+
+
+
+                        <p>
+
+                            Save products you may want to purchase
+                            later.
+
+                        </p>
+
+
+
+                        <span class="service-action">
+
+                            View Wishlist
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- REQUEST PRODUCT -->
+
+                <a
+                    href="{{ url_for('compatibility_consumer_request') }}"
+                    class="feature-link"
+                >
+
+                    <div class="card service-card">
+
+
+                        <div class="service-top">
+
+
+                            <div class="feature-icon">
+
+                                📋
+
+                            </div>
+
+
+                            <span class="service-number">
+
+                                05
+
+                            </span>
+
+                        </div>
+
+
+
+                        <h3>
+
+                            Product Request
+
+                        </h3>
+
+
+
+                        <p>
+
+                            Request agricultural products that
+                            are not currently available.
+
+                        </p>
+
+
+
+                        <span class="service-action">
+
+                            Request Product
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </span>
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- MARKET PRICES -->
+
+                <a
+                    href="{{ url_for('market.market') }}"
+                    class="feature-link"
+                >
+
+                    <div class="card service-card">
+
+
+                        <div class="service-top">
+
+
+                            <div class="feature-icon">
+
+                                📈
+
+                            </div>
+
+
+                            <span class="service-number">
+
+                                06
+
+                            </span>
+
+                        </div>
+
+
+
+                        <h3>
+
+                            Market Prices
+
+                        </h3>
+
+
+
+                        <p>
+
+                            Check current agricultural market
+                            prices before shopping.
+
+                        </p>
+
+
+
+                        <span class="service-action">
+
+                            View Prices
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </span>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SMART SHOPPING
+        ================================================== -->
+
+        <section class="shopping-section">
+
+
+            <div class="section-heading">
+
+
+                <div>
+
+                    <span class="section-kicker">
+
+                        SMART SHOPPING
+
+                    </span>
+
+
+                    <h2>
+
+                        Farm-to-Home Experience
+
+                    </h2>
+
+
+                    <p>
+
+                        Buy directly from farmers and support
+                        local agriculture.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="shopping-grid">
+
+
+                <!-- CARD 1 -->
+
+                <div class="shopping-card">
+
+
+                    <div class="shopping-icon">
+
+                        <i class="fa-solid fa-leaf"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+
+                            Fresh Farm Products
+
+                        </h3>
+
+
+                        <p>
+
+                            Discover vegetables, fruits, grains
+                            and other agricultural products.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- CARD 2 -->
+
+                <div class="shopping-card">
+
+
+                    <div class="shopping-icon">
+
+                        <i class="fa-solid fa-handshake"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+
+                            Direct Farmer Connection
+
+                        </h3>
+
+
+                        <p>
+
+                            Connect consumers with farmers
+                            through the marketplace.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- CARD 3 -->
+
+                <div class="shopping-card">
+
+
+                    <div class="shopping-icon">
+
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+
+                            Better Value
+
+                        </h3>
+
+
+                        <p>
+
+                            Compare available products and
+                            make informed purchasing decisions.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- CARD 4 -->
+
+                <div class="shopping-card">
+
+
+                    <div class="shopping-icon">
+
+                        <i class="fa-solid fa-truck"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3>
+
+                            Convenient Ordering
+
+                        </h3>
+
+
+                        <p>
+
+                            Add products to your cart and
+                            manage orders easily.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             MARKET PRICE INTELLIGENCE
+        ================================================== -->
+
+        <section class="market-section">
+
+
+            <div class="section-heading">
+
+
+                <div>
+
+                    <span class="section-kicker">
+
+                        MARKET INTELLIGENCE
+
+                    </span>
+
+
+                    <h2>
+
+                        Agricultural Market Prices
+
+                    </h2>
+
+
+                    <p>
+
+                        Latest available mandi information.
+
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="{{ url_for('market.market') }}"
+                    class="section-button"
+                >
+
+                    View All
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </div>
+
+
+
+            <div class="market-card">
+
+
+                <div class="market-table-wrapper">
+
+
+                    <table class="market-table">
+
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Commodity
+                                </th>
+
+                                <th>
+                                    Market
+                                </th>
+
+                                <th>
+                                    Modal Price
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+
+                        <tbody>
+
+
+                            {% if prices %}
+
+
+                                {% for crop in prices[:6] %}
+
+                                <tr>
+
+
+                                    <td>
+
+                                        <strong>
+
+                                            {{ crop.commodity
+                                               |default(crop.crop, true)
+                                               |default('—', true) }}
+
+                                        </strong>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        {{ crop.market
+                                           |default(crop.market_name, true)
+                                           |default('—', true) }}
+
+                                    </td>
+
+
+                                    <td>
+
+                                        ₹
+
+                                        {{ crop.modal_price
+                                           |default(crop.price, true)
+                                           |default('—', true) }}
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="market-status-badge">
+
+                                            <i class="fa-solid fa-circle"></i>
+
+                                            Available
+
+                                        </span>
+
+                                    </td>
+
+                                </tr>
+
+                                {% endfor %}
+
+
+                            {% else %}
+
+
+                                <tr>
+
+                                    <td
+                                        colspan="4"
+                                        class="empty-market"
+                                    >
+
+                                        <i class="fa-solid fa-chart-line"></i>
+
+                                        <span>
+                                            Market price data unavailable
+                                        </span>
+
+                                    </td>
+
+                                </tr>
+
+
+                            {% endif %}
+
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SMART CONNECTIONS
+        ================================================== -->
+
+        <section class="connections-section">
+
+
+            <div class="section-heading">
+
+
+                <div>
+
+                    <span class="section-kicker">
+
+                        CONNECTED AGRICULTURE
+
+                    </span>
+
+
+                    <h2>
+
+                        Why KisanVision360+?
+
+                    </h2>
+
+
+                    <p>
+
+                        Connecting consumers with the agricultural
+                        ecosystem.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="connections">
+
+
+                <!-- 1 -->
+
+                <div class="connection">
+
+
+                    <div class="connection-icon">
+
+                        <i class="fa-solid fa-tractor"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h4>
+
+                            Farmer → Consumer
+
+                        </h4>
+
+
+                        <p>
+
+                            Farmers can sell agricultural products
+                            directly to consumers.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- 2 -->
+
+                <div class="connection">
+
+
+                    <div class="connection-icon">
+
+                        <i class="fa-solid fa-seedling"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h4>
+
+                            Farm → Home
+
+                        </h4>
+
+
+                        <p>
+
+                            Agricultural products move from farms
+                            toward consumers.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- 3 -->
+
+                <div class="connection">
+
+
+                    <div class="connection-icon">
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h4>
+
+                            Market → Shopping
+
+                        </h4>
+
+
+                        <p>
+
+                            Market information helps consumers
+                            understand agricultural prices.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- 4 -->
+
+                <div class="connection">
+
+
+                    <div class="connection-icon">
+
+                        <i class="fa-solid fa-cloud-sun"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h4>
+
+                            Weather → Agriculture
+
+                        </h4>
+
+
+                        <p>
+
+                            Weather information provides context
+                            about agricultural conditions.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- 5 -->
+
+                <div class="connection">
+
+
+                    <div class="connection-icon">
+
+                        <i class="fa-solid fa-cart-shopping"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h4>
+
+                            Cart → Order
+
+                        </h4>
+
+
+                        <p>
+
+                            Selected products can be managed
+                            through the shopping cart.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- 6 -->
+
+                <div class="connection">
+
+
+                    <div class="connection-icon">
+
+                        <i class="fa-solid fa-bell"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h4>
+
+                            Notifications → Updates
+
+                        </h4>
+
+
+                        <p>
+
+                            Stay informed about important
+                            marketplace and order updates.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             QUICK ACCESS
+        ================================================== -->
+
+        <section class="quick-access">
+
+
+            <!-- PROFILE -->
+
+            <div class="quick-card">
+
+
+                <div class="quick-icon">
+
+                    👤
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+
+                        My Profile
+
+                    </h3>
+
+
+                    <p>
+
+                        Manage your consumer profile and
+                        account information.
+
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="{{ url_for('profile.profile') }}"
+                >
+
+                    Open
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </div>
+
+
+
+            <!-- NOTIFICATIONS -->
+
+            <div class="quick-card">
+
+
+                <div class="quick-icon">
+
+                    🔔
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+
+                        Notifications
+
+                    </h3>
+
+
+                    <p>
+
+                        View order, marketplace and platform
+                        notifications.
+
+                    </p>
+
+                </div>
+
+
+                <a href="{{ url_for('consumer.consumer_notifications') }}"
+                    class="notification"
+                    aria-label="Consumer Notifications">
+
+                        <i class="fas fa-bell"></i>
+
+                        {% if unread_count and unread_count > 0 %}
+                            <span>{{ unread_count if unread_count < 100 else '99+' }}</span>
+                        {% endif %}
+
+                </a>
+            </div>
+
+
+
+            <!-- HELP -->
+
+            <div class="quick-card">
+
+
+                <div class="quick-icon">
+
+                    ❓
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+
+                        Help & Support
+
+                    </h3>
+
+
+                    <p>
+
+                        Get assistance while using
+                        KisanVision360+.
+
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="{{ url_for('help.help_page') }}"
+                >
+
+                    Help
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             INFO BANNER
+        ================================================== -->
+
+        <section class="consumer-info-banner">
+
+
+            <div class="info-icon">
+
+                <i class="fa-solid fa-circle-info"></i>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+
+                    Smart Farm-to-Home Shopping
+
+                </h3>
+
+
+                <p>
+
+                    KisanVision360+ helps consumers discover
+                    agricultural products and connect with the
+                    farming ecosystem through one platform.
+
+                </p>
+
+            </div>
+
+
+            <a
+                href="{{ url_for('marketplace.consumer_marketplace') }}"
+                class="info-button"
+            >
+
+                Start Shopping
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </a>
+
+        </section>
+
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer>
+
+            <i class="fa-solid fa-leaf"></i>
+
+            Â© 2026 KisanVision360+
+
+            <span>|</span>
+
+            AI Powered Smart Agriculture Platform
+
+        </footer>
+
+
+    </main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+function updateDateTime() {
+
+    const now = new Date();
+
+
+    const dateElement =
+        document.getElementById("date");
+
+
+    const clockElement =
+        document.getElementById("clock");
+
+
+    const language =
+        document.documentElement.lang || "en";
+
+
+
+    if (dateElement) {
+
+        try {
+
+            dateElement.textContent =
+                now.toLocaleDateString(
+                    language === "en"
+                        ? "en-IN"
+                        : language,
+                    {
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric"
+                    }
+                );
+
+        } catch (error) {
+
+            dateElement.textContent =
+                now.toLocaleDateString("en-IN");
+
+        }
+
+    }
+
+
+
+    if (clockElement) {
+
+        try {
+
+            clockElement.textContent =
+                now.toLocaleTimeString(
+                    language === "en"
+                        ? "en-IN"
+                        : language
+                );
+
+        } catch (error) {
+
+            clockElement.textContent =
+                now.toLocaleTimeString("en-IN");
+
+        }
+
+    }
+
+}
+
+
+
+updateDateTime();
+
+setInterval(updateDateTime, 1000);
+
+
+
+// =====================================================
+// NOTIFICATION CLICK EFFECT
+// =====================================================
+
+const notification =
+    document.querySelector(".notification");
+
+
+if (notification) {
+
+    notification.addEventListener(
+        "click",
+        function () {
+
+            this.classList.add(
+                "notification-click"
+            );
+
+
+            setTimeout(() => {
+
+                this.classList.remove(
+                    "notification-click"
+                );
+
+            }, 180);
+
+        }
+    );
+
+}
+
+</script>
+<script
+    src="{{ url_for('static', filename='js/chatbot.js') }}">
+</script>
+{% endblock %}
+

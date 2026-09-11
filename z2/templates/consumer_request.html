@@ -1,0 +1,2333 @@
+﻿{% extends "base.html" %}
+
+{% block title %}KisanVision360+ | Consumer Requirement{% endblock %}
+
+{% block head %}
+<link rel="stylesheet"
+          href="{{ url_for('static', filename='css/consumer-request.css') }}">
+<style>
+
+        /* =================================================
+           KISANVISION360+ CONSUMER REQUIREMENT
+        ================================================= */
+
+        :root {
+            --kv-green: #1b5e20;
+            --kv-green-2: #2e7d32;
+            --kv-light-green: #e8f5e9;
+            --kv-orange: #fb8c00;
+            --kv-dark: #263238;
+            --kv-muted: #607d8b;
+            --kv-border: #e3ebe5;
+            --kv-bg: #f6faf7;
+            --kv-white: #ffffff;
+            --kv-danger: #c62828;
+        }
+
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            background: var(--kv-bg);
+        }
+
+
+        .main-content {
+            min-height: 100vh;
+        }
+
+
+        /* =================================================
+           TOPBAR ENHANCEMENT
+        ================================================= */
+
+        .topbar {
+            position: relative;
+        }
+
+
+        .title-section {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+
+        .title-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: linear-gradient(
+                135deg,
+                var(--kv-green),
+                var(--kv-green-2)
+            );
+
+            color: white;
+            box-shadow: 0 8px 20px rgba(27, 94, 32, 0.18);
+        }
+
+
+        .title-icon i {
+            font-size: 20px;
+        }
+
+
+        /* =================================================
+           CURRENT LANGUAGE INDICATOR
+           Language is selected globally in the app.
+        ================================================= */
+
+        .global-language-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            margin-top: 8px;
+            padding: 5px 10px;
+
+            border-radius: 20px;
+
+            background: var(--kv-light-green);
+            color: var(--kv-green);
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+
+        /* =================================================
+           PROFILE
+        ================================================= */
+
+        .profile img {
+            width: 44px;
+            height: 44px;
+            object-fit: cover;
+            border-radius: 50%;
+
+            border: 3px solid #e8f5e9;
+        }
+
+
+        /* =================================================
+           HERO
+        ================================================= */
+
+        .request-hero {
+            position: relative;
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 90% 20%,
+                    rgba(255,255,255,0.16),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    135deg,
+                    #1b5e20,
+                    #2e7d32
+                );
+
+            color: white;
+
+            border-radius: 22px;
+
+            padding: 32px;
+
+            margin-bottom: 24px;
+
+            box-shadow:
+                0 14px 35px rgba(27, 94, 32, 0.16);
+        }
+
+
+        .request-hero::before {
+            content: "";
+
+            position: absolute;
+
+            width: 180px;
+            height: 180px;
+
+            right: 70px;
+            top: -100px;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,0.08);
+        }
+
+
+        .request-hero::after {
+            content: "";
+
+            position: absolute;
+
+            width: 120px;
+            height: 120px;
+
+            right: 180px;
+            bottom: -75px;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,0.06);
+        }
+
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+
+            max-width: 760px;
+        }
+
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 7px 12px;
+
+            border-radius: 30px;
+
+            background: rgba(255,255,255,0.14);
+
+            border: 1px solid rgba(255,255,255,0.18);
+
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+        }
+
+
+        .hero-content h2 {
+            margin: 15px 0 10px;
+
+            font-size: clamp(26px, 4vw, 40px);
+
+            line-height: 1.15;
+        }
+
+
+        .hero-content p {
+            max-width: 680px;
+
+            margin: 0;
+
+            color: rgba(255,255,255,0.88);
+
+            line-height: 1.7;
+
+            font-size: 14px;
+        }
+
+
+        .hero-features {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+
+        .hero-features > div {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 9px 13px;
+
+            border-radius: 12px;
+
+            background: rgba(255,255,255,0.11);
+
+            border: 1px solid rgba(255,255,255,0.13);
+
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+
+        .hero-features i {
+            color: #ffe082;
+        }
+
+
+        .hero-icon {
+            position: absolute;
+
+            right: 45px;
+            bottom: 28px;
+
+            width: 105px;
+            height: 105px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,0.11);
+
+            z-index: 1;
+        }
+
+
+        .hero-icon i {
+            font-size: 50px;
+
+            color: rgba(255,255,255,0.92);
+        }
+
+
+        /* =================================================
+           SMART MATCHING BANNER
+        ================================================= */
+
+        .smart-match-banner {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+
+            padding: 15px 18px;
+
+            margin-bottom: 22px;
+
+            border-radius: 16px;
+
+            background: white;
+
+            border: 1px solid var(--kv-border);
+
+            box-shadow: 0 6px 18px rgba(30, 60, 40, 0.06);
+        }
+
+
+        .smart-match-icon {
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: #fff3e0;
+
+            color: var(--kv-orange);
+        }
+
+
+        .smart-match-banner h3 {
+            margin: 0 0 3px;
+
+            color: var(--kv-dark);
+
+            font-size: 14px;
+        }
+
+
+        .smart-match-banner p {
+            margin: 0;
+
+            color: var(--kv-muted);
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+        .smart-badge {
+            margin-left: auto;
+
+            white-space: nowrap;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            background: #e8f5e9;
+
+            color: var(--kv-green);
+
+            font-size: 10px;
+
+            font-weight: 800;
+        }
+
+
+        /* =================================================
+           FORM CARD
+        ================================================= */
+
+        .form-card,
+        .info-card {
+            background: white;
+
+            border: 1px solid var(--kv-border);
+
+            box-shadow:
+                0 8px 28px rgba(30, 60, 40, 0.07);
+
+            border-radius: 20px;
+        }
+
+
+        .form-card {
+            padding: 26px;
+        }
+
+
+        .section-heading {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+
+            padding-bottom: 20px;
+
+            margin-bottom: 22px;
+
+            border-bottom: 1px solid #edf2ee;
+        }
+
+
+        .section-icon {
+            width: 44px;
+            height: 44px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: var(--kv-light-green);
+
+            color: var(--kv-green);
+        }
+
+
+        .section-heading h2 {
+            margin: 0 0 5px;
+
+            color: var(--kv-dark);
+
+            font-size: 20px;
+        }
+
+
+        .section-heading p {
+            margin: 0;
+
+            color: var(--kv-muted);
+
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+
+        /* =================================================
+           FORM
+        ================================================= */
+
+        .form-group {
+            margin-bottom: 19px;
+        }
+
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            margin-bottom: 8px;
+
+            color: #37474f;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+
+        .form-group label i {
+            color: var(--kv-green);
+        }
+
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+
+            border: 1px solid #dce6df;
+
+            background: #fbfdfb;
+
+            border-radius: 12px;
+
+            padding: 12px 14px;
+
+            color: var(--kv-dark);
+
+            font-size: 13px;
+
+            outline: none;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+
+        .form-group input {
+            min-height: 46px;
+        }
+
+
+        .form-group textarea {
+            resize: vertical;
+
+            min-height: 120px;
+
+            line-height: 1.6;
+        }
+
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--kv-green-2);
+
+            background: white;
+
+            box-shadow:
+                0 0 0 4px rgba(67, 160, 71, 0.10);
+        }
+
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #9aa9a0;
+        }
+
+
+        .form-row {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 16px;
+        }
+
+
+        .input-with-unit {
+            position: relative;
+        }
+
+
+        .input-with-unit input {
+            padding-right: 52px;
+        }
+
+
+        .input-with-unit span {
+            position: absolute;
+
+            right: 13px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            padding-left: 10px;
+
+            border-left: 1px solid #dce6df;
+
+            color: var(--kv-muted);
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+
+        /* =================================================
+           SMART BUDGET INFO
+        ================================================= */
+
+        .budget-hint {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            margin-top: 7px;
+
+            color: #78909c;
+
+            font-size: 10px;
+        }
+
+
+        .budget-hint i {
+            color: var(--kv-orange);
+        }
+
+
+        /* =================================================
+           REQUIREMENT CHARACTER COUNTER
+        ================================================= */
+
+        .requirement-meta {
+            display: flex;
+            justify-content: space-between;
+
+            margin-top: 6px;
+
+            font-size: 10px;
+
+            color: #90a4ae;
+        }
+
+
+        #requirementCounter {
+            font-weight: 700;
+        }
+
+
+        /* =================================================
+           FORM NOTE
+        ================================================= */
+
+        .form-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+
+            padding: 13px 14px;
+
+            margin-top: 5px;
+
+            border-radius: 12px;
+
+            background: #f4faf5;
+
+            border: 1px solid #e0eee2;
+
+            color: #56705c;
+
+            font-size: 11px;
+
+            line-height: 1.5;
+        }
+
+
+        .form-note i {
+            color: var(--kv-green);
+
+            margin-top: 2px;
+        }
+
+
+        /* =================================================
+           FORM BUTTONS
+        ================================================= */
+
+        .form-buttons {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+
+        .cancel-btn,
+        .submit-btn {
+            min-height: 44px;
+
+            border-radius: 11px;
+
+            padding: 0 17px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            text-decoration: none;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .cancel-btn {
+            background: #f3f6f4;
+
+            color: #546e5a;
+
+            border: 1px solid #e1e9e3;
+        }
+
+
+        .submit-btn {
+            border: none;
+
+            background: linear-gradient(
+                135deg,
+                var(--kv-green),
+                var(--kv-green-2)
+            );
+
+            color: white;
+
+            box-shadow:
+                0 7px 18px rgba(46,125,50,0.20);
+        }
+
+
+        .cancel-btn:hover,
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+
+            cursor: not-allowed;
+
+            transform: none;
+        }
+
+
+        /* =================================================
+           INFO CARD
+        ================================================= */
+
+        .info-card {
+            padding: 24px;
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        .info-card::before {
+            content: "";
+
+            position: absolute;
+
+            width: 130px;
+            height: 130px;
+
+            right: -55px;
+            top: -55px;
+
+            border-radius: 50%;
+
+            background: #e8f5e9;
+        }
+
+
+        .info-icon {
+            width: 48px;
+            height: 48px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 14px;
+
+            background: #fff8e1;
+
+            color: var(--kv-orange);
+
+            position: relative;
+        }
+
+
+        .info-card h2 {
+            margin: 15px 0 5px;
+
+            color: var(--kv-dark);
+
+            font-size: 20px;
+        }
+
+
+        .info-card > p {
+            color: var(--kv-muted);
+
+            font-size: 12px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =================================================
+           STEPS
+        ================================================= */
+
+        .step {
+            display: flex;
+
+            gap: 12px;
+
+            padding: 16px 0;
+
+            border-bottom: 1px solid #edf2ee;
+        }
+
+
+        .step:last-of-type {
+            border-bottom: none;
+        }
+
+
+        .step > span {
+            width: 34px;
+            height: 34px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: var(--kv-light-green);
+
+            color: var(--kv-green);
+
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+
+        .step h3 {
+            margin: 0 0 4px;
+
+            color: var(--kv-dark);
+
+            font-size: 13px;
+        }
+
+
+        .step p {
+            margin: 0;
+
+            color: var(--kv-muted);
+
+            font-size: 11px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =================================================
+           SMART CONNECTION
+        ================================================= */
+
+        .smart-connection {
+            margin-top: 18px;
+
+            padding: 14px;
+
+            border-radius: 13px;
+
+            background: #f8fbf8;
+
+            border: 1px solid #e4ece5;
+        }
+
+
+        .smart-connection-title {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            margin-bottom: 10px;
+
+            color: var(--kv-green);
+
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+
+        .connection-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-bottom: 8px;
+
+            color: #607d68;
+
+            font-size: 10px;
+        }
+
+
+        .connection-item:last-child {
+            margin-bottom: 0;
+        }
+
+
+        .connection-item i {
+            color: var(--kv-orange);
+        }
+
+
+        /* =================================================
+           CHAT BUTTON
+        ================================================= */
+
+        .chat-btn {
+            width: 100%;
+
+            margin-top: 18px;
+
+            min-height: 45px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            border-radius: 11px;
+
+            background: #263238;
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            transition: transform 0.2s ease;
+        }
+
+
+        .chat-btn:hover {
+            transform: translateY(-2px);
+
+            background: #37474f;
+        }
+
+
+        /* =================================================
+           REQUIREMENT FLOW
+        ================================================= */
+
+        .requirement-flow {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+
+        .flow-card {
+            padding: 13px;
+
+            background: white;
+
+            border: 1px solid var(--kv-border);
+
+            border-radius: 13px;
+
+            text-align: center;
+        }
+
+
+        .flow-card i {
+            color: var(--kv-green);
+
+            font-size: 17px;
+
+            margin-bottom: 7px;
+        }
+
+
+        .flow-card strong {
+            display: block;
+
+            color: var(--kv-dark);
+
+            font-size: 11px;
+        }
+
+
+        .flow-card span {
+            display: block;
+
+            margin-top: 3px;
+
+            color: #78909c;
+
+            font-size: 9px;
+        }
+
+
+        /* =================================================
+           FOOTER
+        ================================================= */
+
+        footer {
+            margin-top: 28px;
+
+            padding: 20px 5px;
+
+            text-align: center;
+
+            color: #78909c;
+
+            font-size: 11px;
+        }
+
+
+        footer i {
+            color: var(--kv-green);
+        }
+
+
+        footer strong {
+            color: var(--kv-green);
+        }
+
+
+        /* =================================================
+           TOAST
+        ================================================= */
+
+        .kv-request-toast {
+            position: fixed;
+
+            right: 22px;
+            bottom: 22px;
+
+            z-index: 99999;
+
+            width: min(370px, calc(100vw - 28px));
+
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+
+            padding: 13px 14px;
+
+            background: white;
+
+            border: 1px solid #dfe9e1;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 15px 40px rgba(0,0,0,0.16);
+
+            transform: translateY(20px);
+
+            opacity: 0;
+            visibility: hidden;
+
+            transition: 0.25s ease;
+        }
+
+
+        .kv-request-toast.show {
+            opacity: 1;
+
+            visibility: visible;
+
+            transform: translateY(0);
+        }
+
+
+        .kv-toast-icon {
+            width: 36px;
+            height: 36px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #e8f5e9;
+
+            color: var(--kv-green);
+        }
+
+
+        .kv-request-toast strong {
+            display: block;
+
+            color: var(--kv-dark);
+
+            font-size: 12px;
+        }
+
+
+        .kv-request-toast p {
+            margin: 3px 0 0;
+
+            color: #78909c;
+
+            font-size: 10px;
+        }
+
+
+        /* =================================================
+           RTL
+        ================================================= */
+
+        [dir="rtl"] .input-with-unit span {
+            right: auto;
+            left: 13px;
+        }
+
+
+        [dir="rtl"] .input-with-unit input {
+            padding-right: 14px;
+            padding-left: 52px;
+        }
+
+
+        [dir="rtl"] .smart-badge {
+            margin-left: 0;
+            margin-right: auto;
+        }
+
+
+        /* =================================================
+           RESPONSIVE
+        ================================================= */
+
+        @media (max-width: 1000px) {
+
+            .request-section {
+                grid-template-columns: 1fr !important;
+            }
+
+
+            .hero-icon {
+                right: 25px;
+            }
+
+        }
+
+
+        @media (max-width: 760px) {
+
+            .request-hero {
+                padding: 25px 20px;
+            }
+
+
+            .hero-icon {
+                display: none;
+            }
+
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+
+            .requirement-flow {
+                grid-template-columns: 1fr 1fr;
+            }
+
+
+            .smart-match-banner {
+                align-items: flex-start;
+            }
+
+
+            .smart-badge {
+                display: none;
+            }
+
+        }
+
+
+        @media (max-width: 520px) {
+
+            .form-card,
+            .info-card {
+                padding: 18px;
+            }
+
+
+            .form-buttons {
+                flex-direction: column-reverse;
+            }
+
+
+            .cancel-btn,
+            .submit-btn {
+                width: 100%;
+            }
+
+
+            .requirement-flow {
+                grid-template-columns: 1fr;
+            }
+
+
+            .hero-features {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+
+            .hero-features > div {
+                width: 100%;
+            }
+
+        }
+
+
+        /* =================================================
+           REDUCED MOTION
+        ================================================= */
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+
+                transition-duration: 0.01ms !important;
+
+                animation-duration: 0.01ms !important;
+            }
+
+        }
+
+    </style>
+{% endblock %}
+
+{% block page_title %}Consumer Requirement{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<!-- =================================================
+         SIDEBAR
+    ================================================== -->
+
+    
+
+
+    <!-- =================================================
+         MAIN CONTENT
+    ================================================== -->
+
+    <div class="main-content">
+
+
+        <!-- =================================================
+             TOPBAR
+        ================================================== -->
+
+        
+
+
+        <!-- =================================================
+             SMART MATCH BANNER
+        ================================================== -->
+
+        <section class="smart-match-banner">
+
+            <div class="smart-match-icon">
+
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+            </div>
+
+
+            <div>
+
+                <h3>
+                    KisanVision360+ Smart Farmer Matching
+                </h3>
+
+                <p>
+                    Your crop, quantity, budget and location can be
+                    used to help identify relevant farmer listings
+                    and marketplace opportunities.
+                </p>
+
+            </div>
+
+
+            <span class="smart-badge">
+
+                SMART MATCH
+
+            </span>
+
+        </section>
+
+
+        <!-- =================================================
+             HERO
+        ================================================== -->
+
+        <section class="request-hero">
+
+            <div class="hero-content">
+
+                <span class="hero-label">
+
+                    <i class="fa-solid fa-leaf"></i>
+
+                    FARMER CONNECT
+
+                </span>
+
+
+                <h2>
+                    Tell Farmers What You Need
+                </h2>
+
+
+                <p>
+                    Create a clear crop requirement with quantity,
+                    budget and delivery location. Your requirement
+                    can help farmers understand exactly what you
+                    want to purchase.
+                </p>
+
+
+                <div class="hero-features">
+
+                    <div>
+
+                        <i class="fa-solid fa-seedling"></i>
+
+                        <span>
+                            Fresh Crops
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <i class="fa-solid fa-handshake"></i>
+
+                        <span>
+                            Direct Connection
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        <span>
+                            Location Based
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                        <span>
+                            Better Planning
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="hero-icon">
+
+                <i class="fa-solid fa-tractor"></i>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             REQUIREMENT SECTION
+        ================================================== -->
+
+        <section class="request-section">
+
+
+            <!-- =================================================
+                 FORM CARD
+            ================================================== -->
+
+            <div class="form-card">
+
+
+                <div class="section-heading">
+
+                    <div class="section-icon">
+
+                        <i class="fa-solid fa-file-circle-plus"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Create Crop Requirement
+                        </h2>
+
+                        <p>
+                            Enter the crop and purchasing details.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     FORM
+                ================================================== -->
+
+                <form
+                    method="POST"
+                    action="{{ url_for('compatibility_consumer_request') }}"
+                    id="consumerRequirementForm">
+
+
+                    <!-- =================================================
+                         CROP
+                    ================================================== -->
+
+                    <div class="form-group">
+
+                        <label for="crop">
+
+                            <i class="fa-solid fa-wheat-awn"></i>
+
+                            Crop Name
+
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="crop"
+                            name="crop"
+                            placeholder="Example: Wheat, Rice, Soybean"
+                            autocomplete="off"
+                            required>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         QUANTITY + BUDGET
+                    ================================================== -->
+
+                    <div class="form-row">
+
+
+                        <!-- QUANTITY -->
+
+                        <div class="form-group">
+
+                            <label for="quantity">
+
+                                <i class="fa-solid fa-weight-hanging"></i>
+
+                                Quantity
+
+                            </label>
+
+
+                            <div class="input-with-unit">
+
+                                <input
+                                    type="number"
+                                    id="quantity"
+                                    name="quantity"
+                                    min="1"
+                                    step="0.01"
+                                    placeholder="Enter quantity"
+                                    required>
+
+                                <span>
+                                    Kg
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- BUDGET -->
+
+                        <div class="form-group">
+
+                            <label for="budget">
+
+                                <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                                Maximum Budget
+
+                            </label>
+
+
+                            <div class="input-with-unit">
+
+                                <input
+                                    type="number"
+                                    id="budget"
+                                    name="budget"
+                                    min="0"
+                                    step="0.01"
+                                    placeholder="Enter budget"
+                                    required>
+
+                                <span>
+                                    ₹
+                                </span>
+
+                            </div>
+
+
+                            <div class="budget-hint">
+
+                                <i class="fa-solid fa-lightbulb"></i>
+
+                                Set your maximum purchase budget.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         LOCATION
+                    ================================================== -->
+
+                    <div class="form-group">
+
+                        <label for="location">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            Delivery Location
+
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="location"
+                            name="location"
+                            placeholder="Example: Nagpur, Maharashtra"
+                            autocomplete="street-address"
+                            required>
+
+
+                        <div class="budget-hint">
+
+                            <i class="fa-solid fa-route"></i>
+
+                            Location helps with relevant farmer connections.
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         ADDITIONAL REQUIREMENT
+                    ================================================== -->
+
+                    <div class="form-group">
+
+                        <label for="requirement">
+
+                            <i class="fa-solid fa-message"></i>
+
+                            Additional Requirement
+
+                        </label>
+
+
+                        <textarea
+                            id="requirement"
+                            name="requirement"
+                            rows="5"
+                            maxlength="1000"
+                            placeholder="Describe quality, variety, delivery date or any other requirement..."></textarea>
+
+
+                        <div class="requirement-meta">
+
+                            <span>
+                                Add quality, variety, packaging or delivery details.
+                            </span>
+
+                            <span id="requirementCounter">
+                                0 / 1000
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         FORM NOTE
+                    ================================================== -->
+
+                    <div class="form-note">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        <span>
+                            Your requirement will be shared with
+                            relevant farmers on KisanVision360.
+                            Avoid entering passwords, payment details
+                            or other sensitive information.
+                        </span>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         BUTTONS
+                    ================================================== -->
+
+                    <div class="form-buttons">
+
+
+                        <a
+                            href="{{ url_for('consumer.consumer') }}"
+                            class="cancel-btn">
+
+                            <i class="fa-solid fa-arrow-left"></i>
+
+                            Back
+
+                        </a>
+
+
+                        <button
+                            type="submit"
+                            class="submit-btn"
+                            id="submitRequirement">
+
+                            <i class="fa-solid fa-paper-plane"></i>
+
+                            Send Requirement
+
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+            </div>
+
+
+            <!-- =================================================
+                 INFORMATION CARD
+            ================================================== -->
+
+            <div class="info-card">
+
+
+                <div class="info-icon">
+
+                    <i class="fa-solid fa-lightbulb"></i>
+
+                </div>
+
+
+                <h2>
+                    How It Works
+                </h2>
+
+
+                <p>
+                    KisanVision360+ connects consumer demand
+                    with the farming marketplace.
+                </p>
+
+
+                <!-- STEP 01 -->
+
+                <div class="step">
+
+                    <span>
+                        01
+                    </span>
+
+
+                    <div>
+
+                        <h3>
+                            Post Requirement
+                        </h3>
+
+                        <p>
+                            Enter crop, quantity, budget and
+                            delivery location.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STEP 02 -->
+
+                <div class="step">
+
+                    <span>
+                        02
+                    </span>
+
+
+                    <div>
+
+                        <h3>
+                            Farmer Matching
+                        </h3>
+
+                        <p>
+                            Relevant farmers can discover your
+                            requirement.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STEP 03 -->
+
+                <div class="step">
+
+                    <span>
+                        03
+                    </span>
+
+
+                    <div>
+
+                        <h3>
+                            Connect
+                        </h3>
+
+                        <p>
+                            Communicate with farmers and discuss
+                            crop availability.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STEP 04 -->
+
+                <div class="step">
+
+                    <span>
+                        04
+                    </span>
+
+
+                    <div>
+
+                        <h3>
+                            Purchase
+                        </h3>
+
+                        <p>
+                            Finalize the product and complete
+                            your marketplace order.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     SMART CONNECTION
+                ================================================== -->
+
+                <div class="smart-connection">
+
+                    <div class="smart-connection-title">
+
+                        <i class="fa-solid fa-link"></i>
+
+                        Smart Connections
+
+                    </div>
+
+
+                    <div class="connection-item">
+
+                        <i class="fa-solid fa-store"></i>
+
+                        Consumer Requirement
+                        → Marketplace
+
+                    </div>
+
+
+                    <div class="connection-item">
+
+                        <i class="fa-solid fa-user-group"></i>
+
+                        Requirement
+                        → Relevant Farmers
+
+                    </div>
+
+
+                    <div class="connection-item">
+
+                        <i class="fa-solid fa-comments"></i>
+
+                        Farmer
+                        → Consumer Chat
+
+                    </div>
+
+
+                    <div class="connection-item">
+
+                        <i class="fa-solid fa-cart-shopping"></i>
+
+                        Product
+                        → Order
+
+                    </div>
+
+                </div>
+
+
+                <!-- CHAT -->
+
+                <a
+                    href="{{ url_for('chatbot.chatbot') }}"
+                    class="chat-btn">
+
+                    <i class="fa-solid fa-comments"></i>
+
+                    Chat with Farmer
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             REQUIREMENT FLOW
+        ================================================== -->
+
+        <section class="requirement-flow">
+
+
+            <div class="flow-card">
+
+                <i class="fa-solid fa-wheat-awn"></i>
+
+                <strong>
+                    Select Crop
+                </strong>
+
+                <span>
+                    Tell farmers what you need
+                </span>
+
+            </div>
+
+
+            <div class="flow-card">
+
+                <i class="fa-solid fa-weight-hanging"></i>
+
+                <strong>
+                    Set Quantity
+                </strong>
+
+                <span>
+                    Define your requirement
+                </span>
+
+            </div>
+
+
+            <div class="flow-card">
+
+                <i class="fa-solid fa-wallet"></i>
+
+                <strong>
+                    Set Budget
+                </strong>
+
+                <span>
+                    Plan your purchase
+                </span>
+
+            </div>
+
+
+            <div class="flow-card">
+
+                <i class="fa-solid fa-handshake"></i>
+
+                <strong>
+                    Connect
+                </strong>
+
+                <span>
+                    Purchase directly
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer>
+
+            <i class="fa-solid fa-leaf"></i>
+
+            <strong>
+                KisanVision360+
+            </strong>
+
+            <span>
+                •
+            </span>
+
+            Smart Agriculture Marketplace
+
+            <span>
+                •
+            </span>
+
+            Â© 2026
+
+        </footer>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     TOAST
+========================================================= -->
+
+<div
+    id="requestToast"
+    class="kv-request-toast"
+    role="status"
+    aria-live="polite">
+
+    <div class="kv-toast-icon">
+
+        <i class="fa-solid fa-check"></i>
+
+    </div>
+
+
+    <div>
+
+        <strong id="requestToastTitle">
+            Requirement
+        </strong>
+
+        <p id="requestToastMessage">
+            Please check your details.
+        </p>
+
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form =
+        document.getElementById("consumerRequirementForm");
+
+    const crop =
+        document.getElementById("crop");
+
+    const quantity =
+        document.getElementById("quantity");
+
+    const budget =
+        document.getElementById("budget");
+
+    const locationInput =
+        document.getElementById("location");
+
+    const requirement =
+        document.getElementById("requirement");
+
+    const counter =
+        document.getElementById("requirementCounter");
+
+    const submitButton =
+        document.getElementById("submitRequirement");
+
+
+    /* =====================================================
+       REQUIREMENT CHARACTER COUNTER
+    ====================================================== */
+
+    function updateRequirementCounter() {
+
+        if (!requirement || !counter) {
+            return;
+        }
+
+        const length =
+            requirement.value.length;
+
+        counter.textContent =
+            `${length} / 1000`;
+
+        if (length >= 900) {
+
+            counter.style.color =
+                "#c62828";
+
+        } else if (length >= 700) {
+
+            counter.style.color =
+                "#fb8c00";
+
+        } else {
+
+            counter.style.color =
+                "#90a4ae";
+
+        }
+
+    }
+
+
+    if (requirement) {
+
+        requirement.addEventListener(
+            "input",
+            updateRequirementCounter
+        );
+
+        updateRequirementCounter();
+
+    }
+
+
+    /* =====================================================
+       INPUT CLEANING
+    ====================================================== */
+
+    if (crop) {
+
+        crop.addEventListener("input", function () {
+
+            this.value =
+                this.value.replace(
+                    /^\s+/,
+                    ""
+                );
+
+        });
+
+    }
+
+
+    if (locationInput) {
+
+        locationInput.addEventListener(
+            "input",
+            function () {
+
+                this.value =
+                    this.value.replace(
+                        /^\s+/,
+                        ""
+                    );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       FORM VALIDATION
+    ====================================================== */
+
+    if (form) {
+
+        form.addEventListener(
+            "submit",
+            function (event) {
+
+                const cropValue =
+                    crop.value.trim();
+
+                const quantityValue =
+                    Number(quantity.value);
+
+                const budgetValue =
+                    Number(budget.value);
+
+                const locationValue =
+                    locationInput.value.trim();
+
+
+                if (cropValue.length < 2) {
+
+                    event.preventDefault();
+
+                    showToast(
+                        "Invalid Crop",
+                        "Please enter a valid crop name."
+                    );
+
+                    crop.focus();
+
+                    return;
+
+                }
+
+
+                if (
+                    !Number.isFinite(quantityValue) ||
+                    quantityValue <= 0
+                ) {
+
+                    event.preventDefault();
+
+                    showToast(
+                        "Invalid Quantity",
+                        "Quantity must be greater than 0."
+                    );
+
+                    quantity.focus();
+
+                    return;
+
+                }
+
+
+                if (
+                    !Number.isFinite(budgetValue) ||
+                    budgetValue < 0
+                ) {
+
+                    event.preventDefault();
+
+                    showToast(
+                        "Invalid Budget",
+                        "Please enter a valid budget."
+                    );
+
+                    budget.focus();
+
+                    return;
+
+                }
+
+
+                if (locationValue.length < 2) {
+
+                    event.preventDefault();
+
+                    showToast(
+                        "Location Required",
+                        "Please enter your delivery location."
+                    );
+
+                    locationInput.focus();
+
+                    return;
+
+                }
+
+
+                /*
+                 * Prevent accidental double submission.
+                 */
+
+                submitButton.disabled = true;
+
+                submitButton.innerHTML =
+                    '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       TOAST
+    ====================================================== */
+
+    window.showToast =
+        function (title, message) {
+
+            const toast =
+                document.getElementById(
+                    "requestToast"
+                );
+
+            const toastTitle =
+                document.getElementById(
+                    "requestToastTitle"
+                );
+
+            const toastMessage =
+                document.getElementById(
+                    "requestToastMessage"
+                );
+
+
+            if (!toast) {
+                return;
+            }
+
+
+            toastTitle.textContent =
+                title;
+
+            toastMessage.textContent =
+                message;
+
+
+            toast.classList.add("show");
+
+
+            clearTimeout(
+                window.kvRequestToastTimer
+            );
+
+
+            window.kvRequestToastTimer =
+                setTimeout(
+                    function () {
+
+                        toast.classList.remove(
+                            "show"
+                        );
+
+                    },
+                    3500
+                );
+
+        };
+
+
+    /* =====================================================
+       ESCAPE TO CLOSE TOAST
+    ====================================================== */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Escape") {
+
+                const toast =
+                    document.getElementById(
+                        "requestToast"
+                    );
+
+                if (toast) {
+
+                    toast.classList.remove(
+                        "show"
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+});
+
+</script>
+{% endblock %}
+

@@ -1,0 +1,1114 @@
+﻿
+{% extends "base.html" %}
+
+{% block title %}Edit Profile - KisanVision360+{% endblock %}
+
+{% block content %}
+
+<style>
+    .edit-profile-page {
+        min-height: calc(100vh - 80px);
+        padding: 30px 20px 50px;
+        background: #f5f8f5;
+    }
+
+    .edit-profile-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    /* Header */
+    .profile-header {
+        margin-bottom: 25px;
+    }
+
+    .profile-header h1 {
+        margin: 0 0 8px;
+        color: #1b5e20;
+        font-size: 30px;
+        font-weight: 700;
+    }
+
+    .profile-header p {
+        margin: 0;
+        color: #666;
+        font-size: 15px;
+    }
+
+    /* Main Card */
+    .profile-card {
+        background: #ffffff;
+        border-radius: 18px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+    }
+
+    /* Top Section */
+    .profile-top {
+        background: linear-gradient(135deg, #1b5e20, #43a047);
+        padding: 30px;
+        color: white;
+    }
+
+    .profile-top-inner {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+    }
+
+    .profile-avatar-wrapper {
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid white;
+        background: #e8f5e9;
+        display: block;
+    }
+
+    .avatar-placeholder {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 4px solid white;
+        background: #e8f5e9;
+        color: #1b5e20;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 42px;
+        font-weight: 700;
+    }
+
+    .photo-upload-label {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: #fb8c00;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: 3px solid white;
+        font-size: 15px;
+    }
+
+    .photo-upload-label:hover {
+        background: #ef6c00;
+    }
+
+    #profile {
+        display: none;
+    }
+
+    .profile-top-info h2 {
+        margin: 0 0 8px;
+        font-size: 25px;
+    }
+
+    .profile-top-info p {
+        margin: 4px 0;
+        opacity: 0.9;
+        font-size: 14px;
+    }
+
+    .role-badge {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    /* Completion */
+    .completion-section {
+        padding: 22px 30px;
+        background: #f9fbf9;
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    .completion-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .completion-title {
+        color: #333;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .completion-value {
+        color: #1b5e20;
+        font-weight: 700;
+        font-size: 14px;
+    }
+
+    .progress-track {
+        width: 100%;
+        height: 9px;
+        background: #e0e0e0;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #43a047, #1b5e20);
+        border-radius: 10px;
+        transition: width 0.3s ease;
+    }
+
+    /* Form */
+    .profile-form {
+        padding: 30px;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0 0 20px;
+        color: #1b5e20;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .section-title::before {
+        content: "";
+        width: 5px;
+        height: 23px;
+        background: #fb8c00;
+        border-radius: 5px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .form-group label {
+        margin-bottom: 8px;
+        color: #333;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .required {
+        color: #d32f2f;
+    }
+
+    .form-control {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 13px 14px;
+        border: 1px solid #d6d6d6;
+        border-radius: 10px;
+        outline: none;
+        font-size: 14px;
+        background: white;
+        color: #333;
+        transition: 0.2s ease;
+    }
+
+    .form-control:focus {
+        border-color: #43a047;
+        box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.12);
+    }
+
+    .form-control:disabled {
+        background: #f1f3f1;
+        color: #777;
+        cursor: not-allowed;
+    }
+
+    .input-help {
+        margin-top: 6px;
+        font-size: 12px;
+        color: #777;
+    }
+
+    .error-message {
+        margin-top: 5px;
+        color: #d32f2f;
+        font-size: 12px;
+        display: none;
+    }
+
+    .form-control.invalid {
+        border-color: #d32f2f;
+    }
+
+    .form-control.valid {
+        border-color: #43a047;
+    }
+
+    /* Personalization */
+    .personalization-box {
+        margin-top: 30px;
+        padding: 20px;
+        border-radius: 14px;
+        background: #f1f8f2;
+        border: 1px solid #d7ead8;
+    }
+
+    .personalization-box h3 {
+        margin: 0 0 8px;
+        color: #1b5e20;
+        font-size: 17px;
+    }
+
+    .personalization-box p {
+        margin: 0 0 15px;
+        color: #666;
+        font-size: 13px;
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .tag {
+        padding: 7px 12px;
+        border-radius: 20px;
+        background: white;
+        border: 1px solid #cde2ce;
+        color: #1b5e20;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    /* Security */
+    .security-strip {
+        margin-top: 25px;
+        padding: 15px;
+        border-radius: 10px;
+        background: #fff8e1;
+        border: 1px solid #ffe0a3;
+        color: #6d4c00;
+        font-size: 13px;
+    }
+
+    /* Buttons */
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 30px;
+        padding-top: 25px;
+        border-top: 1px solid #eeeeee;
+    }
+
+    .btn {
+        border: none;
+        border-radius: 10px;
+        padding: 12px 22px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 120px;
+        transition: 0.2s ease;
+    }
+
+    .btn-cancel {
+        background: #eeeeee;
+        color: #444;
+    }
+
+    .btn-cancel:hover {
+        background: #dddddd;
+    }
+
+    .btn-save {
+        background: #1b5e20;
+        color: white;
+    }
+
+    .btn-save:hover {
+        background: #124416;
+    }
+
+    .btn-save:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    /* File text */
+    .photo-info {
+        margin-top: 8px;
+        color: #777;
+        font-size: 12px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+
+        .edit-profile-page {
+            padding: 20px 12px 40px;
+        }
+
+        .profile-top-inner {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group.full-width {
+            grid-column: auto;
+        }
+
+        .profile-form {
+            padding: 20px;
+        }
+
+        .completion-section {
+            padding: 18px 20px;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+        }
+
+        .btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="edit-profile-page">
+
+    <div class="edit-profile-container">
+
+        <!-- ================= HEADER ================= -->
+
+        <div class="profile-header">
+            <h1>Edit Profile</h1>
+            <p>Update your personal information and profile photo.</p>
+        </div>
+
+        <!-- ================= MAIN CARD ================= -->
+
+        <div class="profile-card">
+
+            <!-- ================= PROFILE TOP ================= -->
+
+            <div class="profile-top">
+
+                <div class="profile-top-inner">
+
+                    <div class="profile-avatar-wrapper">
+
+                        {% if profile_pic %}
+
+                            <img
+                                id="profilePreview"
+                                class="profile-avatar"
+                                src="{{ profile_pic }}"
+                                alt="Profile Photo"
+                                onerror="this.style.display='none'; document.getElementById('avatarPlaceholder').style.display='flex';"
+                            >
+
+                            <div
+                                id="avatarPlaceholder"
+                                class="avatar-placeholder"
+                                style="display:none;"
+                            >
+                                {{ (name or 'F')[0]|upper }}
+                            </div>
+
+                        {% else %}
+
+                            <div
+                                id="avatarPlaceholder"
+                                class="avatar-placeholder"
+                            >
+                                {{ (name or 'F')[0]|upper }}
+                            </div>
+
+                            <img
+                                id="profilePreview"
+                                class="profile-avatar"
+                                src=""
+                                alt="Profile Photo"
+                                style="display:none;"
+                            >
+
+                        {% endif %}
+
+                        <label
+                            for="profile"
+                            class="photo-upload-label"
+                            title="Change profile photo"
+                        >
+                            Edit
+                        </label>
+
+                    </div>
+
+                    <div class="profile-top-info">
+
+                        <h2 id="headerName">
+                            {{ name or "Farmer" }}
+                        </h2>
+
+                        <p>
+                            {{ email or "No email added" }}
+                        </p>
+
+                        <p>
+                            {{ location or "Location not added" }}
+                        </p>
+
+                        <span class="role-badge">
+                            {{ role or session.get('role', 'Farmer')|title }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ================= COMPLETION ================= -->
+
+            <div class="completion-section">
+
+                <div class="completion-header">
+
+                    <span class="completion-title">
+                        Profile Completion
+                    </span>
+
+                    <span
+                        class="completion-value"
+                        id="completionText"
+                    >
+                        0%
+                    </span>
+
+                </div>
+
+                <div class="progress-track">
+                    <div
+                        class="progress-bar"
+                        id="completionBar"
+                    ></div>
+                </div>
+
+            </div>
+
+            <!-- ================= FORM ================= -->
+
+            <form
+                method="POST"
+                enctype="multipart/form-data"
+                id="profileForm"
+                class="profile-form"
+            >
+
+                <h2 class="section-title">
+                    Personal Information
+                </h2>
+
+                <div class="form-grid">
+
+                    <!-- Name -->
+
+                    <div class="form-group">
+
+                        <label for="name">
+                            Full Name
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            class="form-control"
+                            value="{{ name or '' }}"
+                            maxlength="150"
+                            autocomplete="name"
+                            required
+                        >
+
+                        <div
+                            class="error-message"
+                            id="nameError"
+                        >
+                            Please enter your name.
+                        </div>
+
+                    </div>
+
+                    <!-- Mobile -->
+
+                    <div class="form-group">
+
+                        <label for="mobile">
+                            Mobile Number
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="mobile"
+                            name="mobile"
+                            class="form-control"
+                            value="{{ mobile or '' }}"
+                            maxlength="10"
+                            inputmode="numeric"
+                            autocomplete="tel"
+                            placeholder="10-digit mobile number"
+                            required
+                        >
+
+                        <div class="input-help">
+                            Enter a valid 10-digit Indian mobile number.
+                        </div>
+
+                        <div
+                            class="error-message"
+                            id="mobileError"
+                        >
+                            Enter a valid 10-digit mobile number.
+                        </div>
+
+                    </div>
+
+                    <!-- Email -->
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-control"
+                            value="{{ email or '' }}"
+                            maxlength="150"
+                            autocomplete="email"
+                            placeholder="example@email.com"
+                        >
+
+                        <div class="input-help">
+                            Used for account communication.
+                        </div>
+
+                    </div>
+
+                    <!-- Role -->
+
+                    <div class="form-group">
+
+                        <label for="role">
+                            Account Role
+                        </label>
+
+                        <input
+                            type="text"
+                            id="role"
+                            class="form-control"
+                            value="{{ role or session.get('role', 'Farmer')|title }}"
+                            disabled
+                        >
+
+                        <div class="input-help">
+                            Account role cannot be changed here.
+                        </div>
+
+                    </div>
+
+                    <!-- Location -->
+
+                    <div class="form-group full-width">
+
+                        <label for="location">
+                            Location
+                        </label>
+
+                        <input
+                            type="text"
+                            id="location"
+                            name="location"
+                            class="form-control"
+                            value="{{ location or '' }}"
+                            maxlength="200"
+                            autocomplete="address-level2"
+                            placeholder="Enter your village, city or district"
+                        >
+
+                        <div class="input-help">
+                            Your location helps provide relevant farming information.
+                        </div>
+
+                    </div>
+
+                    <!-- Profile Photo -->
+
+                    <div class="form-group full-width">
+
+                        <label for="profile">
+                            Profile Photo
+                        </label>
+
+                        <input
+                            type="file"
+                            id="profile"
+                            name="profile"
+                            accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                        >
+
+                        <div class="photo-info">
+                            JPG, JPEG or PNG - Maximum 5 MB recommended.
+                        </div>
+
+                        <div
+                            class="error-message"
+                            id="photoError"
+                        >
+                            Please select a valid JPG, JPEG or PNG image under 5 MB.
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- ================= PERSONALIZATION ================= -->
+
+                <div class="personalization-box">
+
+                    <h3>
+                        Smart Personalization
+                    </h3>
+
+                    <p>
+                        Your profile information helps KisanVision360+
+                        provide more relevant farming services.
+                    </p>
+
+                    <div class="tags">
+
+                        <span class="tag">
+                            Weather Updates
+                        </span>
+
+                        <span class="tag">
+                            Crop Recommendations
+                        </span>
+
+                        <span class="tag">
+                            Market Prices
+                        </span>
+
+                        <span class="tag">
+                            Government Schemes
+                        </span>
+
+                        <span class="tag">
+                            Farm Reports
+                        </span>
+
+                        <span class="tag">
+                            Smart Irrigation
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!-- ================= SECURITY ================= -->
+
+                <div class="security-strip">
+
+                    <strong>Privacy:</strong>
+                    Your profile information is stored securely
+                    and is used only for KisanVision360+ services.
+
+                </div>
+
+                <!-- ================= ACTIONS ================= -->
+
+                <div class="form-actions">
+
+                    <a
+                        href="{{ url_for('profile.profile') }}"
+                        class="btn btn-cancel"
+                    >
+                        Cancel
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="btn btn-save"
+                        id="saveButton"
+                    >
+                        Save Changes
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form = document.getElementById("profileForm");
+
+    const nameInput = document.getElementById("name");
+    const mobileInput = document.getElementById("mobile");
+    const emailInput = document.getElementById("email");
+    const locationInput = document.getElementById("location");
+    const profileInput = document.getElementById("profile");
+
+    const nameError = document.getElementById("nameError");
+    const mobileError = document.getElementById("mobileError");
+    const photoError = document.getElementById("photoError");
+
+    const saveButton = document.getElementById("saveButton");
+
+    const completionBar = document.getElementById("completionBar");
+    const completionText = document.getElementById("completionText");
+
+    const profilePreview = document.getElementById("profilePreview");
+    const avatarPlaceholder = document.getElementById("avatarPlaceholder");
+
+    const headerName = document.getElementById("headerName");
+
+
+    /* ======================================================
+       MOBILE - ONLY NUMBERS
+    ====================================================== */
+
+    mobileInput.addEventListener("input", function () {
+
+        this.value = this.value.replace(/\D/g, "").slice(0, 10);
+
+        validateMobile();
+        updateCompletion();
+
+    });
+
+
+    /* ======================================================
+       NAME
+    ====================================================== */
+
+    nameInput.addEventListener("input", function () {
+
+        validateName();
+
+        if (headerName) {
+            headerName.textContent =
+                this.value.trim() || "Farmer";
+        }
+
+        updateCompletion();
+
+    });
+
+
+    /* ======================================================
+       EMAIL
+    ====================================================== */
+
+    emailInput.addEventListener("input", function () {
+        updateCompletion();
+    });
+
+
+    /* ======================================================
+       LOCATION
+    ====================================================== */
+
+    locationInput.addEventListener("input", function () {
+        updateCompletion();
+    });
+
+
+    /* ======================================================
+       VALIDATE NAME
+    ====================================================== */
+
+    function validateName() {
+
+        const value = nameInput.value.trim();
+
+        if (!value) {
+
+            nameInput.classList.add("invalid");
+            nameInput.classList.remove("valid");
+
+            nameError.style.display = "block";
+
+            return false;
+        }
+
+        nameInput.classList.remove("invalid");
+        nameInput.classList.add("valid");
+
+        nameError.style.display = "none";
+
+        return true;
+    }
+
+
+    /* ======================================================
+       VALIDATE MOBILE
+    ====================================================== */
+
+    function validateMobile() {
+
+        const value = mobileInput.value.trim();
+
+        const valid =
+            /^[6-9]\d{9}$/.test(value);
+
+        if (!valid) {
+
+            mobileInput.classList.add("invalid");
+            mobileInput.classList.remove("valid");
+
+            mobileError.style.display = "block";
+
+            return false;
+        }
+
+        mobileInput.classList.remove("invalid");
+        mobileInput.classList.add("valid");
+
+        mobileError.style.display = "none";
+
+        return true;
+    }
+
+
+    /* ======================================================
+       VALIDATE PHOTO
+    ====================================================== */
+
+    profileInput.addEventListener("change", function () {
+
+        photoError.style.display = "none";
+
+        const file = this.files[0];
+
+        if (!file) {
+            updateCompletion();
+            return;
+        }
+
+        const allowedTypes = [
+            "image/jpeg",
+            "image/png"
+        ];
+
+        const maxSize = 5 * 1024 * 1024;
+
+        if (
+            !allowedTypes.includes(file.type) ||
+            file.size > maxSize
+        ) {
+
+            photoError.style.display = "block";
+
+            this.value = "";
+
+            return;
+        }
+
+
+        /* Preview */
+
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+
+            profilePreview.src =
+                event.target.result;
+
+            profilePreview.style.display =
+                "block";
+
+            if (avatarPlaceholder) {
+                avatarPlaceholder.style.display =
+                    "none";
+            }
+
+        };
+
+        reader.readAsDataURL(file);
+
+        updateCompletion();
+
+    });
+
+
+    /* ======================================================
+       PROFILE COMPLETION
+    ====================================================== */
+
+    function updateCompletion() {
+
+        let completed = 0;
+
+        const total = 5;
+
+        if (nameInput.value.trim()) {
+            completed++;
+        }
+
+        if (/^[6-9]\d{9}$/.test(
+            mobileInput.value.trim()
+        )) {
+            completed++;
+        }
+
+        if (emailInput.value.trim()) {
+            completed++;
+        }
+
+        if (locationInput.value.trim()) {
+            completed++;
+        }
+
+        if (
+            profileInput.files &&
+            profileInput.files.length > 0
+        ) {
+            completed++;
+        }
+        else if (
+            profilePreview &&
+            profilePreview.style.display !== "none" &&
+            profilePreview.src
+        ) {
+            completed++;
+        }
+
+        const percentage =
+            Math.round((completed / total) * 100);
+
+        completionBar.style.width =
+            percentage + "%";
+
+        completionText.textContent =
+            percentage + "%";
+    }
+
+
+    /* ======================================================
+       FORM SUBMIT
+    ====================================================== */
+
+    form.addEventListener("submit", function (event) {
+
+        const validName = validateName();
+        const validMobile = validateMobile();
+
+        const file = profileInput.files[0];
+
+        if (file) {
+
+            const allowedTypes = [
+                "image/jpeg",
+                "image/png"
+            ];
+
+            const maxSize = 5 * 1024 * 1024;
+
+            if (
+                !allowedTypes.includes(file.type) ||
+                file.size > maxSize
+            ) {
+
+                event.preventDefault();
+
+                photoError.style.display =
+                    "block";
+
+                return;
+            }
+        }
+
+
+        if (!validName || !validMobile) {
+
+            event.preventDefault();
+
+            if (!validName) {
+                nameInput.focus();
+            }
+            else {
+                mobileInput.focus();
+            }
+
+            return;
+        }
+
+
+        saveButton.disabled = true;
+
+        saveButton.textContent =
+            "Saving...";
+
+    });
+
+
+    /* ======================================================
+       INITIAL STATE
+    ====================================================== */
+
+    validateName();
+    validateMobile();
+    updateCompletion();
+
+});
+</script>
+
+{% endblock %}
+

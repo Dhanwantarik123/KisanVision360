@@ -1977,10 +1977,10 @@
 
                         {% if weather and weather.temperature is not none %}
 
-                            {{ weather.temperature }}Â°C
+                            {{ weather.temperature }}°C
 
                             {% if weather.description %}
-                                Â· {{ weather.description }}
+                                · {{ weather.description }}
                             {% endif %}
 
                         {% else %}
@@ -2645,11 +2645,11 @@
 
                     {% if weather and weather.temperature is not none %}
 
-                        {{ weather.temperature }}Â°C
+                        {{ weather.temperature }}°C
 
                     {% else %}
 
-                        --Â°C
+                        --°C
 
                     {% endif %}
 
@@ -3046,13 +3046,13 @@
                 KisanVision360+
             </strong>
 
-            <span>â€¢</span>
+            <span>•</span>
 
             AI-Assisted Smart Agriculture Platform
 
-            <span>â€¢</span>
+            <span>•</span>
 
-            Made in India ðŸ‡®ðŸ‡³
+            Made in India 
 
         </div>
 
@@ -3285,9 +3285,9 @@ document.addEventListener(
             if (serverWeatherAvailable) {
 
                 weatherStatus.textContent =
-                    "{{ weather.temperature }}Â°C" +
+                    "{{ weather.temperature }}°C" +
                     "{% if weather.description %}" +
-                    " Â· {{ weather.description|replace('\n', ' ') }}" +
+                    " · {{ weather.description|replace('\n', ' ') }}" +
                     "{% endif %}";
 
 
@@ -3379,7 +3379,7 @@ document.addEventListener(
             else if (irrigation === "low") {
 
                 waterStatus.textContent =
-                    "Low irrigation Â· save water";
+                    "Low irrigation · save water";
 
 
                 if (waterCard) {

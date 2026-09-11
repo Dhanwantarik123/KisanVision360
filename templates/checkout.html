@@ -1196,7 +1196,7 @@
 
                         <strong>
 
-                            â‚¹{{ "%.2f"|format(
+                            ₹{{ "%.2f"|format(
                                 buy_now_product.price|float
                             ) }}
 
@@ -1221,7 +1221,7 @@
                         <span>Platform Fee</span>
 
                         <strong>
-                            â‚¹0.00
+                            ₹0.00
                         </strong>
 
                     </div>
@@ -1236,7 +1236,7 @@
 
                         <strong>
 
-                            â‚¹{{ "%.2f"|format(
+                            ₹{{ "%.2f"|format(
                                 buy_now_product.price|float
                             ) }}
 
@@ -1712,7 +1712,7 @@
 
                         <strong class="product-price">
 
-                            â‚¹{{ "%.2f"|format(
+                            ₹{{ "%.2f"|format(
                                 (item.price|float) *
                                 (item.quantity|int)
                             ) }}
@@ -1730,7 +1730,7 @@
 
                         <strong>
 
-                            â‚¹{{ "%.2f"|format(total|float) }}
+                            ₹{{ "%.2f"|format(total|float) }}
 
                         </strong>
 
@@ -1753,7 +1753,7 @@
                         <span>Platform Fee</span>
 
                         <strong>
-                            â‚¹0.00
+                            ₹0.00
                         </strong>
 
                     </div>
@@ -1768,7 +1768,7 @@
 
                         <strong>
 
-                            â‚¹{{ "%.2f"|format(total|float) }}
+                            ₹{{ "%.2f"|format(total|float) }}
 
                         </strong>
 
@@ -1968,7 +1968,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (addressStatus) {
 
                         addressStatus.textContent =
-                            "âœ“ Delivery address looks good.";
+                            "✓ Delivery address looks good.";
 
                         addressStatus.className =
                             "field-status success";
@@ -2035,7 +2035,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (pinStatus) {
 
                         pinStatus.textContent =
-                            "âœ“ Valid 6-digit PIN format.";
+                            "✓ Valid 6-digit PIN format.";
 
                         pinStatus.className =
                             "field-status success";

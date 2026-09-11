@@ -1,0 +1,1399 @@
+﻿{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KisanVision360+ | AI Government Schemes</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/sidebar.css') }}">
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/government.css') }}">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+/* =========================================================
+   KISANVISION360+ GOVERNMENT SCHEMES INNOVATION LAYER
+========================================================= */
+
+.ai-banner {
+    margin: 20px 0;
+    padding: 22px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #1b5e20, #43a047);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    box-shadow: 0 10px 30px rgba(27, 94, 32, 0.18);
+}
+
+.ai-banner-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.ai-banner-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 15px;
+    background: rgba(255,255,255,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+}
+
+.ai-banner h2 {
+    margin: 0 0 5px;
+    font-size: 21px;
+}
+
+.ai-banner p {
+    margin: 0;
+    opacity: 0.9;
+}
+
+.ai-match-btn {
+    border: none;
+    background: white;
+    color: #1b5e20;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.ai-match-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Smart insight */
+
+.smart-insight {
+    display: none;
+    margin-bottom: 20px;
+    padding: 18px;
+    border-radius: 15px;
+    background: #f1f8e9;
+    border-left: 5px solid #43a047;
+}
+
+.smart-insight.show {
+    display: block;
+}
+
+.smart-insight h3 {
+    margin: 0 0 7px;
+    color: #1b5e20;
+}
+
+.smart-insight p {
+    margin: 0;
+    color: #444;
+}
+
+/* Search enhancement */
+
+.search-wrapper {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.search-wrapper .search-box {
+    margin-bottom: 0;
+}
+
+.search-status {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #666;
+}
+
+/* Scheme card innovation */
+
+.scheme-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.scheme-card.ai-recommended {
+    border: 2px solid #43a047;
+}
+
+.ai-recommended-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: #1b5e20;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    z-index: 2;
+}
+
+.eligibility-box {
+    margin: 12px 0;
+    padding: 12px;
+    border-radius: 10px;
+    background: #f7f9f7;
+}
+
+.eligibility-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 7px;
+}
+
+.eligibility-header span {
+    font-size: 12px;
+    font-weight: 700;
+    color: #555;
+}
+
+.eligibility-score {
+    font-size: 14px;
+    font-weight: 800;
+    color: #1b5e20;
+}
+
+.score-bar {
+    width: 100%;
+    height: 7px;
+    background: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.score-fill {
+    height: 100%;
+    width: 0;
+    background: #43a047;
+    border-radius: 10px;
+    transition: width 0.8s ease;
+}
+
+.ai-reason {
+    display: none;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #555;
+}
+
+.scheme-card.ai-recommended .ai-reason {
+    display: block;
+}
+
+/* No result */
+
+.no-schemes {
+    display: none;
+    text-align: center;
+    padding: 50px 20px;
+    color: #777;
+}
+
+.no-schemes i {
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+/* Details modal */
+
+.scheme-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.scheme-modal.active {
+    display: flex;
+}
+
+.scheme-modal-content {
+    width: min(650px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    background: white;
+    border-radius: 18px;
+    padding: 25px;
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    right: 18px;
+    top: 15px;
+    width: 35px;
+    height: 35px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.modal-title {
+    padding-right: 40px;
+    color: #1b5e20;
+}
+
+.modal-category {
+    display: inline-block;
+    padding: 6px 12px;
+    background: #e8f5e9;
+    color: #1b5e20;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.modal-section {
+    margin-top: 18px;
+}
+
+.modal-section h4 {
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.modal-section p {
+    margin: 0;
+    line-height: 1.6;
+    color: #555;
+}
+
+/* Responsive */
+
+@media (max-width: 700px) {
+
+    .ai-banner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ai-match-btn {
+        width: 100%;
+    }
+
+    .scheme-modal-content {
+        padding: 20px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+{% include "components/sidebar.html" %}
+
+
+<!-- =========================================================
+     MAIN CONTENT
+========================================================= -->
+
+<div class="main-content">
+
+
+    <!-- =====================================================
+         TOPBAR
+    ====================================================== -->
+
+    <div class="topbar">
+
+        <div>
+
+            <h1>
+                ðŸ› Government Schemes
+            </h1>
+
+            <p>
+                Explore Central & State Agriculture Schemes
+            </p>
+
+        </div>
+
+
+        <div class="profile">
+
+            <img
+                src="{{ url_for('static', filename='images/farmer.jpg') }}"
+                alt="Farmer">
+
+            <div>
+
+                <h3>
+                    {{ name }}
+                </h3>
+
+                <span>
+                    Farmer
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         AI INNOVATION BANNER
+    ====================================================== -->
+
+    <div class="ai-banner">
+
+        <div class="ai-banner-left">
+
+            <div class="ai-banner-icon">
+
+                <i class="fa-solid fa-robot"></i>
+
+            </div>
+
+            <div>
+
+                <h2>
+                    KisanVision360+ AI Scheme Matcher
+                </h2>
+
+                <p>
+                    Find government schemes that may be suitable
+                    for your farming needs.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="ai-match-btn"
+            onclick="runAISchemeMatch()">
+
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+            Find My Schemes
+
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         AI SMART INSIGHT
+    ====================================================== -->
+
+    <div
+        class="smart-insight"
+        id="smartInsight">
+
+        <h3>
+
+            <i class="fa-solid fa-lightbulb"></i>
+
+            AI Smart Insight
+
+        </h3>
+
+        <p id="smartInsightText">
+
+            Click "Find My Schemes" to analyze available schemes.
+
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         STATISTICS
+    ====================================================== -->
+
+    <div class="stats-grid">
+
+
+        <div class="stat-card">
+
+            <i class="fa-solid fa-landmark"></i>
+
+            <h2>
+                {{ schemes|length }}
+            </h2>
+
+            <p>
+                Total Schemes
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+
+            <h2>
+                â‚¹6,000
+            </h2>
+
+            <p>
+                PM-KISAN Benefit
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <i class="fa-solid fa-seedling"></i>
+
+            <h2>
+                12+
+            </h2>
+
+            <p>
+                Agriculture Programs
+            </p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <i class="fa-solid fa-users"></i>
+
+            <h2>
+                All Farmers
+            </h2>
+
+            <p>
+                Eligible Categories
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SMART SEARCH
+    ====================================================== -->
+
+    <div class="search-wrapper">
+
+        <div class="search-box">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search scheme, benefit, department or category...">
+
+        </div>
+
+        <div
+            class="search-status"
+            id="searchStatus">
+
+            Showing all available schemes
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         CATEGORY FILTER
+    ====================================================== -->
+
+    <div class="filter">
+
+        <button
+            class="filter-btn active"
+            onclick="filterSchemes('all', this)">
+
+            All
+
+        </button>
+
+
+        <button
+            class="filter-btn"
+            onclick="filterSchemes('Financial', this)">
+
+            Financial
+
+        </button>
+
+
+        <button
+            class="filter-btn"
+            onclick="filterSchemes('Insurance', this)">
+
+            Insurance
+
+        </button>
+
+
+        <button
+            class="filter-btn"
+            onclick="filterSchemes('Irrigation', this)">
+
+            Irrigation
+
+        </button>
+
+
+        <button
+            class="filter-btn"
+            onclick="filterSchemes('Loan', this)">
+
+            Loan
+
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         SCHEME GRID
+    ====================================================== -->
+
+    <div
+        class="scheme-grid"
+        id="schemeContainer">
+
+
+        {% for scheme in schemes %}
+
+        <div
+            class="scheme-card"
+            data-category="{{ scheme.category }}"
+            data-name="{{ scheme.name }}"
+            data-department="{{ scheme.department }}"
+            data-benefit="{{ scheme.benefit }}"
+            data-eligibility="{{ scheme.eligibility }}">
+
+
+            <!-- AI RECOMMENDED BADGE -->
+
+            <div class="ai-recommended-badge">
+
+                <i class="fa-solid fa-robot"></i>
+
+                AI MATCH
+
+            </div>
+
+
+            <!-- ICON -->
+
+            <div class="scheme-icon">
+
+                <i class="fa-solid fa-landmark"></i>
+
+            </div>
+
+
+            <!-- BODY -->
+
+            <div class="scheme-body">
+
+
+                <h2>
+                    {{ scheme.name }}
+                </h2>
+
+
+                <span class="category">
+
+                    {{ scheme.category }}
+
+                </span>
+
+
+                <!-- Department -->
+
+                <p>
+
+                    <b>
+                        <i class="fa-solid fa-building-columns"></i>
+                        Department
+                    </b>
+
+                    <br>
+
+                    {{ scheme.department }}
+
+                </p>
+
+
+                <!-- Benefit -->
+
+                <p>
+
+                    <b>
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+                        Benefit
+                    </b>
+
+                    <br>
+
+                    {{ scheme.benefit }}
+
+                </p>
+
+
+                <!-- Eligibility -->
+
+                <p>
+
+                    <b>
+                        <i class="fa-solid fa-user-check"></i>
+                        Eligibility
+                    </b>
+
+                    <br>
+
+                    {{ scheme.eligibility }}
+
+                </p>
+
+
+                <!-- =================================================
+                     AI ELIGIBILITY SCORE
+                ================================================== -->
+
+                <div class="eligibility-box">
+
+                    <div class="eligibility-header">
+
+                        <span>
+                            AI Suitability Score
+                        </span>
+
+                        <span class="eligibility-score">
+                            <span class="score-number">
+                                0
+                            </span>%
+                        </span>
+
+                    </div>
+
+
+                    <div class="score-bar">
+
+                        <div class="score-fill"></div>
+
+                    </div>
+
+
+                    <div class="ai-reason">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        AI score is an indicative recommendation.
+                        Final eligibility depends on official scheme rules.
+
+                    </div>
+
+                </div>
+
+
+                <!-- BUTTONS -->
+
+                <div class="card-buttons">
+
+
+                    <a
+                        href="{{ scheme.website }}"
+                        target="_blank"
+                        rel="noopener noreferrer">
+
+                        <button class="apply-btn">
+
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+                            Apply Now
+
+                        </button>
+
+                    </a>
+
+
+                    <button
+                        class="details-btn"
+                        onclick="showSchemeDetails(this)">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        Details
+
+                    </button>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+
+    </div>
+
+
+    <!-- NO RESULTS -->
+
+    <div
+        class="no-schemes"
+        id="noSchemes">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <h3>
+            No schemes found
+        </h3>
+
+        <p>
+            Try another keyword or category.
+        </p>
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================================================
+     SCHEME DETAILS MODAL
+========================================================= -->
+
+<div
+    class="scheme-modal"
+    id="schemeModal">
+
+
+    <div class="scheme-modal-content">
+
+
+        <button
+            class="modal-close"
+            onclick="closeSchemeModal()">
+
+            <i class="fa-solid fa-xmark"></i>
+
+        </button>
+
+
+        <h2
+            class="modal-title"
+            id="modalTitle">
+
+            Government Scheme
+
+        </h2>
+
+
+        <span
+            class="modal-category"
+            id="modalCategory">
+
+            Category
+
+        </span>
+
+
+        <div class="modal-section">
+
+            <h4>
+                <i class="fa-solid fa-building-columns"></i>
+                Department
+            </h4>
+
+            <p id="modalDepartment"></p>
+
+        </div>
+
+
+        <div class="modal-section">
+
+            <h4>
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+                Benefit
+            </h4>
+
+            <p id="modalBenefit"></p>
+
+        </div>
+
+
+        <div class="modal-section">
+
+            <h4>
+                <i class="fa-solid fa-user-check"></i>
+                Eligibility
+            </h4>
+
+            <p id="modalEligibility"></p>
+
+        </div>
+
+
+        <div class="modal-section">
+
+            <h4>
+                <i class="fa-solid fa-robot"></i>
+                KisanVision360+ AI Insight
+            </h4>
+
+            <p>
+                This scheme is displayed based on the available
+                scheme information. Always verify the final
+                eligibility and application requirements on the
+                official government website.
+            </p>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     CHATBOT
+========================================================= -->
+
+
+
+
+<!-- =========================================================
+     EXISTING JAVASCRIPT
+========================================================= -->
+
+<script src="{{ url_for('static', filename='js/government.js') }}"></script>
+
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+
+
+<!-- =========================================================
+     KISANVISION360+ INNOVATION JAVASCRIPT
+========================================================= -->
+
+<script>
+
+/* =========================================================
+   GLOBAL STATE
+========================================================= */
+
+let activeCategory = "all";
+
+
+/* =========================================================
+   GET SCHEME CARDS
+========================================================= */
+
+function getSchemeCards() {
+
+    return Array.from(
+        document.querySelectorAll(".scheme-card")
+    );
+
+}
+
+
+/* =========================================================
+   SEARCH + FILTER
+========================================================= */
+
+function applySchemeFilters() {
+
+    const input =
+        document.getElementById("searchInput");
+
+    const search =
+        input.value.toLowerCase().trim();
+
+    const cards =
+        getSchemeCards();
+
+    let visibleCount = 0;
+
+
+    cards.forEach(card => {
+
+        const category =
+            (card.dataset.category || "").toLowerCase();
+
+        const searchableText = (
+
+            (card.dataset.name || "") + " " +
+            (card.dataset.department || "") + " " +
+            (card.dataset.benefit || "") + " " +
+            (card.dataset.eligibility || "") + " " +
+            (card.dataset.category || "")
+
+        ).toLowerCase();
+
+
+        const categoryMatch =
+            activeCategory === "all" ||
+            category === activeCategory.toLowerCase();
+
+
+        const searchMatch =
+            search === "" ||
+            searchableText.includes(search);
+
+
+        if (categoryMatch && searchMatch) {
+
+            card.style.display = "";
+
+            visibleCount++;
+
+        } else {
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+
+    const noSchemes =
+        document.getElementById("noSchemes");
+
+    const status =
+        document.getElementById("searchStatus");
+
+
+    if (visibleCount === 0) {
+
+        noSchemes.style.display = "block";
+
+    } else {
+
+        noSchemes.style.display = "none";
+
+    }
+
+
+    if (search) {
+
+        status.innerText =
+            visibleCount +
+            " scheme(s) found for \"" +
+            search +
+            "\"";
+
+    } else {
+
+        status.innerText =
+            visibleCount +
+            " scheme(s) available";
+
+    }
+
+}
+
+
+/* =========================================================
+   CATEGORY FILTER
+========================================================= */
+
+function filterSchemes(category, button) {
+
+    activeCategory = category;
+
+
+    document
+        .querySelectorAll(".filter-btn")
+        .forEach(btn => {
+
+            btn.classList.remove("active");
+
+        });
+
+
+    if (button) {
+
+        button.classList.add("active");
+
+    }
+
+
+    applySchemeFilters();
+
+}
+
+
+/* =========================================================
+   SEARCH EVENT
+========================================================= */
+
+document
+    .getElementById("searchInput")
+    .addEventListener("input", function() {
+
+        applySchemeFilters();
+
+    });
+
+
+/* =========================================================
+   AI SCHEME MATCHING
+========================================================= */
+
+function calculateAIScore(card) {
+
+    const category =
+        (card.dataset.category || "").toLowerCase();
+
+    const name =
+        (card.dataset.name || "").toLowerCase();
+
+    const benefit =
+        (card.dataset.benefit || "").toLowerCase();
+
+    const eligibility =
+        (card.dataset.eligibility || "").toLowerCase();
+
+
+    let score = 60;
+
+
+    /*
+     * Indicative intelligent scoring.
+     * It does NOT claim official eligibility.
+     */
+
+
+    if (
+        category.includes("financial") ||
+        category.includes("loan")
+    ) {
+
+        score += 10;
+
+    }
+
+
+    if (
+        category.includes("insurance")
+    ) {
+
+        score += 8;
+
+    }
+
+
+    if (
+        category.includes("irrigation")
+    ) {
+
+        score += 8;
+
+    }
+
+
+    if (
+        name.includes("farmer") ||
+        name.includes("kisan") ||
+        eligibility.includes("farmer")
+    ) {
+
+        score += 7;
+
+    }
+
+
+    if (
+        benefit.includes("subsid") ||
+        benefit.includes("financial") ||
+        benefit.includes("â‚¹")
+    ) {
+
+        score += 5;
+
+    }
+
+
+    return Math.min(score, 97);
+
+}
+
+
+/* =========================================================
+   RUN AI MATCH
+========================================================= */
+
+function runAISchemeMatch() {
+
+    const cards =
+        getSchemeCards();
+
+    if (!cards.length) {
+
+        showSmartInsight(
+            "No scheme data is currently available for AI matching."
+        );
+
+        return;
+
+    }
+
+
+    let recommendedCount = 0;
+
+
+    cards.forEach(card => {
+
+        const score =
+            calculateAIScore(card);
+
+
+        const scoreNumber =
+            card.querySelector(".score-number");
+
+        const scoreFill =
+            card.querySelector(".score-fill");
+
+
+        if (scoreNumber) {
+
+            scoreNumber.innerText = score;
+
+        }
+
+
+        if (scoreFill) {
+
+            scoreFill.style.width =
+                score + "%";
+
+        }
+
+
+        if (score >= 75) {
+
+            card.classList.add("ai-recommended");
+
+            recommendedCount++;
+
+        } else {
+
+            card.classList.remove("ai-recommended");
+
+        }
+
+    });
+
+
+    /*
+     * Sort recommended schemes first.
+     */
+
+    const container =
+        document.getElementById("schemeContainer");
+
+
+    const sortedCards =
+        [...cards].sort((a, b) => {
+
+            const scoreA =
+                parseInt(
+                    a.querySelector(".score-number")?.innerText || 0
+                );
+
+            const scoreB =
+                parseInt(
+                    b.querySelector(".score-number")?.innerText || 0
+                );
+
+            return scoreB - scoreA;
+
+        });
+
+
+    sortedCards.forEach(card => {
+
+        container.appendChild(card);
+
+    });
+
+
+    showSmartInsight(
+
+        recommendedCount +
+        " scheme(s) have been identified as potentially suitable " +
+        "based on the available scheme information. " +
+        "Check the official scheme website before applying."
+
+    );
+
+
+    /*
+     * Scroll to recommendations.
+     */
+
+    document
+        .getElementById("smartInsight")
+        .scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+}
+
+
+/* =========================================================
+   SMART INSIGHT
+========================================================= */
+
+function showSmartInsight(message) {
+
+    const box =
+        document.getElementById("smartInsight");
+
+    const text =
+        document.getElementById("smartInsightText");
+
+
+    text.innerText = message;
+
+    box.classList.add("show");
+
+}
+
+
+/* =========================================================
+   DETAILS MODAL
+========================================================= */
+
+function showSchemeDetails(button) {
+
+    const card =
+        button.closest(".scheme-card");
+
+
+    if (!card) return;
+
+
+    document.getElementById("modalTitle").innerText =
+        card.dataset.name || "Government Scheme";
+
+
+    document.getElementById("modalCategory").innerText =
+        card.dataset.category || "Agriculture";
+
+
+    document.getElementById("modalDepartment").innerText =
+        card.dataset.department || "Not available";
+
+
+    document.getElementById("modalBenefit").innerText =
+        card.dataset.benefit || "Not available";
+
+
+    document.getElementById("modalEligibility").innerText =
+        card.dataset.eligibility || "Not available";
+
+
+    document
+        .getElementById("schemeModal")
+        .classList.add("active");
+
+}
+
+
+/* =========================================================
+   CLOSE MODAL
+========================================================= */
+
+function closeSchemeModal() {
+
+    document
+        .getElementById("schemeModal")
+        .classList.remove("active");
+
+}
+
+
+/* =========================================================
+   CLOSE MODAL ON OUTSIDE CLICK
+========================================================= */
+
+document
+    .getElementById("schemeModal")
+    .addEventListener("click", function(event) {
+
+        if (event.target === this) {
+
+            closeSchemeModal();
+
+        }
+
+    });
+
+
+/* =========================================================
+   ESCAPE KEY
+========================================================= */
+
+document.addEventListener("keydown", function(event) {
+
+    if (event.key === "Escape") {
+
+        closeSchemeModal();
+
+    }
+
+});
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    applySchemeFilters();
+
+});
+
+</script>
+
+</body>
+
+</html>

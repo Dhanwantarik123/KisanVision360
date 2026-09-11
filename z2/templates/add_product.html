@@ -1,0 +1,1947 @@
+﻿{% extends "base.html" %}
+
+{% block title %}KisanVision360+ | Sell Product{% endblock %}
+
+{% block head %}
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/add_product.css') }}">
+
+<style>
+
+/* =========================================================
+   KISANVISION360+ SELL PRODUCT
+========================================================= */
+
+.kv-sell-page {
+    padding: 24px;
+    max-width: 1450px;
+    margin: auto;
+}
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.kv-intro {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #e8f5e9, #f8fff8);
+    border: 1px solid #dcebdc;
+}
+
+.kv-intro-icon {
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    border-radius: 15px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2e7d32;
+    font-size: 22px;
+}
+
+.kv-intro span {
+    font-size: 10px;
+    font-weight: 800;
+    color: #43a047;
+    letter-spacing: 1px;
+}
+
+.kv-intro h2 {
+    margin: 3px 0;
+    color: #24572c;
+    font-size: 19px;
+}
+
+.kv-intro p {
+    margin: 0;
+    color: #6f7b72;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+.kv-error {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 15px;
+    margin-bottom: 20px;
+    background: #fff3f3;
+    border: 1px solid #ffcdd2;
+    border-radius: 14px;
+    color: #b71c1c;
+}
+
+.kv-error i {
+    font-size: 20px;
+}
+
+.kv-error strong {
+    display: block;
+    margin-bottom: 3px;
+}
+
+.kv-error p {
+    margin: 0;
+    font-size: 12px;
+}
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+
+.kv-sell-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 330px;
+    gap: 20px;
+}
+
+/* =========================================================
+   FORM CARD
+========================================================= */
+
+.kv-form-card {
+    background: #ffffff;
+    border: 1px solid #e3ebe4;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.07);
+}
+
+.kv-form-heading {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #edf2ee;
+    margin-bottom: 20px;
+}
+
+.kv-form-heading-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.kv-form-heading h2 {
+    margin: 0;
+    color: #244d2b;
+    font-size: 18px;
+}
+
+.kv-form-heading p {
+    margin: 3px 0 0;
+    color: #7a847d;
+    font-size: 12px;
+}
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.kv-section {
+    padding: 20px 0;
+    border-bottom: 1px solid #edf2ee;
+}
+
+.kv-section:last-of-type {
+    border-bottom: none;
+}
+
+.kv-section h3 {
+    margin: 0 0 15px;
+    color: #315c38;
+    font-size: 15px;
+}
+
+.kv-section h3 i {
+    margin-right: 6px;
+    color: #43a047;
+}
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.kv-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.kv-form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.kv-form-group.full {
+    grid-column: 1 / -1;
+}
+
+.kv-form-group label {
+    margin-bottom: 7px;
+    color: #3c4940;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.kv-form-group label i {
+    color: #43a047;
+    margin-right: 5px;
+}
+
+.kv-form-group input,
+.kv-form-group select,
+.kv-form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 13px;
+    border: 1px solid #dce5de;
+    border-radius: 10px;
+    background: #fbfdfb;
+    color: #26352b;
+    outline: none;
+    font-size: 13px;
+    transition: .2s;
+}
+
+.kv-form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.kv-form-group input:focus,
+.kv-form-group select:focus,
+.kv-form-group textarea:focus {
+    border-color: #43a047;
+    box-shadow: 0 0 0 3px rgba(67,160,71,.10);
+}
+
+.kv-help {
+    margin-top: 6px;
+    color: #849087;
+    font-size: 11px;
+}
+
+/* =========================================================
+   PRICE
+========================================================= */
+
+.kv-price-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #dce5de;
+    border-radius: 10px;
+    background: #fbfdfb;
+    overflow: hidden;
+}
+
+.kv-price-box span {
+    padding: 0 13px;
+    color: #2e7d32;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.kv-price-box input {
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+/* =========================================================
+   PRICE PREVIEW
+========================================================= */
+
+.kv-price-preview {
+    margin-top: 12px;
+    padding: 13px;
+    border-radius: 11px;
+    background: #f1f8e9;
+    color: #33691e;
+    font-size: 12px;
+}
+
+.kv-price-preview strong {
+    font-size: 14px;
+}
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.kv-upload {
+    display: block;
+    text-align: center;
+    padding: 28px 20px;
+    border: 2px dashed #b9d7bc;
+    border-radius: 16px;
+    background: #f9fcf9;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.kv-upload:hover {
+    border-color: #43a047;
+    background: #f1f8f2;
+}
+
+.kv-upload-icon {
+    width: 55px;
+    height: 55px;
+    margin: auto;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e8f5e9;
+    color: #2e7d32;
+    font-size: 23px;
+}
+
+.kv-upload h4 {
+    margin: 12px 0 5px;
+    color: #315c38;
+}
+
+.kv-upload p {
+    margin: 0 0 5px;
+    color: #7d877f;
+    font-size: 12px;
+}
+
+.kv-upload span {
+    color: #43a047;
+    font-size: 10px;
+}
+
+.kv-upload input {
+    display: none;
+}
+
+/* =========================================================
+   IMAGE PREVIEW
+========================================================= */
+
+.kv-image-preview {
+    display: none;
+    margin-top: 15px;
+    padding: 12px;
+    border: 1px solid #dce8dd;
+    border-radius: 14px;
+    background: #fafdfb;
+    align-items: center;
+    gap: 14px;
+}
+
+.kv-image-preview img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.kv-image-preview strong {
+    color: #315c38;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.kv-image-preview p {
+    margin: 0;
+    color: #7c877f;
+    font-size: 11px;
+    word-break: break-word;
+}
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.kv-description-counter {
+    text-align: right;
+    margin-top: 5px;
+    color: #89938c;
+    font-size: 10px;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.kv-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 22px;
+}
+
+.kv-cancel {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    padding: 13px;
+    border-radius: 11px;
+    background: #f3f5f3;
+    color: #58635b;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.kv-submit {
+    flex: 2;
+    border: none;
+    border-radius: 11px;
+    padding: 13px;
+    background: linear-gradient(135deg, #1b5e20, #43a047);
+    color: white;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.kv-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(27,94,32,.20);
+}
+
+.kv-submit:disabled {
+    opacity: .7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* =========================================================
+   RIGHT SIDEBAR
+========================================================= */
+
+.kv-side-card {
+    height: fit-content;
+    background: #ffffff;
+    border: 1px solid #e3ebe4;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.06);
+}
+
+.kv-side-title {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 17px;
+}
+
+.kv-side-title-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    background: #fff8e1;
+    color: #f57c00;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.kv-side-title h2 {
+    margin: 0;
+    color: #315c38;
+    font-size: 17px;
+}
+
+.kv-side-title p {
+    margin: 2px 0 0;
+    color: #89928c;
+    font-size: 11px;
+}
+
+/* =========================================================
+   TIPS
+========================================================= */
+
+.kv-tip {
+    display: flex;
+    gap: 10px;
+    padding: 13px 0;
+    border-bottom: 1px solid #edf2ee;
+}
+
+.kv-tip:last-child {
+    border-bottom: none;
+}
+
+.kv-tip-icon {
+    color: #43a047;
+    font-size: 16px;
+    padding-top: 2px;
+}
+
+.kv-tip h4 {
+    margin: 0 0 4px;
+    color: #39463d;
+    font-size: 12px;
+}
+
+.kv-tip p {
+    margin: 0;
+    color: #7b857e;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   AI PANEL
+========================================================= */
+
+.kv-ai-panel {
+    margin-top: 18px;
+    padding: 16px;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #f1f8e9, #f8fff7);
+    border: 1px solid #dcebd5;
+}
+
+.kv-ai-panel h3 {
+    margin: 0 0 7px;
+    color: #33691e;
+    font-size: 14px;
+}
+
+.kv-ai-panel p {
+    margin: 0;
+    color: #667268;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.kv-ai-result {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 9px;
+    background: white;
+    color: #33691e;
+    font-size: 11px;
+    display: none;
+}
+
+/* =========================================================
+   READINESS
+========================================================= */
+
+.kv-readiness {
+    margin-top: 18px;
+    padding: 16px;
+    border-radius: 15px;
+    background: #fafcfb;
+    border: 1px solid #e5ece6;
+}
+
+.kv-readiness-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.kv-readiness-top strong {
+    color: #39463d;
+    font-size: 12px;
+}
+
+#readinessScore {
+    color: #2e7d32;
+    font-weight: 800;
+}
+
+.kv-readiness-bar {
+    height: 8px;
+    background: #e1e7e2;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+#readinessFill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #1b5e20, #66bb6a);
+    transition: .4s;
+}
+
+#readinessText {
+    margin-top: 8px;
+    color: #78837b;
+    font-size: 10px;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.kv-footer {
+    text-align: center;
+    padding: 25px 0 10px;
+    color: #87918a;
+    font-size: 11px;
+}
+
+.kv-footer strong {
+    color: #2e7d32;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 950px) {
+    .kv-sell-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .kv-sell-page {
+        padding: 15px;
+    }
+
+    .kv-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .kv-form-group.full {
+        grid-column: auto;
+    }
+
+    .kv-form-card {
+        padding: 18px;
+    }
+
+    .kv-buttons {
+        flex-direction: column;
+    }
+
+    .kv-cancel,
+    .kv-submit {
+        flex: auto;
+        width: 100%;
+    }
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block page_title %}
+Sell Product
+{% endblock %}
+
+{% block page_subtitle %}
+Smart Agriculture Marketplace
+{% endblock %}
+
+
+{% block content %}
+
+<div class="kv-sell-page">
+
+    <!-- =====================================================
+         INTRO
+    ====================================================== -->
+
+    <section class="kv-intro">
+
+        <div class="kv-intro-icon">
+            <i class="fa-solid fa-seedling"></i>
+        </div>
+
+        <div>
+
+            <span>FARMER MARKETPLACE</span>
+
+            <h2>
+                Turn Your Harvest Into a Digital Listing
+            </h2>
+
+            <p>
+                Add accurate product details, price, quantity
+                and image so consumers can discover your farm products.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SERVER ERROR
+    ====================================================== -->
+
+    {% if error %}
+
+    <div class="kv-error">
+
+        <i class="fa-solid fa-circle-exclamation"></i>
+
+        <div>
+
+            <strong>
+                Unable to list product
+            </strong>
+
+            <p>
+                {{ error }}
+            </p>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         MAIN LAYOUT
+    ====================================================== -->
+
+    <div class="kv-sell-layout">
+
+
+        <!-- =================================================
+             FORM
+        ================================================== -->
+
+        <div class="kv-form-card">
+
+
+            <div class="kv-form-heading">
+
+                <div class="kv-form-heading-icon">
+
+                    <i class="fa-solid fa-box-open"></i>
+
+                </div>
+
+                <div>
+
+                    <h2>
+                        Product Details
+                    </h2>
+
+                    <p>
+                        Complete the information below
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- IMPORTANT:
+                 Uses Flask endpoint instead of hardcoded URL
+            -->
+
+            <form
+                action="{{ url_for('marketplace.add_product') }}"
+                method="POST"
+                enctype="multipart/form-data"
+                id="productForm"
+                novalidate>
+
+
+                <!-- =========================================
+                     BASIC INFORMATION
+                ========================================== -->
+
+                <div class="kv-section">
+
+                    <h3>
+                        <i class="fa-solid fa-circle-info"></i>
+                        Basic Information
+                    </h3>
+
+
+                    <div class="kv-grid">
+
+
+                        <!-- PRODUCT NAME -->
+
+                        <div class="kv-form-group">
+
+                            <label for="product_name">
+
+                                <i class="fa-solid fa-wheat-awn"></i>
+
+                                Product Name
+
+                            </label>
+
+                            <input
+                                type="text"
+                                id="product_name"
+                                name="product_name"
+                                placeholder="Example: Tomato"
+                                maxlength="100"
+                                autocomplete="off"
+                                required>
+
+                        </div>
+
+
+                        <!-- CATEGORY -->
+
+                        <div class="kv-form-group">
+
+                            <label for="category">
+
+                                <i class="fa-solid fa-layer-group"></i>
+
+                                Category
+
+                            </label>
+
+                            <select
+                                id="category"
+                                name="category"
+                                required>
+
+                                <option value="">
+                                    Select Category
+                                </option>
+
+                                <option value="Vegetables">
+                                    Vegetables
+                                </option>
+
+                                <option value="Fruits">
+                                    Fruits
+                                </option>
+
+                                <option value="Grains">
+                                    Grains
+                                </option>
+
+                                <option value="Pulses">
+                                    Pulses
+                                </option>
+
+                                <option value="Spices">
+                                    Spices
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- LOCATION -->
+
+                        <div class="kv-form-group full">
+
+                            <label for="location">
+
+                                <i class="fa-solid fa-location-dot"></i>
+
+                                Farm / Product Location
+
+                            </label>
+
+                            <input
+                                type="text"
+                                id="location"
+                                name="location"
+                                maxlength="255"
+                                placeholder="Example: Nagpur, Maharashtra"
+                                autocomplete="address-level2">
+
+                            <span class="kv-help">
+
+                                Enter the location where the product is available.
+
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     QUANTITY AND PRICE
+                ========================================== -->
+
+                <div class="kv-section">
+
+                    <h3>
+
+                        <i class="fa-solid fa-scale-balanced"></i>
+
+                        Quantity & Pricing
+
+                    </h3>
+
+
+                    <div class="kv-grid">
+
+
+                        <!-- QUANTITY -->
+
+                        <div class="kv-form-group">
+
+                            <label for="quantity">
+
+                                <i class="fa-solid fa-weight-scale"></i>
+
+                                Available Quantity
+
+                            </label>
+
+                            <input
+                                type="number"
+                                id="quantity"
+                                name="quantity"
+                                min="0.01"
+                                step="0.01"
+                                placeholder="Example: 100"
+                                required>
+
+                        </div>
+
+
+                        <!-- UNIT -->
+
+                        <div class="kv-form-group">
+
+                            <label for="unit">
+
+                                <i class="fa-solid fa-ruler"></i>
+
+                                Unit
+
+                            </label>
+
+                            <select
+                                id="unit"
+                                name="unit"
+                                required>
+
+                                <option value="kg">
+                                    Kilogram (kg)
+                                </option>
+
+                                <option value="quintal">
+                                    Quintal
+                                </option>
+
+                                <option value="ton">
+                                    Ton
+                                </option>
+
+                                <option value="piece">
+                                    Piece
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- PRICE -->
+
+                        <div class="kv-form-group full">
+
+                            <label for="price">
+
+                                <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                                Selling Price
+
+                            </label>
+
+                            <div class="kv-price-box">
+
+                                <span>₹</span>
+
+                                <input
+                                    type="number"
+                                    id="price"
+                                    name="price"
+                                    min="0.01"
+                                    step="0.01"
+                                    placeholder="Example: 2500"
+                                    required>
+
+                            </div>
+
+                            <span class="kv-help">
+
+                                Enter the total selling price for the available quantity.
+
+                            </span>
+
+
+                            <div
+                                class="kv-price-preview"
+                                id="pricePreview">
+
+                                💰 Enter quantity and price to calculate
+                                the approximate price per unit.
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     IMAGE
+                ========================================== -->
+
+                <div class="kv-section">
+
+                    <h3>
+
+                        <i class="fa-solid fa-image"></i>
+
+                        Product Image
+
+                    </h3>
+
+
+                    <label
+                        for="image"
+                        class="kv-upload">
+
+                        <div class="kv-upload-icon">
+
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                        </div>
+
+                        <h4>
+                            Upload Product Image
+                        </h4>
+
+                        <p>
+                            Click here to select an image
+                        </p>
+
+                        <span>
+                            JPG, JPEG or PNG • Maximum 5 MB
+                        </span>
+
+                        <input
+                            type="file"
+                            id="image"
+                            name="image"
+                            accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+
+                    </label>
+
+
+                    <div
+                        class="kv-image-preview"
+                        id="imagePreviewContainer">
+
+                        <img
+                            id="imagePreview"
+                            src=""
+                            alt="Product Preview">
+
+                        <div>
+
+                            <strong>
+                                Image Preview
+                            </strong>
+
+                            <p id="fileName">
+                                No image selected
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     DESCRIPTION
+                ========================================== -->
+
+                <div class="kv-section">
+
+                    <h3>
+
+                        <i class="fa-solid fa-align-left"></i>
+
+                        Product Description
+
+                    </h3>
+
+
+                    <div class="kv-form-group">
+
+                        <label for="description">
+
+                            Description
+
+                        </label>
+
+                        <textarea
+                            id="description"
+                            name="description"
+                            maxlength="1000"
+                            placeholder="Describe quality, freshness, harvest date, variety, farming method, etc."></textarea>
+
+                        <div
+                            class="kv-description-counter"
+                            id="descriptionCounter">
+
+                            0 / 1000
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     BUTTONS
+                ========================================== -->
+
+                <div class="kv-buttons">
+
+                    <a
+                        href="{{ url_for('marketplace.farmer_marketplace') }}"
+                        class="kv-cancel">
+
+                        <i class="fa-solid fa-arrow-left"></i>
+
+                        Cancel
+
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="kv-submit"
+                        id="submitButton">
+
+                        <i class="fa-solid fa-store"></i>
+
+                        List Product on Marketplace
+
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+
+        <!-- =================================================
+             RIGHT SIDEBAR
+        ================================================== -->
+
+        <aside>
+
+
+            <!-- =============================================
+                 SELLING TIPS
+            ============================================== -->
+
+            <div class="kv-side-card">
+
+                <div class="kv-side-title">
+
+                    <div class="kv-side-title-icon">
+
+                        <i class="fa-solid fa-lightbulb"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Selling Tips
+                        </h2>
+
+                        <p>
+                            Improve your listing
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="kv-tip">
+
+                    <div class="kv-tip-icon">
+
+                        <i class="fa-solid fa-camera"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4>
+                            Use a Clear Image
+                        </h4>
+
+                        <p>
+                            Upload a bright image of your actual
+                            farm product.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="kv-tip">
+
+                    <div class="kv-tip-icon">
+
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4>
+                            Set a Fair Price
+                        </h4>
+
+                        <p>
+                            Compare your price with available
+                            market information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="kv-tip">
+
+                    <div class="kv-tip-icon">
+
+                        <i class="fa-solid fa-weight-scale"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4>
+                            Mention Quantity
+                        </h4>
+
+                        <p>
+                            Tell buyers exactly how much
+                            produce is available.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="kv-tip">
+
+                    <div class="kv-tip-icon">
+
+                        <i class="fa-solid fa-leaf"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h4>
+                            Explain Quality
+                        </h4>
+
+                        <p>
+                            Mention freshness, variety and
+                            harvest information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =============================================
+                 AI
+            ============================================== -->
+
+            <div class="kv-ai-panel">
+
+                <h3>
+                    🤖 AI Listing Assistant
+                </h3>
+
+                <p>
+                    Complete your product details and
+                    KisanVision360+ will provide a basic
+                    listing-quality insight.
+                </p>
+
+                <div
+                    class="kv-ai-result"
+                    id="aiResult">
+                </div>
+
+            </div>
+
+
+            <!-- =============================================
+                 READINESS
+            ============================================== -->
+
+            <div class="kv-readiness">
+
+                <div class="kv-readiness-top">
+
+                    <strong>
+                        Marketplace Readiness
+                    </strong>
+
+                    <span id="readinessScore">
+                        0%
+                    </span>
+
+                </div>
+
+
+                <div class="kv-readiness-bar">
+
+                    <div id="readinessFill"></div>
+
+                </div>
+
+
+                <div id="readinessText">
+
+                    Start entering product details.
+
+                </div>
+
+            </div>
+
+
+        </aside>
+
+    </div>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="kv-footer">
+
+        🌱
+
+        <strong>
+            KisanVision360+
+        </strong>
+
+        • Smart Farming Marketplace
+
+        • © 2026
+
+    </footer>
+
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+"use strict";
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const productForm =
+    document.getElementById("productForm");
+
+const productName =
+    document.getElementById("product_name");
+
+const category =
+    document.getElementById("category");
+
+const locationInput =
+    document.getElementById("location");
+
+const quantity =
+    document.getElementById("quantity");
+
+const unit =
+    document.getElementById("unit");
+
+const price =
+    document.getElementById("price");
+
+const imageInput =
+    document.getElementById("image");
+
+const description =
+    document.getElementById("description");
+
+const submitButton =
+    document.getElementById("submitButton");
+
+const imagePreviewContainer =
+    document.getElementById("imagePreviewContainer");
+
+const imagePreview =
+    document.getElementById("imagePreview");
+
+const fileName =
+    document.getElementById("fileName");
+
+const descriptionCounter =
+    document.getElementById("descriptionCounter");
+
+const pricePreview =
+    document.getElementById("pricePreview");
+
+const readinessScore =
+    document.getElementById("readinessScore");
+
+const readinessFill =
+    document.getElementById("readinessFill");
+
+const readinessText =
+    document.getElementById("readinessText");
+
+const aiResult =
+    document.getElementById("aiResult");
+
+
+/* =========================================================
+   IMAGE PREVIEW
+========================================================= */
+
+imageInput.addEventListener("change", function () {
+
+    const file = this.files[0];
+
+    if (!file) {
+
+        imagePreviewContainer.style.display = "none";
+
+        updateReadiness();
+
+        return;
+    }
+
+
+    const validTypes = [
+        "image/jpeg",
+        "image/png"
+    ];
+
+
+    if (!validTypes.includes(file.type)) {
+
+        alert(
+            "Please select a JPG, JPEG or PNG image."
+        );
+
+        this.value = "";
+
+        imagePreviewContainer.style.display = "none";
+
+        updateReadiness();
+
+        return;
+    }
+
+
+    if (file.size > 5 * 1024 * 1024) {
+
+        alert(
+            "Image size must be less than 5 MB."
+        );
+
+        this.value = "";
+
+        imagePreviewContainer.style.display = "none";
+
+        updateReadiness();
+
+        return;
+    }
+
+
+    fileName.textContent = file.name;
+
+
+    const reader = new FileReader();
+
+
+    reader.onload = function (event) {
+
+        imagePreview.src =
+            event.target.result;
+
+        imagePreviewContainer.style.display =
+            "flex";
+
+    };
+
+
+    reader.readAsDataURL(file);
+
+    updateReadiness();
+
+});
+
+
+/* =========================================================
+   PRICE PREVIEW
+========================================================= */
+
+function updatePricePreview() {
+
+    const quantityValue =
+        parseFloat(quantity.value);
+
+    const priceValue =
+        parseFloat(price.value);
+
+    const selectedUnit =
+        unit.value;
+
+
+    if (
+        !quantityValue ||
+        quantityValue <= 0 ||
+        isNaN(priceValue) ||
+        priceValue <= 0
+    ) {
+
+        pricePreview.innerHTML =
+            "💰 Enter quantity and price to calculate the approximate price per unit.";
+
+        return;
+    }
+
+
+    const perUnit =
+        priceValue / quantityValue;
+
+
+    pricePreview.innerHTML =
+        "💰 Approx. price: <strong>₹" +
+        perUnit.toFixed(2) +
+        "</strong> per " +
+        selectedUnit;
+}
+
+
+/* =========================================================
+   READINESS
+========================================================= */
+
+function updateReadiness() {
+
+    let score = 0;
+
+
+    /* Product */
+
+    if (
+        productName.value.trim().length >= 3
+    ) {
+
+        score += 20;
+
+    }
+
+
+    /* Category */
+
+    if (category.value) {
+
+        score += 15;
+
+    }
+
+
+    /* Quantity */
+
+    if (
+        parseFloat(quantity.value) > 0
+    ) {
+
+        score += 15;
+
+    }
+
+
+    /* Price */
+
+    if (
+        parseFloat(price.value) > 0
+    ) {
+
+        score += 15;
+
+    }
+
+
+    /* Image */
+
+    if (
+        imageInput.files.length > 0
+    ) {
+
+        score += 20;
+
+    }
+
+
+    /* Description */
+
+    if (
+        description.value.trim().length >= 30
+    ) {
+
+        score += 15;
+
+    }
+
+
+    readinessScore.textContent =
+        score + "%";
+
+    readinessFill.style.width =
+        score + "%";
+
+
+    if (score >= 90) {
+
+        readinessText.textContent =
+            "🌟 Excellent! Your listing is marketplace-ready.";
+
+    }
+
+    else if (score >= 70) {
+
+        readinessText.textContent =
+            "✅ Good listing. Add remaining details for better visibility.";
+
+    }
+
+    else if (score >= 40) {
+
+        readinessText.textContent =
+            "🌱 Good start. Complete more product information.";
+
+    }
+
+    else {
+
+        readinessText.textContent =
+            "Start entering product details.";
+
+    }
+
+
+    updateAIInsight(score);
+}
+
+
+/* =========================================================
+   AI INSIGHT
+========================================================= */
+
+function updateAIInsight(score) {
+
+    if (score === 0) {
+
+        aiResult.style.display =
+            "none";
+
+        return;
+    }
+
+
+    aiResult.style.display =
+        "block";
+
+
+    if (score >= 90) {
+
+        aiResult.innerHTML =
+            "🤖 <b>AI Insight:</b> Your product listing contains the important information buyers usually need.";
+
+    }
+
+    else if (score >= 70) {
+
+        aiResult.innerHTML =
+            "🤖 <b>AI Insight:</b> Your listing is strong. Adding the remaining details can improve buyer confidence.";
+
+    }
+
+    else {
+
+        aiResult.innerHTML =
+            "🤖 <b>AI Insight:</b> Complete product details, quantity, price, image and description to make your listing stronger.";
+
+    }
+}
+
+
+/* =========================================================
+   DESCRIPTION COUNTER
+========================================================= */
+
+description.addEventListener("input", function () {
+
+    descriptionCounter.textContent =
+        this.value.length + " / 1000";
+
+    updateReadiness();
+
+});
+
+
+/* =========================================================
+   FIELD EVENTS
+========================================================= */
+
+productName.addEventListener(
+    "input",
+    updateReadiness
+);
+
+category.addEventListener(
+    "change",
+    updateReadiness
+);
+
+locationInput.addEventListener(
+    "input",
+    updateReadiness
+);
+
+quantity.addEventListener(
+    "input",
+    function () {
+
+        updatePricePreview();
+        updateReadiness();
+
+    }
+);
+
+price.addEventListener(
+    "input",
+    function () {
+
+        updatePricePreview();
+        updateReadiness();
+
+    }
+);
+
+unit.addEventListener(
+    "change",
+    function () {
+
+        updatePricePreview();
+        updateReadiness();
+
+    }
+);
+
+
+/* =========================================================
+   FORM SUBMIT
+========================================================= */
+
+productForm.addEventListener(
+    "submit",
+    function (event) {
+
+        const name =
+            productName.value.trim();
+
+        const categoryValue =
+            category.value;
+
+        const quantityValue =
+            parseFloat(quantity.value);
+
+        const priceValue =
+            parseFloat(price.value);
+
+
+        /* PRODUCT NAME */
+
+        if (name.length < 2) {
+
+            event.preventDefault();
+
+            alert(
+                "Please enter a valid product name."
+            );
+
+            productName.focus();
+
+            return;
+        }
+
+
+        /* CATEGORY */
+
+        if (!categoryValue) {
+
+            event.preventDefault();
+
+            alert(
+                "Please select a product category."
+            );
+
+            category.focus();
+
+            return;
+        }
+
+
+        /* QUANTITY */
+
+        if (
+            isNaN(quantityValue) ||
+            quantityValue <= 0
+        ) {
+
+            event.preventDefault();
+
+            alert(
+                "Please enter a quantity greater than 0."
+            );
+
+            quantity.focus();
+
+            return;
+        }
+
+
+        /* PRICE */
+
+        if (
+            isNaN(priceValue) ||
+            priceValue <= 0
+        ) {
+
+            event.preventDefault();
+
+            alert(
+                "Please enter a selling price greater than 0."
+            );
+
+            price.focus();
+
+            return;
+        }
+
+
+        /* IMAGE */
+
+        if (imageInput.files.length > 0) {
+
+            const file =
+                imageInput.files[0];
+
+
+            if (
+                file.size >
+                5 * 1024 * 1024
+            ) {
+
+                event.preventDefault();
+
+                alert(
+                    "Product image must be smaller than 5 MB."
+                );
+
+                return;
+            }
+        }
+
+
+        /* PREVENT DOUBLE SUBMIT */
+
+        submitButton.disabled =
+            true;
+
+        submitButton.innerHTML =
+            '<i class="fa-solid fa-spinner fa-spin"></i> Listing Product...';
+
+    }
+);
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        updatePricePreview();
+
+        updateReadiness();
+
+    }
+);
+
+</script>
+
+{% endblock %}

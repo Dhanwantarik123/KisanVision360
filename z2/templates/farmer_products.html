@@ -1,0 +1,2357 @@
+﻿{% extends "base.html" %}
+
+{% block title %}KisanVision360+ | My Products{% endblock %}
+
+{% block head %}
+<link rel="stylesheet"
+          href="{{ url_for('static', filename='css/farmer_products.css') }}">
+<style>
+
+        /* =====================================================
+           KISANVISION360+ PRODUCT MANAGEMENT
+        ====================================================== */
+
+        :root {
+            --kv-green: #1b5e20;
+            --kv-green-2: #2e7d32;
+            --kv-light-green: #e8f5e9;
+            --kv-orange: #fb8c00;
+            --kv-red: #d32f2f;
+            --kv-blue: #1565c0;
+            --kv-dark: #17351b;
+            --kv-text: #263238;
+            --kv-muted: #718096;
+            --kv-border: #e5e7eb;
+            --kv-bg: #f6f9f6;
+            --kv-white: #ffffff;
+            --kv-shadow: 0 10px 30px rgba(27, 94, 32, 0.08);
+            --kv-radius: 18px;
+        }
+
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            background: var(--kv-bg);
+        }
+
+
+        .main-content {
+            padding-bottom: 60px;
+        }
+
+
+        /* =====================================================
+           TOPBAR
+        ====================================================== */
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+
+        .topbar h1 {
+            margin: 0 0 6px;
+        }
+
+
+        .topbar h1 i {
+            color: var(--kv-green-2);
+            margin-right: 8px;
+        }
+
+
+        .topbar p {
+            margin: 0;
+            color: var(--kv-muted);
+        }
+
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            padding: 11px 17px;
+            border-radius: 12px;
+            background: var(--kv-white);
+            color: var(--kv-green);
+            border: 1px solid var(--kv-border);
+            font-weight: 700;
+            transition: 0.25s ease;
+            white-space: nowrap;
+        }
+
+
+        .back-btn:hover {
+            background: var(--kv-green);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+           FLASH
+        ====================================================== */
+
+        .flash-container {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+
+        .flash {
+            padding: 13px 16px;
+            border-radius: 12px;
+            background: white;
+            border-left: 4px solid var(--kv-green-2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+
+        /* =====================================================
+           SMART HEADER
+        ====================================================== */
+
+        .smart-banner {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 25px;
+            padding: 28px;
+            margin-bottom: 22px;
+            border-radius: 22px;
+            color: white;
+            background:
+                linear-gradient(
+                    135deg,
+                    #1b5e20,
+                    #2e7d32 55%,
+                    #43a047
+                );
+            box-shadow: var(--kv-shadow);
+        }
+
+
+        .smart-banner::after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            right: -55px;
+            top: -75px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.10);
+        }
+
+
+        .smart-banner-content {
+            position: relative;
+            z-index: 2;
+        }
+
+
+        .smart-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 6px 11px;
+            margin-bottom: 10px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.14);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+
+        .smart-banner h2 {
+            margin: 0 0 8px;
+            font-size: 27px;
+        }
+
+
+        .smart-banner p {
+            margin: 0;
+            max-width: 700px;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.9);
+        }
+
+
+        .smart-banner-icon {
+            position: relative;
+            z-index: 2;
+            min-width: 90px;
+            width: 90px;
+            height: 90px;
+            border-radius: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255,255,255,0.14);
+            font-size: 42px;
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ====================================================== */
+
+        .inventory-summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+
+        .inventory-card {
+            background: var(--kv-white);
+            border: 1px solid var(--kv-border);
+            border-radius: var(--kv-radius);
+            padding: 19px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: var(--kv-shadow);
+        }
+
+
+        .inventory-icon {
+            width: 52px;
+            height: 52px;
+            flex-shrink: 0;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--kv-light-green);
+            color: var(--kv-green);
+            font-size: 21px;
+        }
+
+
+        .inventory-card:nth-child(2) .inventory-icon {
+            background: #e3f2fd;
+            color: var(--kv-blue);
+        }
+
+
+        .inventory-card:nth-child(3) .inventory-icon {
+            background: #fff3e0;
+            color: var(--kv-orange);
+        }
+
+
+        .inventory-card:nth-child(4) .inventory-icon {
+            background: #fce4ec;
+            color: #ad1457;
+        }
+
+
+        .inventory-card span {
+            display: block;
+            color: var(--kv-muted);
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+
+        .inventory-card strong {
+            display: block;
+            color: var(--kv-dark);
+            font-size: 23px;
+        }
+
+
+        /* =====================================================
+           SMART INSIGHT
+        ====================================================== */
+
+        .smart-insight {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 17px 20px;
+            margin-bottom: 24px;
+            border: 1px solid #d8ead9;
+            border-radius: 16px;
+            background: linear-gradient(
+                135deg,
+                #f1f8f1,
+                #ffffff
+            );
+        }
+
+
+        .smart-insight-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: #fff3cd;
+            color: #9a6700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+
+        .smart-insight h3 {
+            margin: 0 0 4px;
+            font-size: 15px;
+            color: var(--kv-dark);
+        }
+
+
+        .smart-insight p {
+            margin: 0;
+            color: var(--kv-muted);
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           PRODUCT HEADER
+        ====================================================== */
+
+        .products-header {
+            background: var(--kv-white);
+            border: 1px solid var(--kv-border);
+            border-radius: var(--kv-radius);
+            padding: 20px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            box-shadow: var(--kv-shadow);
+        }
+
+
+        .products-header h2 {
+            margin: 0 0 5px;
+            color: var(--kv-dark);
+        }
+
+
+        .products-header span {
+            color: var(--kv-muted);
+            font-size: 14px;
+        }
+
+
+        .add-product-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 17px;
+            border-radius: 12px;
+            background: var(--kv-green);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.25s ease;
+        }
+
+
+        .add-product-btn:hover {
+            background: var(--kv-green-2);
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+           TOOLBAR
+        ====================================================== */
+
+        .product-toolbar {
+            display: grid;
+            grid-template-columns: 1fr 210px 160px;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+
+        .search-box {
+            position: relative;
+        }
+
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8a969d;
+        }
+
+
+        .search-box input,
+        .product-toolbar select {
+            width: 100%;
+            min-height: 47px;
+            border: 1px solid var(--kv-border);
+            border-radius: 12px;
+            background: white;
+            padding: 0 14px;
+            font: inherit;
+            outline: none;
+        }
+
+
+        .search-box input {
+            padding-left: 43px;
+        }
+
+
+        .search-box input:focus,
+        .product-toolbar select:focus {
+            border-color: var(--kv-green-2);
+            box-shadow: 0 0 0 3px rgba(67,160,71,0.10);
+        }
+
+
+        /* =====================================================
+           PRODUCT GRID
+        ====================================================== */
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+
+        .product-card {
+            background: white;
+            border: 1px solid var(--kv-border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--kv-shadow);
+            transition: 0.3s ease;
+        }
+
+
+        .product-card:hover,
+        .product-card.hovered {
+            transform: translateY(-5px);
+            box-shadow: 0 18px 40px rgba(27,94,32,0.13);
+        }
+
+
+        .product-card.hidden-product {
+            display: none;
+        }
+
+
+        /* =====================================================
+           PRODUCT IMAGE
+        ====================================================== */
+
+        .product-image {
+            position: relative;
+            height: 215px;
+            background: #eef5ef;
+            overflow: hidden;
+        }
+
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.45s ease;
+        }
+
+
+        .product-card:hover .product-image img {
+            transform: scale(1.04);
+        }
+
+
+        .no-image {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #759078;
+        }
+
+
+        .no-image i {
+            font-size: 42px;
+        }
+
+
+        .status-badge {
+            position: absolute;
+            top: 13px;
+            right: 13px;
+            padding: 7px 10px;
+            border-radius: 20px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+
+        .status-badge.active {
+            color: #1b5e20;
+        }
+
+
+        .status-badge.inactive {
+            color: #8a6200;
+        }
+
+
+        .status-badge.sold {
+            color: #b71c1c;
+        }
+
+
+        /* =====================================================
+           PRODUCT BODY
+        ====================================================== */
+
+        .product-body {
+            padding: 19px;
+        }
+
+
+        .category {
+            display: inline-flex;
+            padding: 6px 10px;
+            border-radius: 20px;
+            background: var(--kv-light-green);
+            color: var(--kv-green);
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+
+        .product-body h3 {
+            margin: 11px 0 7px;
+            color: var(--kv-dark);
+            font-size: 20px;
+        }
+
+
+        .description {
+            color: var(--kv-muted);
+            font-size: 13px;
+            line-height: 1.55;
+            min-height: 41px;
+            margin-bottom: 15px;
+        }
+
+
+        /* =====================================================
+           PRODUCT INFORMATION
+        ====================================================== */
+
+        .product-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+
+        .product-info > div {
+            padding: 12px;
+            border-radius: 12px;
+            background: #f8faf8;
+        }
+
+
+        .product-info span {
+            display: block;
+            color: var(--kv-muted);
+            font-size: 11px;
+            margin-bottom: 4px;
+        }
+
+
+        .product-info strong {
+            display: block;
+            color: var(--kv-dark);
+            font-size: 14px;
+        }
+
+
+        .price-value {
+            color: var(--kv-green) !important;
+        }
+
+
+        .location {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 0;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+
+        .location i {
+            color: var(--kv-orange);
+        }
+
+
+        /* =====================================================
+           STOCK INTELLIGENCE
+        ====================================================== */
+
+        .stock-health {
+            margin: 8px 0 15px;
+        }
+
+
+        .stock-health-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 6px;
+            font-size: 11px;
+        }
+
+
+        .stock-health-header span:first-child {
+            color: var(--kv-muted);
+        }
+
+
+        .stock-health-header span:last-child {
+            font-weight: 800;
+        }
+
+
+        .stock-bar {
+            height: 6px;
+            overflow: hidden;
+            border-radius: 20px;
+            background: #e8ece8;
+        }
+
+
+        .stock-bar span {
+            display: block;
+            height: 100%;
+            width: 100%;
+            border-radius: inherit;
+            background: var(--kv-green-2);
+        }
+
+
+        .stock-low .stock-bar span {
+            background: var(--kv-orange);
+        }
+
+
+        .stock-empty .stock-bar span {
+            background: var(--kv-red);
+        }
+
+
+        .stock-low .stock-health-header span:last-child {
+            color: var(--kv-orange);
+        }
+
+
+        .stock-empty .stock-health-header span:last-child {
+            color: var(--kv-red);
+        }
+
+
+        /* =====================================================
+           ACTIONS
+        ====================================================== */
+
+        .product-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+            margin-top: 14px;
+        }
+
+
+        .edit-btn,
+        .delete-btn {
+            min-height: 42px;
+            border-radius: 11px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 7px;
+            font: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.25s ease;
+        }
+
+
+        .edit-btn {
+            border: 1px solid #cfe2d0;
+            color: var(--kv-green);
+            background: #f4faf4;
+        }
+
+
+        .edit-btn:hover {
+            background: var(--kv-green);
+            color: white;
+        }
+
+
+        .delete-btn {
+            border: 1px solid #f2c5c5;
+            color: var(--kv-red);
+            background: #fff7f7;
+        }
+
+
+        .delete-btn:hover {
+            background: var(--kv-red);
+            color: white;
+        }
+
+
+        .status-form {
+            margin-top: 10px;
+        }
+
+
+        .status-toggle {
+            width: 100%;
+            min-height: 40px;
+            border: 0;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+
+
+        .inactive-btn {
+            background: #fff4df;
+            color: #9a6700;
+        }
+
+
+        .inactive-btn:hover {
+            background: var(--kv-orange);
+            color: white;
+        }
+
+
+        .active-btn {
+            background: #e8f5e9;
+            color: var(--kv-green);
+        }
+
+
+        .active-btn:hover {
+            background: var(--kv-green);
+            color: white;
+        }
+
+
+        /* =====================================================
+           NO SEARCH RESULTS
+        ====================================================== */
+
+        .no-search-results {
+            display: none;
+            text-align: center;
+            padding: 45px 20px;
+            background: white;
+            border: 1px dashed #cdd8cf;
+            border-radius: 18px;
+            margin-top: 10px;
+        }
+
+
+        .no-search-results.show {
+            display: block;
+        }
+
+
+        .no-search-results i {
+            font-size: 38px;
+            color: #90a494;
+            margin-bottom: 10px;
+        }
+
+
+        .no-search-results h3 {
+            margin: 0 0 6px;
+        }
+
+
+        .no-search-results p {
+            color: var(--kv-muted);
+            margin: 0;
+        }
+
+
+        /* =====================================================
+           EMPTY STATE
+        ====================================================== */
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 25px;
+            border-radius: 22px;
+            background: white;
+            border: 1px dashed #cdd8cf;
+            box-shadow: var(--kv-shadow);
+        }
+
+
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 17px;
+            border-radius: 25px;
+            background: var(--kv-light-green);
+            color: var(--kv-green);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 34px;
+        }
+
+
+        .empty-state h2 {
+            margin: 0 0 8px;
+            color: var(--kv-dark);
+        }
+
+
+        .empty-state p {
+            max-width: 570px;
+            margin: 0 auto 22px;
+            color: var(--kv-muted);
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           INVENTORY FLOW
+        ====================================================== */
+
+        .inventory-flow {
+            margin-top: 25px;
+            padding: 22px;
+            background: white;
+            border: 1px solid var(--kv-border);
+            border-radius: 18px;
+        }
+
+
+        .inventory-flow h3 {
+            margin: 0 0 16px;
+            color: var(--kv-dark);
+        }
+
+
+        .flow-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+
+        .flow-step {
+            text-align: center;
+            padding: 13px 8px;
+            border-radius: 13px;
+            background: #f7faf7;
+            border: 1px solid #edf1ed;
+        }
+
+
+        .flow-step i {
+            display: block;
+            color: var(--kv-green);
+            margin-bottom: 7px;
+            font-size: 19px;
+        }
+
+
+        .flow-step span {
+            font-size: 11px;
+            color: #526152;
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @media (max-width: 1100px) {
+
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .inventory-summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .product-toolbar {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .search-box {
+                grid-column: 1 / -1;
+            }
+
+        }
+
+
+        @media (max-width: 760px) {
+
+            .topbar,
+            .products-header,
+            .smart-banner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .smart-banner-icon {
+                display: none;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .inventory-summary {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .product-toolbar {
+                grid-template-columns: 1fr;
+            }
+
+            .search-box {
+                grid-column: auto;
+            }
+
+            .flow-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 480px) {
+
+            .inventory-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .inventory-card {
+                padding: 15px;
+            }
+
+            .smart-banner {
+                padding: 22px;
+            }
+
+            .smart-banner h2 {
+                font-size: 23px;
+            }
+
+            .product-image {
+                height: 195px;
+            }
+
+            .product-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .flow-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        /* =====================================================
+           RTL
+        ====================================================== */
+
+        [dir="rtl"] .search-box i {
+            left: auto;
+            right: 15px;
+        }
+
+
+        [dir="rtl"] .search-box input {
+            padding-left: 14px;
+            padding-right: 43px;
+        }
+
+
+        [dir="rtl"] .status-badge {
+            right: auto;
+            left: 13px;
+        }
+
+
+        [dir="rtl"] .smart-banner::after {
+            right: auto;
+            left: -55px;
+        }
+
+    </style>
+{% endblock %}
+
+{% block page_title %}My Products{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+
+
+
+<main class="main-content">
+
+
+    <!-- =====================================================
+         TOP BAR
+    ====================================================== -->
+
+    <div class="topbar">
+
+        <div>
+
+            <h1>
+                <i class="fa-solid fa-boxes-stacked"></i>
+                My Products
+            </h1>
+
+            <p>
+                Manage your farming products, stock and marketplace listings.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{{ url_for('marketplace.farmer_marketplace') }}"
+            class="back-btn"
+        >
+
+            <i class="fa-solid fa-store"></i>
+
+            Marketplace
+
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         FLASH MESSAGES
+    ====================================================== -->
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            <div class="flash-container">
+
+                {% for category, message in messages %}
+
+                    <div class="flash {{ category|default('info') }}">
+
+                        {% if category == 'success' %}
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+                        {% elif category == 'danger' or category == 'error' %}
+
+                            <i class="fa-solid fa-circle-exclamation"></i>
+
+                        {% elif category == 'warning' %}
+
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        {% else %}
+
+                            <i class="fa-solid fa-circle-info"></i>
+
+                        {% endif %}
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    <!-- =====================================================
+         SMART MARKETPLACE BANNER
+    ====================================================== -->
+
+    <section class="smart-banner">
+
+        <div class="smart-banner-content">
+
+            <span class="smart-label">
+
+                <i class="fa-solid fa-sparkles"></i>
+
+                KISANVISION360+ SMART INVENTORY
+
+            </span>
+
+
+            <h2>
+                Manage Your Farm Products Smarter
+            </h2>
+
+
+            <p>
+                Keep your marketplace listings organized,
+                monitor stock, update prices and manage products
+                that are available to consumers.
+            </p>
+
+        </div>
+
+
+        <div class="smart-banner-icon">
+
+            <i class="fa-solid fa-warehouse"></i>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         INVENTORY SUMMARY
+    ====================================================== -->
+
+    {% set total_products = products|length if products else 0 %}
+
+    {% set active_products = namespace(value=0) %}
+
+    {% set inactive_products = namespace(value=0) %}
+
+    {% set total_stock = namespace(value=0) %}
+
+    {% set stock_value = namespace(value=0) %}
+
+
+    {% if products %}
+
+        {% for product in products %}
+
+            {% set p_status = product.status|default('active', true)|lower %}
+
+            {% if p_status == 'active' %}
+
+                {% set active_products.value = active_products.value + 1 %}
+
+            {% else %}
+
+                {% set inactive_products.value = inactive_products.value + 1 %}
+
+            {% endif %}
+
+
+            {% set qty = product.quantity|default(0, true)|float %}
+
+            {% set price = product.price|default(0, true)|float %}
+
+
+            {% set total_stock.value = total_stock.value + qty %}
+
+            {% set stock_value.value = stock_value.value + (qty * price) %}
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    <section class="inventory-summary">
+
+
+        <!-- TOTAL -->
+
+        <div class="inventory-card">
+
+            <div class="inventory-icon">
+
+                <i class="fa-solid fa-boxes-stacked"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    Total Products
+                </span>
+
+                <strong>
+                    {{ total_products }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTIVE -->
+
+        <div class="inventory-card">
+
+            <div class="inventory-icon">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    Active Listings
+                </span>
+
+                <strong>
+                    {{ active_products.value }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- STOCK -->
+
+        <div class="inventory-card">
+
+            <div class="inventory-icon">
+
+                <i class="fa-solid fa-warehouse"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    Total Stock
+                </span>
+
+                <strong>
+                    {{ "%.1f"|format(total_stock.value) }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- STOCK VALUE -->
+
+        <div class="inventory-card">
+
+            <div class="inventory-icon">
+
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    Inventory Value
+                </span>
+
+                <strong>
+                    â‚¹{{ "%.0f"|format(stock_value.value) }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         SMART INSIGHT
+    ====================================================== -->
+
+    <section class="smart-insight">
+
+        <div class="smart-insight-icon">
+
+            <i class="fa-solid fa-lightbulb"></i>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                Smart Inventory Insight
+            </h3>
+
+
+            <p id="inventoryInsight">
+                Your product inventory is ready to manage.
+                Keep active products updated with accurate stock,
+                price and product information.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PRODUCT HEADER
+    ====================================================== -->
+
+    <section class="products-header">
+
+        <div>
+
+            <h2>
+                Product List
+            </h2>
+
+            <span id="productCountText">
+
+                {{ total_products }}
+
+                product{% if total_products != 1 %}s{% endif %}
+
+            </span>
+
+        </div>
+
+
+        <a
+            href="{{ url_for('marketplace.add_product') }}"
+            class="add-product-btn"
+        >
+
+            <i class="fa-solid fa-plus"></i>
+
+            Add Product
+
+        </a>
+
+    </section>
+
+
+    {% if products %}
+
+
+        <!-- =================================================
+             SEARCH / FILTER TOOLBAR
+        ================================================== -->
+
+        <section class="product-toolbar">
+
+
+            <div class="search-box">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="search"
+                    id="productSearch"
+                    placeholder="Search product, category or location..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <select id="categoryFilter">
+
+                <option value="all">
+                    All Categories
+                </option>
+
+                {% for category in products|map(attribute='category')|select|unique|list %}
+
+                    <option value="{{ category|lower }}">
+                        {{ category }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <select id="stockFilter">
+
+                <option value="all">
+                    All Stock
+                </option>
+
+                <option value="healthy">
+                    Healthy Stock
+                </option>
+
+                <option value="low">
+                    Low Stock
+                </option>
+
+                <option value="empty">
+                    Out of Stock
+                </option>
+
+            </select>
+
+        </section>
+
+
+        <!-- =================================================
+             PRODUCTS
+        ================================================== -->
+
+        <section class="products-grid"
+                 id="productsGrid">
+
+
+            {% for product in products %}
+
+
+                {% set status = product.status|default('active', true)|lower %}
+
+                {% set quantity = product.quantity|default(0, true)|float %}
+
+                {% set unit = product.unit|default('Kg', true) %}
+
+                {% set category = product.category|default('Other', true) %}
+
+
+                <article
+                    class="product-card"
+                    data-name="{{ product.product_name|default('', true)|lower }}"
+                    data-category="{{ category|lower }}"
+                    data-location="{{ product.location|default('', true)|lower }}"
+                    data-stock="{{ quantity }}"
+                    data-status="{{ status }}"
+                >
+
+
+                    <!-- =========================================
+                         IMAGE
+                    ========================================== -->
+
+                    <div class="product-image">
+
+
+                        {% if product.image %}
+
+                            <img
+                                src="{{ url_for(
+                                    'static',
+                                    filename='uploads/products/' ~ product.image
+                                ) }}"
+                                alt="{{ product.product_name|default('Farm Product') }}"
+                                loading="lazy"
+                                onerror="
+                                    this.onerror=null;
+                                    this.src='{{ url_for(
+                                        'static',
+                                        filename='images/no-image.png'
+                                    ) }}';
+                                "
+                            >
+
+                        {% else %}
+
+                            <div class="no-image">
+
+                                <i class="fa-solid fa-seedling"></i>
+
+                                <span>
+                                    Farm Product
+                                </span>
+
+                            </div>
+
+                        {% endif %}
+
+
+                        <!-- STATUS -->
+
+                        <span class="status-badge {{ status }}">
+
+                            {% if status == 'active' %}
+
+                                <i class="fa-solid fa-circle-check"></i>
+
+                                Available
+
+                            {% elif status == 'inactive' %}
+
+                                <i class="fa-solid fa-circle-pause"></i>
+
+                                Inactive
+
+                            {% elif status == 'sold' %}
+
+                                <i class="fa-solid fa-circle-xmark"></i>
+
+                                Sold Out
+
+                            {% else %}
+
+                                {{ product.status|default('Active') }}
+
+                            {% endif %}
+
+                        </span>
+
+
+                    </div>
+
+
+                    <!-- =========================================
+                         PRODUCT BODY
+                    ========================================== -->
+
+                    <div class="product-body">
+
+
+                        <div class="category">
+
+                            {{ category }}
+
+                        </div>
+
+
+                        <h3>
+
+                            {{ product.product_name|default('Unnamed Product') }}
+
+                        </h3>
+
+
+                        <p class="description">
+
+                            {{ product.description|default(
+                                'Fresh agricultural product directly from farm.',
+                                true
+                            ) }}
+
+                        </p>
+
+
+                        <!-- =====================================
+                             PRICE + STOCK
+                        ====================================== -->
+
+                        <div class="product-info">
+
+
+                            <div>
+
+                                <span>
+                                    Selling Price
+                                </span>
+
+                                <strong class="price-value">
+
+                                    â‚¹{{ "%.2f"|format(
+                                        product.price|default(0, true)|float
+                                    ) }}
+
+                                    / {{ unit }}
+
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Available Stock
+                                </span>
+
+                                <strong>
+
+                                    {{ "%.1f"|format(quantity) }}
+
+                                    {{ unit }}
+
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <!-- =====================================
+                             STOCK HEALTH
+                        ====================================== -->
+
+                        {% if quantity <= 0 %}
+
+                            {% set stock_class = 'stock-empty' %}
+
+                            {% set stock_text = 'Out of Stock' %}
+
+                            {% set stock_width = 5 %}
+
+                        {% elif quantity <= 10 %}
+
+                            {% set stock_class = 'stock-low' %}
+
+                            {% set stock_text = 'Low Stock' %}
+
+                            {% set stock_width = 30 %}
+
+                        {% else %}
+
+                            {% set stock_class = '' %}
+
+                            {% set stock_text = 'Healthy Stock' %}
+
+                            {% set stock_width = 100 %}
+
+                        {% endif %}
+
+
+                        <div class="stock-health {{ stock_class }}">
+
+
+                            <div class="stock-health-header">
+
+                                <span>
+                                    Inventory Health
+                                </span>
+
+                                <span>
+                                    {{ stock_text }}
+                                </span>
+
+                            </div>
+
+
+                            <div class="stock-bar">
+
+                                <span
+                                    style="width: {{ stock_width }}%;"
+                                ></span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =====================================
+                             LOCATION
+                        ====================================== -->
+
+                        {% if product.location %}
+
+                            <div class="location">
+
+                                <i class="fa-solid fa-location-dot"></i>
+
+                                <span>
+                                    {{ product.location }}
+                                </span>
+
+                            </div>
+
+                        {% endif %}
+
+
+                        <!-- =====================================
+                             ACTIONS
+                        ====================================== -->
+
+                        <div class="product-actions">
+
+
+                            <!-- EDIT -->
+
+                            <a
+                                href="{{ url_for(
+                                    'marketplace.edit_product',
+                                    product_id=product.id
+                                ) }}"
+                                class="edit-btn"
+                            >
+
+                                <i class="fa-solid fa-pen"></i>
+
+                                Edit
+
+                            </a>
+
+
+                            <!-- DELETE -->
+
+                            <form
+                                action="{{ url_for(
+                                    'marketplace.delete_product',
+                                    product_id=product.id
+                                ) }}"
+                                method="POST"
+                                onsubmit="
+                                    return confirmDelete(
+                                        {{ product.product_name|default('this product')|tojson }}
+                                    );
+                                "
+                            >
+
+                                <button
+                                    type="submit"
+                                    class="delete-btn"
+                                >
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                    Delete
+
+                                </button>
+
+                            </form>
+
+
+                        </div>
+
+
+                        <!-- =====================================
+                             STATUS TOGGLE
+                        ====================================== -->
+
+                        <form
+                            action="{{ url_for(
+                                'marketplace.update_product_status',
+                                product_id=product.id
+                            ) }}"
+                            method="POST"
+                            class="status-form"
+                        >
+
+
+                            {% if status == 'active' %}
+
+                                <button
+                                    type="submit"
+                                    name="status"
+                                    value="inactive"
+                                    class="status-toggle inactive-btn"
+                                    onclick="
+                                        return confirm(
+                                            'Disable this product from the marketplace?'
+                                        );
+                                    "
+                                >
+
+                                    <i class="fa-solid fa-pause"></i>
+
+                                    Disable Product
+
+                                </button>
+
+
+                            {% else %}
+
+                                <button
+                                    type="submit"
+                                    name="status"
+                                    value="active"
+                                    class="status-toggle active-btn"
+                                >
+
+                                    <i class="fa-solid fa-play"></i>
+
+                                    Activate Product
+
+                                </button>
+
+                            {% endif %}
+
+
+                        </form>
+
+
+                    </div>
+
+                </article>
+
+
+            {% endfor %}
+
+
+        </section>
+
+
+        <!-- =================================================
+             NO SEARCH RESULT
+        ================================================== -->
+
+        <div
+            class="no-search-results"
+            id="noSearchResults"
+        >
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <h3>
+                No Matching Products
+            </h3>
+
+            <p>
+                Try another product name, category or stock filter.
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             INVENTORY FLOW
+        ================================================== -->
+
+        <section class="inventory-flow">
+
+            <h3>
+
+                <i class="fa-solid fa-diagram-project"></i>
+
+                Smart Marketplace Flow
+
+            </h3>
+
+
+            <div class="flow-grid">
+
+
+                <div class="flow-step">
+
+                    <i class="fa-solid fa-seedling"></i>
+
+                    <span>
+                        Farm Product
+                    </span>
+
+                </div>
+
+
+                <div class="flow-step">
+
+                    <i class="fa-solid fa-box-open"></i>
+
+                    <span>
+                        Product Listing
+                    </span>
+
+                </div>
+
+
+                <div class="flow-step">
+
+                    <i class="fa-solid fa-tags"></i>
+
+                    <span>
+                        Price & Stock
+                    </span>
+
+                </div>
+
+
+                <div class="flow-step">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    <span>
+                        Consumers
+                    </span>
+
+                </div>
+
+
+                <div class="flow-step">
+
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                    <span>
+                        Farm Earnings
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+    {% else %}
+
+
+        <!-- =================================================
+             EMPTY STATE
+        ================================================== -->
+
+        <section class="empty-state">
+
+
+            <div class="empty-icon">
+
+                <i class="fa-solid fa-box-open"></i>
+
+            </div>
+
+
+            <h2>
+                No Products Yet
+            </h2>
+
+
+            <p>
+                You haven't added any products to your marketplace.
+                Start selling your farm products directly to consumers
+                by adding your first product.
+            </p>
+
+
+            <a
+                href="{{ url_for('marketplace.add_product') }}"
+                class="add-product-btn"
+            >
+
+                <i class="fa-solid fa-plus"></i>
+
+                Add Your First Product
+
+            </a>
+
+
+        </section>
+
+
+    {% endif %}
+
+
+</main>
+
+
+<!-- =========================================================
+     CHATBOT
+========================================================= -->
+
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for(
+    'static',
+    filename='js/chatbot.js'
+) }}"></script>
+<script>
+
+/* =========================================================
+   PRODUCT MANAGEMENT
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    const searchInput =
+        document.getElementById("productSearch");
+
+    const categoryFilter =
+        document.getElementById("categoryFilter");
+
+    const stockFilter =
+        document.getElementById("stockFilter");
+
+    const cards =
+        Array.from(
+            document.querySelectorAll(".product-card")
+        );
+
+    const noResults =
+        document.getElementById("noSearchResults");
+
+    const countText =
+        document.getElementById("productCountText");
+
+    const insight =
+        document.getElementById("inventoryInsight");
+
+
+    /* =====================================================
+       FILTER PRODUCTS
+    ====================================================== */
+
+    function filterProducts() {
+
+
+        const search =
+            (searchInput?.value || "")
+                .trim()
+                .toLowerCase();
+
+
+        const category =
+            categoryFilter?.value || "all";
+
+
+        const stock =
+            stockFilter?.value || "all";
+
+
+        let visibleCount = 0;
+
+        let lowStockCount = 0;
+
+        let emptyStockCount = 0;
+
+
+        cards.forEach(function(card) {
+
+
+            const name =
+                card.dataset.name || "";
+
+
+            const cardCategory =
+                card.dataset.category || "";
+
+
+            const location =
+                card.dataset.location || "";
+
+
+            const quantity =
+                parseFloat(
+                    card.dataset.stock || "0"
+                );
+
+
+            const matchesSearch =
+                !search ||
+                name.includes(search) ||
+                cardCategory.includes(search) ||
+                location.includes(search);
+
+
+            const matchesCategory =
+                category === "all" ||
+                cardCategory === category;
+
+
+            let matchesStock = true;
+
+
+            if (stock === "healthy") {
+
+                matchesStock =
+                    quantity > 10;
+
+            }
+
+
+            else if (stock === "low") {
+
+                matchesStock =
+                    quantity > 0 &&
+                    quantity <= 10;
+
+            }
+
+
+            else if (stock === "empty") {
+
+                matchesStock =
+                    quantity <= 0;
+
+            }
+
+
+            const visible =
+                matchesSearch &&
+                matchesCategory &&
+                matchesStock;
+
+
+            if (visible) {
+
+                card.classList.remove(
+                    "hidden-product"
+                );
+
+                visibleCount++;
+
+            }
+
+            else {
+
+                card.classList.add(
+                    "hidden-product"
+                );
+
+            }
+
+
+            if (quantity <= 0) {
+
+                emptyStockCount++;
+
+            }
+
+            else if (quantity <= 10) {
+
+                lowStockCount++;
+
+            }
+
+        });
+
+
+        if (noResults) {
+
+            noResults.classList.toggle(
+                "show",
+                visibleCount === 0
+            );
+
+        }
+
+
+        if (countText) {
+
+            countText.textContent =
+                visibleCount +
+                " product" +
+                (visibleCount !== 1 ? "s" : "");
+
+        }
+
+
+        /* =================================================
+           SMART INSIGHT
+        ================================================== */
+
+        if (insight) {
+
+
+            if (cards.length === 0) {
+
+                insight.textContent =
+                    "Add your first farm product to start selling directly to consumers.";
+
+            }
+
+            else if (emptyStockCount > 0) {
+
+                insight.textContent =
+                    emptyStockCount +
+                    " product" +
+                    (emptyStockCount !== 1 ? "s are" : " is") +
+                    " currently out of stock. Update inventory or reactivate suitable listings.";
+
+            }
+
+            else if (lowStockCount > 0) {
+
+                insight.textContent =
+                    lowStockCount +
+                    " product" +
+                    (lowStockCount !== 1 ? "s have" : " has") +
+                    " low stock. Consider updating inventory before receiving more orders.";
+
+            }
+
+            else {
+
+                insight.textContent =
+                    "Your current listings have healthy stock levels. Keep prices, descriptions and quantities updated for better marketplace readiness.";
+
+            }
+
+        }
+
+    }
+
+
+    /* =====================================================
+       EVENTS
+    ====================================================== */
+
+    if (searchInput) {
+
+        searchInput.addEventListener(
+            "input",
+            filterProducts
+        );
+
+    }
+
+
+    if (categoryFilter) {
+
+        categoryFilter.addEventListener(
+            "change",
+            filterProducts
+        );
+
+    }
+
+
+    if (stockFilter) {
+
+        stockFilter.addEventListener(
+            "change",
+            filterProducts
+        );
+
+    }
+
+
+    /* =====================================================
+       HOVER
+    ====================================================== */
+
+    cards.forEach(function (card) {
+
+
+        card.addEventListener(
+            "mouseenter",
+            function () {
+
+                card.classList.add("hovered");
+
+            }
+        );
+
+
+        card.addEventListener(
+            "mouseleave",
+            function () {
+
+                card.classList.remove("hovered");
+
+            }
+        );
+
+
+    });
+
+
+    /* =====================================================
+       INITIAL
+    ====================================================== */
+
+    filterProducts();
+
+});
+
+
+/* =========================================================
+   DELETE CONFIRMATION
+========================================================= */
+
+function confirmDelete(productName) {
+
+    return confirm(
+        "Are you sure you want to permanently delete \"" +
+        productName +
+        "\"?"
+    );
+
+}
+
+
+/* =========================================================
+   PREVENT DOUBLE SUBMISSION
+========================================================= */
+
+document.addEventListener(
+    "submit",
+    function(event) {
+
+
+        const form =
+            event.target;
+
+
+        if (
+            form.matches(
+                ".product-actions form, .status-form"
+            )
+        ) {
+
+
+            const button =
+                form.querySelector(
+                    "button[type='submit']"
+                );
+
+
+            if (button) {
+
+                button.disabled = true;
+
+                button.style.opacity = "0.65";
+
+                button.style.cursor = "not-allowed";
+
+            }
+
+        }
+
+    }
+);
+
+</script>
+{% endblock %}
+

@@ -1,0 +1,2846 @@
+﻿{% extends "base.html" %}
+
+{% block title %}KisanVision360+ | Farmer Marketplace{% endblock %}
+
+{% block head %}
+<link rel="stylesheet"
+          href="{{ url_for(
+              'static',
+              filename='css/marketplace.css'
+          ) }}">
+<style>
+
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif;
+        }
+
+        html[dir="rtl"] {
+            direction: rtl;
+        }
+
+
+        /* =====================================================
+           TOPBAR
+        ===================================================== */
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .page-title {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .title-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1b5e20,
+                    #43a047
+                );
+
+            box-shadow:
+                0 8px 22px rgba(
+                    27,
+                    94,
+                    32,
+                    0.18
+                );
+        }
+
+        .page-title h1 {
+            margin: 0;
+        }
+
+        .page-title p {
+            margin: 5px 0 0;
+            opacity: 0.68;
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .top-search {
+            position: relative;
+        }
+
+        .top-search i {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6d7b6e;
+        }
+
+        html[dir="rtl"] .top-search i {
+            left: auto;
+            right: 13px;
+        }
+
+        .top-search input {
+            width: 230px;
+            min-height: 42px;
+
+            border: 1px solid #dce7dc;
+            border-radius: 12px;
+
+            padding:
+                0 13px 0 38px;
+
+            outline: none;
+        }
+
+        html[dir="rtl"] .top-search input {
+            padding:
+                0 38px 0 13px;
+        }
+
+        .top-search input:focus {
+            border-color: #43a047;
+
+            box-shadow:
+                0 0 0 4px
+                rgba(
+                    67,
+                    160,
+                    71,
+                    0.10
+                );
+        }
+
+
+        /* =====================================================
+           NOTIFICATION
+        ===================================================== */
+
+        .notification {
+            position: relative;
+
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            color: #2e7d32;
+            background: #edf6ee;
+
+            text-decoration: none;
+        }
+
+        .notification span {
+            position: absolute;
+
+            top: -4px;
+            right: -4px;
+
+            min-width: 18px;
+            height: 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 20px;
+
+            background: #e53935;
+            color: white;
+
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           PROFILE
+        ===================================================== */
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .profile img {
+            width: 43px;
+            height: 43px;
+
+            object-fit: cover;
+
+            border-radius: 50%;
+
+            border:
+                2px solid
+                rgba(
+                    46,
+                    125,
+                    50,
+                    0.18
+                );
+        }
+
+        .profile h4 {
+            margin: 0;
+        }
+
+        .profile small {
+            opacity: 0.62;
+        }
+
+
+        /* =====================================================
+           SMART STATUS
+        ===================================================== */
+
+        .smart-status {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 12px;
+
+            margin:
+                20px 0;
+        }
+
+        .status-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            padding: 14px;
+
+            background: white;
+
+            border:
+                1px solid #e6eee6;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 18px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.04
+                );
+        }
+
+        .status-icon {
+            width: 37px;
+            height: 37px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: #edf7ee;
+            color: #2e7d32;
+        }
+
+        .status-card strong {
+            display: block;
+            font-size: 12px;
+        }
+
+        .status-card small {
+            display: block;
+            margin-top: 2px;
+            color: #748074;
+            font-size: 10px;
+        }
+
+
+        /* =====================================================
+           WEATHER
+        ===================================================== */
+
+        .weather-banner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+
+            padding: 15px 18px;
+
+            margin-bottom: 20px;
+
+            border:
+                1px solid #dcebdc;
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef8ef,
+                    #fafcf9
+                );
+
+            color: #355b39;
+        }
+
+        .weather-banner > div {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+
+        /* =====================================================
+           MARKETPLACE WELCOME
+        ===================================================== */
+
+        .marketplace-banner {
+            position: relative;
+
+            overflow: hidden;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 20px;
+
+            padding: 27px;
+
+            margin-bottom: 20px;
+
+            border-radius: 22px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1b5e20,
+                    #2e7d32 60%,
+                    #43a047
+                );
+
+            box-shadow:
+                0 14px 35px
+                rgba(
+                    27,
+                    94,
+                    32,
+                    0.18
+                );
+        }
+
+        .marketplace-banner::after {
+            content: "";
+
+            position: absolute;
+
+            width: 170px;
+            height: 170px;
+
+            right: -55px;
+            bottom: -75px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.08
+                );
+        }
+
+        .marketplace-banner h2 {
+            margin: 0 0 7px;
+        }
+
+        .marketplace-banner p {
+            margin: 0;
+
+            max-width: 680px;
+
+            line-height: 1.55;
+
+            opacity: 0.9;
+        }
+
+        .banner-icon {
+            position: relative;
+            z-index: 1;
+
+            width: 65px;
+            height: 65px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 18px;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.14
+                );
+
+            font-size: 28px;
+        }
+
+
+        /* =====================================================
+           ACTION BUTTONS
+        ===================================================== */
+
+        .action-buttons {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 14px;
+
+            margin-bottom: 22px;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+
+            min-height: 78px;
+
+            padding: 15px;
+
+            border-radius: 16px;
+
+            text-decoration: none;
+
+            color: inherit;
+
+            border:
+                1px solid #e4ebe4;
+
+            background: white;
+
+            transition: 0.25s;
+
+            box-shadow:
+                0 5px 18px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.035
+                );
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 10px 25px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.08
+                );
+        }
+
+        .action-btn > i {
+            width: 43px;
+            height: 43px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            font-size: 18px;
+        }
+
+        .action-btn strong {
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .action-btn small {
+            color: #738073;
+            font-size: 11px;
+        }
+
+        .sell-btn > i {
+            color: #2e7d32;
+            background: #edf7ee;
+        }
+
+        .request-btn > i {
+            color: #1565c0;
+            background: #edf4fc;
+        }
+
+        .order-btn > i {
+            color: #ef6c00;
+            background: #fff4e8;
+        }
+
+
+        /* =====================================================
+           MARKET CARD
+        ===================================================== */
+
+        .market-card {
+            background: white;
+
+            border:
+                1px solid #e7eee7;
+
+            border-radius: 20px;
+
+            padding: 23px;
+
+            margin-bottom: 22px;
+
+            box-shadow:
+                0 7px 24px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.045
+                );
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 18px;
+        }
+
+        .section-header h2 {
+            margin: 0;
+            color: #202c21;
+        }
+
+        .section-header p {
+            margin: 5px 0 0;
+            color: #718071;
+            font-size: 13px;
+        }
+
+        .crop-search {
+            position: relative;
+        }
+
+        .crop-search i {
+            position: absolute;
+
+            left: 13px;
+            top: 50%;
+
+            transform:
+                translateY(-50%);
+
+            color: #43a047;
+        }
+
+        html[dir="rtl"] .crop-search i {
+            left: auto;
+            right: 13px;
+        }
+
+        .crop-search input {
+            width: 230px;
+
+            min-height: 42px;
+
+            border:
+                1px solid #dce6dc;
+
+            border-radius: 11px;
+
+            padding:
+                0 12px 0 38px;
+
+            outline: none;
+        }
+
+        html[dir="rtl"] .crop-search input {
+            padding:
+                0 38px 0 12px;
+        }
+
+        .crop-search input:focus {
+            border-color: #43a047;
+        }
+
+
+        /* =====================================================
+           TABLE
+        ===================================================== */
+
+        .table-wrapper {
+            overflow-x: auto;
+
+            border:
+                1px solid #e7ece7;
+
+            border-radius: 14px;
+        }
+
+        table {
+            width: 100%;
+            min-width: 760px;
+
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f4f8f4;
+        }
+
+        th {
+            padding: 14px;
+
+            text-align: left;
+
+            font-size: 12px;
+
+            color: #536153;
+
+            white-space: nowrap;
+        }
+
+        html[dir="rtl"] th {
+            text-align: right;
+        }
+
+        td {
+            padding: 14px;
+
+            border-top:
+                1px solid #edf1ed;
+
+            font-size: 13px;
+
+            color: #3d483e;
+        }
+
+        tbody tr {
+            transition: 0.2s;
+        }
+
+        tbody tr:hover {
+            background: #f9fcf9;
+        }
+
+        .crop-name {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            font-weight: 700;
+        }
+
+        .crop-icon {
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+
+            background: #edf7ee;
+            color: #2e7d32;
+        }
+
+        .price {
+            color: #2e7d32;
+            font-size: 14px;
+        }
+
+        .date {
+            color: #687568;
+            white-space: nowrap;
+        }
+
+
+        /* =====================================================
+           PRODUCT SECTION
+        ===================================================== */
+
+        .product-section {
+            background: transparent;
+            margin-bottom: 20px;
+        }
+
+        .product-count {
+            padding: 8px 12px;
+
+            border-radius: 30px;
+
+            background: #edf7ee;
+
+            color: #2e7d32;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           PRODUCT GRID
+        ===================================================== */
+
+        .product-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fill,
+                    minmax(250px, 1fr)
+                );
+
+            gap: 18px;
+        }
+
+
+        /* =====================================================
+           PRODUCT CARD
+        ===================================================== */
+
+        .product-card {
+            overflow: hidden;
+
+            background: white;
+
+            border:
+                1px solid #e5ece5;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 7px 23px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.045
+                );
+
+            transition: 0.25s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 13px 30px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.09
+                );
+        }
+
+        .product-image {
+            position: relative;
+
+            height: 190px;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #edf6ee,
+                    #f8fbf8
+                );
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            transition: 0.35s;
+        }
+
+        .product-card:hover
+        .product-image img {
+            transform: scale(1.04);
+        }
+
+        .no-image {
+            width: 100%;
+            height: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #43a047;
+
+            font-size: 42px;
+        }
+
+        .available-badge {
+            position: absolute;
+
+            top: 12px;
+            left: 12px;
+
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+
+            padding: 7px 10px;
+
+            border-radius: 20px;
+
+            background: #2e7d32;
+            color: white;
+
+            font-size: 10px;
+
+            font-weight: 700;
+        }
+
+        html[dir="rtl"] .available-badge {
+            left: auto;
+            right: 12px;
+        }
+
+        .available-badge i {
+            font-size: 7px;
+        }
+
+
+        /* =====================================================
+           PRODUCT CONTENT
+        ===================================================== */
+
+        .product-content {
+            padding: 17px;
+        }
+
+        .category {
+            display: inline-block;
+
+            padding: 5px 8px;
+
+            border-radius: 7px;
+
+            background: #f0f6f0;
+
+            color: #2e7d32;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+        }
+
+        .product-content h3 {
+            margin: 10px 0 7px;
+
+            font-size: 18px;
+
+            color: #202c21;
+        }
+
+        .farmer-info {
+            margin: 0 0 13px;
+
+            color: #748074;
+
+            font-size: 12px;
+        }
+
+        .farmer-info i {
+            color: #43a047;
+            margin-right: 4px;
+        }
+
+        html[dir="rtl"]
+        .farmer-info i {
+            margin-right: 0;
+            margin-left: 4px;
+        }
+
+
+        /* =====================================================
+           PRICE
+        ===================================================== */
+
+        .product-price {
+            padding: 13px;
+
+            margin-bottom: 13px;
+
+            border-radius: 12px;
+
+            background: #f7faf7;
+        }
+
+        .product-price small {
+            color: #748074;
+        }
+
+        .product-price h2 {
+            margin: 2px 0;
+
+            color: #1b5e20;
+
+            font-size: 23px;
+        }
+
+        .product-price p {
+            margin: 0;
+
+            color: #6f796f;
+
+            font-size: 11px;
+        }
+
+
+        /* =====================================================
+           ORDER FORM
+        ===================================================== */
+
+        .order-form label {
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #4e5a4f;
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+        .quantity-row {
+            display: grid;
+
+            grid-template-columns:
+                80px 1fr;
+
+            gap: 8px;
+        }
+
+        .quantity-row input {
+            width: 100%;
+
+            min-height: 43px;
+
+            border:
+                1px solid #dbe5db;
+
+            border-radius: 10px;
+
+            padding: 0 9px;
+
+            outline: none;
+        }
+
+        .quantity-row input:focus {
+            border-color: #43a047;
+        }
+
+        .buy-btn,
+        .contact-btn {
+            width: 100%;
+
+            min-height: 43px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            font-weight: 700;
+
+            transition: 0.2s;
+        }
+
+        .buy-btn {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .buy-btn:hover:not(:disabled) {
+            background: #1b5e20;
+        }
+
+        .contact-btn {
+            margin-top: 9px;
+
+            background: #edf3ed;
+            color: #3e513f;
+        }
+
+        .contact-btn:hover {
+            background: #e1eae1;
+        }
+
+
+        /* =====================================================
+           SMART PRODUCT INTELLIGENCE
+        ===================================================== */
+
+        .product-intelligence {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 14px;
+
+            margin:
+                20px 0;
+        }
+
+        .intel-box {
+            display: flex;
+            gap: 11px;
+
+            padding: 17px;
+
+            border:
+                1px solid #e3ebe3;
+
+            border-radius: 16px;
+
+            background: white;
+        }
+
+        .intel-box-icon {
+            width: 39px;
+            height: 39px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: #edf7ee;
+
+            color: #2e7d32;
+        }
+
+        .intel-box h3 {
+            margin: 0 0 4px;
+
+            font-size: 13px;
+        }
+
+        .intel-box p {
+            margin: 0;
+
+            color: #748074;
+
+            font-size: 11px;
+
+            line-height: 1.45;
+        }
+
+
+        /* =====================================================
+           EMPTY PRODUCTS
+        ===================================================== */
+
+        .empty-products {
+            grid-column: 1 / -1;
+
+            text-align: center;
+
+            padding: 55px 20px;
+
+            background: white;
+
+            border:
+                1px solid #e7eee7;
+
+            border-radius: 18px;
+        }
+
+        .empty-icon {
+            width: 72px;
+            height: 72px;
+
+            margin:
+                0 auto 15px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 21px;
+
+            background: #edf6ee;
+
+            color: #2e7d32;
+
+            font-size: 28px;
+        }
+
+        .empty-products h2 {
+            margin: 0 0 7px;
+        }
+
+        .empty-products p {
+            margin: 0 0 18px;
+
+            color: #748074;
+        }
+
+        .empty-products button {
+            border: none;
+
+            padding:
+                12px 17px;
+
+            border-radius: 10px;
+
+            background: #2e7d32;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           NO SEARCH RESULTS
+        ===================================================== */
+
+        .search-empty {
+            display: none;
+
+            grid-column: 1 / -1;
+
+            text-align: center;
+
+            padding: 35px;
+
+            background: white;
+
+            border:
+                1px dashed #b8c8b8;
+
+            border-radius: 16px;
+
+            color: #718071;
+        }
+
+        .search-empty i {
+            font-size: 30px;
+
+            color: #8aa18b;
+
+            margin-bottom: 10px;
+        }
+
+
+        /* =====================================================
+           DASHBOARD BUTTON
+        ===================================================== */
+
+        .dashboard-button {
+            text-align: center;
+
+            margin:
+                25px 0;
+        }
+
+        .dashboard-button a {
+            text-decoration: none;
+        }
+
+        .dashboard-button button {
+            min-height: 44px;
+
+            padding:
+                0 18px;
+
+            border: none;
+
+            border-radius: 11px;
+
+            background: #edf1ed;
+
+            color: #465246;
+
+            cursor: pointer;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+            text-align: center;
+
+            padding: 18px;
+
+            color: #758075;
+
+            font-size: 12px;
+        }
+
+        footer i {
+            color: #2e7d32;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1100px) {
+
+            .smart-status {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .product-intelligence {
+                grid-template-columns:
+                    1fr;
+            }
+
+        }
+
+
+        @media (max-width: 850px) {
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .top-search input {
+                width: 190px;
+            }
+
+            .section-header {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .crop-search,
+            .crop-search input {
+                width: 100%;
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .smart-status {
+                grid-template-columns: 1fr;
+            }
+
+            .top-right {
+                width: 100%;
+            }
+
+            .top-search {
+                flex: 1;
+            }
+
+            .top-search input {
+                width: 100%;
+            }
+
+            .marketplace-banner {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                padding: 21px;
+            }
+
+            .banner-icon {
+                display: none;
+            }
+
+            .weather-banner {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .market-card {
+                padding: 17px;
+            }
+
+        }
+
+    </style>
+{% endblock %}
+
+{% block page_title %}Farmer Marketplace{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <div class="main-content">
+
+
+        <!-- =================================================
+             TOP BAR
+        ================================================= -->
+
+        
+
+
+
+        <!-- =================================================
+             SMART STATUS
+        ================================================= -->
+
+        <section class="smart-status">
+
+
+            <div class="status-card">
+
+                <div class="status-icon">
+
+                    <i class="fa-solid fa-store"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Marketplace
+                    </strong>
+
+                    <small>
+                        Direct farm selling
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="status-card">
+
+                <div class="status-icon">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Mandi Intelligence
+                    </strong>
+
+                    <small>
+                        Compare market prices
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="status-card">
+
+                <div class="status-icon">
+
+                    <i class="fa-solid fa-boxes-stacked"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Farm Inventory
+                    </strong>
+
+                    <small>
+                        Products and stock
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="status-card">
+
+                <div class="status-icon">
+
+                    <i class="fa-solid fa-truck-fast"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Order Management
+                    </strong>
+
+                    <small>
+                        Track purchases
+                    </small>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             WEATHER
+        ================================================= -->
+
+        {% if weather %}
+
+        <div class="weather-banner">
+
+
+            <div>
+
+                <i class="fa-solid fa-location-dot"></i>
+
+                <strong>
+                    {{ weather.city|default('Current Location', true) }}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <i class="fa-solid fa-temperature-half"></i>
+
+                {{ weather.temperature|default('--', true) }}Â°C
+
+            </div>
+
+
+            <div>
+
+                <i class="fa-solid fa-cloud"></i>
+
+                {{ weather.condition|default('Weather available', true) }}
+
+            </div>
+
+
+            <div>
+
+                <i class="fa-solid fa-droplet"></i>
+
+                {{ weather.humidity|default(0, true) }}%
+
+            </div>
+
+
+        </div>
+
+        {% endif %}
+
+
+
+        <!-- =================================================
+             FLASH MESSAGES
+        ================================================= -->
+
+        {% with messages =
+            get_flashed_messages(
+                with_categories=true
+            )
+        %}
+
+            {% if messages %}
+
+                <div class="flash-container">
+
+                {% for category, message in messages %}
+
+                    <div class="flash-message {{ category }}">
+
+                        <span>
+                            {{ message }}
+                        </span>
+
+                        <button
+                            type="button"
+                            onclick="
+                                this.parentElement.remove()
+                            ">
+
+                            Ã—
+
+                        </button>
+
+                    </div>
+
+                {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        {% endwith %}
+
+
+
+        <!-- =================================================
+             WELCOME
+        ================================================= -->
+
+        <div class="marketplace-banner">
+
+
+            <div>
+
+                <h2>
+                    ðŸŒ¾ Welcome to KisanVision360+ Marketplace
+                </h2>
+
+                <p>
+                    Sell farm products directly to consumers,
+                    discover market prices and manage your
+                    agriculture business from one platform.
+                </p>
+
+            </div>
+
+
+            <div class="banner-icon">
+
+                <i class="fa-solid fa-seedling"></i>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             ACTION BUTTONS
+        ================================================= -->
+
+        <div class="action-buttons">
+
+
+            <a
+                href="/add-product"
+                class="action-btn sell-btn">
+
+                <i class="fa-solid fa-plus"></i>
+
+                <div>
+
+                    <strong>
+                        Sell Product
+                    </strong>
+
+                    <small>
+                        List your farm products
+                    </small>
+
+                </div>
+
+            </a>
+
+
+            <a
+                href="/consumer-request"
+                class="action-btn request-btn">
+
+                <i class="fa-solid fa-cart-shopping"></i>
+
+                <div>
+
+                    <strong>
+                        Consumer Requirement
+                    </strong>
+
+                    <small>
+                        View buyer requirements
+                    </small>
+
+                </div>
+
+            </a>
+
+
+            <a
+                href="/orders"
+                class="action-btn order-btn">
+
+                <i class="fa-solid fa-box-open"></i>
+
+                <div>
+
+                    <strong>
+                        My Orders
+                    </strong>
+
+                    <small>
+                        Track your purchases
+                    </small>
+
+                </div>
+
+            </a>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             MANDI PRICES
+        ================================================= -->
+
+        <section class="market-card">
+
+
+            <div class="section-header">
+
+
+                <div>
+
+                    <h2>
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                        Today's Government Mandi Prices
+
+                    </h2>
+
+                    <p>
+                        Compare available crop market information
+                    </p>
+
+                </div>
+
+
+                <div class="crop-search">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="text"
+                        id="cropSearch"
+                        placeholder="Search crop..."
+                        autocomplete="off">
+
+                </div>
+
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table id="priceTable">
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Crop
+                            </th>
+
+                            <th>
+                                Market
+                            </th>
+
+                            <th>
+                                State
+                            </th>
+
+                            <th>
+                                Price â‚¹/Quintal
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                    {% for crop in prices %}
+
+                    <tr>
+
+                        <td>
+
+                            <div class="crop-name">
+
+                                <div class="crop-icon">
+
+                                    <i class="fa-solid fa-wheat-awn"></i>
+
+                                </div>
+
+                                {{ crop.commodity }}
+
+                            </div>
+
+                        </td>
+
+
+                        <td>
+                            {{ crop.market }}
+                        </td>
+
+
+                        <td>
+                            {{ crop.state }}
+                        </td>
+
+
+                        <td>
+
+                            <strong class="price">
+
+                                â‚¹ {{ crop.modal_price }}
+
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="date">
+
+                                <i class="fa-regular fa-calendar"></i>
+
+                                {{ crop.arrival_date }}
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+
+                    {% else %}
+
+                    <tr>
+
+                        <td
+                            colspan="5"
+                            class="no-data">
+
+                            <i class="fa-solid fa-database"></i>
+
+                            <p>
+                                No mandi price data available.
+                            </p>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             PRODUCT INTELLIGENCE
+        ================================================= -->
+
+        <section class="product-intelligence">
+
+
+            <div class="intel-box">
+
+                <div class="intel-box-icon">
+
+                    <i class="fa-solid fa-handshake"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Direct Farmer-to-Buyer
+                    </h3>
+
+                    <p>
+                        List your products and make them
+                        discoverable to consumers.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="intel-box">
+
+                <div class="intel-box-icon">
+
+                    <i class="fa-solid fa-chart-column"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Price Awareness
+                    </h3>
+
+                    <p>
+                        Compare mandi prices before deciding
+                        your selling strategy.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="intel-box">
+
+                <div class="intel-box-icon">
+
+                    <i class="fa-solid fa-coins"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Farm Income
+                    </h3>
+
+                    <p>
+                        Connect product sales with your
+                        future farm income and profit tracking.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             FARMER PRODUCTS
+        ================================================= -->
+
+        <section class="product-section">
+
+
+            <div class="section-header">
+
+
+                <div>
+
+                    <h2>
+
+                        <i class="fa-solid fa-seedling"></i>
+
+                        Farmer Products
+
+                    </h2>
+
+                    <p>
+                        Products currently available from farmers
+                    </p>
+
+                </div>
+
+
+                <span class="product-count">
+
+                    {{ products|length }}
+
+                    Product{% if products|length != 1 %}s{% endif %}
+
+                </span>
+
+
+            </div>
+
+
+
+            <div
+                class="product-grid"
+                id="productGrid">
+
+
+            {% for product in products %}
+
+
+            <!-- =================================================
+                 PRODUCT CARD
+            ================================================= -->
+
+            <div
+                class="product-card"
+                data-product-name="{{ product.product_name|default('', true)|lower }}"
+                data-category="{{ product.category|default('', true)|lower }}">
+
+
+                <!-- IMAGE -->
+
+                <div class="product-image">
+
+
+                    {% if product.image %}
+
+                    <img
+                        src="{{ url_for(
+                            'static',
+                            filename=
+                            'uploads/products/'
+                            + product.image
+                        ) }}"
+                        alt="{{ product.product_name }}"
+                        loading="lazy"
+                        onerror="
+                            this.style.display='none';
+                            this.parentElement
+                                .querySelector('.no-image')
+                                .style.display='flex';
+                        ">
+
+
+                    <div
+                        class="no-image"
+                        style="display:none;">
+
+                        <i class="fa-solid fa-seedling"></i>
+
+                    </div>
+
+
+                    {% else %}
+
+                    <div class="no-image">
+
+                        <i class="fa-solid fa-seedling"></i>
+
+                    </div>
+
+                    {% endif %}
+
+
+
+                    <!-- STOCK -->
+
+                    {% if product.quantity|float > 0 %}
+
+                    <span class="available-badge">
+
+                        <i class="fa-solid fa-circle"></i>
+
+                        Available
+
+                    </span>
+
+                    {% else %}
+
+                    <span
+                        class="available-badge"
+                        style="
+                            background:#d32f2f;
+                        ">
+
+                        <i class="fa-solid fa-circle"></i>
+
+                        Out of Stock
+
+                    </span>
+
+                    {% endif %}
+
+
+                </div>
+
+
+
+                <!-- CONTENT -->
+
+                <div class="product-content">
+
+
+                    <span class="category">
+
+                        {{ product.category|default(
+                            "Other",
+                            true
+                        ) }}
+
+                    </span>
+
+
+                    <h3>
+
+                        {{ product.product_name }}
+
+                    </h3>
+
+
+                    <p class="farmer-info">
+
+                        <i class="fa-solid fa-user"></i>
+
+                        Farmer Product
+
+                    </p>
+
+
+                    <!-- PRICE -->
+
+                    <div class="product-price">
+
+                        <small>
+                            Price
+                        </small>
+
+                        <h2>
+
+                            â‚¹ {{ product.price }}
+
+                        </h2>
+
+
+                        {% if product.quantity|float > 0 %}
+
+                        <p>
+
+                            Available:
+
+                            {{ product.quantity|float|int }}
+
+                            {{ product.unit|default(
+                                'kg',
+                                true
+                            ) }}
+
+                        </p>
+
+                        {% else %}
+
+                        <p>
+                            Out of stock
+                        </p>
+
+                        {% endif %}
+
+                    </div>
+
+
+
+                    <!-- BUY -->
+
+                    {% if product.quantity|float > 0 %}
+
+
+                    <form
+                        action="{{ url_for(
+                            'place_order',
+                            product_id=product.id
+                        ) }}"
+                        method="POST"
+                        class="order-form">
+
+
+                        <label
+                            for="quantity-{{ product.id }}">
+
+                            Quantity
+
+                        </label>
+
+
+                        <div class="quantity-row">
+
+
+                            <input
+                                type="number"
+                                id="quantity-{{ product.id }}"
+                                name="quantity"
+                                value="1"
+                                min="1"
+                                max="{{ product.quantity|float|int }}"
+                                required>
+
+
+                            <button
+                                type="submit"
+                                class="buy-btn">
+
+                                <i class="fa-solid fa-cart-shopping"></i>
+
+                                Buy Now
+
+                            </button>
+
+
+                        </div>
+
+
+                    </form>
+
+
+                    {% else %}
+
+
+                    <button
+                        type="button"
+                        class="buy-btn"
+                        disabled
+                        style="
+                            opacity:0.5;
+                            cursor:not-allowed;
+                        ">
+
+                        <i class="fa-solid fa-ban"></i>
+
+                        Out of Stock
+
+                    </button>
+
+
+                    {% endif %}
+
+
+
+                    <!-- CONTACT -->
+
+                    <button
+                        type="button"
+                        class="contact-btn"
+                        onclick="
+                            contactFarmer(
+                                '{{ product.product_name|escape }}'
+                            )
+                        ">
+
+                        <i class="fa-solid fa-phone"></i>
+
+                        Contact Farmer
+
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+
+            {% else %}
+
+
+            <!-- =================================================
+                 EMPTY PRODUCTS
+            ================================================= -->
+
+            <div class="empty-products">
+
+
+                <div class="empty-icon">
+
+                    <i class="fa-solid fa-box-open"></i>
+
+                </div>
+
+
+                <h2>
+                    No Products Available
+                </h2>
+
+
+                <p>
+                    No farmer products have been listed yet.
+                </p>
+
+
+                <a href="/add-product">
+
+                    <button type="button">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Sell Your Product
+
+                    </button>
+
+                </a>
+
+
+            </div>
+
+
+            {% endfor %}
+
+
+            <!-- SEARCH EMPTY -->
+
+            <div
+                class="search-empty"
+                id="productSearchEmpty">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <h3>
+                    No matching products
+                </h3>
+
+                <p>
+                    Try another product name or category.
+                </p>
+
+            </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             FARM BUSINESS FLOW
+        ================================================= -->
+
+        <section class="product-intelligence">
+
+
+            <div class="intel-box">
+
+                <div class="intel-box-icon">
+
+                    <i class="fa-solid fa-wheat-awn"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Farm Production
+                    </h3>
+
+                    <p>
+                        Grow and manage your crop with
+                        KisanVision360+ tools.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="intel-box">
+
+                <div class="intel-box-icon">
+
+                    <i class="fa-solid fa-store"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Product Listing
+                    </h3>
+
+                    <p>
+                        Add your harvest with quantity,
+                        price and product details.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="intel-box">
+
+                <div class="intel-box-icon">
+
+                    <i class="fa-solid fa-money-bill-trend-up"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Sale â†’ Income
+                    </h3>
+
+                    <p>
+                        Completed sales can later connect
+                        with farm income and profit analysis.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             DASHBOARD
+        ================================================= -->
+
+        <div class="dashboard-button">
+
+            <a href="/farmer">
+
+                <button type="button">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    Back to Dashboard
+
+                </button>
+
+            </a>
+
+        </div>
+
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================= -->
+
+        <footer>
+
+            <i class="fa-solid fa-leaf"></i>
+
+            KisanVision360+
+
+            <span>â€¢</span>
+
+            Smart Farming Marketplace
+
+        </footer>
+
+
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for(
+    'static',
+    filename='js/chatbot.js'
+) }}"></script>
+<script>
+
+    /* =====================================================
+       PRODUCT SEARCH
+    ===================================================== */
+
+    const productSearch =
+        document.getElementById(
+            "productSearch"
+        );
+
+    const productCards =
+        document.querySelectorAll(
+            ".product-card"
+        );
+
+    const productSearchEmpty =
+        document.getElementById(
+            "productSearchEmpty"
+        );
+
+
+    if (productSearch) {
+
+        productSearch.addEventListener(
+            "input",
+            function () {
+
+                const search =
+                    this.value
+                    .toLowerCase()
+                    .trim();
+
+                let visibleCount = 0;
+
+
+                productCards.forEach(
+                    function(card) {
+
+                        const productName =
+                            card.dataset.productName ||
+                            "";
+
+                        const category =
+                            card.dataset.category ||
+                            "";
+
+                        const cardText =
+                            card.innerText
+                            .toLowerCase();
+
+
+                        const matched =
+                            !search ||
+                            productName.includes(search) ||
+                            category.includes(search) ||
+                            cardText.includes(search);
+
+
+                        if (matched) {
+
+                            card.style.display = "";
+
+                            visibleCount++;
+
+                        } else {
+
+                            card.style.display =
+                                "none";
+
+                        }
+
+                    }
+                );
+
+
+                if (productSearchEmpty) {
+
+                    productSearchEmpty.style.display =
+                        (
+                            search &&
+                            visibleCount === 0 &&
+                            productCards.length > 0
+                        )
+                        ? "block"
+                        : "none";
+
+                }
+
+            }
+        );
+
+    }
+
+
+
+    /* =====================================================
+       CROP SEARCH
+    ===================================================== */
+
+    const cropSearch =
+        document.getElementById(
+            "cropSearch"
+        );
+
+
+    if (cropSearch) {
+
+        cropSearch.addEventListener(
+            "input",
+            function () {
+
+                const search =
+                    this.value
+                    .toLowerCase()
+                    .trim();
+
+
+                const rows =
+                    document.querySelectorAll(
+                        "#priceTable tbody tr"
+                    );
+
+
+                rows.forEach(
+                    function(row) {
+
+                        const text =
+                            row.innerText
+                            .toLowerCase();
+
+
+                        row.style.display =
+                            text.includes(search)
+                            ? ""
+                            : "none";
+
+                    }
+                );
+
+            }
+        );
+
+    }
+
+
+
+    /* =====================================================
+       CONTACT FARMER
+    ===================================================== */
+
+    function contactFarmer(product) {
+
+        const message =
+            "Contact request for " +
+            product +
+            " will be connected with the marketplace messaging system.";
+
+        showMarketplaceToast(message);
+
+    }
+
+
+
+    /* =====================================================
+       MARKETPLACE TOAST
+    ===================================================== */
+
+    function showMarketplaceToast(message) {
+
+        let toast =
+            document.getElementById(
+                "marketplaceToast"
+            );
+
+
+        if (!toast) {
+
+            toast =
+                document.createElement(
+                    "div"
+                );
+
+            toast.id =
+                "marketplaceToast";
+
+
+            toast.style.position =
+                "fixed";
+
+            toast.style.bottom =
+                "25px";
+
+            toast.style.right =
+                "25px";
+
+            toast.style.zIndex =
+                "9999";
+
+            toast.style.maxWidth =
+                "320px";
+
+            toast.style.padding =
+                "13px 16px";
+
+            toast.style.borderRadius =
+                "12px";
+
+            toast.style.background =
+                "#1b5e20";
+
+            toast.style.color =
+                "white";
+
+            toast.style.boxShadow =
+                "0 10px 30px rgba(0,0,0,.2)";
+
+            toast.style.fontSize =
+                "13px";
+
+            document.body.appendChild(
+                toast
+            );
+
+        }
+
+
+        toast.innerHTML =
+            '<i class="fa-solid fa-circle-info"></i> ' +
+            message;
+
+
+        clearTimeout(
+            window.marketplaceToastTimer
+        );
+
+
+        window.marketplaceToastTimer =
+            setTimeout(
+                function () {
+
+                    toast.remove();
+
+                },
+                3000
+            );
+
+    }
+
+
+
+    /* =====================================================
+       ORDER FORM VALIDATION
+    ===================================================== */
+
+    document.querySelectorAll(
+        ".order-form"
+    ).forEach(
+        function(form) {
+
+            form.addEventListener(
+                "submit",
+                function(event) {
+
+                    const quantity =
+                        form.querySelector(
+                            'input[name="quantity"]'
+                        );
+
+
+                    if (!quantity) {
+                        return;
+                    }
+
+
+                    const value =
+                        parseInt(
+                            quantity.value,
+                            10
+                        );
+
+
+                    const minimum =
+                        parseInt(
+                            quantity.min || "1",
+                            10
+                        );
+
+
+                    const maximum =
+                        parseInt(
+                            quantity.max || "999999",
+                            10
+                        );
+
+
+                    if (
+                        isNaN(value) ||
+                        value < minimum ||
+                        value > maximum
+                    ) {
+
+                        event.preventDefault();
+
+
+                        showMarketplaceToast(
+                            "Please enter a valid quantity."
+                        );
+
+
+                        quantity.focus();
+
+                        return;
+
+                    }
+
+
+                    /*
+                     * Prevent accidental double submission.
+                     */
+
+                    const button =
+                        form.querySelector(
+                            ".buy-btn"
+                        );
+
+
+                    if (button) {
+
+                        button.disabled =
+                            true;
+
+                        button.style.opacity =
+                            "0.7";
+
+                        button.innerHTML =
+                            '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+
+    /* =====================================================
+       GLOBAL LANGUAGE
+    ===================================================== */
+
+    /*
+     * Language is selected once globally on language.html.
+     *
+     * This marketplace page does NOT contain another
+     * language selector and does NOT use Google Translate.
+     */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            const serverLanguage =
+                "{{ session.get('language', 'en') }}";
+
+
+            const savedLanguage =
+                localStorage.getItem(
+                    "kisanvision360_language"
+                );
+
+
+            const activeLanguage =
+                serverLanguage ||
+                savedLanguage ||
+                "en";
+
+
+            document.documentElement.lang =
+                activeLanguage;
+
+
+            document.documentElement.dir =
+                ["ur", "ks", "sd"].includes(
+                    activeLanguage
+                )
+                ? "rtl"
+                : "ltr";
+
+        }
+    );
+
+</script>
+{% endblock %}
+

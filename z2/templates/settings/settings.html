@@ -1,0 +1,608 @@
+﻿{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>KisanVision360 | Settings</title>
+
+
+<!-- SIDEBAR CSS -->
+
+<link rel="stylesheet"
+      href="{{ url_for('static',
+      filename='css/sidebar.css') }}">
+
+
+<!-- SETTINGS CSS -->
+
+<link rel="stylesheet"
+      href="{{ url_for('static',
+      filename='css/settings.css') }}">
+
+
+<!-- FONT AWESOME -->
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+{% include 'components/sidebar.html' %}
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<div class="main-content">
+
+
+<!-- =====================================================
+     TOPBAR
+===================================================== -->
+
+<header class="topbar">
+
+
+    <div class="title-section">
+
+        <div class="title-icon">
+
+            <i class="fa-solid fa-gear"></i>
+
+        </div>
+
+        <div>
+
+            <h1>
+                Settings
+            </h1>
+
+            <p>
+                Manage your KisanVision360 account
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- PROFILE -->
+
+    <div class="profile">
+
+        <img
+            src="{{ url_for(
+                'static',
+                filename='images/farmer.jpg'
+            ) }}"
+            alt="Profile">
+
+        <div>
+
+            <h4>
+                {{ name }}
+            </h4>
+
+            <span>
+                Farmer
+            </span>
+
+        </div>
+
+    </div>
+
+
+</header>
+
+
+
+<!-- =====================================================
+     WEATHER STRIP
+===================================================== -->
+
+<div class="weather-strip">
+
+    <div>
+
+        <i class="fa-solid fa-location-dot"></i>
+
+        {{ weather.city if weather else 'Nagpur' }}
+
+    </div>
+
+
+    <div>
+
+        <i class="fa-solid fa-temperature-half"></i>
+
+        {{ weather.temperature if weather else '27' }}Â°C
+
+    </div>
+
+
+    <div>
+
+        <i class="fa-solid fa-cloud-rain"></i>
+
+        {{ weather.description if weather else 'Rain' }}
+
+    </div>
+
+
+    <div>
+
+        <i class="fa-solid fa-droplet"></i>
+
+        {{ weather.humidity if weather else 'â€”' }}%
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     SETTINGS CARDS
+===================================================== -->
+
+<div class="settings-grid">
+
+
+<!-- =====================================================
+     PROFILE
+===================================================== -->
+
+<div class="setting-card">
+
+
+    <div class="card-icon">
+
+        <i class="fa-solid fa-user"></i>
+
+    </div>
+
+
+    <h2>
+        Profile Information
+    </h2>
+
+
+    <p>
+        <strong>Name:</strong>
+        {{ user.fullname if user else name }}
+    </p>
+
+
+    <p>
+        <strong>Mobile:</strong>
+        {{ user.mobile if user else 'Not available' }}
+    </p>
+
+
+    <p>
+        <strong>Email:</strong>
+        {{ user.email if user else 'Not available' }}
+    </p>
+
+
+    <p>
+        <strong>Role:</strong>
+        {{ user.role if user else 'Farmer' }}
+    </p>
+
+
+    <a href="/profile"
+       class="setting-btn">
+
+        <i class="fa-solid fa-user-pen"></i>
+
+        Edit Profile
+
+    </a>
+
+</div>
+
+
+
+<!-- =====================================================
+     LANGUAGE
+===================================================== -->
+
+<div class="setting-card">
+
+
+    <div class="card-icon">
+
+        <i class="fa-solid fa-language"></i>
+
+    </div>
+
+
+    <h2>
+        Language
+    </h2>
+
+
+    <p>
+        Select your preferred language.
+    </p>
+
+
+    <select
+        class="language-select"
+        onchange="changeLanguage(this.value)">
+
+        <option value="en">
+            English
+        </option>
+
+        <option value="hi">
+            à¤¹à¤¿à¤¨à¥à¤¦à¥€
+        </option>
+
+        <option value="mr">
+            à¤®à¤°à¤¾à¤ à¥€
+        </option>
+
+    </select>
+
+</div>
+
+
+
+<!-- =====================================================
+     NOTIFICATIONS
+===================================================== -->
+
+<div class="setting-card">
+
+
+    <div class="card-icon">
+
+        <i class="fa-solid fa-bell"></i>
+
+    </div>
+
+
+    <h2>
+        Notifications
+    </h2>
+
+
+    <p>
+        Receive weather and farming alerts.
+    </p>
+
+
+    <label class="switch">
+
+        <input
+            type="checkbox"
+            id="notificationToggle"
+            checked>
+
+        <span class="slider"></span>
+
+    </label>
+
+
+    <span
+        id="notificationStatus"
+        class="toggle-status">
+
+        Notifications Enabled
+
+    </span>
+
+</div>
+
+
+
+<!-- =====================================================
+     WEATHER
+===================================================== -->
+
+<div class="setting-card">
+
+
+    <div class="card-icon">
+
+        <i class="fa-solid fa-cloud-sun"></i>
+
+    </div>
+
+
+    <h2>
+        Current Weather
+    </h2>
+
+
+    <p>
+
+        <strong>Location:</strong>
+
+        {{ weather.city if weather else 'Nagpur' }}
+
+    </p>
+
+
+    <p>
+
+        <strong>Temperature:</strong>
+
+        {{ weather.temperature if weather else '27' }}Â°C
+
+    </p>
+
+
+    <p>
+
+        <strong>Condition:</strong>
+
+        {{ weather.description if weather else 'Rain' }}
+
+    </p>
+
+
+    <a href="/weather"
+       class="setting-btn">
+
+        <i class="fa-solid fa-cloud-sun"></i>
+
+        View Weather
+
+    </a>
+
+</div>
+
+
+
+<!-- =====================================================
+     SECURITY
+===================================================== -->
+
+<div class="setting-card">
+
+
+    <div class="card-icon">
+
+        <i class="fa-solid fa-lock"></i>
+
+    </div>
+
+
+    <h2>
+        Security
+    </h2>
+
+
+    <p>
+        Manage your password and account security.
+    </p>
+
+
+    <a href="/change-password"
+       class="setting-btn">
+
+        <i class="fa-solid fa-key"></i>
+
+        Change Password
+
+    </a>
+
+</div>
+
+
+
+<!-- =====================================================
+     HELP
+===================================================== -->
+
+<div class="setting-card">
+
+
+    <div class="card-icon">
+
+        <i class="fa-solid fa-headset"></i>
+
+    </div>
+
+
+    <h2>
+        Help & Support
+    </h2>
+
+
+    <p>
+        Get assistance with farming and KisanVision360.
+    </p>
+
+
+    <a href="/help"
+       class="setting-btn">
+
+        <i class="fa-solid fa-circle-question"></i>
+
+        Open Help
+
+    </a>
+
+</div>
+
+
+
+<!-- =====================================================
+     ALERTS
+===================================================== -->
+
+<div class="setting-card">
+
+
+    <div class="card-icon">
+
+        <i class="fa-solid fa-triangle-exclamation"></i>
+
+    </div>
+
+
+    <h2>
+        Smart Alerts
+    </h2>
+
+
+    <p>
+        Check weather, crop and market alerts.
+    </p>
+
+
+    <a href="/notifications"
+       class="setting-btn">
+
+        <i class="fa-solid fa-bell"></i>
+
+        View Alerts
+
+    </a>
+
+</div>
+
+
+
+<!-- =====================================================
+     LOGOUT
+===================================================== -->
+
+<div class="setting-card logout-card">
+
+
+    <div class="card-icon logout-icon">
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+    </div>
+
+
+    <h2>
+        Logout
+    </h2>
+
+
+    <p>
+        Sign out safely from your KisanVision360 account.
+    </p>
+
+
+    <a href="/logout"
+       class="logout-btn">
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+        Logout
+
+    </a>
+
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="settings-footer">
+
+    <i class="fa-solid fa-leaf"></i>
+
+    <strong>
+        KisanVision360
+    </strong>
+
+    <span>
+        â€¢
+    </span>
+
+    Smart Farming Platform
+
+</footer>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+function changeLanguage(language) {
+
+    window.location.href =
+        "/change-language/" + language;
+
+}
+
+
+/* Notification toggle */
+
+const notificationToggle =
+    document.getElementById(
+        "notificationToggle"
+    );
+
+const notificationStatus =
+    document.getElementById(
+        "notificationStatus"
+    );
+
+
+if (notificationToggle) {
+
+    notificationToggle.addEventListener(
+        "change",
+        function () {
+
+            if (this.checked) {
+
+                notificationStatus.innerText =
+                    "Notifications Enabled";
+
+            } else {
+
+                notificationStatus.innerText =
+                    "Notifications Disabled";
+
+            }
+
+        }
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html>
