@@ -1007,7 +1007,7 @@ Smart Agriculture Marketplace
                                 class="kv-price-preview"
                                 id="pricePreview">
 
-                                💰 Enter quantity and price to calculate
+                                 Enter quantity and price to calculate
                                 the approximate price per unit.
 
                             </div>
@@ -1311,7 +1311,7 @@ Smart Agriculture Marketplace
             <div class="kv-ai-panel">
 
                 <h3>
-                    🤖 AI Listing Assistant
+                     AI Listing Assistant
                 </h3>
 
                 <p>
@@ -1374,7 +1374,7 @@ Smart Agriculture Marketplace
 
     <footer class="kv-footer">
 
-        🌱
+        
 
         <strong>
             KisanVision360+
@@ -1563,7 +1563,7 @@ function updatePricePreview() {
     ) {
 
         pricePreview.innerHTML =
-            "💰 Enter quantity and price to calculate the approximate price per unit.";
+            " Enter quantity and price to calculate the approximate price per unit.";
 
         return;
     }
@@ -1574,7 +1574,7 @@ function updatePricePreview() {
 
 
     pricePreview.innerHTML =
-        "💰 Approx. price: <strong>₹" +
+        " Approx. price: <strong>₹" +
         perUnit.toFixed(2) +
         "</strong> per " +
         selectedUnit;
@@ -1664,21 +1664,21 @@ function updateReadiness() {
     if (score >= 90) {
 
         readinessText.textContent =
-            "🌟 Excellent! Your listing is marketplace-ready.";
+            " Excellent! Your listing is marketplace-ready.";
 
     }
 
     else if (score >= 70) {
 
         readinessText.textContent =
-            "✅ Good listing. Add remaining details for better visibility.";
+            " Good listing. Add remaining details for better visibility.";
 
     }
 
     else if (score >= 40) {
 
         readinessText.textContent =
-            "🌱 Good start. Complete more product information.";
+            " Good start. Complete more product information.";
 
     }
 
@@ -1716,21 +1716,21 @@ function updateAIInsight(score) {
     if (score >= 90) {
 
         aiResult.innerHTML =
-            "🤖 <b>AI Insight:</b> Your product listing contains the important information buyers usually need.";
+            " <b>AI Insight:</b> Your product listing contains the important information buyers usually need.";
 
     }
 
     else if (score >= 70) {
 
         aiResult.innerHTML =
-            "🤖 <b>AI Insight:</b> Your listing is strong. Adding the remaining details can improve buyer confidence.";
+            " <b>AI Insight:</b> Your listing is strong. Adding the remaining details can improve buyer confidence.";
 
     }
 
     else {
 
         aiResult.innerHTML =
-            "🤖 <b>AI Insight:</b> Complete product details, quantity, price, image and description to make your listing stronger.";
+            " <b>AI Insight:</b> Complete product details, quantity, price, image and description to make your listing stronger.";
 
     }
 }

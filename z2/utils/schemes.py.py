@@ -2,7 +2,7 @@
 
 {
     "name":"PM-KISAN",
-    "benefit":"â‚¹6,000 per year financial assistance",
+    "benefit":"₹6,000 per year financial assistance",
     "eligibility":"Eligible farmer families",
     "category":"Financial Support",
     "website":"https://pmkisan.gov.in"

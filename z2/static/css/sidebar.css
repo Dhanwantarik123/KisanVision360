@@ -1,0 +1,957 @@
+/* =========================================================
+   KISANVISION360+
+   MODERN RESPONSIVE SIDEBAR
+========================================================= */
+
+:root {
+    --kv-sidebar-width: 270px;
+    --kv-sidebar-mobile: 290px;
+
+    --kv-green-dark: #123d19;
+    --kv-green: #1b5e20;
+    --kv-green-light: #43a047;
+    --kv-orange: #ffb74d;
+
+    --kv-white: #ffffff;
+    --kv-text: rgba(255, 255, 255, 0.84);
+    --kv-muted: rgba(255, 255, 255, 0.55);
+
+    --kv-hover: rgba(255, 255, 255, 0.09);
+    --kv-active: rgba(255, 255, 255, 0.17);
+
+    --kv-border: rgba(255, 255, 255, 0.10);
+
+    --kv-sidebar-shadow: 8px 0 30px rgba(0, 0, 0, 0.15);
+
+    --kv-transition: 0.25s ease;
+}
+
+
+/* =========================================================
+   GLOBAL SIDEBAR BOX SIZING
+========================================================= */
+
+#kvSidebar,
+#kvSidebar *,
+#kvMenuButton,
+#kvSidebarOverlay {
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+#kvSidebar.kv-sidebar {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    width: var(--kv-sidebar-width);
+    height: 100vh;
+    height: 100dvh;
+
+    display: flex;
+    flex-direction: column;
+
+    background:
+        linear-gradient(
+            180deg,
+            #0f3515 0%,
+            #164d1b 28%,
+            #1b5e20 65%,
+            #164d1b 100%
+        );
+
+    color: var(--kv-white);
+
+    z-index: 1000;
+
+    overflow: hidden;
+
+    box-shadow: var(--kv-sidebar-shadow);
+
+    transform: translateX(0);
+
+    transition:
+        transform var(--kv-transition);
+
+    isolation: isolate;
+}
+
+
+/* =========================================================
+   RTL
+========================================================= */
+
+html[dir="rtl"] #kvSidebar.kv-sidebar {
+
+    left: auto;
+    right: 0;
+
+    box-shadow:
+        -8px 0 30px rgba(0, 0, 0, 0.15);
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+#kvSidebar .kv-sidebar-header {
+
+    height: 72px;
+    min-height: 72px;
+
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 18px;
+
+    border-bottom:
+        1px solid var(--kv-border);
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+#kvSidebar .kv-brand {
+
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    color: var(--kv-white);
+
+    text-decoration: none;
+
+    font-size: 18px;
+    font-weight: 800;
+
+    min-width: 0;
+}
+
+
+#kvSidebar .kv-brand:hover {
+    color: var(--kv-white);
+}
+
+
+/* =========================================================
+   BRAND LOGO
+========================================================= */
+
+#kvSidebar .kv-brand-logo {
+
+    width: 42px;
+    height: 42px;
+
+    min-width: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background:
+        rgba(255, 255, 255, 0.12);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    overflow: hidden;
+}
+
+
+#kvSidebar .kv-brand-logo img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+}
+
+
+#kvSidebar .kv-brand-logo i {
+
+    font-size: 19px;
+    color: white;
+}
+
+
+#kvSidebar .kv-brand-plus {
+    color: var(--kv-orange);
+}
+
+
+/* =========================================================
+   USER CARD
+========================================================= */
+
+#kvSidebar .kv-sidebar-user {
+
+    margin: 14px 14px 10px;
+
+    padding: 12px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    min-width: 0;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 14px;
+
+    flex-shrink: 0;
+
+    transition:
+        background var(--kv-transition);
+}
+
+
+#kvSidebar .kv-sidebar-user:hover {
+
+    background:
+        rgba(255, 255, 255, 0.12);
+}
+
+
+/* =========================================================
+   AVATAR
+========================================================= */
+
+#kvSidebar .kv-sidebar-avatar {
+
+    width: 42px;
+    height: 42px;
+
+    min-width: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #dceddf;
+
+    overflow: hidden;
+
+    border:
+        2px solid rgba(255, 255, 255, 0.25);
+}
+
+
+#kvSidebar .kv-sidebar-avatar img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* =========================================================
+   USER INFO
+========================================================= */
+
+#kvSidebar .kv-sidebar-user-info {
+
+    flex: 1;
+
+    min-width: 0;
+
+    overflow: hidden;
+}
+
+
+#kvSidebar .kv-sidebar-user-name {
+
+    color: white;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+#kvSidebar .kv-sidebar-user-role {
+
+    margin-top: 3px;
+
+    color: var(--kv-muted);
+
+    font-size: 10px;
+
+    text-transform: capitalize;
+}
+
+
+/* =========================================================
+   NAVIGATION AREA
+========================================================= */
+
+#kvSidebar .kv-sidebar-nav {
+
+    flex: 1;
+
+    min-height: 0;
+
+    width: 100%;
+
+    padding: 5px 11px 15px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    scrollbar-width: thin;
+
+    scrollbar-color:
+        rgba(255,255,255,0.25)
+        transparent;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+#kvSidebar .kv-sidebar-nav::-webkit-scrollbar {
+    width: 5px;
+}
+
+
+#kvSidebar .kv-sidebar-nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+#kvSidebar .kv-sidebar-nav::-webkit-scrollbar-thumb {
+
+    background:
+        rgba(255,255,255,0.25);
+
+    border-radius: 20px;
+}
+
+
+/* =========================================================
+   SECTION TITLE
+========================================================= */
+
+#kvSidebar .kv-nav-title {
+
+    padding: 14px 9px 7px;
+
+    color: var(--kv-muted);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   NAVIGATION LINK
+========================================================= */
+
+#kvSidebar .kv-nav-link {
+
+    position: relative;
+
+    width: 100%;
+    min-width: 0;
+
+    min-height: 42px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 10px 12px;
+
+    margin: 2px 0;
+
+    border-radius: 11px;
+
+    color: var(--kv-text);
+
+    background: transparent;
+
+    text-decoration: none;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background var(--kv-transition),
+        color var(--kv-transition),
+        transform var(--kv-transition);
+}
+
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+#kvSidebar .kv-nav-link:hover {
+
+    color: white;
+
+    background:
+        var(--kv-hover);
+
+    transform:
+        translateX(3px);
+}
+
+
+html[dir="rtl"] #kvSidebar .kv-nav-link:hover {
+
+    transform:
+        translateX(-3px);
+}
+
+
+/* =========================================================
+   ACTIVE
+========================================================= */
+
+#kvSidebar .kv-nav-link.active {
+
+    color: white;
+
+    background:
+        var(--kv-active);
+
+    box-shadow:
+        inset 3px 0 0 var(--kv-orange);
+
+    font-weight: 650;
+}
+
+
+html[dir="rtl"] #kvSidebar .kv-nav-link.active {
+
+    box-shadow:
+        inset -3px 0 0 var(--kv-orange);
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+#kvSidebar .kv-nav-icon {
+
+    width: 22px;
+    min-width: 22px;
+
+    height: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: rgba(255,255,255,0.75);
+
+    font-size: 14px;
+
+    text-align: center;
+
+    transition:
+        color var(--kv-transition),
+        transform var(--kv-transition);
+}
+
+
+#kvSidebar .kv-nav-link:hover .kv-nav-icon,
+#kvSidebar .kv-nav-link.active .kv-nav-icon {
+
+    color: var(--kv-orange);
+}
+
+
+#kvSidebar .kv-nav-link:hover .kv-nav-icon {
+
+    transform: scale(1.08);
+}
+
+
+/* =========================================================
+   TEXT
+========================================================= */
+
+#kvSidebar .kv-nav-text {
+
+    flex: 1;
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   BADGE
+========================================================= */
+
+#kvSidebar .kv-nav-badge {
+
+    min-width: 20px;
+    height: 20px;
+
+    padding: 0 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+
+    background: var(--kv-orange);
+
+    color: white;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+#kvSidebar .kv-sidebar-footer {
+
+    width: 100%;
+
+    padding: 11px;
+
+    border-top:
+        1px solid var(--kv-border);
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+#kvSidebar .kv-logout {
+
+    color: #ffdede;
+}
+
+
+#kvSidebar .kv-logout .kv-nav-icon {
+
+    color: #ffb4b4;
+}
+
+
+#kvSidebar .kv-logout:hover {
+
+    color: white;
+
+    background:
+        rgba(211, 47, 47, 0.20);
+}
+
+
+#kvSidebar .kv-logout:hover .kv-nav-icon {
+
+    color: #ffb4b4;
+}
+
+
+/* =========================================================
+   MOBILE MENU BUTTON
+========================================================= */
+
+#kvMenuButton.kv-menu-button {
+
+    position: fixed;
+
+    top: 14px;
+    left: 14px;
+
+    width: 44px;
+    height: 44px;
+
+    min-width: 44px;
+
+    padding: 0;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #dfe9e1;
+
+    border-radius: 12px;
+
+    background: white;
+
+    color: var(--kv-green);
+
+    cursor: pointer;
+
+    z-index: 1100;
+
+    box-shadow:
+        0 6px 20px rgba(0,0,0,0.13);
+
+    transition:
+        background var(--kv-transition),
+        color var(--kv-transition),
+        transform var(--kv-transition);
+}
+
+
+#kvMenuButton.kv-menu-button:hover {
+
+    background: var(--kv-green);
+
+    color: white;
+
+    transform:
+        translateY(-1px);
+}
+
+
+#kvMenuButton.kv-menu-button:active {
+
+    transform:
+        scale(0.95);
+}
+
+
+/* =========================================================
+   MENU ICON
+========================================================= */
+
+#kvMenuButton.kv-menu-button i {
+
+    font-size: 18px;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   RTL BUTTON
+========================================================= */
+
+html[dir="rtl"] #kvMenuButton.kv-menu-button {
+
+    left: auto;
+    right: 14px;
+}
+
+
+/* =========================================================
+   OVERLAY
+========================================================= */
+
+#kvSidebarOverlay.kv-sidebar-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: none;
+
+    background:
+        rgba(0, 0, 0, 0.48);
+
+    z-index: 999;
+
+    opacity: 0;
+
+    cursor: pointer;
+
+    transition:
+        opacity var(--kv-transition);
+}
+
+
+#kvSidebarOverlay.kv-sidebar-overlay.active {
+
+    display: block;
+
+    opacity: 1;
+}
+
+
+/* =========================================================
+   TABLET / MOBILE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    #kvMenuButton.kv-menu-button {
+
+        display: flex !important;
+    }
+
+
+    #kvSidebar.kv-sidebar {
+
+        width: var(--kv-sidebar-mobile);
+
+        max-width:
+            calc(100vw - 15px);
+
+        transform:
+            translateX(-110%);
+    }
+
+
+    #kvSidebar.kv-sidebar.open {
+
+        transform:
+            translateX(0);
+    }
+
+
+    html[dir="rtl"] #kvSidebar.kv-sidebar {
+
+        transform:
+            translateX(110%);
+    }
+
+
+    html[dir="rtl"] #kvSidebar.kv-sidebar.open {
+
+        transform:
+            translateX(0);
+    }
+
+
+    .kv-main {
+
+        width: 100% !important;
+
+        margin-left: 0 !important;
+
+        margin-right: 0 !important;
+    }
+
+
+    .kv-topbar {
+
+        padding-left: 70px !important;
+    }
+
+
+    html[dir="rtl"] .kv-topbar {
+
+        padding-left: 14px !important;
+
+        padding-right: 70px !important;
+    }
+
+
+    body.no-scroll {
+
+        overflow: hidden !important;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    #kvMenuButton.kv-menu-button {
+
+        top: 11px;
+        left: 11px;
+
+        width: 42px;
+        height: 42px;
+
+        min-width: 42px;
+    }
+
+
+    html[dir="rtl"] #kvMenuButton.kv-menu-button {
+
+        left: auto;
+        right: 11px;
+    }
+
+
+    #kvSidebar.kv-sidebar {
+
+        width:
+            min(
+                var(--kv-sidebar-mobile),
+                calc(100vw - 12px)
+            );
+    }
+
+
+    .kv-topbar {
+
+        padding-left: 64px !important;
+    }
+
+
+    html[dir="rtl"] .kv-topbar {
+
+        padding-left: 12px !important;
+
+        padding-right: 64px !important;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+    #kvMenuButton.kv-menu-button {
+
+        top: 9px;
+        left: 9px;
+
+        width: 40px;
+        height: 40px;
+
+        min-width: 40px;
+    }
+
+
+    html[dir="rtl"] #kvMenuButton.kv-menu-button {
+
+        left: auto;
+        right: 9px;
+    }
+
+
+    .kv-topbar {
+
+        padding-left: 59px !important;
+    }
+
+
+    html[dir="rtl"] .kv-topbar {
+
+        padding-left: 9px !important;
+
+        padding-right: 59px !important;
+    }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+#kvMenuButton.kv-menu-button:focus-visible {
+
+    outline:
+        3px solid rgba(67,160,71,0.35);
+
+    outline-offset: 2px;
+}
+
+
+#kvSidebar .kv-nav-link:focus-visible {
+
+    outline:
+        2px solid rgba(255,183,77,0.75);
+
+    outline-offset: -2px;
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    #kvSidebar.kv-sidebar,
+    #kvSidebar .kv-nav-link,
+    #kvSidebar .kv-nav-icon,
+    #kvMenuButton.kv-menu-button,
+    #kvSidebarOverlay.kv-sidebar-overlay {
+
+        transition: none !important;
+    }
+}
+
+
+/* =========================================================
+   PRINT
+========================================================= */
+
+@media print {
+
+    #kvSidebar.kv-sidebar,
+    #kvMenuButton.kv-menu-button,
+    #kvSidebarOverlay.kv-sidebar-overlay {
+
+        display: none !important;
+    }
+}
+
+
+/* =========================================================
+   PUBLIC PAGES
+========================================================= */
+
+body.kv-public-page #kvSidebar.kv-sidebar,
+body.kv-public-page #kvSidebarOverlay.kv-sidebar-overlay,
+body.kv-public-page #kvMenuButton.kv-menu-button {
+
+    display: none !important;
+}

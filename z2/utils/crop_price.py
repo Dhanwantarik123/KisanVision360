@@ -79,7 +79,7 @@ def _to_float(
         text = (
             text
             .replace(",", "")
-            .replace("â‚¹", "")
+            .replace("₹", "")
         )
 
         return float(
@@ -816,7 +816,7 @@ def get_price_intelligence(
             (
                 f"Current mandi records show "
                 f"an average modal price of "
-                f"â‚¹{average_price:.2f}."
+                f"₹{average_price:.2f}."
             )
 
     }

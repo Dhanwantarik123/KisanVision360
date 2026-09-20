@@ -994,7 +994,7 @@
 
                     <span class="kv-unit-price">
 
-                        â‚¹{{ "%.2f"|format(
+                        ₹{{ "%.2f"|format(
                             item.price|float
                         ) }}
 
@@ -1070,7 +1070,7 @@
 
                 <strong class="item-total-price">
 
-                    â‚¹{{ "%.2f"|format(
+                    ₹{{ "%.2f"|format(
                         (item.price|float) *
                         (item.quantity|int)
                     ) }}
@@ -1183,7 +1183,7 @@
             </span>
 
             <strong id="subtotal">
-                â‚¹0.00
+                ₹0.00
             </strong>
 
         </div>
@@ -1209,7 +1209,7 @@
             </span>
 
             <strong>
-                â‚¹0.00
+                ₹0.00
             </strong>
 
         </div>
@@ -1225,7 +1225,7 @@
             </span>
 
             <strong id="grandTotal">
-                â‚¹0.00
+                ₹0.00
             </strong>
 
         </div>
@@ -1382,9 +1382,9 @@
         KisanVision360+
     </strong>
 
-    â€¢ Smart Agricultural Marketplace
+    • Smart Agricultural Marketplace
 
-    â€¢ Â© 2026
+    • © 2026
 
 </footer>
 
@@ -1582,7 +1582,7 @@ document.addEventListener(
                 if (totalElement) {
 
                     totalElement.textContent =
-                        "â‚¹" +
+                        "₹" +
                         total.toFixed(2);
 
                 }
@@ -1594,7 +1594,7 @@ document.addEventListener(
         if (subtotalElement) {
 
             subtotalElement.textContent =
-                "â‚¹" +
+                "₹" +
                 subtotal.toFixed(2);
 
         }
@@ -1603,7 +1603,7 @@ document.addEventListener(
         if (grandTotalElement) {
 
             grandTotalElement.textContent =
-                "â‚¹" +
+                "₹" +
                 subtotal.toFixed(2);
 
         }

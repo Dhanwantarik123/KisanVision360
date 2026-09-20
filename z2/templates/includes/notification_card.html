@@ -716,7 +716,7 @@
 
         <div class="notification-icon">
 
-            ðŸ””
+            🔔
 
         </div>
 
@@ -747,7 +747,7 @@
 
             <div class="master-icon">
 
-                ðŸ””
+                🔔
 
             </div>
 
@@ -808,7 +808,7 @@
             <div class="alert-left">
 
                 <div class="alert-icon">
-                    ðŸŒ¦ï¸
+                    🌦️
                 </div>
 
                 <span class="alert-name">
@@ -839,7 +839,7 @@
             <div class="alert-left">
 
                 <div class="alert-icon">
-                    ðŸ’§
+                    💧
                 </div>
 
                 <span class="alert-name">
@@ -870,7 +870,7 @@
             <div class="alert-left">
 
                 <div class="alert-icon">
-                    ðŸ¦ 
+                    🦠
                 </div>
 
                 <span class="alert-name">
@@ -901,7 +901,7 @@
             <div class="alert-left">
 
                 <div class="alert-icon">
-                    ðŸ“ˆ
+                    📈
                 </div>
 
                 <span class="alert-name">
@@ -932,7 +932,7 @@
             <div class="alert-left">
 
                 <div class="alert-icon">
-                    ðŸ›ï¸
+                    🏛️
                 </div>
 
                 <span class="alert-name">
@@ -963,7 +963,7 @@
             <div class="alert-left">
 
                 <div class="alert-icon">
-                    ðŸŒ±
+                    🌱
                 </div>
 
                 <span class="alert-name">
@@ -1017,7 +1017,7 @@
         id="testButton"
         onclick="testNotification()">
 
-        ðŸ”” Test Notification
+        🔔 Test Notification
 
     </button>
 
@@ -1039,7 +1039,7 @@
 
         <br>
 
-        Weather â€¢ Irrigation â€¢ Disease â€¢ Market â€¢ Schemes
+        Weather • Irrigation • Disease • Market • Schemes
 
     </div>
 
@@ -1249,7 +1249,7 @@ async function toggleNotification() {
             updateStatus();
 
             showMessage(
-                "âŒ Your browser does not support notifications.",
+                "❌ Your browser does not support notifications.",
                 "error"
             );
 
@@ -1287,7 +1287,7 @@ async function toggleNotification() {
                 updateStatus();
 
                 showMessage(
-                    "âš ï¸ Notification permission was not granted.",
+                    "⚠️ Notification permission was not granted.",
                     "error"
                 );
 
@@ -1318,7 +1318,7 @@ async function toggleNotification() {
             updateStatus();
 
             showMessage(
-                "âŒ Notifications are blocked in browser settings.",
+                "❌ Notifications are blocked in browser settings.",
                 "error"
             );
 
@@ -1339,7 +1339,7 @@ async function toggleNotification() {
 
 
         showMessage(
-            "âœ… Smart farming notifications enabled.",
+            "✅ Smart farming notifications enabled.",
             "success"
         );
 
@@ -1364,7 +1364,7 @@ async function toggleNotification() {
 
 
         showMessage(
-            "ðŸ”• Smart farming notifications disabled.",
+            "🔕 Smart farming notifications disabled.",
             "normal"
         );
 
@@ -1526,7 +1526,7 @@ async function testNotification() {
     if (!("Notification" in window)) {
 
         showMessage(
-            "âŒ This browser does not support notifications.",
+            "❌ This browser does not support notifications.",
             "error"
         );
 
@@ -1554,7 +1554,7 @@ async function testNotification() {
         ) {
 
             showMessage(
-                "âš ï¸ Please allow notifications in your browser.",
+                "⚠️ Please allow notifications in your browser.",
                 "error"
             );
 
@@ -1575,7 +1575,7 @@ async function testNotification() {
     ) {
 
         showMessage(
-            "âŒ Notifications are blocked. Allow them from browser settings.",
+            "❌ Notifications are blocked. Allow them from browser settings.",
             "error"
         );
 
@@ -1610,7 +1610,7 @@ async function testNotification() {
         true;
 
     button.innerHTML =
-        "â³ Sending...";
+        "⏳ Sending...";
 
 
     /*
@@ -1621,7 +1621,7 @@ async function testNotification() {
         function () {
 
             new Notification(
-                "ðŸŒ¾ KisanVision360+",
+                "🌾 KisanVision360+",
                 {
 
                     body:
@@ -1641,11 +1641,11 @@ async function testNotification() {
                 false;
 
             button.innerHTML =
-                "ðŸ”” Test Notification";
+                "🔔 Test Notification";
 
 
             showMessage(
-                "âœ… Test notification sent successfully.",
+                "✅ Test notification sent successfully.",
                 "success"
             );
 
@@ -1666,7 +1666,7 @@ async function testNotification() {
 function sendFarmingAlert(
     messageText,
     category = "cropAlert",
-    title = "ðŸŒ¾ KisanVision360+"
+    title = "🌾 KisanVision360+"
 ) {
 
     /*
@@ -1767,7 +1767,7 @@ function sendWeatherAlert(
     return sendFarmingAlert(
         messageText,
         "weatherAlert",
-        "ðŸŒ¦ï¸ KisanVision360+ Weather Alert"
+        "🌦️ KisanVision360+ Weather Alert"
     );
 
 }
@@ -1784,7 +1784,7 @@ function sendIrrigationAlert(
     return sendFarmingAlert(
         messageText,
         "irrigationAlert",
-        "ðŸ’§ KisanVision360+ Irrigation Alert"
+        "💧 KisanVision360+ Irrigation Alert"
     );
 
 }
@@ -1801,7 +1801,7 @@ function sendDiseaseAlert(
     return sendFarmingAlert(
         messageText,
         "diseaseAlert",
-        "ðŸ¦  KisanVision360+ Disease Alert"
+        "🦠 KisanVision360+ Disease Alert"
     );
 
 }
@@ -1818,7 +1818,7 @@ function sendMarketAlert(
     return sendFarmingAlert(
         messageText,
         "marketAlert",
-        "ðŸ“ˆ KisanVision360+ Market Alert"
+        "📈 KisanVision360+ Market Alert"
     );
 
 }
@@ -1835,7 +1835,7 @@ function sendSchemeAlert(
     return sendFarmingAlert(
         messageText,
         "schemeAlert",
-        "ðŸ›ï¸ KisanVision360+ Scheme Alert"
+        "🏛️ KisanVision360+ Scheme Alert"
     );
 
 }
@@ -1852,7 +1852,7 @@ function sendCropAlert(
     return sendFarmingAlert(
         messageText,
         "cropAlert",
-        "ðŸŒ± KisanVision360+ Crop Alert"
+        "🌱 KisanVision360+ Crop Alert"
     );
 
 }

@@ -806,6 +806,16 @@ def register_all_blueprints():
 
 
     # ========================================================
+    # SOS EMERGENCY
+    # ========================================================
+
+    try:
+        from routes.sos import sos_bp
+        register_blueprint_safe(sos_bp, "sos")
+    except Exception as error:
+        print("[ERROR] sos blueprint:", repr(error))
+
+    # ========================================================
     # NOTIFICATIONS
     # ========================================================
 

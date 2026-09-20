@@ -1,0 +1,915 @@
+/* =========================================================
+   KISANVISION360+
+   GLOBAL DARK MODE
+   Central Theme Controller
+========================================================= */
+
+/*
+   IMPORTANT
+   ----------
+   This file controls the global dark theme.
+
+   Language is NOT handled here.
+   Language is selected once globally from the Language page
+   and stored in Flask session / localStorage.
+*/
+
+/* =========================================================
+   LIGHT THEME VARIABLES
+========================================================= */
+
+:root {
+
+    --kv-bg: #F4F8F4;
+    --kv-bg-secondary: #EEF5EF;
+
+    --kv-card: #FFFFFF;
+    --kv-card-secondary: #FBFDFB;
+
+    --kv-text: #18301B;
+    --kv-text-secondary: #405344;
+
+    --kv-muted: #718073;
+    --kv-placeholder: #9AA69C;
+
+    --kv-border: #DCE7DD;
+    --kv-border-light: #E8EFE8;
+
+    --kv-primary: #1B5E20;
+    --kv-primary-dark: #124516;
+    --kv-green: #43A047;
+    --kv-green-light: #E8F5E9;
+
+    --kv-orange: #FB8C00;
+    --kv-orange-light: #FFF3E0;
+
+    --kv-blue: #1976D2;
+    --kv-blue-light: #E3F2FD;
+
+    --kv-red: #D32F2F;
+    --kv-red-light: #FFEBEE;
+
+    --kv-purple: #7B1FA2;
+    --kv-purple-light: #F3E5F5;
+
+    --kv-shadow:
+        0 10px 30px rgba(27, 94, 32, .08);
+
+    --kv-shadow-heavy:
+        0 16px 45px rgba(27, 94, 32, .13);
+
+    --kv-input-bg: #FFFFFF;
+
+    --kv-overlay: rgba(15, 23, 17, .55);
+
+    --kv-transition: .22s ease;
+}
+
+/* =========================================================
+   DARK THEME VARIABLES
+========================================================= */
+
+html.dark,
+body.dark-mode,
+html[data-theme="dark"],
+body[data-theme="dark"] {
+
+    --kv-bg: #0C130E;
+    --kv-bg-secondary: #111A13;
+
+    --kv-card: #172219;
+    --kv-card-secondary: #1B281D;
+
+    --kv-text: #E8F5E9;
+    --kv-text-secondary: #C2D0C4;
+
+    --kv-muted: #AAB8AC;
+    --kv-placeholder: #7F8E82;
+
+    --kv-border: #2A3B2D;
+    --kv-border-light: #223225;
+
+    --kv-primary: #66BB6A;
+    --kv-primary-dark: #43A047;
+    --kv-green: #66BB6A;
+    --kv-green-light: #1B3320;
+
+    --kv-orange: #FFB74D;
+    --kv-orange-light: #382711;
+
+    --kv-blue: #64B5F6;
+    --kv-blue-light: #122A3D;
+
+    --kv-red: #EF5350;
+    --kv-red-light: #3A1717;
+
+    --kv-purple: #BA68C8;
+    --kv-purple-light: #32193A;
+
+    --kv-shadow:
+        0 10px 30px rgba(0, 0, 0, .25);
+
+    --kv-shadow-heavy:
+        0 18px 45px rgba(0, 0, 0, .35);
+
+    --kv-input-bg: #111A13;
+
+    --kv-overlay: rgba(0, 0, 0, .70);
+}
+
+/* =========================================================
+   GLOBAL BACKGROUND
+========================================================= */
+
+html.dark body,
+body.dark-mode,
+html[data-theme="dark"] body,
+body[data-theme="dark"] {
+
+    background-color: var(--kv-bg);
+
+    color: var(--kv-text);
+
+    transition:
+        background-color var(--kv-transition),
+        color var(--kv-transition);
+}
+
+/* =========================================================
+   GLOBAL TEXT
+========================================================= */
+
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6,
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6 {
+
+    color: var(--kv-text);
+}
+
+html.dark p,
+html.dark span,
+html.dark label,
+html.dark small,
+html.dark li,
+body.dark-mode p,
+body.dark-mode span,
+body.dark-mode label,
+body.dark-mode small,
+body.dark-mode li {
+
+    color: inherit;
+}
+
+/* =========================================================
+   COMMON CARDS
+========================================================= */
+
+html.dark .card,
+html.dark .dashboard-card,
+html.dark .report-card,
+html.dark .request-card,
+html.dark .settings-card,
+html.dark .profile-card,
+html.dark .finance-card,
+html.dark .weather-card,
+html.dark .market-card,
+html.dark .scheme-card,
+html.dark .notification-card,
+html.dark .tool-card,
+html.dark .product-card,
+html.dark .order-card,
+body.dark-mode .card,
+body.dark-mode .dashboard-card,
+body.dark-mode .report-card,
+body.dark-mode .request-card,
+body.dark-mode .settings-card,
+body.dark-mode .profile-card,
+body.dark-mode .finance-card,
+body.dark-mode .weather-card,
+body.dark-mode .market-card,
+body.dark-mode .scheme-card,
+body.dark-mode .notification-card,
+body.dark-mode .tool-card,
+body.dark-mode .product-card,
+body.dark-mode .order-card {
+
+    background-color: var(--kv-card);
+
+    border-color: var(--kv-border);
+
+    color: var(--kv-text);
+
+    box-shadow: var(--kv-shadow);
+}
+
+/* =========================================================
+   COMMON SURFACES
+========================================================= */
+
+html.dark .container,
+html.dark .content,
+html.dark .main-content,
+html.dark .page-content,
+body.dark-mode .container,
+body.dark-mode .content,
+body.dark-mode .main-content,
+body.dark-mode .page-content {
+
+    color: var(--kv-text);
+}
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+html.dark input,
+html.dark select,
+html.dark textarea,
+html.dark button,
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea,
+body.dark-mode button {
+
+    color: var(--kv-text);
+}
+
+html.dark input,
+html.dark select,
+html.dark textarea,
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+
+    background-color: var(--kv-input-bg);
+
+    border-color: var(--kv-border);
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder,
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+
+    color: var(--kv-placeholder);
+}
+
+html.dark input:focus,
+html.dark select:focus,
+html.dark textarea:focus,
+body.dark-mode input:focus,
+body.dark-mode select:focus,
+body.dark-mode textarea:focus {
+
+    border-color: var(--kv-green);
+
+    background-color: var(--kv-card);
+
+    box-shadow:
+        0 0 0 3px rgba(102, 187, 106, .12);
+
+    outline: none;
+}
+
+/* =========================================================
+   SELECT OPTIONS
+========================================================= */
+
+html.dark option,
+body.dark-mode option {
+
+    background: #172219;
+
+    color: #E8F5E9;
+}
+
+/* =========================================================
+   LINKS
+========================================================= */
+
+html.dark a,
+body.dark-mode a {
+
+    color: var(--kv-green);
+}
+
+html.dark a:hover,
+body.dark-mode a:hover {
+
+    color: #A5D6A7;
+}
+
+/* =========================================================
+   TABLES
+========================================================= */
+
+html.dark table,
+body.dark-mode table {
+
+    color: var(--kv-text);
+
+    border-color: var(--kv-border);
+}
+
+html.dark th,
+body.dark-mode th {
+
+    background: var(--kv-card-secondary);
+
+    color: var(--kv-text);
+
+    border-color: var(--kv-border);
+}
+
+html.dark td,
+body.dark-mode td {
+
+    border-color: var(--kv-border);
+
+    color: var(--kv-text-secondary);
+}
+
+html.dark tr:hover,
+body.dark-mode tr:hover {
+
+    background: rgba(102, 187, 106, .045);
+}
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+html.dark .kv-sidebar,
+body.dark-mode .kv-sidebar {
+
+    background:
+        linear-gradient(
+            180deg,
+            #111A13,
+            #0C130E
+        );
+
+    border-color: var(--kv-border);
+
+    color: var(--kv-text);
+}
+
+html.dark .kv-sidebar-header,
+body.dark-mode .kv-sidebar-header {
+
+    border-color: var(--kv-border);
+}
+
+html.dark .kv-nav-link,
+body.dark-mode .kv-nav-link {
+
+    color: var(--kv-text-secondary);
+}
+
+html.dark .kv-nav-link:hover,
+body.dark-mode .kv-nav-link:hover {
+
+    background: rgba(102,187,106,.09);
+
+    color: var(--kv-green);
+}
+
+html.dark .kv-nav-link.active,
+body.dark-mode .kv-nav-link.active {
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(67,160,71,.25),
+            rgba(102,187,106,.10)
+        );
+
+    color: #A5D6A7;
+}
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+html.dark .kv-topbar,
+body.dark-mode .kv-topbar {
+
+    background: rgba(23,34,25,.94);
+
+    border-color: var(--kv-border);
+
+    color: var(--kv-text);
+
+    backdrop-filter: blur(12px);
+}
+
+html.dark .kv-topbar h1,
+body.dark-mode .kv-topbar h1 {
+
+    color: var(--kv-text);
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+html.dark .btn,
+html.dark button,
+body.dark-mode .btn,
+body.dark-mode button {
+
+    transition:
+        background-color var(--kv-transition),
+        border-color var(--kv-transition),
+        color var(--kv-transition),
+        transform var(--kv-transition);
+}
+
+html.dark .btn-primary,
+body.dark-mode .btn-primary {
+
+    background: var(--kv-green);
+
+    border-color: var(--kv-green);
+
+    color: #071009;
+}
+
+html.dark .btn-primary:hover,
+body.dark-mode .btn-primary:hover {
+
+    background: #81C784;
+
+    border-color: #81C784;
+
+    color: #071009;
+}
+
+/* =========================================================
+   OUTLINE BUTTONS
+========================================================= */
+
+html.dark .btn-outline,
+html.dark .btn-outline-primary,
+body.dark-mode .btn-outline,
+body.dark-mode .btn-outline-primary {
+
+    background: transparent;
+
+    border-color: var(--kv-green);
+
+    color: var(--kv-green);
+}
+
+html.dark .btn-outline:hover,
+html.dark .btn-outline-primary:hover,
+body.dark-mode .btn-outline:hover,
+body.dark-mode .btn-outline-primary:hover {
+
+    background: var(--kv-green-light);
+
+    color: #A5D6A7;
+}
+
+/* =========================================================
+   BADGES
+========================================================= */
+
+html.dark .badge,
+body.dark-mode .badge {
+
+    border-color: var(--kv-border);
+}
+
+html.dark .badge-success,
+body.dark-mode .badge-success {
+
+    background: var(--kv-green-light);
+
+    color: #A5D6A7;
+}
+
+html.dark .badge-warning,
+body.dark-mode .badge-warning {
+
+    background: var(--kv-orange-light);
+
+    color: #FFCC80;
+}
+
+html.dark .badge-danger,
+body.dark-mode .badge-danger {
+
+    background: var(--kv-red-light);
+
+    color: #FF8A80;
+}
+
+html.dark .badge-info,
+body.dark-mode .badge-info {
+
+    background: var(--kv-blue-light);
+
+    color: #90CAF9;
+}
+
+/* =========================================================
+   ALERTS
+========================================================= */
+
+html.dark .alert,
+body.dark-mode .alert {
+
+    border-color: var(--kv-border);
+}
+
+html.dark .alert-success,
+body.dark-mode .alert-success {
+
+    background: var(--kv-green-light);
+
+    color: #C8E6C9;
+}
+
+html.dark .alert-warning,
+body.dark-mode .alert-warning {
+
+    background: var(--kv-orange-light);
+
+    color: #FFE0B2;
+}
+
+html.dark .alert-danger,
+body.dark-mode .alert-danger {
+
+    background: var(--kv-red-light);
+
+    color: #FFCDD2;
+}
+
+html.dark .alert-info,
+body.dark-mode .alert-info {
+
+    background: var(--kv-blue-light);
+
+    color: #BBDEFB;
+}
+
+/* =========================================================
+   MODALS
+========================================================= */
+
+html.dark .modal-content,
+body.dark-mode .modal-content {
+
+    background: var(--kv-card);
+
+    border-color: var(--kv-border);
+
+    color: var(--kv-text);
+
+    box-shadow: var(--kv-shadow-heavy);
+}
+
+html.dark .modal-header,
+html.dark .modal-footer,
+body.dark-mode .modal-header,
+body.dark-mode .modal-footer {
+
+    border-color: var(--kv-border);
+}
+
+/* =========================================================
+   DROPDOWNS
+========================================================= */
+
+html.dark .dropdown-menu,
+body.dark-mode .dropdown-menu {
+
+    background: var(--kv-card);
+
+    border-color: var(--kv-border);
+
+    box-shadow: var(--kv-shadow-heavy);
+}
+
+html.dark .dropdown-item,
+body.dark-mode .dropdown-item {
+
+    color: var(--kv-text-secondary);
+}
+
+html.dark .dropdown-item:hover,
+body.dark-mode .dropdown-item:hover {
+
+    background: var(--kv-green-light);
+
+    color: var(--kv-green);
+}
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+html.dark .profile-info,
+html.dark .profile-details,
+body.dark-mode .profile-info,
+body.dark-mode .profile-details {
+
+    background: var(--kv-card-secondary);
+
+    border-color: var(--kv-border);
+}
+
+/* =========================================================
+   MARKETPLACE
+========================================================= */
+
+html.dark .product-card,
+body.dark-mode .product-card {
+
+    background: var(--kv-card);
+
+    border-color: var(--kv-border);
+}
+
+html.dark .product-card:hover,
+body.dark-mode .product-card:hover {
+
+    border-color: rgba(102,187,106,.55);
+
+    box-shadow:
+        0 15px 35px rgba(0,0,0,.30);
+}
+
+/* =========================================================
+   CART
+========================================================= */
+
+html.dark .cart-item,
+html.dark .cart-summary,
+body.dark-mode .cart-item,
+body.dark-mode .cart-summary {
+
+    background: var(--kv-card);
+
+    border-color: var(--kv-border);
+
+    color: var(--kv-text);
+}
+
+/* =========================================================
+   CHATBOT
+========================================================= */
+
+html.dark .chatbot-window,
+html.dark .chat-container,
+body.dark-mode .chatbot-window,
+body.dark-mode .chat-container {
+
+    background: #111A13;
+
+    border-color: var(--kv-border);
+
+    color: var(--kv-text);
+
+    box-shadow: var(--kv-shadow-heavy);
+}
+
+html.dark .chat-message,
+body.dark-mode .chat-message {
+
+    color: var(--kv-text);
+}
+
+html.dark .bot-message,
+body.dark-mode .bot-message {
+
+    background: #1B281D;
+
+    color: var(--kv-text);
+}
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+html.dark,
+body.dark-mode {
+
+    scrollbar-color: #3C5140 #0C130E;
+
+    scrollbar-width: thin;
+}
+
+html.dark ::-webkit-scrollbar,
+body.dark-mode ::-webkit-scrollbar {
+
+    width: 8px;
+    height: 8px;
+}
+
+html.dark ::-webkit-scrollbar-track,
+body.dark-mode ::-webkit-scrollbar-track {
+
+    background: #0C130E;
+}
+
+html.dark ::-webkit-scrollbar-thumb,
+body.dark-mode ::-webkit-scrollbar-thumb {
+
+    background: #3C5140;
+
+    border-radius: 10px;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover,
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+
+    background: #55735A;
+}
+
+/* =========================================================
+   GLOBAL DARK MODE TRANSITION
+========================================================= */
+
+html.dark body *,
+body.dark-mode * {
+
+    border-color: var(--kv-border);
+}
+
+body.dark-mode,
+html.dark body {
+
+    transition:
+        background-color .25s ease,
+        color .25s ease;
+}
+
+/* =========================================================
+   DARK MODE TOGGLE
+========================================================= */
+
+.kv-theme-toggle {
+
+    position: relative;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 38px;
+    height: 38px;
+
+    padding: 0;
+
+    border: 1px solid var(--kv-border);
+
+    border-radius: 10px;
+
+    background: var(--kv-card);
+
+    color: var(--kv-text);
+
+    cursor: pointer;
+
+    box-shadow: var(--kv-shadow);
+
+    transition: .2s ease;
+}
+
+.kv-theme-toggle:hover {
+
+    border-color: var(--kv-green);
+
+    color: var(--kv-green);
+
+    transform: translateY(-1px);
+}
+
+.kv-theme-toggle i {
+
+    font-size: 13px;
+
+    transition:
+        transform .25s ease,
+        opacity .2s ease;
+}
+
+/* =========================================================
+   THEME TOGGLE ICON STATES
+========================================================= */
+
+.kv-theme-toggle .fa-moon {
+
+    display: inline-block;
+}
+
+.kv-theme-toggle .fa-sun {
+
+    display: none;
+}
+
+html.dark .kv-theme-toggle .fa-moon,
+body.dark-mode .kv-theme-toggle .fa-moon {
+
+    display: none;
+}
+
+html.dark .kv-theme-toggle .fa-sun,
+body.dark-mode .kv-theme-toggle .fa-sun {
+
+    display: inline-block;
+}
+
+/* =========================================================
+   THEME STATUS
+========================================================= */
+
+.kv-theme-status {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 6px 9px;
+
+    border-radius: 8px;
+
+    background: var(--kv-green-light);
+
+    color: var(--kv-primary);
+
+    font-size: 7px;
+
+    font-weight: 800;
+}
+
+html.dark .kv-theme-status,
+body.dark-mode .kv-theme-status {
+
+    color: #A5D6A7;
+}
+
+/* =========================================================
+   DARK MODE MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .kv-theme-toggle {
+
+        width: 35px;
+        height: 35px;
+
+        border-radius: 9px;
+    }
+
+    .kv-theme-toggle i {
+
+        font-size: 12px;
+    }
+}
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+.kv-theme-toggle:focus-visible {
+
+    outline: 3px solid rgba(67,160,71,.28);
+
+    outline-offset: 2px;
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        transition-duration: 0.01ms !important;
+
+        animation-duration: 0.01ms !important;
+
+        animation-iteration-count: 1 !important;
+    }
+}

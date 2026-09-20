@@ -1,5 +1,5 @@
 ﻿# ============================================================
-# KISANVISION360+ â€” NOTIFICATIONS ROUTE
+# KISANVISION360+ — NOTIFICATIONS ROUTE
 # File: routes/notifications.py
 # ============================================================
 
@@ -569,7 +569,7 @@ def notifications():
 
 
 # ============================================================
-# API â€” GET NOTIFICATIONS
+# API — GET NOTIFICATIONS
 # ============================================================
 
 @notifications_bp.route(
@@ -657,7 +657,7 @@ def api_notifications():
 
 
 # ============================================================
-# API â€” UNREAD COUNT
+# API — UNREAD COUNT
 # ============================================================
 
 @notifications_bp.route(
@@ -758,7 +758,7 @@ def notification_count():
 
 
 # ============================================================
-# API â€” MARK ONE AS READ
+# API — MARK ONE AS READ
 # ============================================================
 
 @notifications_bp.route(
@@ -859,7 +859,7 @@ def mark_notification_read(
 
 
 # ============================================================
-# API â€” MARK ALL AS READ
+# API — MARK ALL AS READ
 # ============================================================
 
 @notifications_bp.route(
@@ -953,7 +953,7 @@ def mark_all_read():
 
 
 # ============================================================
-# API â€” DELETE ONE NOTIFICATION
+# API — DELETE ONE NOTIFICATION
 # ============================================================
 
 @notifications_bp.route(
@@ -1053,7 +1053,7 @@ def delete_notification(
 
 
 # ============================================================
-# API â€” DELETE ALL READ NOTIFICATIONS
+# API — DELETE ALL READ NOTIFICATIONS
 # ============================================================
 
 @notifications_bp.route(
@@ -1145,7 +1145,7 @@ def clear_read_notifications():
 
 
 # ============================================================
-# INTERNAL FUNCTION â€” CREATE NOTIFICATION
+# INTERNAL FUNCTION — CREATE NOTIFICATION
 # ============================================================
 
 def create_notification(
@@ -1241,7 +1241,7 @@ def create_notification(
 
 
 # ============================================================
-# API â€” CREATE NOTIFICATION
+# API — CREATE NOTIFICATION
 # ============================================================
 
 @notifications_bp.route(
@@ -1316,7 +1316,7 @@ def api_create_notification():
 
 
 # ============================================================
-# API â€” TEST NOTIFICATION
+# API — TEST NOTIFICATION
 # ============================================================
 
 @notifications_bp.route(

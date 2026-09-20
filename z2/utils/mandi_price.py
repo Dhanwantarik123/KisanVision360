@@ -108,7 +108,7 @@ def _to_float(value):
         text = (
             text
             .replace(",", "")
-            .replace("â‚¹", "")
+            .replace("₹", "")
             .replace("Rs.", "")
             .replace("Rs", "")
             .strip()

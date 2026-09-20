@@ -541,7 +541,7 @@ def generate_reason(
     if temperature is not None:
         reasons.append(
             f"Current weather temperature is approximately "
-            f"{temperature}Â°C."
+            f"{temperature}°C."
         )
 
     if not reasons:
