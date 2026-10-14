@@ -93,7 +93,7 @@ def create_smart_notification(user_id, title, message, notification_type="genera
             cur2 = conn.cursor()
             cur2.execute("SELECT 1 FROM information_schema.tables WHERE table_name='consumer_notifications'")
             exists = cur2.fetchone()
-            if exists and mirror_consumer:
+            if exists and True:
                 cur2.execute("SELECT role FROM users WHERE id=%s", (int(user_id),))
                 u = cur2.fetchone()
                 role = (u.get("role") if isinstance(u, dict) else (u[0] if u else "")) if u else ""
@@ -138,4 +138,25 @@ def build_weather_alerts(forecast):
             alerts.append(("Irrigation Conditions Suitable", "Weather conditions are suitable for irrigation. Review your crop and irrigation schedule.", "irrigation", "Irrigation", "NORMAL", "/irrigation", f"weather-irrigation-{date_key}"))
         if humidity >= 80 and 18 <= temp <= 32 and (prob >= 50 or rain >= 5):
             alerts.append(("Crop Monitoring Alert", "Warm, humid and wet conditions may increase crop disease risk. Monitor your crop closely.", "disease", "Disease", "MEDIUM", "/disease", f"weather-disease-{date_key}"))
+
+    # A 3-day dry forecast should prompt a review, not blindly force watering.
+    # Crop type, soil moisture, growth stage and recent irrigation still matter.
+    next_days = forecast[:3]
+    if len(next_days) >= 3:
+        dry_days = 0
+        high_heat = False
+        for day in next_days:
+            rain = float(day.get("rainfall") or day.get("rain") or 0)
+            prob = float(day.get("rain_probability") or 0)
+            temp = float(day.get("temperature") or 0)
+            if rain < 2 and prob < 30:
+                dry_days += 1
+            if temp >= 35:
+                high_heat = True
+        if dry_days == 3:
+            title = "🌱 3-Day Dry Spell — Check Irrigation"
+            message = ("Little or no rain is forecast for the next 3 days" +
+                       (", with high temperatures expected" if high_heat else "") +
+                       ". Check soil moisture and crop needs; water if required. Skip watering if the soil is already moist.")
+            alerts.append((title, message, "irrigation", "Irrigation", "HIGH" if high_heat else "MEDIUM", "/irrigation", "weather-dry-spell-3day-" + str(next_days[0].get("date") or next_days[0].get("day") or "forecast")))
     return alerts

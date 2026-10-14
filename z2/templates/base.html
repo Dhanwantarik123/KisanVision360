@@ -8,10 +8,7 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta name="theme-color" content="#1b5e20">
 
@@ -42,10 +39,7 @@
     </title>
 
 
-    <!-- =====================================================
-         GOOGLE FONT
-    ====================================================== -->
-
+    <!-- GOOGLE FONT -->
     <link
         rel="preconnect"
         href="https://fonts.googleapis.com"
@@ -63,10 +57,7 @@
     >
 
 
-    <!-- =====================================================
-         FONT AWESOME
-    ====================================================== -->
-
+    <!-- FONT AWESOME -->
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -77,25 +68,18 @@
     {% endblock %}
 
 
-    <!-- =====================================================
-         RESPONSIVE MASTER CSS
-    ====================================================== -->
-
+    <!-- RESPONSIVE CSS -->
     <link
         rel="stylesheet"
         href="{{ url_for('static', filename='css/responsive_master.css') }}"
     >
 
 
-    <!-- =====================================================
-         COMPLETE GLOBAL CSS
-    ====================================================== -->
-
     <style>
 
         /* =====================================================
            ROOT
-        ====================================================== */
+        ===================================================== */
 
         :root {
             --kv-primary: #1b5e20;
@@ -124,7 +108,7 @@
 
         /* =====================================================
            RESET
-        ====================================================== */
+        ===================================================== */
 
         *,
         *::before,
@@ -180,7 +164,7 @@
 
         /* =====================================================
            APP
-        ====================================================== */
+        ===================================================== */
 
         .kv-app {
             width: 100%;
@@ -190,7 +174,7 @@
 
         /* =====================================================
            SIDEBAR
-        ====================================================== */
+        ===================================================== */
 
         .kv-sidebar {
             position: fixed;
@@ -232,7 +216,7 @@
 
         /* =====================================================
            SIDEBAR HEADER
-        ====================================================== */
+        ===================================================== */
 
         .kv-sidebar-header {
             height: var(--kv-topbar-height);
@@ -250,7 +234,6 @@
         .kv-brand {
             display: flex;
             align-items: center;
-
             gap: 11px;
 
             width: 100%;
@@ -296,7 +279,7 @@
 
         /* =====================================================
            SIDEBAR USER
-        ====================================================== */
+        ===================================================== */
 
         .kv-sidebar-user {
             margin: 15px;
@@ -362,7 +345,7 @@
 
         /* =====================================================
            SIDEBAR NAV
-        ====================================================== */
+        ===================================================== */
 
         .kv-sidebar-nav {
             flex: 1;
@@ -493,7 +476,7 @@
 
         /* =====================================================
            SIDEBAR FOOTER
-        ====================================================== */
+        ===================================================== */
 
         .kv-sidebar-footer {
             padding: 12px;
@@ -516,7 +499,7 @@
 
         /* =====================================================
            MAIN
-        ====================================================== */
+        ===================================================== */
 
         .kv-main {
             width:
@@ -543,7 +526,7 @@
 
         /* =====================================================
            TOPBAR
-        ====================================================== */
+        ===================================================== */
 
         .kv-topbar {
             width: 100%;
@@ -591,8 +574,8 @@
 
 
         /* =====================================================
-           HAMBURGER BUTTON
-        ====================================================== */
+           MENU BUTTON
+        ===================================================== */
 
         .kv-menu-button {
             display: none;
@@ -620,9 +603,6 @@
             z-index: 3000;
 
             font-size: 17px;
-
-            transition:
-                .2s ease;
         }
 
         .kv-menu-button:hover {
@@ -630,27 +610,12 @@
 
             border-color:
                 #9bc3a0;
-
-            transform:
-                translateY(-1px);
-        }
-
-        .kv-menu-button:active {
-            transform:
-                scale(.94);
-        }
-
-        .kv-menu-button:focus-visible {
-            outline:
-                3px solid rgba(67,160,71,.25);
-
-            outline-offset: 2px;
         }
 
 
         /* =====================================================
            PAGE HEADING
-        ====================================================== */
+        ===================================================== */
 
         .kv-page-heading {
             min-width: 0;
@@ -689,7 +654,7 @@
 
         /* =====================================================
            TOPBAR ACTIONS
-        ====================================================== */
+        ===================================================== */
 
         .kv-topbar-actions {
             display: flex;
@@ -728,16 +693,13 @@
             border-color: #a9c9ad;
 
             color: var(--kv-primary);
-
-            transform:
-                translateY(-1px);
         }
 
         .kv-notification-dot {
             position: absolute;
 
-            top: 5px;
-            right: 5px;
+            top: 4px;
+            right: 4px;
 
             min-width: 15px;
             height: 15px;
@@ -761,13 +723,13 @@
 
         [dir="rtl"] .kv-notification-dot {
             right: auto;
-            left: 5px;
+            left: 4px;
         }
 
 
         /* =====================================================
            PROFILE
-        ====================================================== */
+        ===================================================== */
 
         .kv-top-profile {
             display: flex;
@@ -828,7 +790,7 @@
 
         /* =====================================================
            CONTENT
-        ====================================================== */
+        ===================================================== */
 
         .kv-content {
             width: 100%;
@@ -847,7 +809,7 @@
 
         /* =====================================================
            CARD
-        ====================================================== */
+        ===================================================== */
 
         .kv-card {
             background: var(--kv-card);
@@ -866,8 +828,8 @@
 
 
         /* =====================================================
-           BUTTON
-        ====================================================== */
+           BUTTONS
+        ===================================================== */
 
         .kv-btn {
             display: inline-flex;
@@ -888,14 +850,6 @@
             font-size: 12px;
 
             font-weight: 700;
-
-            transition:
-                var(--kv-transition);
-        }
-
-        .kv-btn:hover {
-            transform:
-                translateY(-1px);
         }
 
         .kv-btn-primary {
@@ -928,7 +882,7 @@
 
         /* =====================================================
            FLASH
-        ====================================================== */
+        ===================================================== */
 
         .kv-flash-container {
             position: fixed;
@@ -937,7 +891,7 @@
             right: 22px;
 
             width:
-                min(370px,calc(100vw - 44px));
+                min(370px, calc(100vw - 44px));
 
             z-index: 5000;
         }
@@ -968,38 +922,24 @@
                 0 12px 30px rgba(0,0,0,.12);
 
             font-size: 12px;
-
-            min-width: 0;
         }
 
         .kv-flash span {
             flex: 1;
-            min-width: 0;
-
-            overflow-wrap: anywhere;
         }
 
         .kv-flash-close {
-            margin-left: auto;
-
             border: 0;
 
             background: transparent;
 
             color: var(--kv-muted);
-
-            flex-shrink: 0;
-        }
-
-        [dir="rtl"] .kv-flash-close {
-            margin-left: 0;
-            margin-right: auto;
         }
 
 
         /* =====================================================
            SIDEBAR OVERLAY
-        ====================================================== */
+        ===================================================== */
 
         .kv-sidebar-overlay {
             display: none;
@@ -1012,14 +952,12 @@
                 rgba(0,0,0,.48);
 
             z-index: 1900;
-
-            cursor: pointer;
         }
 
 
         /* =====================================================
            CHATBOT
-        ====================================================== */
+        ===================================================== */
 
         .kv-chatbot-float {
             position: fixed;
@@ -1051,15 +989,10 @@
             z-index: 9999;
         }
 
-        [dir="rtl"] .kv-chatbot-float {
-            right: auto;
-            left: 22px;
-        }
-
 
         /* =====================================================
            FOOTER
-        ====================================================== */
+        ===================================================== */
 
         .kv-footer {
             padding:
@@ -1081,7 +1014,7 @@
 
         /* =====================================================
            GOOGLE TRANSLATE
-        ====================================================== */
+        ===================================================== */
 
         #google_translate_element {
             position: fixed !important;
@@ -1123,8 +1056,8 @@
 
 
         /* =====================================================
-           DESKTOP PROFILE
-        ====================================================== */
+           DESKTOP
+        ===================================================== */
 
         @media (min-width: 1100px) {
 
@@ -1135,8 +1068,8 @@
 
 
         /* =====================================================
-           RESPONSIVE SIDEBAR
-        ====================================================== */
+           TABLET / MOBILE SIDEBAR
+        ===================================================== */
 
         @media (max-width: 900px) {
 
@@ -1181,11 +1114,9 @@
 
             .kv-main,
             [dir="rtl"] .kv-main {
-
                 width: 100%;
 
                 margin-left: 0;
-
                 margin-right: 0;
             }
 
@@ -1201,13 +1132,12 @@
 
         /* =====================================================
            MOBILE
-        ====================================================== */
+        ===================================================== */
 
         @media (max-width: 600px) {
 
             .kv-topbar {
                 padding: 0 14px;
-                gap: 8px;
             }
 
             .kv-page-title {
@@ -1246,11 +1176,6 @@
                 height: 54px;
             }
 
-            [dir="rtl"] .kv-chatbot-float {
-                right: auto;
-                left: 14px;
-            }
-
             .kv-flash-container {
                 top: 76px;
                 right: 12px;
@@ -1258,49 +1183,12 @@
                 width:
                     calc(100vw - 24px);
             }
-
-            [dir="rtl"] .kv-flash-container {
-                right: auto;
-                left: 12px;
-            }
-        }
-
-
-        /* =====================================================
-           VERY SMALL
-        ====================================================== */
-
-        @media (max-width: 420px) {
-
-            .kv-topbar-left {
-                gap: 8px;
-            }
-
-            .kv-menu-button {
-                width: 38px;
-                height: 38px;
-                min-width: 38px;
-            }
-
-            .kv-top-profile {
-                padding: 0;
-            }
-
-            .kv-top-profile img {
-                width: 32px;
-                height: 32px;
-                min-width: 32px;
-            }
-
-            .kv-content {
-                padding: 14px 10px;
-            }
         }
 
 
         /* =====================================================
            PRINT
-        ====================================================== */
+        ===================================================== */
 
         @media print {
 
@@ -1322,16 +1210,12 @@
                 padding: 0 !important;
                 max-width: none !important;
             }
-
-            body {
-                background: #fff !important;
-            }
         }
 
 
         /* =====================================================
            PUBLIC PAGES
-        ====================================================== */
+        ===================================================== */
 
         body.kv-public-page .kv-sidebar,
         body.kv-public-page .kv-sidebar-overlay,
@@ -1371,17 +1255,11 @@
 >
 
 
-{% set current_role =
-    session.get('role', '')|lower|trim
-%}
+{% set current_role = session.get('role', '')|lower|trim %}
 
-{% set current_name =
-    session.get('name', 'User')
-%}
+{% set current_name = session.get('name', 'User') %}
 
-{% set current_language =
-    session.get('language', 'en')|lower|trim
-%}
+{% set current_language = session.get('language', 'en')|lower|trim %}
 
 
 <div class="kv-app">
@@ -1396,13 +1274,23 @@
         id="kvSidebar"
     >
 
-        <!-- SIDEBAR HEADER -->
+        <!-- =================================================
+             BRAND
+        ================================================== -->
 
         <div class="kv-sidebar-header">
 
             <a
                 class="kv-brand"
-                href="{% if current_role == 'farmer' %}{{ url_for('farmer.farmer') }}{% elif current_role == 'consumer' %}{{ url_for('consumer.consumer') }}{% elif current_role == 'admin' %}{{ url_for('admin.admin') }}{% else %}/{% endif %}"
+                href="{% if current_role == 'farmer' %}
+                    {{ url_for('farmer.farmer') }}
+                {% elif current_role == 'consumer' %}
+                    {{ url_for('consumer.consumer') }}
+                {% elif current_role == 'admin' %}
+                    {{ url_for('admin.admin') }}
+                {% else %}
+                    /
+                {% endif %}"
             >
 
                 <div class="kv-brand-logo">
@@ -1430,7 +1318,9 @@
         </div>
 
 
-        <!-- SIDEBAR USER -->
+        <!-- =================================================
+             USER
+        ================================================== -->
 
         <div class="kv-sidebar-user">
 
@@ -1466,12 +1356,18 @@
         <nav class="kv-sidebar-nav">
 
 
+            <!-- =================================================
+                 FARMER
+            ================================================== -->
+
             {% if current_role == 'farmer' %}
 
                 <div class="kv-nav-title">
                     Main Menu
                 </div>
 
+
+                <!-- Dashboard -->
 
                 <a
                     href="{{ url_for('farmer.farmer') }}"
@@ -1487,6 +1383,8 @@
                 </a>
 
 
+                <!-- Weather -->
+
                 <a
                     href="{{ url_for('weather.weather') }}"
                     class="kv-nav-link"
@@ -1500,6 +1398,8 @@
                     </span>
                 </a>
 
+
+                <!-- Crop Advisor -->
 
                 <a
                     href="{{ url_for('recommendation.recommendation') }}"
@@ -1515,6 +1415,8 @@
                 </a>
 
 
+                <!-- Smart Irrigation -->
+
                 <a
                     href="{{ url_for('irrigation.irrigation') }}"
                     class="kv-nav-link"
@@ -1529,16 +1431,12 @@
                 </a>
 
 
-                <!-- =================================================
-                     DISEASE DETECTION
-                     FIXED ENDPOINT
-                ================================================== -->
+                <!-- Disease -->
 
                 <a
                     href="{{ url_for('disease.disease') }}"
                     class="kv-nav-link"
                 >
-
                     <span class="kv-nav-icon">
                         <i class="fa-solid fa-microscope"></i>
                     </span>
@@ -1546,9 +1444,10 @@
                     <span class="kv-nav-text">
                         Disease Detection
                     </span>
-
                 </a>
 
+
+                <!-- Market -->
 
                 <a
                     href="{{ url_for('market.market') }}"
@@ -1564,10 +1463,14 @@
                 </a>
 
 
+                <!-- FARM MANAGEMENT -->
+
                 <div class="kv-nav-title">
                     Farm Management
                 </div>
 
+
+                <!-- Finance -->
 
                 <a
                     href="{{ url_for('finance.finance') }}"
@@ -1583,6 +1486,8 @@
                 </a>
 
 
+                <!-- Government -->
+
                 <a
                     href="{{ url_for('government.government') }}"
                     class="kv-nav-link"
@@ -1596,17 +1501,50 @@
                     </span>
                 </a>
 
-                    <div class="kv-nav-title">
-                            Tools
-                    </div>
 
-                <a href="{{ url_for('tools.tools') }}"
-                class="kv-nav-link {% if request.endpoint == 'tools.tools' %}active{% endif %}">
+                <!-- TOOLS -->
+
+                <div class="kv-nav-title">
+                    Tools
+                </div>
+
+
+                <!-- Farmer Tools -->
+
+                <a
+                    href="{{ url_for('tools.tools') }}"
+                    class="kv-nav-link"
+                >
                     <span class="kv-nav-icon">
                         <i class="fa-solid fa-toolbox"></i>
                     </span>
-                    <span class="kv-nav-text">Farmer Tools</span>
+
+                    <span class="kv-nav-text">
+                        Farmer Tools
+                    </span>
                 </a>
+
+
+                <!-- SOS -->
+
+                <a
+                    href="{{ url_for('sos.page') }}"
+                    class="kv-nav-link"
+                    title="SOS Emergency"
+                    aria-label="SOS Emergency"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        SOS Emergency
+                    </span>
+                </a>
+
+
+                <!-- NOTIFICATIONS -->
+
                 <a
                     href="/notifications"
                     class="kv-nav-link"
@@ -1630,6 +1568,8 @@
                 </a>
 
 
+                <!-- Reports -->
+
                 <a
                     href="/reports"
                     class="kv-nav-link"
@@ -1644,10 +1584,14 @@
                 </a>
 
 
+                <!-- MARKETPLACE -->
+
                 <div class="kv-nav-title">
                     Marketplace
                 </div>
 
+
+                <!-- My Marketplace -->
 
                 <a
                     href="{{ url_for('marketplace.farmer_marketplace') }}"
@@ -1663,6 +1607,8 @@
                 </a>
 
 
+                <!-- Sell Product -->
+
                 <a
                     href="/add-product"
                     class="kv-nav-link"
@@ -1676,6 +1622,8 @@
                     </span>
                 </a>
 
+
+                <!-- Orders -->
 
                 <a
                     href="{{ url_for('marketplace.farmer_orders') }}"
@@ -1691,6 +1639,8 @@
                 </a>
 
 
+                <!-- AI Assistant -->
+
                 <a
                     href="/chatbot"
                     class="kv-nav-link"
@@ -1705,13 +1655,18 @@
                 </a>
 
 
-            {% elif current_role == 'consumer' %}
+            <!-- =================================================
+                 CONSUMER
+            ================================================== -->
 
+            {% elif current_role == 'consumer' %}
 
                 <div class="kv-nav-title">
                     Main Menu
                 </div>
 
+
+                <!-- Dashboard -->
 
                 <a
                     href="{{ url_for('consumer.consumer') }}"
@@ -1727,6 +1682,8 @@
                 </a>
 
 
+                <!-- Marketplace -->
+
                 <a
                     href="{{ url_for('marketplace.consumer_marketplace') }}"
                     class="kv-nav-link"
@@ -1740,6 +1697,8 @@
                     </span>
                 </a>
 
+
+                <!-- Wishlist -->
 
                 <a
                     href="{{ url_for('marketplace.wishlist') }}"
@@ -1755,6 +1714,8 @@
                 </a>
 
 
+                <!-- Cart -->
+
                 <a
                     href="{{ url_for('marketplace.cart') }}"
                     class="kv-nav-link"
@@ -1768,6 +1729,8 @@
                     </span>
                 </a>
 
+
+                <!-- Orders -->
 
                 <a
                     href="{{ url_for('marketplace.consumer_orders') }}"
@@ -1788,6 +1751,49 @@
                 </div>
 
 
+                <!-- SOS -->
+
+                <a
+                    href="{{ url_for('sos.page') }}"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        SOS Emergency
+                    </span>
+                </a>
+
+
+                <!-- Notifications -->
+
+                <a
+                    href="{{ url_for('consumer.consumer_notifications') }}"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-bell"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        Notifications
+                    </span>
+
+                    {% if notification_count|default(0)|int > 0 %}
+
+                        <span class="kv-nav-badge">
+                            {{ notification_count }}
+                        </span>
+
+                    {% endif %}
+
+                </a>
+
+
+                <!-- AI Assistant -->
+
                 <a
                     href="/chatbot"
                     class="kv-nav-link"
@@ -1802,27 +1808,18 @@
                 </a>
 
 
-                <a
-                    href="{{ url_for('consumer.consumer_notifications') }}"
-                    class="kv-nav-link"
-                >
-                    <span class="kv-nav-icon">
-                        <i class="fa-solid fa-bell"></i>
-                    </span>
-
-                    <span class="kv-nav-text">
-                        Notifications
-                    </span>
-                </a>
-
+            <!-- =================================================
+                 ADMIN
+            ================================================== -->
 
             {% elif current_role == 'admin' %}
-
 
                 <div class="kv-nav-title">
                     Administration
                 </div>
 
+
+                <!-- Admin Dashboard -->
 
                 <a
                     href="{{ url_for('admin.admin') }}"
@@ -1838,6 +1835,8 @@
                 </a>
 
 
+                <!-- Market Monitor -->
+
                 <a
                     href="{{ url_for('market.market') }}"
                     class="kv-nav-link"
@@ -1852,6 +1851,8 @@
                 </a>
 
 
+                <!-- Notifications -->
+
                 <a
                     href="/notifications"
                     class="kv-nav-link"
@@ -1863,8 +1864,35 @@
                     <span class="kv-nav-text">
                         Notifications
                     </span>
+
+                    {% if notification_count|default(0)|int > 0 %}
+
+                        <span class="kv-nav-badge">
+                            {{ notification_count }}
+                        </span>
+
+                    {% endif %}
+
                 </a>
 
+
+                <!-- SOS -->
+
+                <a
+                    href="{{ url_for('sos.page') }}"
+                    class="kv-nav-link"
+                >
+                    <span class="kv-nav-icon">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </span>
+
+                    <span class="kv-nav-text">
+                        SOS Emergency
+                    </span>
+                </a>
+
+
+                <!-- Reports -->
 
                 <a
                     href="/reports"
@@ -1880,8 +1908,11 @@
                 </a>
 
 
-            {% else %}
+            <!-- =================================================
+                 GUEST
+            ================================================== -->
 
+            {% else %}
 
                 <div class="kv-nav-title">
                     Welcome
@@ -1915,7 +1946,6 @@
                     </span>
                 </a>
 
-
             {% endif %}
 
 
@@ -1923,13 +1953,14 @@
                  COMMON ACCOUNT
             ================================================== -->
 
-            {% if current_role in ['farmer','consumer','admin'] %}
-
+            {% if current_role in ['farmer', 'consumer', 'admin'] %}
 
                 <div class="kv-nav-title">
                     Account
                 </div>
 
+
+                <!-- Profile -->
 
                 <a
                     href="{{ url_for('profile.profile') }}"
@@ -1945,6 +1976,8 @@
                 </a>
 
 
+                <!-- Settings -->
+
                 <a
                     href="{{ url_for('settings.settings') }}"
                     class="kv-nav-link"
@@ -1959,6 +1992,8 @@
                 </a>
 
 
+                <!-- Help -->
+
                 <a
                     href="{{ url_for('help.help_page') }}"
                     class="kv-nav-link"
@@ -1972,7 +2007,6 @@
                     </span>
                 </a>
 
-
             {% endif %}
 
         </nav>
@@ -1984,7 +2018,7 @@
 
         <div class="kv-sidebar-footer">
 
-            {% if current_role in ['farmer','consumer','admin'] %}
+            {% if current_role in ['farmer', 'consumer', 'admin'] %}
 
                 <a
                     href="{{ url_for('auth.logout') }}"
@@ -2010,7 +2044,7 @@
 
 
     <!-- =====================================================
-         SIDEBAR OVERLAY
+         MOBILE SIDEBAR OVERLAY
     ====================================================== -->
 
     <div
@@ -2035,7 +2069,7 @@
             <div class="kv-topbar-left">
 
 
-                <!-- HAMBURGER -->
+                <!-- MOBILE MENU -->
 
                 <button
                     type="button"
@@ -2054,7 +2088,7 @@
                 </button>
 
 
-                <!-- PAGE HEADING -->
+                <!-- PAGE TITLE -->
 
                 <div class="kv-page-heading">
 
@@ -2092,13 +2126,11 @@
                     title="Language"
                     aria-label="Language"
                 >
-
                     <i class="fa-solid fa-language"></i>
-
                 </a>
 
 
-                <!-- NOTIFICATIONS -->
+                <!-- NOTIFICATION BUTTON -->
 
                 {% if current_role == 'consumer' %}
 
@@ -2121,8 +2153,7 @@
 
                     </a>
 
-
-                {% elif current_role in ['farmer','admin'] %}
+                {% elif current_role in ['farmer', 'admin'] %}
 
                     <a
                         href="/notifications"
@@ -2148,7 +2179,7 @@
 
                 <!-- PROFILE -->
 
-                {% if current_role in ['farmer','consumer','admin'] %}
+                {% if current_role in ['farmer', 'consumer', 'admin'] %}
 
                     <a
                         href="{{ url_for('profile.profile') }}"
@@ -2195,7 +2226,7 @@
                     id="kvFlashContainer"
                 >
 
-                    {% for category,message in messages %}
+                    {% for category, message in messages %}
 
                         <div
                             class="kv-flash {{ category|default('info') }}"
@@ -2205,7 +2236,7 @@
 
                                 <i class="fa-solid fa-circle-check"></i>
 
-                            {% elif category in ['error','danger'] %}
+                            {% elif category in ['error', 'danger'] %}
 
                                 <i class="fa-solid fa-circle-xmark"></i>
 
@@ -2229,9 +2260,7 @@
                                 onclick="this.parentElement.remove();"
                                 aria-label="Close"
                             >
-
                                 <i class="fa-solid fa-xmark"></i>
-
                             </button>
 
                         </div>
@@ -2246,7 +2275,7 @@
 
 
         <!-- =====================================================
-             CONTENT
+             PAGE CONTENT
         ====================================================== -->
 
         <section class="kv-content">
@@ -2283,10 +2312,10 @@
 
 
 <!-- =========================================================
-     GLOBAL AI CHATBOT
+     GLOBAL CHATBOT
 ========================================================= -->
 
-{% if current_role in ['farmer','consumer','admin']
+{% if current_role in ['farmer', 'consumer', 'admin']
       and request.path != '/chatbot' %}
 
     {% include "components/chatbot.html" %}
@@ -2303,10 +2332,6 @@
     aria-hidden="true"
 ></div>
 
-
-<!-- =========================================================
-     LANGUAGE JAVASCRIPT
-========================================================= -->
 
 <script>
 
@@ -2348,11 +2373,10 @@
 
         language =
             String(language || "en")
-                .toLowerCase()
-                .trim();
+            .toLowerCase()
+            .trim();
 
-        document.documentElement.lang =
-            language;
+        document.documentElement.lang = language;
 
         document.documentElement.dir =
             RTL_LANGUAGES.includes(language)
@@ -2363,21 +2387,12 @@
 
     function getLanguage() {
 
-        const localLanguage =
+        return (
             localStorage.getItem(
                 "kisanvision360_language"
-            );
-
-        const oldLanguage =
-            localStorage.getItem("language");
-
-        const htmlLanguage =
-            document.documentElement.lang;
-
-        return (
-            localLanguage ||
-            oldLanguage ||
-            htmlLanguage ||
+            ) ||
+            localStorage.getItem("language") ||
+            document.documentElement.lang ||
             "en"
         )
         .toLowerCase()
@@ -2389,8 +2404,8 @@
 
         language =
             String(language || "en")
-                .toLowerCase()
-                .trim();
+            .toLowerCase()
+            .trim();
 
         if (!LANGUAGES.includes(language)) {
             language = "en";
@@ -2403,9 +2418,7 @@
         }
 
         const select =
-            document.querySelector(
-                ".goog-te-combo"
-            );
+            document.querySelector(".goog-te-combo");
 
         if (!select) {
 
@@ -2470,16 +2483,10 @@
 
             language =
                 String(language || "")
-                    .toLowerCase()
-                    .trim();
+                .toLowerCase()
+                .trim();
 
             if (!LANGUAGES.includes(language)) {
-
-                console.warn(
-                    "Unsupported language:",
-                    language
-                );
-
                 return;
             }
 
@@ -2524,10 +2531,8 @@
                 function (response) {
 
                     if (!response.ok) {
-
                         throw new Error(
-                            "Language save failed: " +
-                            response.status
+                            "Language save failed"
                         );
                     }
 
@@ -2544,35 +2549,22 @@
                 function () {
 
                     if (language === "en") {
-
                         window.location.reload();
-
-                        return;
+                    } else {
+                        applyGoogleLanguage(language);
                     }
 
-                    applyGoogleLanguage(
-                        language
-                    );
                 }
             )
             .catch(
-                function (error) {
-
-                    console.warn(
-                        "Language session save error:",
-                        error
-                    );
+                function () {
 
                     if (language === "en") {
-
                         window.location.reload();
-
                     } else {
-
-                        applyGoogleLanguage(
-                            language
-                        );
+                        applyGoogleLanguage(language);
                     }
+
                 }
             );
         };
@@ -2596,18 +2588,14 @@
     };
 
 
-    setDirection(
-        getLanguage()
-    );
+    setDirection(getLanguage());
 
 })();
 
 </script>
 
 
-<!-- =========================================================
-     GOOGLE TRANSLATE SCRIPT
-========================================================= -->
+<!-- GOOGLE TRANSLATE SCRIPT -->
 
 <script
     src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
@@ -2616,11 +2604,7 @@
 
 
 <!-- =========================================================
-     SIDEBAR + GLOBAL JAVASCRIPT
-
-     IMPORTANT:
-     SIDEBAR JS IS ONLY HERE.
-     responsive.js MUST NOT contain sidebar JS.
+     SIDEBAR JAVASCRIPT
 ========================================================= -->
 
 <script>
@@ -2632,47 +2616,26 @@ document.addEventListener(
         "use strict";
 
 
-        /* =================================================
-           ELEMENTS
-        ================================================== */
-
         const sidebar =
-            document.getElementById(
-                "kvSidebar"
-            );
+            document.getElementById("kvSidebar");
 
         const menuButton =
-            document.getElementById(
-                "kvMenuButton"
-            );
+            document.getElementById("kvMenuButton");
 
         const overlay =
-            document.getElementById(
-                "kvSidebarOverlay"
-            );
+            document.getElementById("kvSidebarOverlay");
 
         const menuIcon =
-            document.getElementById(
-                "kvMenuIcon"
-            );
+            document.getElementById("kvMenuIcon");
 
-
-        /* =================================================
-           CHECK
-        ================================================== */
 
         if (!sidebar || !menuButton) {
-
-            console.warn(
-                "KisanVision360+: Sidebar elements not found."
-            );
-
             return;
         }
 
 
         /* =================================================
-           OPEN SIDEBAR
+           OPEN
         ================================================== */
 
         function openSidebar() {
@@ -2714,7 +2677,7 @@ document.addEventListener(
 
 
         /* =================================================
-           CLOSE SIDEBAR
+           CLOSE
         ================================================== */
 
         function closeSidebar() {
@@ -2761,19 +2724,15 @@ document.addEventListener(
             if (
                 sidebar.classList.contains("open")
             ) {
-
                 closeSidebar();
-
             } else {
-
                 openSidebar();
-
             }
         }
 
 
         /* =================================================
-           HAMBURGER CLICK
+           BUTTON
         ================================================== */
 
         menuButton.addEventListener(
@@ -2791,7 +2750,7 @@ document.addEventListener(
 
 
         /* =================================================
-           OVERLAY CLICK
+           OVERLAY
         ================================================== */
 
         if (overlay) {
@@ -2799,16 +2758,15 @@ document.addEventListener(
             overlay.addEventListener(
                 "click",
                 function () {
-
                     closeSidebar();
-
                 }
             );
+
         }
 
 
         /* =================================================
-           NAVIGATION
+           ACTIVE MENU
         ================================================== */
 
         const currentPath =
@@ -2830,7 +2788,7 @@ document.addEventListener(
 
                         if (
                             url.pathname ===
-                                currentPath &&
+                            currentPath &&
                             !link.classList.contains(
                                 "kv-logout"
                             )
@@ -2843,7 +2801,6 @@ document.addEventListener(
 
                     }
                     catch (error) {
-
                         console.warn(
                             "Navigation error:",
                             error
@@ -2851,7 +2808,7 @@ document.addEventListener(
                     }
 
 
-                    /* Mobile close */
+                    /* CLOSE MOBILE SIDEBAR */
 
                     link.addEventListener(
                         "click",
@@ -2873,31 +2830,22 @@ document.addEventListener(
 
 
         /* =================================================
-           ESC KEY
+           ESC
         ================================================== */
 
         document.addEventListener(
             "keydown",
             function (event) {
 
-                if (
-                    event.key === "Escape"
-                ) {
-
+                if (event.key === "Escape") {
                     closeSidebar();
-
                 }
-
-
-                /* Alt + M */
 
                 if (
                     event.altKey &&
                     event.key.toLowerCase() === "m"
                 ) {
-
                     toggleSidebar();
-
                 }
 
             }
@@ -2912,12 +2860,8 @@ document.addEventListener(
             "resize",
             function () {
 
-                if (
-                    window.innerWidth > 900
-                ) {
-
+                if (window.innerWidth > 900) {
                     closeSidebar();
-
                 }
 
             }
@@ -2936,15 +2880,13 @@ document.addEventListener(
                     .forEach(
                         function (flash) {
 
-                            flash.style.opacity =
-                                "0";
+                            flash.style.opacity = "0";
 
                             flash.style.transform =
                                 "translateY(-5px)";
 
                             flash.style.transition =
                                 ".3s ease";
-
 
                             setTimeout(
                                 function () {
@@ -2953,9 +2895,7 @@ document.addEventListener(
                                         flash &&
                                         flash.parentNode
                                     ) {
-
                                         flash.remove();
-
                                     }
 
                                 },
@@ -2972,7 +2912,7 @@ document.addEventListener(
 
         /* =================================================
            GLOBAL CONFIG
-        ================================================== */
+        ================================================= */
 
         window.KISANVISION360 =
             window.KISANVISION360 || {};
@@ -2998,6 +2938,7 @@ document.addEventListener(
                 Number(
                     "{{ notification_count|default(0) }}"
                 )
+
         };
 
 
@@ -3016,17 +2957,13 @@ document.addEventListener(
 </script>
 
 
-<!-- =========================================================
-     CHILD SCRIPTS
-========================================================= -->
+<!-- CHILD PAGE SCRIPTS -->
 
 {% block scripts %}
 {% endblock %}
 
 
-<!-- =========================================================
-     RESPONSIVE JS
-========================================================= -->
+<!-- RESPONSIVE JS -->
 
 <script
     src="{{ url_for('static', filename='js/responsive.js') }}"
@@ -3036,4 +2973,3 @@ document.addEventListener(
 
 </body>
 </html>
-

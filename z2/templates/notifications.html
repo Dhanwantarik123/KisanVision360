@@ -1,4 +1,4 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 
 {% block title %}KisanVision360+ | Smart Notifications{% endblock %}
 
@@ -1784,6 +1784,7 @@
 
 
                         <div class="notification-title">
+                            {% if item.priority %}<span style="font-size:11px;font-weight:700;padding:3px 7px;border-radius:999px;background:{% if item.priority == 'CRITICAL' %}#ffebee{% elif item.priority == 'HIGH' %}#fff3e0{% elif item.priority == 'MEDIUM' %}#fff8e1{% else %}#e8f5e9{% endif %};color:{% if item.priority == 'CRITICAL' %}#b71c1c{% elif item.priority == 'HIGH' %}#e65100{% elif item.priority == 'MEDIUM' %}#8d6e00{% else %}#1b5e20{% endif %}">{{ item.priority }}</span>{% endif %}
 
                             <h3>
                                 {{ item.title }}

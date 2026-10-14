@@ -1,3 +1,4 @@
+import os
 from flask import Blueprint, request, jsonify, render_template, session, redirect, url_for, flash
 from database.db import get_db_connection
 from services.notification_service import create_smart_notification
@@ -38,7 +39,7 @@ def page():
     ensure_sos_table(); conn=get_db_connection(); cur=conn.cursor()
     cur.execute("SELECT id,emergency_type,message,location,status,created_at,updated_at FROM sos_requests WHERE user_id=%s ORDER BY created_at DESC LIMIT 50",(uid(),))
     rows=cur.fetchall(); cur.close(); conn.close()
-    return render_template("sos.html", sos_requests=rows, role=session.get("role"))
+    return render_template("sos.html", sos_requests=rows, role=session.get("role"), emergency_number=os.getenv("SOS_EMERGENCY_NUMBER", "112"))
 
 @sos_bp.route("/create", methods=["POST"])
 def create():
@@ -54,7 +55,7 @@ def create():
     finally: cur.close(); conn.close()
     create_smart_notification(uid(),"🚨 SOS Request Created",f"Your SOS request for {emergency} has been sent. Status: SENT.","sos","SOS","CRITICAL",f"/sos/{sid}",str(sid),f"sos-{sid}-created")
     notify_admins(sid,"🚨 New SOS Emergency",f"SOS #{sid}: {emergency}. {message}")
-    return jsonify(success=True,sos_id=sid,status="SENT"),201
+    return jsonify(success=True,sos_id=sid,status="SENT",emergency_number=os.getenv("SOS_EMERGENCY_NUMBER", "112"),message="SOS request saved and admins notified. Use the call button to contact emergency services."),201
 
 
 @sos_bp.route("/admin", methods=["GET"])

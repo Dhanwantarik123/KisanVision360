@@ -1,4 +1,4 @@
-﻿# ============================================================
+# ============================================================
 # KISANVISION360+ — NOTIFICATIONS ROUTE
 # File: routes/notifications.py
 # ============================================================
@@ -18,6 +18,8 @@ from database.db import get_db_connection
 
 from datetime import datetime
 import logging
+
+from services.notification_service import create_smart_notification, ensure_notification_schema
 
 
 # ============================================================
@@ -246,6 +248,8 @@ def ensure_notifications_table():
         )
 
         conn.commit()
+        # Add advanced notification fields/indexes without breaking older installs.
+        ensure_notification_schema()
 
     except Exception as exc:
 
@@ -284,9 +288,16 @@ NOTIFICATION_COLUMNS = [
     "title",
     "message",
     "notification_type",
+    "category",
+    "priority",
     "is_read",
+    "is_archived",
+    "action_url",
+    "related_id",
+    "event_id",
     "date",
     "created_at",
+    "expires_at",
     "farmer_id",
 ]
 
@@ -400,9 +411,16 @@ def fetch_notifications(
                     title,
                     message,
                     notification_type,
+                    category,
+                    priority,
                     is_read,
+                    is_archived,
+                    action_url,
+                    related_id,
+                    event_id,
                     date,
                     created_at,
+                    expires_at,
                     farmer_id
                 FROM notifications
                 WHERE
@@ -442,9 +460,16 @@ def fetch_notifications(
                     title,
                     message,
                     notification_type,
+                    category,
+                    priority,
                     is_read,
+                    is_archived,
+                    action_url,
+                    related_id,
+                    event_id,
                     date,
                     created_at,
+                    expires_at,
                     farmer_id
                 FROM notifications
                 WHERE
@@ -1153,91 +1178,20 @@ def create_notification(
     title,
     message,
     notification_type="general",
+    category=None,
+    priority="NORMAL",
+    action_url=None,
+    related_id=None,
+    event_id=None,
+    expires_at=None,
 ):
-    """
-    Reusable notification creator.
-
-    Other modules can use:
-
-        create_notification(
-            user_id,
-            "Rain Alert",
-            "Rain is expected today.",
-            "weather"
-        )
-    """
-
-    if not user_id:
-        return False
-
-    conn = None
-    cursor = None
-
-    try:
-
-        ensure_notifications_table()
-
-        conn = get_db_connection()
-        cursor = conn.cursor()
-
-        cursor.execute(
-            """
-            INSERT INTO notifications (
-                user_id,
-                title,
-                message,
-                notification_type,
-                is_read,
-                date,
-                created_at
-            )
-            VALUES (
-                %s,
-                %s,
-                %s,
-                %s,
-                FALSE,
-                CURRENT_TIMESTAMP,
-                CURRENT_TIMESTAMP
-            )
-            """,
-            (
-                int(user_id),
-                str(title)[:255],
-                str(message),
-                str(notification_type)[:80],
-            ),
-        )
-
-        conn.commit()
-
-        return True
-
-    except Exception as exc:
-
-        if conn:
-            conn.rollback()
-
-        logger.exception(
-            "Create notification error: %s",
-            exc,
-        )
-
-        return False
-
-    finally:
-
-        if cursor:
-            try:
-                cursor.close()
-            except Exception:
-                pass
-
-        if conn:
-            try:
-                conn.close()
-            except Exception:
-                pass
+    """Central notification creator used by the whole application."""
+    return bool(create_smart_notification(
+        user_id=user_id, title=title, message=message,
+        notification_type=notification_type, category=category,
+        priority=priority, action_url=action_url, related_id=related_id,
+        event_id=event_id, expires_at=expires_at
+    ))
 
 
 # ============================================================
@@ -1367,6 +1321,60 @@ def test_notification():
             "successfully."
         ),
     }), 201
+
+
+@notifications_bp.route("/api/notifications/advanced", methods=["GET"])
+def advanced_notifications():
+    if not login_required():
+        return jsonify(success=False, message="Login required."), 401
+    try:
+        ensure_notification_schema()
+        user_id=get_user_id(); conn=get_db_connection(); cur=conn.cursor()
+        category=request.args.get("category", "").strip()
+        priority=request.args.get("priority", "").strip().upper()
+        search=request.args.get("search", "").strip()
+        unread=request.args.get("unread", "").lower() in {"1","true","yes"}
+        where=["user_id=%s", "COALESCE(is_archived,FALSE)=FALSE"]; params=[user_id]
+        if category: where.append("LOWER(category)=LOWER(%s)"); params.append(category)
+        if priority: where.append("priority=%s"); params.append(priority)
+        if search: where.append("(title ILIKE %s OR message ILIKE %s OR category ILIKE %s OR notification_type ILIKE %s)"); q=f"%{search}%"; params += [q,q,q,q]
+        if unread: where.append("COALESCE(is_read,FALSE)=FALSE")
+        cur.execute("SELECT id,title,message,notification_type,category,priority,is_read,is_archived,action_url,related_id,event_id,created_at,expires_at FROM notifications WHERE " + " AND ".join(where) + " ORDER BY created_at DESC LIMIT 200", tuple(params))
+        rows=cur.fetchall(); cur.close(); conn.close()
+        return jsonify(success=True, notifications=[dict(r) for r in rows], count=len(rows))
+    except Exception as e:
+        return jsonify(success=False,message=str(e)),500
+
+@notifications_bp.route("/api/notifications/<int:notification_id>/unread", methods=["POST"])
+def mark_notification_unread(notification_id):
+    if not login_required(): return jsonify(success=False,message="Login required."),401
+    conn=get_db_connection(); cur=conn.cursor()
+    cur.execute("UPDATE notifications SET is_read=FALSE WHERE id=%s AND user_id=%s",(notification_id,get_user_id())); updated=cur.rowcount; conn.commit(); cur.close(); conn.close()
+    return jsonify(success=updated>0, updated=updated)
+
+@notifications_bp.route("/api/notifications/<int:notification_id>/archive", methods=["POST"])
+def archive_notification(notification_id):
+    if not login_required(): return jsonify(success=False,message="Login required."),401
+    conn=get_db_connection(); cur=conn.cursor(); cur.execute("UPDATE notifications SET is_archived=TRUE WHERE id=%s AND user_id=%s",(notification_id,get_user_id())); updated=cur.rowcount; conn.commit(); cur.close(); conn.close()
+    return jsonify(success=updated>0, updated=updated)
+
+@notifications_bp.route("/api/notifications/preferences", methods=["GET","PUT"])
+def notification_preferences():
+    if not login_required(): return jsonify(success=False,message="Login required."),401
+    uid=get_user_id(); conn=get_db_connection(); cur=conn.cursor()
+    cur.execute("""CREATE TABLE IF NOT EXISTS notification_preferences(
+        user_id BIGINT PRIMARY KEY, weather_enabled BOOLEAN DEFAULT TRUE, crop_enabled BOOLEAN DEFAULT TRUE,
+        disease_enabled BOOLEAN DEFAULT TRUE, irrigation_enabled BOOLEAN DEFAULT TRUE, market_enabled BOOLEAN DEFAULT TRUE,
+        marketplace_enabled BOOLEAN DEFAULT TRUE, finance_enabled BOOLEAN DEFAULT TRUE, scheme_enabled BOOLEAN DEFAULT TRUE,
+        ai_enabled BOOLEAN DEFAULT TRUE, sos_enabled BOOLEAN DEFAULT TRUE, system_enabled BOOLEAN DEFAULT TRUE,
+        quiet_hours_enabled BOOLEAN DEFAULT FALSE, quiet_start TIME, quiet_end TIME)""")
+    if request.method=="PUT":
+        data=request.get_json(silent=True) or {}
+        cols=["weather_enabled","crop_enabled","disease_enabled","irrigation_enabled","market_enabled","marketplace_enabled","finance_enabled","scheme_enabled","ai_enabled","sos_enabled","system_enabled","quiet_hours_enabled"]
+        vals=[bool(data.get(c,True)) for c in cols]
+        cur.execute("INSERT INTO notification_preferences(user_id,"+",".join(cols)+") VALUES(%s,"+",".join(["%s"]*len(cols))+ ") ON CONFLICT(user_id) DO UPDATE SET "+",".join([f"{c}=EXCLUDED.{c}" for c in cols]),[uid]+vals); conn.commit()
+    cur.execute("SELECT * FROM notification_preferences WHERE user_id=%s",(uid,)); row=cur.fetchone(); conn.commit(); cur.close(); conn.close()
+    return jsonify(success=True, preferences=dict(row) if row else {})
 
 
 # ============================================================

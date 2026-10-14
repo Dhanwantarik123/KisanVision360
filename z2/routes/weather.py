@@ -1,4 +1,4 @@
-﻿# ============================================================
+# ============================================================
 # KISANVISION360+
 # routes/weather.py
 # Live Weather + Forecast + Farm Weather Intelligence
@@ -21,6 +21,7 @@ from flask import (
 )
 
 from database.db import get_db_connection
+from services.notification_service import build_weather_alerts, create_smart_notification
 
 
 # ============================================================
@@ -1540,6 +1541,12 @@ def weather():
     forecast = get_weather_forecast(
         city
     )
+
+    # Create real weather/irrigation/crop-monitoring notifications from the forecast.
+    user_id = session.get("user_id")
+    if user_id and forecast:
+        for title, message, ntype, category, priority, action_url, event_id in build_weather_alerts(forecast):
+            create_smart_notification(user_id, title, message, ntype, category, priority, action_url, None, event_id)
 
     return render_template(
 

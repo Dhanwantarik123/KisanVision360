@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}SOS Emergency{% endblock %}
+{% block page_title %}SOS Emergency{% endblock %}
+{% block page_subtitle %}Critical emergency assistance{% endblock %}
+{% block content %}
+<div style="max-width:900px;margin:auto;padding:20px">
+  <div style="background:#ffebee;border:2px solid #d32f2f;border-radius:18px;padding:24px;margin-bottom:20px">
+    <h2 style="color:#b71c1c">🚨 Emergency SOS</h2>
+    <p>Use SOS only when you need emergency assistance.</p>
+    <form id="sosForm">
+      <label>Emergency Type</label>
+      <select name="emergency_type" style="width:100%;padding:12px;margin:8px 0 14px">
+        <option>Medical Emergency</option><option>Farm Accident</option><option>Fire</option><option>Animal Emergency</option><option>Other Emergency</option>
+      </select>
+      <label>Message</label>
+      <textarea name="message" rows="4" style="width:100%;padding:12px;margin:8px 0 14px" placeholder="Describe the emergency"></textarea>
+      <label>Location</label>
+      <input name="location" value="{{ session.get('location','') }}" style="width:100%;padding:12px;margin:8px 0 18px">
+      <button type="submit" style="background:#d32f2f;color:white;border:0;border-radius:10px;padding:14px 22px;font-weight:700">SEND SOS</button>
+    </form>
+  </div>
+  <h3>SOS History</h3>
+  {% for item in sos_requests %}
+  <div style="border:1px solid #ddd;border-radius:14px;padding:16px;margin:10px 0;background:#fff">
+    <strong>🚨 {{ item.emergency_type }}</strong><br>{{ item.message }}<br><small>Status: <b>{{ item.status }}</b> · {{ item.created_at }}</small>
+  </div>
+  {% else %}<p>No SOS requests.</p>{% endfor %}
+</div>
+<script>
+document.getElementById('sosForm').addEventListener('submit', async e=>{e.preventDefault();if(!confirm('Send critical SOS request?'))return;const r=await fetch('{{ url_for("sos.create") }}',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.fromEntries(new FormData(e.target)))});const d=await r.json();if(d.success){alert('SOS sent. Status: '+d.status);location.reload()}else alert(d.message||'Unable to send SOS')});
+</script>
+{% endblock %}

@@ -1,4 +1,4 @@
-﻿# ============================================================
+# ============================================================
 # KISANVISION360+
 # CONSUMER ROUTES
 # PostgreSQL / Supabase
@@ -21,6 +21,7 @@ from flask import (
 )
 
 from database.db import get_db_connection
+from services.notification_service import create_smart_notification
 
 
 # ============================================================
@@ -295,6 +296,13 @@ def create_consumer_notification(
             )
 
         conn.commit()
+
+        # Mirror consumer events into the central notification system.
+        create_smart_notification(
+            consumer_id, title, message, notification_type,
+            category="Marketplace" if notification_type in {"order", "marketplace"} else "System",
+            priority="NORMAL", mirror_consumer=False
+        )
 
         return True
 

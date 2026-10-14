@@ -1,9 +1,12 @@
 ﻿<!-- =========================================================
      KISANVISION360+ COMPLETE SIDEBAR
+     Farmer + Consumer + Admin
+     SOS + Notification Unread Badge
 ========================================================= -->
 
 {% set role = session.get('role', '')|lower|trim %}
 {% set current_endpoint = request.endpoint or '' %}
+{% set current_path = request.path or '' %}
 {% set user_name = session.get('name', 'User') %}
 
 
@@ -41,7 +44,7 @@
 >
 
     <!-- =====================================================
-         SIDEBAR HEADER
+         HEADER
     ====================================================== -->
 
     <div class="kv-sidebar-header">
@@ -125,96 +128,63 @@
 
         {% if role == 'farmer' %}
 
-
-        <!-- =================================================
-             FARMER FEATURES
-        ================================================== -->
-
         <div class="kv-menu-section">
 
             <div class="kv-section-title">
                 FARMER
             </div>
 
-
-            <!-- Dashboard -->
-
             <a
                 href="{{ url_for('farmer.farmer') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'farmer.farmer' %}active{% endif %}"
+                class="kv-menu-item {% if current_endpoint == 'farmer.farmer' %}active{% endif %}"
             >
                 <i class="fas fa-home"></i>
                 <span>Dashboard</span>
             </a>
 
-
-            <!-- My Profile -->
-
             <a
                 href="{{ url_for('profile.profile') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'profile.profile' %}active{% endif %}"
+                class="kv-menu-item {% if current_endpoint == 'profile.profile' %}active{% endif %}"
             >
                 <i class="fas fa-user"></i>
                 <span>My Profile</span>
             </a>
 
-
-            <!-- Weather -->
-
             <a
                 href="{{ url_for('weather.weather') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'weather.weather' %}active{% endif %}"
+                class="kv-menu-item {% if current_endpoint == 'weather.weather' %}active{% endif %}"
             >
                 <i class="fas fa-cloud-sun"></i>
                 <span>Weather</span>
             </a>
 
-
-            <!-- Crop Recommendation -->
-
             <a
                 href="{{ url_for('recommendation.recommendation') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'recommendation.recommendation' %}active{% endif %}"
+                class="kv-menu-item {% if current_endpoint == 'recommendation.recommendation' %}active{% endif %}"
             >
                 <i class="fas fa-leaf"></i>
                 <span>Crop Recommendation</span>
             </a>
 
-
-            <!-- Crop Details -->
-
             <a
                 href="{{ url_for('crop.crop_details') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'crop.crop_details' %}active{% endif %}"
+                class="kv-menu-item {% if current_endpoint == 'crop.crop_details' %}active{% endif %}"
             >
                 <i class="fas fa-seedling"></i>
                 <span>Crop Details</span>
             </a>
 
-
-            <!-- Disease Detection -->
-
             <a
                 href="{{ url_for('disease.disease') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'disease.disease' %}active{% endif %}"
+                class="kv-menu-item {% if current_endpoint == 'disease.disease' %}active{% endif %}"
             >
                 <i class="fas fa-microscope"></i>
                 <span>Disease Detection</span>
             </a>
 
-
-            <!-- Smart Irrigation -->
-
             <a
                 href="{{ url_for('irrigation.irrigation') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'irrigation.irrigation' %}active{% endif %}"
+                class="kv-menu-item {% if current_endpoint == 'irrigation.irrigation' %}active{% endif %}"
             >
                 <i class="fas fa-droplet"></i>
                 <span>Smart Irrigation</span>
@@ -233,61 +203,41 @@
                 MARKETPLACE
             </div>
 
-
-            <!-- Market Prices -->
-
             <a
                 href="{{ url_for('market.market') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'market.market' %}active{% endif %}"
+                class="kv-menu-item {% if current_endpoint == 'market.market' %}active{% endif %}"
             >
                 <i class="fas fa-chart-line"></i>
                 <span>Market Prices</span>
             </a>
 
-
-            <!-- Marketplace -->
-
             <a
                 href="{{ url_for('marketplace.farmer_marketplace') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'marketplace.farmer_marketplace' %}active{% endif %}"
+                class="kv-menu-item {% if current_endpoint == 'marketplace.farmer_marketplace' %}active{% endif %}"
             >
                 <i class="fas fa-store"></i>
                 <span>Marketplace</span>
             </a>
 
-
-            <!-- My Products -->
-
             <a
                 href="{{ url_for('marketplace.farmer_products') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'marketplace.farmer_products' %}active{% endif %}"
+                class="kv-menu-item {% if current_endpoint == 'marketplace.farmer_products' %}active{% endif %}"
             >
                 <i class="fas fa-boxes-stacked"></i>
                 <span>My Products</span>
             </a>
 
-
-            <!-- Add Product -->
-
             <a
                 href="{{ url_for('marketplace.add_product') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'marketplace.add-product' %}active{% endif %}"
+                class="kv-menu-item {% if current_endpoint == 'marketplace.add-product' %}active{% endif %}"
             >
                 <i class="fas fa-plus-circle"></i>
                 <span>Add Product</span>
             </a>
 
-
-            <!-- My Orders -->
-
             <a
                 href="{{ url_for('marketplace.farmer_orders') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'marketplace.farmer_orders' %}active{% endif %}"
+                class="kv-menu-item {% if current_endpoint == 'marketplace.farmer_orders' %}active{% endif %}"
             >
                 <i class="fas fa-shopping-bag"></i>
                 <span>My Orders</span>
@@ -306,37 +256,25 @@
                 FARM MANAGEMENT
             </div>
 
-
-            <!-- Finance -->
-
             <a
                 href="{{ url_for('finance.finance') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'finance.finance' %}active{% endif %}"
+                class="kv-menu-item {% if current_endpoint == 'finance.finance' %}active{% endif %}"
             >
                 <i class="fas fa-wallet"></i>
                 <span>Finance</span>
             </a>
 
-
-            <!-- Government Schemes -->
-
             <a
                 href="{{ url_for('government.government') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'government.government' %}active{% endif %}"
+                class="kv-menu-item {% if current_endpoint == 'government.government' %}active{% endif %}"
             >
                 <i class="fas fa-landmark"></i>
                 <span>Government Schemes</span>
             </a>
 
-
-            <!-- Reports -->
-
             <a
                 href="{{ url_for('reports.reports') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'reports.reports' %}active{% endif %}"
+                class="kv-menu-item {% if current_endpoint == 'reports.reports' %}active{% endif %}"
             >
                 <i class="fas fa-chart-column"></i>
                 <span>Reports</span>
@@ -355,13 +293,9 @@
                 TOOLS
             </div>
 
-
-            <!-- Farmer Tools -->
-
             <a
                 href="{{ url_for('tools.tools') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'tools.tools' %}active{% endif %}"
+                class="kv-menu-item {% if current_endpoint == 'tools.tools' %}active{% endif %}"
             >
                 <i class="fas fa-toolbox"></i>
                 <span>Farmer Tools</span>
@@ -369,9 +303,129 @@
 
         </div>
 
+        {% endif %}
+
+
+        <!-- =================================================
+             CONSUMER
+        ================================================== -->
+
+        {% if role == 'consumer' %}
+
+        <div class="kv-menu-section">
+
+            <div class="kv-section-title">
+                CONSUMER
+            </div>
+
+            <a
+                href="{{ url_for('consumer.consumer') }}"
+                class="kv-menu-item {% if current_endpoint == 'consumer.consumer' %}active{% endif %}"
+            >
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a
+                href="{{ url_for('marketplace.consumer_marketplace') }}"
+                class="kv-menu-item {% if current_endpoint == 'marketplace.consumer_marketplace' %}active{% endif %}"
+            >
+                <i class="fas fa-store"></i>
+                <span>Marketplace</span>
+            </a>
+
+            <a
+                href="{{ url_for('marketplace.wishlist') }}"
+                class="kv-menu-item {% if current_endpoint == 'marketplace.wishlist' %}active{% endif %}"
+            >
+                <i class="fas fa-heart"></i>
+                <span>Wishlist</span>
+            </a>
+
+            <a
+                href="{{ url_for('marketplace.cart') }}"
+                class="kv-menu-item {% if current_endpoint == 'marketplace.cart' %}active{% endif %}"
+            >
+                <i class="fas fa-cart-shopping"></i>
+                <span>My Cart</span>
+            </a>
+
+            <a
+                href="{{ url_for('marketplace.consumer_orders') }}"
+                class="kv-menu-item {% if current_endpoint == 'marketplace.consumer_orders' %}active{% endif %}"
+            >
+                <i class="fas fa-box"></i>
+                <span>My Orders</span>
+            </a>
+
+            <a
+                href="{{ url_for('marketplace.consumer_reports') }}"
+                class="kv-menu-item {% if current_endpoint == 'marketplace.consumer_reports' %}active{% endif %}"
+            >
+                <i class="fas fa-file-lines"></i>
+                <span>Reports</span>
+            </a>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             ADMIN
+        ================================================== -->
+
+        {% if role == 'admin' %}
+
+        <div class="kv-menu-section">
+
+            <div class="kv-section-title">
+                ADMINISTRATION
+            </div>
+
+            <a
+                href="{{ url_for('admin.admin') }}"
+                class="kv-menu-item {% if current_endpoint == 'admin.admin' %}active{% endif %}"
+            >
+                <i class="fas fa-gauge-high"></i>
+                <span>Admin Dashboard</span>
+            </a>
+
+            <a
+                href="{{ url_for('admin.admin_notifications') }}"
+                class="kv-menu-item {% if current_endpoint == 'admin.admin_notifications' %}active{% endif %}"
+            >
+                <span class="kv-icon-with-badge">
+                    <i class="fas fa-bell"></i>
+
+                    <span
+                        class="kv-notification-badge"
+                        id="kvNotificationBadgeAdmin"
+                        style="display:none;"
+                    >
+                        0
+                    </span>
+                </span>
+
+                <span>Notifications</span>
+            </a>
+
+            <a
+                href="{{ url_for('reports.reports') }}"
+                class="kv-menu-item {% if current_endpoint == 'reports.reports' %}active{% endif %}"
+            >
+                <i class="fas fa-chart-column"></i>
+                <span>Reports</span>
+            </a>
+
+        </div>
+
+        {% endif %}
+
 
         <!-- =================================================
              COMMUNICATION
+             ALL ROLES
         ================================================== -->
 
         <div class="kv-menu-section">
@@ -381,12 +435,16 @@
             </div>
 
 
-            <!-- Notifications -->
+            <!-- =================================================
+                 NOTIFICATIONS
+                 FARMER + CONSUMER
+            ================================================== -->
+
+            {% if role == 'farmer' or role == 'consumer' %}
 
             <a
                 href="{{ url_for('notifications.notifications') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'notifications.notifications' %}active{% endif %}"
+                class="kv-menu-item {% if current_endpoint == 'notifications.notifications' %}active{% endif %}"
             >
 
                 <span class="kv-icon-with-badge">
@@ -407,178 +465,46 @@
 
             </a>
 
+            {% endif %}
 
-            <!-- AI Assistant -->
+
+            <!-- =================================================
+                 SOS EMERGENCY
+                 FARMER + CONSUMER + ADMIN
+            ================================================== -->
+
+            <a
+                href="/sos"
+                class="kv-menu-item {% if current_path.startswith('/sos') %}active{% endif %}"
+            >
+
+                <span class="kv-sos-icon">
+                    <i class="fas fa-triangle-exclamation"></i>
+                </span>
+
+                <span>SOS Emergency</span>
+
+            </a>
+
+
+            <!-- =================================================
+                 AI ASSISTANT
+                 FARMER + CONSUMER
+            ================================================== -->
+
+            {% if role == 'farmer' or role == 'consumer' %}
 
             <a
                 href="{{ url_for('chatbot.chatbot') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'chatbot.chatbot' %}active{% endif %}"
+                class="kv-menu-item {% if current_endpoint == 'chatbot.chatbot' %}active{% endif %}"
             >
                 <i class="fas fa-robot"></i>
                 <span>AI Assistant</span>
             </a>
 
-        </div>
-
-        {% endif %}
-
-
-
-        <!-- =================================================
-             CONSUMER
-        ================================================== -->
-
-        {% if role == 'consumer' %}
-
-        <div class="kv-menu-section">
-
-            <div class="kv-section-title">
-                CONSUMER
-            </div>
-
-
-            <!-- Dashboard -->
-
-            <a
-                href="{{ url_for('consumer.consumer') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'consumer.consumer' %}active{% endif %}"
-            >
-                <i class="fas fa-home"></i>
-                <span>Dashboard</span>
-            </a>
-
-
-            <!-- Marketplace -->
-
-            <a
-                href="{{ url_for('marketplace.consumer_marketplace') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'marketplace.consumer_marketplace' %}active{% endif %}"
-            >
-                <i class="fas fa-store"></i>
-                <span>Marketplace</span>
-            </a>
-
-
-            <!-- Wishlist -->
-
-            <a
-                href="{{ url_for('marketplace.wishlist') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'marketplace.wishlist' %}active{% endif %}"
-            >
-                <i class="fas fa-heart"></i>
-                <span>Wishlist</span>
-            </a>
-
-
-            <!-- Cart -->
-
-            <a
-                href="{{ url_for('marketplace.cart') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'marketplace.cart' %}active{% endif %}"
-            >
-                <i class="fas fa-cart-shopping"></i>
-                <span>My Cart</span>
-            </a>
-
-
-            <!-- Orders -->
-
-            <a
-                href="{{ url_for('marketplace.consumer_orders') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'marketplace.consumer_orders' %}active{% endif %}"
-            >
-                <i class="fas fa-box"></i>
-                <span>My Orders</span>
-            </a>
-
-
-            <!-- Reports -->
-
-            <a
-                href="{{ url_for('marketplace.consumer_reports') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'marketplace.consumer_reports' %}active{% endif %}"
-            >
-                <i class="fas fa-file-lines"></i>
-                <span>Reports</span>
-            </a>
-
-
-            <!-- AI Assistant -->
-
-            <a
-                href="{{ url_for('chatbot.chatbot') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'chatbot.chatbot' %}active{% endif %}"
-            >
-                <i class="fas fa-robot"></i>
-                <span>AI Assistant</span>
-            </a>
+            {% endif %}
 
         </div>
-
-        {% endif %}
-
-
-
-        <!-- =================================================
-             ADMIN
-        ================================================== -->
-
-        {% if role == 'admin' %}
-
-        <div class="kv-menu-section">
-
-            <div class="kv-section-title">
-                ADMINISTRATION
-            </div>
-
-
-            <!-- Dashboard -->
-
-            <a
-                href="{{ url_for('admin.admin') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'admin.admin' %}active{% endif %}"
-            >
-                <i class="fas fa-gauge-high"></i>
-                <span>Admin Dashboard</span>
-            </a>
-
-
-            <!-- Notifications -->
-
-            <a
-                href="{{ url_for('admin.admin_notifications') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'admin.admin_notifications' %}active{% endif %}"
-            >
-                <i class="fas fa-bell"></i>
-                <span>Notifications</span>
-            </a>
-
-
-            <!-- Reports -->
-
-            <a
-                href="{{ url_for('reports.reports') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'reports.reports' %}active{% endif %}"
-            >
-                <i class="fas fa-chart-column"></i>
-                <span>Reports</span>
-            </a>
-
-        </div>
-
-        {% endif %}
-
 
 
         <!-- =================================================
@@ -591,25 +517,17 @@
                 ACCOUNT
             </div>
 
-
-            <!-- Settings -->
-
             <a
                 href="{{ url_for('settings.settings') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'settings.settings' %}active{% endif %}"
+                class="kv-menu-item {% if current_endpoint == 'settings.settings' %}active{% endif %}"
             >
                 <i class="fas fa-gear"></i>
                 <span>Settings</span>
             </a>
 
-
-            <!-- Help -->
-
             <a
                 href="{{ url_for('help.help_page') }}"
-                class="kv-menu-item
-                {% if current_endpoint == 'help.help_page' %}active{% endif %}"
+                class="kv-menu-item {% if current_endpoint == 'help.help_page' %}active{% endif %}"
             >
                 <i class="fas fa-circle-question"></i>
                 <span>Help & Support</span>
@@ -621,7 +539,7 @@
 
 
     <!-- =====================================================
-         SIDEBAR FOOTER
+         FOOTER
     ====================================================== -->
 
     <div class="kv-sidebar-footer">
@@ -733,17 +651,14 @@
         1px solid rgba(255,255,255,.10);
 }
 
-
 .kv-brand {
     display: flex;
     align-items: center;
-
     gap: 12px;
 
     color: white;
     text-decoration: none;
 }
-
 
 .kv-brand-logo {
     width: 45px;
@@ -763,19 +678,16 @@
         );
 
     color: white;
-
     font-size: 22px;
 
     box-shadow:
         0 5px 15px rgba(0,0,0,.20);
 }
 
-
 .kv-brand-text {
     display: flex;
     flex-direction: column;
 }
-
 
 .kv-brand-text strong {
     font-size: 18px;
@@ -783,11 +695,9 @@
     font-weight: 800;
 }
 
-
 .kv-brand-text strong span {
     color: var(--kv-orange-light);
 }
-
 
 .kv-brand-text small {
     margin-top: 3px;
@@ -798,7 +708,6 @@
     letter-spacing: .6px;
 }
 
-
 .kv-sidebar-close {
     display: none;
 
@@ -806,7 +715,6 @@
     background: transparent;
 
     color: white;
-
     font-size: 20px;
 
     cursor: pointer;
@@ -819,12 +727,10 @@
 
 .kv-user-box {
     margin: 15px;
-
     padding: 12px;
 
     display: flex;
     align-items: center;
-
     gap: 12px;
 
     border-radius: 15px;
@@ -835,7 +741,6 @@
     border:
         1px solid rgba(255,255,255,.08);
 }
-
 
 .kv-user-avatar {
     width: 42px;
@@ -862,7 +767,6 @@
     font-size: 17px;
 }
 
-
 .kv-user-info {
     min-width: 0;
 
@@ -870,23 +774,19 @@
     flex-direction: column;
 }
 
-
 .kv-user-info strong {
     overflow: hidden;
 
     text-overflow: ellipsis;
-
     white-space: nowrap;
 
     font-size: 14px;
 }
 
-
 .kv-user-info span {
     margin-top: 3px;
 
     color: var(--kv-green-soft);
-
     font-size: 11px;
 }
 
@@ -904,11 +804,9 @@
         5px 12px 15px;
 }
 
-
 .kv-sidebar-scroll::-webkit-scrollbar {
     width: 5px;
 }
-
 
 .kv-sidebar-scroll::-webkit-scrollbar-thumb {
     background:
@@ -925,7 +823,6 @@
 .kv-menu-section {
     margin-bottom: 20px;
 }
-
 
 .kv-section-title {
     padding:
@@ -977,7 +874,6 @@
         transform .2s ease;
 }
 
-
 .kv-menu-item i {
     width: 21px;
 
@@ -985,7 +881,6 @@
 
     font-size: 15px;
 }
-
 
 .kv-menu-item:hover {
     color: white;
@@ -996,7 +891,6 @@
     transform:
         translateX(3px);
 }
-
 
 .kv-menu-item.active {
     color: white;
@@ -1011,7 +905,6 @@
     box-shadow:
         0 5px 15px rgba(0,0,0,.12);
 }
-
 
 .kv-menu-item.active::before {
     content: "";
@@ -1034,7 +927,7 @@
 
 
 /* =========================================================
-   NOTIFICATION
+   NOTIFICATION ICON + BADGE
 ========================================================= */
 
 .kv-icon-with-badge {
@@ -1046,15 +939,14 @@
     justify-content: center;
 }
 
-
 .kv-notification-badge {
     position: absolute;
 
     top: -8px;
-    right: -9px;
+    right: -10px;
 
-    min-width: 16px;
-    height: 16px;
+    min-width: 17px;
+    height: 17px;
 
     padding:
         0 4px;
@@ -1076,6 +968,27 @@
 
     border:
         2px solid var(--kv-green-deep);
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   SOS
+========================================================= */
+
+.kv-sos-icon {
+    width: 21px;
+
+    display: flex;
+    justify-content: center;
+
+    color: #ff5252;
+}
+
+.kv-menu-item:hover .kv-sos-icon,
+.kv-menu-item.active .kv-sos-icon {
+    color: #ff8a80;
 }
 
 
@@ -1092,7 +1005,6 @@
     background:
         rgba(0,0,0,.10);
 }
-
 
 .kv-logout-btn {
     width: 100%;
@@ -1120,7 +1032,6 @@
     transition:
         .2s ease;
 }
-
 
 .kv-logout-btn:hover {
     color: white;
@@ -1209,32 +1120,26 @@
         width: 285px;
     }
 
-
     .kv-sidebar.open {
         transform:
             translateX(0);
     }
 
-
     .kv-sidebar-close {
         display: block;
     }
-
 
     .kv-mobile-menu-btn {
         display: flex;
     }
 
-
     .kv-sidebar-overlay.show {
         display: block;
     }
 
-
     .main-content {
         margin-left: 0;
     }
-
 }
 
 
@@ -1249,11 +1154,9 @@
         max-width: 300px;
     }
 
-
     .kv-brand-text strong {
         font-size: 16px;
     }
-
 }
 
 </style>
@@ -1279,6 +1182,10 @@
     const overlay =
         document.getElementById("kvSidebarOverlay");
 
+
+    /* =====================================================
+       MOBILE SIDEBAR
+    ===================================================== */
 
     function openSidebar() {
 
@@ -1309,32 +1216,26 @@
 
 
     if (openBtn) {
-
         openBtn.addEventListener(
             "click",
             openSidebar
         );
-
     }
 
 
     if (closeBtn) {
-
         closeBtn.addEventListener(
             "click",
             closeSidebar
         );
-
     }
 
 
     if (overlay) {
-
         overlay.addEventListener(
             "click",
             closeSidebar
         );
-
     }
 
 
@@ -1349,11 +1250,6 @@
         }
     );
 
-
-    /*
-     * Close sidebar after clicking
-     * a menu item on mobile.
-     */
 
     document
         .querySelectorAll(
@@ -1375,16 +1271,130 @@
         });
 
 
-    /*
-     * Reset sidebar on resize.
-     */
-
     window.addEventListener(
         "resize",
         function () {
 
             if (window.innerWidth > 900) {
                 closeSidebar();
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       NOTIFICATION UNREAD BADGE
+       API:
+       /api/notifications/unread-count
+    ===================================================== */
+
+    async function updateNotificationBadge() {
+
+        try {
+
+            const response = await fetch(
+                "/api/notifications/unread-count",
+                {
+                    method: "GET",
+                    credentials: "same-origin",
+                    cache: "no-store",
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                }
+            );
+
+
+            if (!response.ok) {
+                return;
+            }
+
+
+            const data =
+                await response.json();
+
+
+            let count =
+                Number(
+                    data.unread_count ??
+                    data.count ??
+                    data.unread ??
+                    0
+                );
+
+
+            if (!Number.isFinite(count) || count < 0) {
+                count = 0;
+            }
+
+
+            const badges =
+                document.querySelectorAll(
+                    "#kvNotificationBadge, #kvNotificationBadgeAdmin"
+                );
+
+
+            badges.forEach(function (badge) {
+
+                if (count > 0) {
+
+                    badge.textContent =
+                        count > 99 ? "99+" : count;
+
+                    badge.style.display =
+                        "flex";
+
+                } else {
+
+                    badge.textContent = "0";
+
+                    badge.style.display =
+                        "none";
+                }
+
+            });
+
+
+        } catch (error) {
+
+            console.warn(
+                "Notification badge error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /*
+     * Load immediately
+     */
+
+    updateNotificationBadge();
+
+
+    /*
+     * Refresh every 30 seconds
+     */
+
+    setInterval(
+        updateNotificationBadge,
+        30000
+    );
+
+
+    /*
+     * Refresh when user returns to tab
+     */
+
+    document.addEventListener(
+        "visibilitychange",
+        function () {
+
+            if (!document.hidden) {
+                updateNotificationBadge();
             }
 
         }
