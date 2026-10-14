@@ -6,3 +6,4 @@ Pillow>=10.0,<13.0
 numpy>=1.26,<3.0
 # TensorFlow is required for CNN disease inference; install a compatible build for your Python/OS.
 # tensorflow==2.15.1; python_version < "3.12"
+gunicorn>=22.0,<24.0
