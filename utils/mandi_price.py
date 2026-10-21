@@ -1,21 +1,19 @@
 ﻿
 """
-KisanVision360 - Mandi Price Service
+KisanVision360+ - Mandi Price Service
 
 API:
     https://mandi-api.onrender.com/v1/prices
 
-Features:
-    - Fetches real API price records
-    - Filters by crop, state, district and market
-    - Normalizes price and market fields
-    - Lists available crops and markets
-    - Checks API health without assuming query parameters
-    - Never generates fake prices
+Provides:
+    get_crop_prices()
+    get_market_price()
+    get_available_crops()
+    get_available_markets()
+    market_api_health()
+    check_mandi_api()
 
-Note:
-    API records can be older than today. Check arrival_date before
-    presenting a price as current.
+Only real API records are returned. No sample or fabricated prices.
 """
 
 import logging
@@ -29,34 +27,36 @@ API_URL = os.getenv(
     "MANDI_API_URL",
     "https://mandi-api.onrender.com/v1/prices",
 )
-API_TIMEOUT = int(os.getenv("MANDI_API_TIMEOUT", "30"))
+
+try:
+    API_TIMEOUT = max(5, int(os.getenv("MANDI_API_TIMEOUT", "30")))
+except (TypeError, ValueError):
+    API_TIMEOUT = 30
 
 
 # =========================================================
-# HELPER FUNCTIONS
+# HELPERS
 # =========================================================
 
 def _clean(value):
-    """Convert a value to a trimmed string."""
-    if value is None:
-        return ""
-    return str(value).strip()
+    """Return a trimmed string."""
+    return "" if value is None else str(value).strip()
 
 
 def _number(value):
-    """Convert a valid price to float; otherwise return None."""
+    """Convert a valid price to float, or None."""
     if value is None or _clean(value) == "":
         return None
 
     try:
         result = float(_clean(value).replace(",", ""))
         return result if result >= 0 else None
-    except (ValueError, TypeError):
+    except (TypeError, ValueError):
         return None
 
 
 def _matches(value, requested):
-    """Case-insensitive exact match; empty filters match everything."""
+    """Case-insensitive exact matching."""
     if requested is None or _clean(requested) == "":
         return True
 
@@ -64,7 +64,7 @@ def _matches(value, requested):
 
 
 def _normalize_record(record):
-    """Normalize common API fields while preserving original fields."""
+    """Normalize API fields without discarding original fields."""
     if not isinstance(record, dict):
         return None
 
@@ -83,8 +83,8 @@ def _normalize_record(record):
         "modal_price": ("modal_price", "modal", "price"),
     }
 
-    for target, possible_keys in aliases.items():
-        for key in possible_keys:
+    for target, keys in aliases.items():
+        for key in keys:
             if key in record and record[key] is not None:
                 item[target] = record[key]
                 break
@@ -108,7 +108,7 @@ def _normalize_record(record):
 
 
 def _extract_records(payload):
-    """Extract records from common JSON response structures."""
+    """Read records from supported JSON response formats."""
     if isinstance(payload, list):
         return payload
 
@@ -116,7 +116,8 @@ def _extract_records(payload):
         return []
 
     if payload.get("success") is False:
-        logger.warning("Mandi API returned success=false.")
+        error = payload.get("error", "API reported failure")
+        logger.warning("Mandi API error: %s", error)
         return []
 
     data = payload.get("data")
@@ -132,19 +133,20 @@ def _extract_records(payload):
 
     if isinstance(data, dict):
         for key in ("records", "data", "prices", "results"):
-            nested = data.get(key)
-            if isinstance(nested, list):
-                return nested
+            if isinstance(data.get(key), list):
+                return data[key]
 
-        # Support an API returning a single record as an object.
-        if any(key in data for key in ("commodity", "crop", "modal_price")):
+        if any(
+            key in data
+            for key in ("commodity", "crop", "modal_price")
+        ):
             return [data]
 
     return []
 
 
 # =========================================================
-# API REQUEST
+# FETCH MANDI RECORDS
 # =========================================================
 
 def _request_data(
@@ -155,12 +157,20 @@ def _request_data(
     limit=100,
     offset=0,
 ):
-    """Fetch and filter price records from the Mandi API."""
+    """Fetch real price records from the Mandi API."""
     try:
         limit = max(1, min(int(limit), 500))
         offset = max(0, int(offset))
-    except (ValueError, TypeError):
+    except (TypeError, ValueError):
         limit, offset = 100, 0
+
+    # The API requires state or commodity.
+    # Do not make an unfiltered request.
+    if not state and not commodity:
+        logger.warning(
+            "Mandi API requires at least one of state or commodity."
+        )
+        return []
 
     params = {
         "limit": limit,
@@ -183,11 +193,10 @@ def _request_data(
             timeout=(5, API_TIMEOUT),
             headers={"Accept": "application/json"},
         )
-
         response.raise_for_status()
+
         payload = response.json()
         records = _extract_records(payload)
-
         results = []
 
         for record in records:
@@ -195,7 +204,7 @@ def _request_data(
             if item is None:
                 continue
 
-            # Apply filters locally, even if the API ignores parameters.
+            # Apply local filtering in case the API ignores a filter.
             if not _matches(item.get("commodity"), commodity):
                 continue
             if not _matches(item.get("state"), state):
@@ -207,25 +216,42 @@ def _request_data(
 
             results.append(item)
 
-        logger.info("Mandi API returned %d matching records.", len(results))
+        logger.info(
+            "Mandi API returned %d records.",
+            len(results),
+        )
         return results
 
     except requests.exceptions.HTTPError as exc:
-        status = exc.response.status_code if exc.response is not None else None
-        body = exc.response.text[:300] if exc.response is not None else ""
+        status = (
+            exc.response.status_code
+            if exc.response is not None
+            else None
+        )
+        body = (
+            exc.response.text[:300]
+            if exc.response is not None
+            else ""
+        )
         logger.error(
             "Mandi API HTTP error %s: %s",
             status,
             body,
         )
+
     except requests.exceptions.RequestException as exc:
         logger.error(
-            "Mandi API connection failed (%s): %s",
+            "Mandi API request failed (%s): %s",
             type(exc).__name__,
             str(exc)[:300],
         )
+
     except (ValueError, TypeError) as exc:
-        logger.error("Invalid Mandi API response: %s", str(exc)[:300])
+        logger.error(
+            "Invalid Mandi API response: %s",
+            str(exc)[:300],
+        )
+
     except Exception:
         logger.exception("Unexpected error fetching Mandi prices.")
 
@@ -245,27 +271,16 @@ def get_crop_prices(
     offset=0,
     **kwargs,
 ):
-    """
-    Get actual API prices.
-
-    Examples:
-        get_crop_prices(crop="Onion", state="Maharashtra")
-        get_crop_prices(
-            crop="Onion",
-            state="Maharashtra",
-            district="Nagpur",
-            limit=10,
-        )
-
-    Returns:
-        A list of normalized price dictionaries.
-        Returns [] when the API fails or has no matching records.
-    """
+    """Get real prices for a crop and optional location filters."""
     crop = (
         crop
         or kwargs.get("commodity")
         or kwargs.get("crop_name")
     )
+
+    state = state or kwargs.get("state_name")
+    district = district or kwargs.get("district_name")
+    market = market or kwargs.get("market_name")
 
     return _request_data(
         commodity=crop,
@@ -277,25 +292,56 @@ def get_crop_prices(
     )
 
 
+def get_market_price(
+    crop=None,
+    state=None,
+    district=None,
+    market=None,
+    limit=100,
+    offset=0,
+    **kwargs,
+):
+    """
+    Compatibility function for existing market blueprint imports.
+
+    Supports calls using crop=, commodity= or crop_name=.
+    Returns a list of normalized records.
+    """
+    return get_crop_prices(
+        crop=crop,
+        state=state,
+        district=district,
+        market=market,
+        limit=limit,
+        offset=offset,
+        **kwargs,
+    )
+
+
 def get_available_crops(state=None, district=None):
-    """Return distinct crop names present in API records."""
+    """List distinct crops returned by the API."""
     records = _request_data(
         state=state,
         district=district,
         limit=500,
     )
 
-    crops = {
-        _clean(record.get("commodity"))
-        for record in records
-        if _clean(record.get("commodity"))
-    }
+    return sorted(
+        {
+            _clean(record.get("commodity"))
+            for record in records
+            if _clean(record.get("commodity"))
+        },
+        key=str.casefold,
+    )
 
-    return sorted(crops, key=str.casefold)
 
-
-def get_available_markets(state=None, district=None, commodity=None):
-    """Return distinct market names present in API records."""
+def get_available_markets(
+    state=None,
+    district=None,
+    commodity=None,
+):
+    """List distinct markets returned by the API."""
     records = _request_data(
         commodity=commodity,
         state=state,
@@ -303,22 +349,22 @@ def get_available_markets(state=None, district=None, commodity=None):
         limit=500,
     )
 
-    markets = {
-        _clean(record.get("market"))
-        for record in records
-        if _clean(record.get("market"))
-    }
-
-    return sorted(markets, key=str.casefold)
+    return sorted(
+        {
+            _clean(record.get("market"))
+            for record in records
+            if _clean(record.get("market"))
+        },
+        key=str.casefold,
+    )
 
 
 # =========================================================
 # API HEALTH CHECK
 # =========================================================
 
-
 def market_api_health():
-    """Check Mandi API using a required query parameter."""
+    """Check API connectivity using the required commodity parameter."""
     try:
         response = requests.get(
             API_URL,
@@ -343,7 +389,9 @@ def market_api_health():
                 "reachable": False,
                 "status_code": status_code,
                 "source": "Mandi API (third-party)",
-                "message": f"API returned HTTP {status_code}: {message}",
+                "message": (
+                    f"API returned HTTP {status_code}: {message}"
+                ),
             }
 
         try:
@@ -356,20 +404,20 @@ def market_api_health():
                 "message": "API returned invalid JSON.",
             }
 
-        if not isinstance(payload, (dict, list)):
-            return {
-                "reachable": False,
-                "status_code": status_code,
-                "source": "Mandi API (third-party)",
-                "message": "Unexpected API response format.",
-            }
-
         if isinstance(payload, dict) and payload.get("success") is False:
             return {
                 "reachable": False,
                 "status_code": status_code,
                 "source": "Mandi API (third-party)",
                 "message": str(payload.get("error", "API request failed")),
+            }
+
+        if not isinstance(payload, (dict, list)):
+            return {
+                "reachable": False,
+                "status_code": status_code,
+                "source": "Mandi API (third-party)",
+                "message": "Unexpected API response format.",
             }
 
         return {
@@ -380,7 +428,19 @@ def market_api_health():
         }
 
     except requests.exceptions.RequestException as exc:
-        logger.warning("Mandi API health check failed: %s", str(exc)[:300])
+        logger.warning(
+            "Mandi API health check failed: %s",
+            str(exc)[:300],
+        )
+        return {
+            "reachable": False,
+            "status_code": None,
+            "source": "Mandi API (third-party)",
+            "message": str(exc)[:300],
+        }
+
+    except Exception as exc:
+        logger.exception("Unexpected Mandi API health-check error.")
         return {
             "reachable": False,
             "status_code": None,
@@ -389,8 +449,6 @@ def market_api_health():
         }
 
 
-
-# Optional alias for older code that uses this function name.
 def check_mandi_api():
-    """Backward-compatible alias for the API health check."""
+    """Backward-compatible health-check alias."""
     return market_api_health()
