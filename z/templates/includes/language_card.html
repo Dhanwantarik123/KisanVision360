@@ -1,0 +1,643 @@
+﻿<!-- =========================================================
+     KISANVISION360+ LANGUAGE CARDS
+========================================================= -->
+
+
+<!-- ENGLISH -->
+{% extends "base.html" %}
+<button
+    type="button"
+    class="language-card selected"
+    data-language="en"
+    data-name="English"
+    onclick="selectLanguage('en', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        🇬🇧
+    </div>
+
+    <h3>
+        English
+    </h3>
+
+    <p>
+        Continue in English
+    </p>
+
+</button>
+
+
+<!-- HINDI -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="hi"
+    data-name="हिन्दी"
+    onclick="selectLanguage('hi', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        🇮🇳
+    </div>
+
+    <h3>
+        हिन्दी
+    </h3>
+
+    <p>
+        हिन्दी में जारी रखें
+    </p>
+
+</button>
+
+
+<!-- MARATHI -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="mr"
+    data-name="मराठी"
+    onclick="selectLanguage('mr', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        🟠
+    </div>
+
+    <h3>
+        मराठी
+    </h3>
+
+    <p>
+        मराठीत सुरू ठेवा
+    </p>
+
+</button>
+
+
+<!-- KANNADA -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="kn"
+    data-name="ಕನ್ನಡ"
+    onclick="selectLanguage('kn', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        🟢
+    </div>
+
+    <h3>
+        ಕನ್ನಡ
+    </h3>
+
+    <p>
+        ಕನ್ನಡದಲ್ಲಿ ಮುಂದುವರಿಸಿ
+    </p>
+
+</button>
+
+
+<!-- TELUGU -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="te"
+    data-name="తెలుగు"
+    onclick="selectLanguage('te', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        🔵
+    </div>
+
+    <h3>
+        తెలుగు
+    </h3>
+
+    <p>
+        తెలుగులో కొనసాగించండి
+    </p>
+
+</button>
+
+
+<!-- TAMIL -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="ta"
+    data-name="தமிழ்"
+    onclick="selectLanguage('ta', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        🟣
+    </div>
+
+    <h3>
+        தமிழ்
+    </h3>
+
+    <p>
+        தமிழில் தொடரவும்
+    </p>
+
+</button>
+
+
+<!-- MALAYALAM -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="ml"
+    data-name="മലയാളം"
+    onclick="selectLanguage('ml', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        🟡
+    </div>
+
+    <h3>
+        മലയാളം
+    </h3>
+
+    <p>
+        മലയാളത്തിൽ തുടരുക
+    </p>
+
+</button>
+
+
+<!-- GUJARATI -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="gu"
+    data-name="ગુજરાતી"
+    onclick="selectLanguage('gu', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        🔴
+    </div>
+
+    <h3>
+        ગુજરાતી
+    </h3>
+
+    <p>
+        ગુજરાતીમાં ચાલુ રાખો
+    </p>
+
+</button>
+
+
+<!-- PUNJABI -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="pa"
+    data-name="ਪੰਜਾਬੀ"
+    onclick="selectLanguage('pa', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        ⚪
+    </div>
+
+    <h3>
+        ਪੰਜਾਬੀ
+    </h3>
+
+    <p>
+        ਪੰਜਾਬੀ ਵਿੱਚ ਜਾਰੀ ਰੱਖੋ
+    </p>
+
+</button>
+
+
+<!-- BENGALI -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="bn"
+    data-name="বাংলা"
+    onclick="selectLanguage('bn', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        🟤
+    </div>
+
+    <h3>
+        বাংলা
+    </h3>
+
+    <p>
+        বাংলায় চালিয়ে যান
+    </p>
+
+</button>
+
+
+<!-- ASSAMESE -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="as"
+    data-name="অসমীয়া"
+    onclick="selectLanguage('as', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        🟩
+    </div>
+
+    <h3>
+        অসমীয়া
+    </h3>
+
+    <p>
+        অসমীয়াত আগবাঢ়ক
+    </p>
+
+</button>
+
+
+<!-- ODIA -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="or"
+    data-name="ଓଡ଼ିଆ"
+    onclick="selectLanguage('or', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        🟦
+    </div>
+
+    <h3>
+        ଓଡ଼ିଆ
+    </h3>
+
+    <p>
+        ଓଡ଼ିଆରେ ଜାରି ରଖନ୍ତୁ
+    </p>
+
+</button>
+
+
+<!-- URDU -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="ur"
+    data-name="اردو"
+    onclick="selectLanguage('ur', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-left"></i>
+    </span>
+
+    <div class="flag">
+        🟢
+    </div>
+
+    <h3>
+        اردو
+    </h3>
+
+    <p>
+        اردو میں جاری رکھیں
+    </p>
+
+</button>
+
+
+<!-- NEPALI -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="ne"
+    data-name="नेपाली"
+    onclick="selectLanguage('ne', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        🇳🇵
+    </div>
+
+    <h3>
+        नेपाली
+    </h3>
+
+    <p>
+        नेपालीमा जारी राख्नुहोस्
+    </p>
+
+</button>
+
+
+<!-- SANSKRIT -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="sa"
+    data-name="संस्कृतम्"
+    onclick="selectLanguage('sa', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        🕉️
+    </div>
+
+    <h3>
+        संस्कृतम्
+    </h3>
+
+    <p>
+        संस्कृतेन अग्रे गच्छतु
+    </p>
+
+</button>
+
+
+<!-- KONKANI -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="kok"
+    data-name="कोंकणी"
+    onclick="selectLanguage('kok', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        🟠
+    </div>
+
+    <h3>
+        कोंकणी
+    </h3>
+
+    <p>
+        कोंकणीत सुरू दवरात
+    </p>
+
+</button>
+
+
+<!-- MAITHILI -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="mai"
+    data-name="मैथिली"
+    onclick="selectLanguage('mai', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        🟡
+    </div>
+
+    <h3>
+        मैथिली
+    </h3>
+
+    <p>
+        मैथिलीमे जारी राखू
+    </p>
+
+</button>
+
+
+<!-- KASHMIRI -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="ks"
+    data-name="कॉशुर"
+    onclick="selectLanguage('ks', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-left"></i>
+    </span>
+
+    <div class="flag">
+        🟢
+    </div>
+
+    <h3>
+        कॉशुर
+    </h3>
+
+    <p>
+        कॉशुर ज़बानस मंज़ जारी
+    </p>
+
+</button>
+
+
+<!-- SINDHI -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="sd"
+    data-name="سنڌي"
+    onclick="selectLanguage('sd', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-left"></i>
+    </span>
+
+    <div class="flag">
+        🔵
+    </div>
+
+    <h3>
+        سنڌي
+    </h3>
+
+    <p>
+        سنڌي ۾ جاري رکو
+    </p>
+
+</button>
+
+
+<!-- MANIPURI -->
+
+<button
+    type="button"
+    class="language-card"
+    data-language="mni"
+    data-name="মৈতৈলোন"
+    onclick="selectLanguage('mni', this)">
+
+    <span class="selected-check">
+        <i class="fa-solid fa-check"></i>
+    </span>
+
+    <span class="arrow">
+        <i class="fa-solid fa-arrow-right"></i>
+    </span>
+
+    <div class="flag">
+        🟣
+    </div>
+
+    <h3>
+        মৈতৈলোন
+    </h3>
+
+    <p>
+        মৈতৈলোনদা থাগৎপা
+    </p>
+
+</button>

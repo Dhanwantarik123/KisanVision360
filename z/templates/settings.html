@@ -1,0 +1,2344 @@
+﻿{% extends "base.html" %}
+
+{% block title %}KisanVision360+ | Edit Profile{% endblock %}
+
+{% block head %}
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/edit-profile.css') }}">
+
+<style>
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+:root {
+    --kv-green: #1b5e20;
+    --kv-green-2: #2e7d32;
+    --kv-green-3: #43a047;
+
+    --kv-light: #e8f5e9;
+
+    --kv-orange: #fb8c00;
+    --kv-blue: #1565c0;
+    --kv-red: #c62828;
+
+    --kv-dark: #263238;
+    --kv-text: #263238;
+    --kv-muted: #6b7280;
+
+    --kv-border: #e5e7eb;
+
+    --kv-bg: #f5f7f6;
+    --kv-white: #ffffff;
+
+    --kv-shadow:
+        0 8px 28px rgba(0, 0, 0, .08);
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    background:
+        linear-gradient(
+            135deg,
+            #f4f8f5 0%,
+            #f8faf9 50%,
+            #eef7ef 100%
+        );
+
+    color: var(--kv-text);
+
+    font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+}
+
+
+/* =========================================================
+   MAIN PAGE
+========================================================= */
+
+.edit-profile-page {
+
+    width: 100%;
+    max-width: 1200px;
+
+    margin: 0 auto;
+
+    padding: 25px;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.profile-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    margin-bottom: 22px;
+
+    flex-wrap: wrap;
+}
+
+.profile-header-left h1 {
+
+    margin: 0;
+
+    color: var(--kv-green);
+
+    font-size: 30px;
+
+    font-weight: 800;
+}
+
+.profile-header-left h1 i {
+
+    margin-right: 8px;
+}
+
+.profile-header-left p {
+
+    margin: 7px 0 0;
+
+    color: var(--kv-muted);
+
+    font-size: 14px;
+}
+
+.profile-status {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 10px 15px;
+
+    border-radius: 30px;
+
+    background: rgba(255,255,255,.95);
+
+    border: 1px solid var(--kv-border);
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,.05);
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+.status-dot {
+
+    width: 9px;
+
+    height: 9px;
+
+    border-radius: 50%;
+
+    background: var(--kv-green-3);
+
+    box-shadow:
+        0 0 0 5px var(--kv-light);
+}
+
+
+/* =========================================================
+   SMART PROFILE BANNER
+========================================================= */
+
+.profile-banner {
+
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 25px;
+
+    margin-bottom: 24px;
+
+    border-radius: 22px;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1b5e20,
+            #2e7d32 55%,
+            #43a047
+        );
+
+    box-shadow:
+        0 12px 30px rgba(27,94,32,.22);
+}
+
+.profile-banner::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+
+    height: 180px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.08);
+
+    right: -60px;
+
+    top: -70px;
+}
+
+.profile-banner h2 {
+
+    position: relative;
+
+    z-index: 2;
+
+    margin: 0 0 7px;
+
+    font-size: 22px;
+}
+
+.profile-banner p {
+
+    position: relative;
+
+    z-index: 2;
+
+    margin: 0;
+
+    max-width: 760px;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    opacity: .94;
+}
+
+.profile-badges {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 9px;
+
+    margin-top: 17px;
+}
+
+.profile-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 7px 11px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(255,255,255,.14);
+
+    border:
+        1px solid rgba(255,255,255,.2);
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.profile-card {
+
+    background: var(--kv-white);
+
+    border-radius: 22px;
+
+    padding: 28px;
+
+    box-shadow: var(--kv-shadow);
+
+    border:
+        1px solid rgba(0,0,0,.04);
+}
+
+
+/* =========================================================
+   CARD HEADER
+========================================================= */
+
+.card-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    margin-bottom: 25px;
+}
+
+.header-icon {
+
+    width: 48px;
+
+    height: 48px;
+
+    flex-shrink: 0;
+
+    border-radius: 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: var(--kv-light);
+
+    color: var(--kv-green-2);
+
+    font-size: 20px;
+}
+
+.card-header h2 {
+
+    margin: 0;
+
+    color: var(--kv-dark);
+
+    font-size: 20px;
+}
+
+.card-header p {
+
+    margin: 5px 0 0;
+
+    color: var(--kv-muted);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   PROFILE LAYOUT
+========================================================= */
+
+.profile-layout {
+
+    display: grid;
+
+    grid-template-columns:
+        230px 1fr;
+
+    gap: 35px;
+
+    align-items: start;
+}
+
+
+/* =========================================================
+   PROFILE PHOTO
+========================================================= */
+
+.profile-photo-section {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    padding: 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f8fbf8,
+            #eef7ef
+        );
+
+    border:
+        1px solid #dcecdf;
+
+    border-radius: 18px;
+}
+
+.profile-photo-wrapper {
+
+    position: relative;
+
+    width: 145px;
+
+    height: 145px;
+
+    margin-bottom: 15px;
+}
+
+.profile-photo {
+
+    width: 145px;
+
+    height: 145px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border:
+        5px solid #e8f5e9;
+
+    box-shadow:
+        0 7px 22px rgba(0,0,0,.12);
+}
+
+.photo-edit-icon {
+
+    position: absolute;
+
+    right: 4px;
+
+    bottom: 5px;
+
+    width: 38px;
+
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        var(--kv-green-2);
+
+    color: white;
+
+    border:
+        3px solid white;
+
+    font-size: 14px;
+}
+
+.photo-title {
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    color: var(--kv-dark);
+
+    margin-bottom: 5px;
+}
+
+.photo-description {
+
+    text-align: center;
+
+    color: var(--kv-muted);
+
+    font-size: 11px;
+
+    line-height: 1.5;
+
+    margin-bottom: 15px;
+}
+
+.photo-input-label {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    width: 100%;
+
+    padding: 10px 12px;
+
+    border-radius: 9px;
+
+    background:
+        var(--kv-green-2);
+
+    color: white;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.photo-input-label:hover {
+
+    background:
+        var(--kv-green);
+
+    transform:
+        translateY(-1px);
+}
+
+#profile {
+
+    display: none;
+}
+
+.photo-note {
+
+    margin-top: 10px;
+
+    text-align: center;
+
+    color: var(--kv-muted);
+
+    font-size: 10px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.profile-form {
+
+    width: 100%;
+}
+
+.form-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+.form-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.form-group.full-width {
+
+    grid-column: 1 / -1;
+}
+
+.form-label {
+
+    color: var(--kv-dark);
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+.form-label i {
+
+    width: 18px;
+
+    margin-right: 4px;
+
+    color:
+        var(--kv-green-2);
+}
+
+.form-input {
+
+    width: 100%;
+
+    padding: 13px 14px;
+
+    border:
+        1px solid #d9e0da;
+
+    border-radius: 10px;
+
+    background: white;
+
+    color: var(--kv-dark);
+
+    outline: none;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    transition: .2s;
+}
+
+.form-input:focus {
+
+    border-color:
+        var(--kv-green-2);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(46,125,50,.10);
+}
+
+.form-input::placeholder {
+
+    color: #9ca3af;
+}
+
+.form-input:disabled {
+
+    background: #f3f5f4;
+
+    color: #6b7280;
+
+    cursor: not-allowed;
+}
+
+.form-help {
+
+    color: var(--kv-muted);
+
+    font-size: 10px;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   PROFILE COMPLETION
+========================================================= */
+
+.completion-box {
+
+    margin-top: 25px;
+
+    padding: 17px;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f7fff8,
+            #eef8f0
+        );
+
+    border:
+        1px solid #dcecdf;
+}
+
+.completion-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 10px;
+}
+
+.completion-header strong {
+
+    color: var(--kv-dark);
+
+    font-size: 13px;
+}
+
+.completion-percent {
+
+    color: var(--kv-green-2);
+
+    font-size: 13px;
+
+    font-weight: 800;
+}
+
+.progress-track {
+
+    width: 100%;
+
+    height: 9px;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: #dce7de;
+}
+
+.progress-bar {
+
+    width: 0%;
+
+    height: 100%;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #2e7d32,
+            #66bb6a
+        );
+
+    transition:
+        width .35s ease;
+}
+
+.completion-message {
+
+    margin-top: 8px;
+
+    color: var(--kv-muted);
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   PERSONALIZATION
+========================================================= */
+
+.personalization-box {
+
+    margin-top: 22px;
+
+    padding: 18px;
+
+    border-radius: 15px;
+
+    background:
+        #fafcfb;
+
+    border:
+        1px solid #e8eee9;
+}
+
+.personalization-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    margin-bottom: 12px;
+
+    color: var(--kv-dark);
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+.personalization-title i {
+
+    color:
+        var(--kv-green-2);
+}
+
+.personalization-tags {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+}
+
+.personalization-tag {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 7px 10px;
+
+    border-radius: 20px;
+
+    background: #e8f5e9;
+
+    color: #1b5e20;
+
+    font-size: 11px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   SECURITY STRIP
+========================================================= */
+
+.security-strip {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-top: 22px;
+
+    padding: 14px 16px;
+
+    border-radius: 12px;
+
+    background:
+        #f8faf8;
+
+    border:
+        1px solid #e7ece8;
+}
+
+.security-strip-icon {
+
+    width: 38px;
+
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background:
+        #e8f5e9;
+
+    color:
+        var(--kv-green-2);
+}
+
+.security-strip strong {
+
+    display: block;
+
+    color: var(--kv-dark);
+
+    font-size: 12px;
+}
+
+.security-strip span {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--kv-muted);
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   FORM ACTIONS
+========================================================= */
+
+.form-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-top: 25px;
+
+    padding-top: 22px;
+
+    border-top:
+        1px solid #edf0ed;
+}
+
+.action-left {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+}
+
+.btn {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 12px 19px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.btn-primary {
+
+    background:
+        var(--kv-green-2);
+
+    color: white;
+}
+
+.btn-primary:hover {
+
+    background:
+        var(--kv-green);
+
+    transform:
+        translateY(-1px);
+}
+
+.btn-secondary {
+
+    background:
+        #f1f3f2;
+
+    color:
+        var(--kv-dark);
+
+    border:
+        1px solid #e0e5e1;
+}
+
+.btn-secondary:hover {
+
+    background:
+        #e7ebe8;
+}
+
+.btn-primary:disabled {
+
+    opacity: .65;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.profile-footer {
+
+    text-align: center;
+
+    padding:
+        25px 10px 10px;
+
+    color:
+        #78909c;
+
+    font-size: 12px;
+}
+
+.profile-footer i {
+
+    color:
+        var(--kv-green-2);
+}
+
+.profile-footer span {
+
+    margin: 0 7px;
+}
+
+
+/* =========================================================
+   FLASH MESSAGE
+========================================================= */
+
+.flash-message {
+
+    margin-bottom: 18px;
+
+    padding: 13px 15px;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+.flash-success {
+
+    background:
+        #e8f5e9;
+
+    color:
+        #1b5e20;
+
+    border:
+        1px solid #c8e6c9;
+}
+
+.flash-error {
+
+    background:
+        #ffebee;
+
+    color:
+        #c62828;
+
+    border:
+        1px solid #ffcdd2;
+}
+
+
+/* =========================================================
+   RESPONSIVE TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .profile-layout {
+
+        grid-template-columns: 1fr;
+    }
+
+    .profile-photo-section {
+
+        max-width: 320px;
+
+        margin: 0 auto;
+
+        width: 100%;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    .edit-profile-page {
+
+        padding: 15px;
+    }
+
+    .profile-header {
+
+        align-items: flex-start;
+    }
+
+    .profile-header-left h1 {
+
+        font-size: 24px;
+    }
+
+    .profile-header-left p {
+
+        font-size: 13px;
+    }
+
+    .profile-status {
+
+        font-size: 11px;
+
+        padding: 8px 12px;
+    }
+
+    .profile-banner {
+
+        padding: 20px;
+
+        border-radius: 17px;
+    }
+
+    .profile-banner h2 {
+
+        font-size: 19px;
+    }
+
+    .profile-banner p {
+
+        font-size: 13px;
+    }
+
+    .profile-card {
+
+        padding: 18px;
+
+        border-radius: 17px;
+    }
+
+    .card-header {
+
+        gap: 11px;
+
+        margin-bottom: 18px;
+    }
+
+    .header-icon {
+
+        width: 42px;
+
+        height: 42px;
+
+        border-radius: 12px;
+
+        font-size: 17px;
+    }
+
+    .card-header h2 {
+
+        font-size: 17px;
+    }
+
+    .card-header p {
+
+        font-size: 12px;
+    }
+
+    .form-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full-width {
+
+        grid-column: auto;
+    }
+
+    .form-actions {
+
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .action-left {
+
+        width: 100%;
+
+        flex-direction: column;
+    }
+
+    .action-left .btn {
+
+        width: 100%;
+    }
+
+    .form-actions > .btn {
+
+        width: 100%;
+    }
+
+    .profile-badge {
+
+        font-size: 11px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+
+    .edit-profile-page {
+
+        padding: 10px;
+    }
+
+    .profile-card {
+
+        padding: 15px;
+    }
+
+    .profile-banner {
+
+        padding: 17px;
+    }
+
+    .profile-header-left h1 {
+
+        font-size: 21px;
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block page_title %}Edit Profile{% endblock %}
+
+{% block page_subtitle %}Manage your KisanVision360+ account{% endblock %}
+
+
+{% block content %}
+
+<div class="edit-profile-page">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="profile-header">
+
+        <div class="profile-header-left">
+
+            <h1>
+
+                <i class="fa-solid fa-user-pen"></i>
+
+                Edit Profile
+
+            </h1>
+
+            <p>
+
+                Update your personal information and profile details
+
+            </p>
+
+        </div>
+
+
+        <div class="profile-status">
+
+            <span class="status-dot"></span>
+
+            Profile Settings Active
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         FLASH MESSAGES
+    ====================================================== -->
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% if messages %}
+
+            {% for category, message in messages %}
+
+                <div
+                    class="flash-message
+                    {% if category == 'success' %}
+                        flash-success
+                    {% else %}
+                        flash-error
+                    {% endif %}"
+                >
+
+                    <i
+                        class="fa-solid
+                        {% if category == 'success' %}
+                            fa-circle-check
+                        {% else %}
+                            fa-circle-exclamation
+                        {% endif %}"
+                    ></i>
+
+                    {{ message }}
+
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    <!-- =====================================================
+         SMART PROFILE BANNER
+    ====================================================== -->
+
+    <div class="profile-banner">
+
+        <h2>
+
+            <i class="fa-solid fa-user-gear"></i>
+
+            KisanVision360+ Profile Center
+
+        </h2>
+
+        <p>
+
+            Keep your profile information updated so that
+            KisanVision360+ can provide better weather,
+            crop, disease, market, finance and farming
+            recommendations.
+
+        </p>
+
+
+        <div class="profile-badges">
+
+            <span class="profile-badge">
+
+                <i class="fa-solid fa-user"></i>
+
+                Personal Profile
+
+            </span>
+
+
+            <span class="profile-badge">
+
+                <i class="fa-solid fa-location-dot"></i>
+
+                Farm Location
+
+            </span>
+
+
+            <span class="profile-badge">
+
+                <i class="fa-solid fa-language"></i>
+
+                Language
+
+            </span>
+
+
+            <span class="profile-badge">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                Secure Account
+
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PROFILE CARD
+    ====================================================== -->
+
+    <div class="profile-card">
+
+
+        <!-- =================================================
+             CARD HEADER
+        ================================================== -->
+
+        <div class="card-header">
+
+            <div class="header-icon">
+
+                <i class="fa-solid fa-user-edit"></i>
+
+            </div>
+
+
+            <div>
+
+                <h2>
+
+                    Personal Information
+
+                </h2>
+
+                <p>
+
+                    Update your account information below.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             PROFILE FORM
+        ================================================== -->
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+            id="profileForm"
+            class="profile-form"
+            action="{{ url_for('profile.edit_profile') }}"
+        >
+
+
+            <div class="profile-layout">
+
+
+                <!-- =========================================
+                     PROFILE PHOTO
+                ========================================== -->
+
+                <div class="profile-photo-section">
+
+
+                    <div class="profile-photo-wrapper">
+
+                        {% if profile_pic %}
+
+                            <img
+                                src="{{ url_for('static', filename=profile_pic) }}"
+                                alt="Profile Photo"
+                                class="profile-photo"
+                                id="profilePreview"
+                            >
+
+                        {% else %}
+
+                            <img
+                                src="{{ url_for('static', filename='images/farmer.jpg') }}"
+                                alt="Profile Photo"
+                                class="profile-photo"
+                                id="profilePreview"
+                            >
+
+                        {% endif %}
+
+
+                        <div class="photo-edit-icon">
+
+                            <i class="fa-solid fa-camera"></i>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="photo-title">
+
+                        Profile Photo
+
+                    </div>
+
+
+                    <div class="photo-description">
+
+                        Add a clear profile photo so your
+                        account is easy to identify.
+
+                    </div>
+
+
+                    <label
+                        for="profile"
+                        class="photo-input-label"
+                    >
+
+                        <i class="fa-solid fa-upload"></i>
+
+                        Choose Photo
+
+                    </label>
+
+
+                    <input
+                        type="file"
+                        id="profile"
+                        name="profile"
+                        accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                    >
+
+
+                    <div class="photo-note">
+
+                        JPG, JPEG or PNG - Maximum 5 MB recommended
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     FORM FIELDS
+                ========================================== -->
+
+                <div>
+
+
+                    <div class="form-grid">
+
+
+                        <!-- NAME -->
+
+                        <div class="form-group">
+
+                            <label
+                                for="name"
+                                class="form-label"
+                            >
+
+                                <i class="fa-solid fa-user"></i>
+
+                                Full Name
+
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                class="form-input"
+                                value="{{ name|default(session.get('name', ''), true) }}"
+                                placeholder="Enter your full name"
+                                maxlength="150"
+                                required
+                                autocomplete="name"
+                            >
+
+
+                            <div class="form-help">
+
+                                Enter your complete name.
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- MOBILE -->
+
+                        <div class="form-group">
+
+                            <label
+                                for="mobile"
+                                class="form-label"
+                            >
+
+                                <i class="fa-solid fa-phone"></i>
+
+                                Mobile Number
+
+                            </label>
+
+
+                            <input
+                                type="tel"
+                                id="mobile"
+                                name="mobile"
+                                class="form-input"
+                                value="{{ mobile|default(user.mobile if user else '', true) }}"
+                                placeholder="10-digit mobile number"
+                                maxlength="10"
+                                inputmode="numeric"
+                                autocomplete="tel"
+                                required
+                            >
+
+
+                            <div class="form-help">
+
+                                Enter a valid 10-digit Indian mobile number.
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- EMAIL -->
+
+                        <div class="form-group">
+
+                            <label
+                                for="email"
+                                class="form-label"
+                            >
+
+                                <i class="fa-solid fa-envelope"></i>
+
+                                Email Address
+
+                            </label>
+
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                class="form-input"
+                                value="{{ email|default(user.email if user else '', true) }}"
+                                placeholder="Enter your email"
+                                maxlength="150"
+                                autocomplete="email"
+                            >
+
+
+                            <div class="form-help">
+
+                                Used for account communication.
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ROLE -->
+
+                        <div class="form-group">
+
+                            <label
+                                for="role"
+                                class="form-label"
+                            >
+
+                                <i class="fa-solid fa-user-tag"></i>
+
+                                Account Role
+
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="role"
+                                name="role"
+                                class="form-input"
+                                value="{{ role|default(session.get('role', 'Farmer'), true) }}"
+                                disabled
+                            >
+
+
+                            <div class="form-help">
+
+                                Account role cannot be changed here.
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- LOCATION -->
+
+                        <div class="form-group full-width">
+
+                            <label
+                                for="location"
+                                class="form-label"
+                            >
+
+                                <i class="fa-solid fa-location-dot"></i>
+
+                                Location
+
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="location"
+                                name="location"
+                                class="form-input"
+                                value="{{ location|default(user.location if user else '', true) }}"
+                                placeholder="Enter your village, city or district"
+                                maxlength="200"
+                                autocomplete="address-level2"
+                            >
+
+
+                            <div class="form-help">
+
+                                Your location can be used for
+                                weather and farming recommendations.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =====================================
+                         PROFILE COMPLETION
+                    ====================================== -->
+
+                    <div class="completion-box">
+
+                        <div class="completion-header">
+
+                            <strong>
+
+                                <i class="fa-solid fa-chart-simple"></i>
+
+                                Profile Completion
+
+                            </strong>
+
+
+                            <span
+                                class="completion-percent"
+                                id="completionPercent"
+                            >
+
+                                0%
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="progress-track">
+
+                            <div
+                                class="progress-bar"
+                                id="completionBar"
+                            ></div>
+
+                        </div>
+
+
+                        <div
+                            class="completion-message"
+                            id="completionMessage"
+                        >
+
+                            Complete your profile to improve personalization.
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =====================================
+                         PERSONALIZATION
+                    ====================================== -->
+
+                    <div class="personalization-box">
+
+                        <div class="personalization-title">
+
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                            Smart Personalization
+
+                        </div>
+
+
+                        <div class="personalization-tags">
+
+                            <span class="personalization-tag">
+
+                                <i class="fa-solid fa-cloud-sun"></i>
+
+                                Weather
+
+                            </span>
+
+
+                            <span class="personalization-tag">
+
+                                <i class="fa-solid fa-seedling"></i>
+
+                                Crop Advisor
+
+                            </span>
+
+
+                            <span class="personalization-tag">
+
+                                <i class="fa-solid fa-virus"></i>
+
+                                Disease Detection
+
+                            </span>
+
+
+                            <span class="personalization-tag">
+
+                                <i class="fa-solid fa-droplet"></i>
+
+                                Irrigation
+
+                            </span>
+
+
+                            <span class="personalization-tag">
+
+                                <i class="fa-solid fa-chart-line"></i>
+
+                                Market
+
+                            </span>
+
+
+                            <span class="personalization-tag">
+
+                                <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                                Finance
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =====================================
+                         SECURITY
+                    ====================================== -->
+
+                    <div class="security-strip">
+
+                        <div class="security-strip-icon">
+
+                            <i class="fa-solid fa-shield-halved"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+
+                                Your profile information is protected
+
+                            </strong>
+
+                            <span>
+
+                                KisanVision360+ uses your profile details
+                                only for account and farming personalization.
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =====================================
+                         ACTIONS
+                    ====================================== -->
+
+                    <div class="form-actions">
+
+
+                        <div class="action-left">
+
+
+                            <a
+                                href="{{ url_for('profile.profile') }}"
+                                class="btn btn-secondary"
+                            >
+
+                                <i class="fa-solid fa-arrow-left"></i>
+
+                                Back to Profile
+
+                            </a>
+
+
+                            <a
+                                href="{{ url_for('settings.settings') }}"
+                                class="btn btn-secondary"
+                            >
+
+                                <i class="fa-solid fa-sliders"></i>
+
+                                Settings
+
+                            </a>
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            id="saveProfileBtn"
+                        >
+
+                            <i class="fa-solid fa-floppy-disk"></i>
+
+                            Save Changes
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="profile-footer">
+
+        <i class="fa-solid fa-leaf"></i>
+
+        KisanVision360+
+
+        <span>-</span>
+
+        Smart Farming Platform
+
+        <span>-</span>
+
+        Made in India
+
+    </footer>
+
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+
+"use strict";
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const profileForm =
+    document.getElementById("profileForm");
+
+const profileInput =
+    document.getElementById("profile");
+
+const profilePreview =
+    document.getElementById("profilePreview");
+
+const saveButton =
+    document.getElementById("saveProfileBtn");
+
+const completionBar =
+    document.getElementById("completionBar");
+
+const completionPercent =
+    document.getElementById("completionPercent");
+
+const completionMessage =
+    document.getElementById("completionMessage");
+
+
+/* =========================================================
+   PROFILE PHOTO PREVIEW
+========================================================= */
+
+if (profileInput) {
+
+    profileInput.addEventListener(
+        "change",
+        function () {
+
+            const file =
+                this.files && this.files[0];
+
+            if (!file) {
+                return;
+            }
+
+
+            const allowedTypes = [
+                "image/jpeg",
+                "image/png"
+            ];
+
+
+            if (!allowedTypes.includes(file.type)) {
+
+                alert(
+                    "Please select a JPG, JPEG or PNG image."
+                );
+
+                this.value = "";
+
+                return;
+            }
+
+
+            const maxSize =
+                5 * 1024 * 1024;
+
+
+            if (file.size > maxSize) {
+
+                alert(
+                    "Image size must be 5 MB or less."
+                );
+
+                this.value = "";
+
+                return;
+            }
+
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload =
+                function (event) {
+
+                    if (profilePreview) {
+
+                        profilePreview.src =
+                            event.target.result;
+
+                    }
+
+                };
+
+
+            reader.readAsDataURL(file);
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   GET FORM VALUE
+========================================================= */
+
+function getValue(id) {
+
+    const element =
+        document.getElementById(id);
+
+    if (!element) {
+        return "";
+    }
+
+    return element.value.trim();
+}
+
+
+/* =========================================================
+   UPDATE PROFILE COMPLETION
+========================================================= */
+
+function updateProfileCompletion() {
+
+    const name =
+        getValue("name");
+
+    const mobile =
+        getValue("mobile");
+
+    const email =
+        getValue("email");
+
+    const location =
+        getValue("location");
+
+
+    let completed = 0;
+
+    const total = 4;
+
+
+    if (name.length >= 2) {
+        completed++;
+    }
+
+
+    if (/^[6-9]\d{9}$/.test(mobile)) {
+        completed++;
+    }
+
+
+    if (
+        email.length > 0 &&
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+    ) {
+
+        completed++;
+
+    }
+
+
+    if (location.length >= 2) {
+        completed++;
+    }
+
+
+    const percentage =
+        Math.round(
+            (completed / total) * 100
+        );
+
+
+    if (completionBar) {
+
+        completionBar.style.width =
+            percentage + "%";
+
+    }
+
+
+    if (completionPercent) {
+
+        completionPercent.textContent =
+            percentage + "%";
+
+    }
+
+
+    if (completionMessage) {
+
+        if (percentage === 100) {
+
+            completionMessage.textContent =
+                "Your profile is complete.";
+
+        } else if (percentage >= 75) {
+
+            completionMessage.textContent =
+                "Almost complete. Add the remaining information.";
+
+        } else if (percentage >= 50) {
+
+            completionMessage.textContent =
+                "Good progress. Complete more details for better personalization.";
+
+        } else {
+
+            completionMessage.textContent =
+                "Complete your profile to improve personalization.";
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   INPUT EVENTS
+========================================================= */
+
+[
+    "name",
+    "mobile",
+    "email",
+    "location"
+].forEach(function (id) {
+
+    const element =
+        document.getElementById(id);
+
+    if (!element) {
+        return;
+    }
+
+    element.addEventListener(
+        "input",
+        updateProfileCompletion
+    );
+
+});
+
+
+/* =========================================================
+   FORM VALIDATION
+========================================================= */
+
+if (profileForm) {
+
+    profileForm.addEventListener(
+        "submit",
+        function (event) {
+
+            const name =
+                getValue("name");
+
+            const mobile =
+                getValue("mobile");
+
+            const email =
+                getValue("email");
+
+
+            if (name.length < 2) {
+
+                event.preventDefault();
+
+                alert(
+                    "Please enter your full name."
+                );
+
+                document
+                    .getElementById("name")
+                    ?.focus();
+
+                return;
+            }
+
+
+            if (
+                !/^[6-9]\d{9}$/.test(mobile)
+            ) {
+
+                event.preventDefault();
+
+                alert(
+                    "Please enter a valid 10-digit Indian mobile number."
+                );
+
+                document
+                    .getElementById("mobile")
+                    ?.focus();
+
+                return;
+            }
+
+
+            if (
+                email &&
+                !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+            ) {
+
+                event.preventDefault();
+
+                alert(
+                    "Please enter a valid email address."
+                );
+
+                document
+                    .getElementById("email")
+                    ?.focus();
+
+                return;
+            }
+
+
+            if (saveButton) {
+
+                saveButton.disabled = true;
+
+                saveButton.innerHTML =
+                    '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        updateProfileCompletion();
+
+    }
+);
+
+</script>
+
+{% endblock %}

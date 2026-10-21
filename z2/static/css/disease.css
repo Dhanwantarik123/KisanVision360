@@ -2727,3 +2727,19 @@ html[dir="rtl"] .hero-visual {
     }
 
 }
+
+.guidance-list {
+    margin: 12px 0 0;
+    padding-left: 24px;
+    list-style-type: disc;
+}
+
+.guidance-list li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.info-card h3 {
+    margin-bottom: 8px;
+}

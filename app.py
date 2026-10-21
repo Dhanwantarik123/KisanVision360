@@ -22,7 +22,7 @@ from flask import (
 )
 
 from dotenv import load_dotenv
-
+load_dotenv()
 
 # ============================================================
 # BASE DIRECTORY

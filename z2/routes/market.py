@@ -1,10 +1,7 @@
 ﻿
 """
 KisanVision360+
-Market / Mandi Module
-
-Live market-price integration through:
-https://api.data.gov.in/resource
+Market / Mandi Routes
 """
 
 import logging
@@ -16,7 +13,7 @@ from flask import (
     request,
     session,
     redirect,
-    url_for
+    url_for,
 )
 
 from utils.mandi_price import (
@@ -24,39 +21,19 @@ from utils.mandi_price import (
     get_market_price,
     filter_market_prices,
     calculate_market_summary,
-    market_api_health
+    market_api_health,
 )
-
 
 logger = logging.getLogger(__name__)
 
-
-# ============================================================
-# BLUEPRINT
-# ============================================================
-
-market_bp = Blueprint(
-    "market",
-    __name__
-)
-
-
-# ============================================================
-# DEFAULT LOCATION
-# ============================================================
+market_bp = Blueprint("market", __name__)
 
 DEFAULT_STATE = "Maharashtra"
 DEFAULT_DISTRICT = "Nagpur"
 
 
-# ============================================================
-# HELPERS
-# ============================================================
-
 def _role():
-    return str(
-        session.get("role", "")
-    ).strip().lower()
+    return str(session.get("role", "")).strip().lower()
 
 
 def _is_logged_in():
@@ -68,286 +45,195 @@ def _is_logged_in():
 
 
 def _require_login():
-    """
-    Redirect to login when user is not logged in.
-    """
-
     if not _is_logged_in():
-        return redirect(
-            url_for("auth.login")
-        )
-
+        return redirect(url_for("auth.login"))
     return None
 
 
-def _safe_float(value):
-    try:
-        if value is None:
-            return None
-
-        return float(value)
-
-    except (TypeError, ValueError):
-        return None
+def _auth_error():
+    return jsonify({
+        "success": False,
+        "message": "Authentication required.",
+    }), 401
 
 
-# ============================================================
-# MARKET PAGE
-# ============================================================
+def _filters(defaults=False):
+    return {
+        "crop": request.args.get("crop", "").strip(),
+        "state": request.args.get(
+            "state", DEFAULT_STATE if defaults else ""
+        ).strip(),
+        "district": request.args.get(
+            "district", DEFAULT_DISTRICT if defaults else ""
+        ).strip(),
+        "market": request.args.get("market", "").strip(),
+    }
 
-@market_bp.route(
-    "/market",
-    methods=["GET"]
-)
+
+def _fetch(filters, limit=100):
+    return get_crop_prices(
+        crop=filters["crop"] or None,
+        state=filters["state"] or None,
+        district=filters["district"] or None,
+        market=filters["market"] or None,
+        limit=limit,
+    )
+
+
+def _trend_info(records):
+    dated = []
+
+    for item in records:
+        price = item.get("modal_price")
+        date = item.get("arrival_date")
+
+        if price is None or not date:
+            continue
+
+        try:
+            price = float(str(price).replace(",", ""))
+        except (TypeError, ValueError):
+            continue
+
+        dated.append((str(date), price))
+
+    # Compare only when dates can be sorted and at least two
+    # observations exist. This is not a forecast.
+    dated.sort(key=lambda point: point[0])
+
+    if len(dated) < 2:
+        return {
+            "trend": "Insufficient data",
+            "signal": "Unavailable",
+            "advice": (
+                "More dated market observations are needed "
+                "before comparing prices."
+            ),
+        }
+
+    first_date, first_price = dated[0]
+    last_date, last_price = dated[-1]
+
+    if first_price <= 0:
+        trend = "Insufficient data"
+    else:
+        change_percent = (
+            (last_price - first_price) / first_price
+        ) * 100
+
+        if change_percent >= 5:
+            trend = "Rising"
+        elif change_percent <= -5:
+            trend = "Falling"
+        else:
+            trend = "Stable"
+
+    advice = (
+        "Compare prices across nearby markets, transport "
+        "costs and crop quality before deciding where to sell."
+    )
+
+    return {
+        "trend": trend,
+        "signal": trend,
+        "first_date": first_date,
+        "last_date": last_date,
+        "advice": advice,
+    }
+
+
+@market_bp.route("/market", methods=["GET"])
 def market():
-
     login_redirect = _require_login()
-
     if login_redirect:
         return login_redirect
 
-    crop = request.args.get(
-        "crop",
-        ""
-    ).strip()
-
-    state = request.args.get(
-        "state",
-        DEFAULT_STATE
-    ).strip()
-
-    district = request.args.get(
-        "district",
-        DEFAULT_DISTRICT
-    ).strip()
-
-    market_name = request.args.get(
-        "market",
-        ""
-    ).strip()
-
-    # --------------------------------------------------------
-    # Fetch market data
-    # --------------------------------------------------------
-
-    records = []
-
+    filters = _filters(defaults=True)
     api_error = None
 
     try:
+        records = _fetch(filters)
+        health = market_api_health()
 
-        if crop:
-            records = get_market_price(
-                crop=crop
+        if not health.get("success"):
+            api_error = (
+                "Data.gov.in is unavailable or its API "
+                "configuration needs checking."
             )
 
-        else:
-            records = get_crop_prices(
-                state=state,
-                district=district,
-                limit=100
-            )
+    except Exception:
+        logger.exception("Market page error")
+        records = []
+        health = {"success": False, "ok": False}
+        api_error = "Unable to fetch market prices."
 
-        # Additional local filtering.
-        records = filter_market_prices(
-            records,
-            crop=crop,
-            state=state,
-            district=district,
-            market=market_name
-        )
+    summary = calculate_market_summary(records)
 
-    except Exception as exc:
-
-        logger.exception(
-            "Market page error: %s",
-            exc
-        )
-
-        api_error = (
-            "Unable to fetch market prices "
-            "from Data.gov.in."
-        )
-
-    # --------------------------------------------------------
-    # Summary
-    # --------------------------------------------------------
-
-    summary = calculate_market_summary(
-        records
-    )
-
-    # --------------------------------------------------------
-    # Unique crops / markets
-    # --------------------------------------------------------
-
-    crops = sorted(
-        {
-            item.get("crop", "")
-            for item in records
-            if item.get("crop")
-        }
-    )
-
-    markets = sorted(
-        {
-            item.get("market", "")
-            for item in records
-            if item.get("market")
-        }
-    )
+    crops = sorted({
+        item["crop"] for item in records if item.get("crop")
+    })
+    markets = sorted({
+        item["market"] for item in records if item.get("market")
+    })
 
     return render_template(
         "market.html",
-
         prices=records,
-
         market_prices=records,
-
         records=records,
-
         summary=summary,
-
         crops=crops,
-
         markets=markets,
-
-        selected_crop=crop,
-
-        selected_state=state,
-
-        selected_district=district,
-
-        selected_market=market_name,
-
+        selected_crop=filters["crop"],
+        selected_state=filters["state"],
+        selected_district=filters["district"],
+        selected_market=filters["market"],
+        filters=filters,
         api_error=api_error,
-
+        api_status=health,
         source="data.gov.in",
-
         role=_role(),
-
-        name=session.get(
-            "name",
-            "Farmer"
-        ),
-
-        language=session.get(
-            "language",
-            "en"
-        ),
-
-        notification_count=session.get(
-            "notification_count",
-            0
-        )
+        name=session.get("name", "Farmer"),
+        language=session.get("language", "en"),
+        notification_count=session.get("notification_count", 0),
     )
 
 
-# ============================================================
-# API: MARKET PRICES
-# ============================================================
-
-@market_bp.route(
-    "/api/market/prices",
-    methods=["GET"]
-)
+@market_bp.route("/api/market/prices", methods=["GET"])
 def api_market_prices():
-
-    login_redirect = _require_login()
-
-    if login_redirect:
-        return jsonify({
-            "success": False,
-            "message": "Authentication required."
-        }), 401
-
-    crop = request.args.get(
-        "crop",
-        ""
-    ).strip()
-
-    state = request.args.get(
-        "state",
-        ""
-    ).strip()
-
-    district = request.args.get(
-        "district",
-        ""
-    ).strip()
-
-    market_name = request.args.get(
-        "market",
-        ""
-    ).strip()
+    if not _is_logged_in():
+        return _auth_error()
 
     try:
-
-        records = get_crop_prices(
-            crop=crop or None,
-            state=state or None,
-            district=district or None,
-            market=market_name or None,
-            limit=100
-        )
-
-        records = filter_market_prices(
-            records,
-            crop=crop,
-            state=state,
-            district=district,
-            market=market_name
-        )
-
-        summary = calculate_market_summary(
-            records
-        )
+        records = _fetch(_filters(), limit=100)
 
         return jsonify({
             "success": True,
             "source": "data.gov.in",
             "count": len(records),
             "prices": records,
-            "summary": summary
+            "summary": calculate_market_summary(records),
         })
 
-    except Exception as exc:
-
-        logger.exception(
-            "Market price API error: %s",
-            exc
-        )
-
+    except Exception:
+        logger.exception("Market prices API error")
         return jsonify({
             "success": False,
-            "message": (
-                "Unable to fetch market prices."
-            )
+            "message": "Unable to fetch market prices.",
         }), 500
 
 
-# ============================================================
-# API: ONE CROP
-# ============================================================
-
-@market_bp.route(
-    "/api/market/price/<path:crop>",
-    methods=["GET"]
-)
+@market_bp.route("/api/market/price/<path:crop>", methods=["GET"])
 def api_single_crop_price(crop):
-
-    login_redirect = _require_login()
-
-    if login_redirect:
-        return jsonify({
-            "success": False,
-            "message": "Authentication required."
-        }), 401
+    if not _is_logged_in():
+        return _auth_error()
 
     try:
-
         records = get_market_price(
-            crop=crop
+            crop=crop,
+            state=request.args.get("state") or None,
+            district=request.args.get("district") or None,
+            market=request.args.get("market") or None,
         )
 
         return jsonify({
@@ -355,383 +241,149 @@ def api_single_crop_price(crop):
             "source": "data.gov.in",
             "crop": crop,
             "count": len(records),
-            "prices": records
+            "prices": records,
         })
 
-    except Exception as exc:
-
-        logger.exception(
-            "Single crop market API error: %s",
-            exc
-        )
-
+    except Exception:
+        logger.exception("Single crop API error")
         return jsonify({
             "success": False,
-            "message": "Unable to fetch crop price."
+            "message": "Unable to fetch crop prices.",
         }), 500
 
 
-# ============================================================
-# API: MARKET INTELLIGENCE
-# ============================================================
-
-@market_bp.route(
-    "/api/market/intelligence",
-    methods=["GET"]
-)
+@market_bp.route("/api/market/intelligence", methods=["GET"])
 def api_market_intelligence():
+    if not _is_logged_in():
+        return _auth_error()
 
-    login_redirect = _require_login()
-
-    if login_redirect:
-        return jsonify({
-            "success": False,
-            "message": "Authentication required."
-        }), 401
-
-    crop = request.args.get(
-        "crop",
-        ""
-    ).strip()
-
+    filters = _filters()
     try:
-
-        records = get_market_price(
-            crop=crop or None
-        )
-
-        if not records:
-
-            return jsonify({
-                "success": True,
-                "source": "data.gov.in",
-                "crop": crop,
-                "records": 0,
-                "message": (
-                    "No market-price records "
-                    "were returned."
-                ),
-                "intelligence": {
-                    "trend": "No data",
-                    "signal": "Unavailable",
-                    "advice": (
-                        "Try another crop or market."
-                    )
-                }
-            })
-
-        summary = calculate_market_summary(
-            records
-        )
-
-        modal_values = [
-            item["modal_price"]
-            for item in records
-            if item.get("modal_price") is not None
-        ]
-
-        trend = "Stable"
-
-        if len(modal_values) >= 2:
-
-            first = modal_values[-1]
-            last = modal_values[0]
-
-            if first and last:
-
-                difference = (
-                    last - first
-                )
-
-                percentage = (
-                    abs(difference / first) * 100
-                )
-
-                if percentage >= 5:
-
-                    if difference > 0:
-                        trend = "Rising"
-
-                    elif difference < 0:
-                        trend = "Falling"
-
-        advice = (
-            "Compare prices across nearby markets "
-            "before deciding where to sell."
-        )
-
-        if trend == "Rising":
-
-            advice = (
-                "Prices show an upward signal. "
-                "Compare nearby markets and consider "
-                "selling when logistics and quality "
-                "conditions are suitable."
-            )
-
-        elif trend == "Falling":
-
-            advice = (
-                "Prices show a downward signal. "
-                "Compare other nearby markets and "
-                "consider storage or timing options "
-                "where practical."
-            )
+        records = _fetch(filters, limit=200)
+        summary = calculate_market_summary(records)
 
         return jsonify({
             "success": True,
             "source": "data.gov.in",
-            "crop": crop,
+            "crop": filters["crop"],
             "records": len(records),
             "summary": summary,
-            "intelligence": {
-                "trend": trend,
-                "signal": trend,
-                "advice": advice
-            }
+            "intelligence": _trend_info(records),
         })
 
-    except Exception as exc:
-
-        logger.exception(
-            "Market intelligence error: %s",
-            exc
-        )
-
+    except Exception:
+        logger.exception("Market intelligence API error")
         return jsonify({
             "success": False,
-            "message": (
-                "Unable to calculate market intelligence."
-            )
+            "message": "Unable to calculate market intelligence.",
         }), 500
 
 
-# ============================================================
-# API: CROPS
-# ============================================================
-
-@market_bp.route(
-    "/api/market/crops",
-    methods=["GET"]
-)
+@market_bp.route("/api/market/crops", methods=["GET"])
 def api_market_crops():
-
-    login_redirect = _require_login()
-
-    if login_redirect:
-        return jsonify({
-            "success": False,
-            "message": "Authentication required."
-        }), 401
+    if not _is_logged_in():
+        return _auth_error()
 
     try:
-
         records = get_crop_prices(
-            limit=200
+            state=request.args.get("state") or DEFAULT_STATE,
+            district=request.args.get("district") or None,
+            limit=500,
         )
-
-        crops = sorted(
-            {
-                item.get("crop", "").strip()
-                for item in records
-                if item.get("crop")
-            }
-        )
+        crops = sorted({
+            item["crop"] for item in records if item.get("crop")
+        })
 
         return jsonify({
             "success": True,
             "source": "data.gov.in",
-            "crops": crops
+            "crops": crops,
         })
 
-    except Exception as exc:
-
-        logger.exception(
-            "Market crops error: %s",
-            exc
-        )
-
+    except Exception:
+        logger.exception("Market crops API error")
         return jsonify({
             "success": False,
-            "message": "Unable to fetch crop list."
+            "message": "Unable to fetch crop list.",
         }), 500
 
 
-# ============================================================
-# API: MARKETS
-# ============================================================
-
-@market_bp.route(
-    "/api/market/markets",
-    methods=["GET"]
-)
+@market_bp.route("/api/market/markets", methods=["GET"])
 def api_markets():
-
-    login_redirect = _require_login()
-
-    if login_redirect:
-        return jsonify({
-            "success": False,
-            "message": "Authentication required."
-        }), 401
-
-    state = request.args.get(
-        "state",
-        ""
-    ).strip()
-
-    district = request.args.get(
-        "district",
-        ""
-    ).strip()
+    if not _is_logged_in():
+        return _auth_error()
 
     try:
+        filters = _filters()
+        records = _fetch(filters, limit=500)
 
-        records = get_crop_prices(
-            state=state or None,
-            district=district or None,
-            limit=200
-        )
-
-        records = filter_market_prices(
-            records,
-            state=state,
-            district=district
-        )
-
-        markets = sorted(
-            {
-                item.get("market", "").strip()
-                for item in records
-                if item.get("market")
-            }
-        )
+        markets = sorted({
+            item["market"] for item in records if item.get("market")
+        })
 
         return jsonify({
             "success": True,
             "source": "data.gov.in",
-            "markets": markets
+            "markets": markets,
         })
 
-    except Exception as exc:
-
-        logger.exception(
-            "Market list error: %s",
-            exc
-        )
-
+    except Exception:
+        logger.exception("Market list API error")
         return jsonify({
             "success": False,
-            "message": "Unable to fetch markets."
+            "message": "Unable to fetch market list.",
         }), 500
 
 
-# ============================================================
-# API: TREND
-# ============================================================
-
-@market_bp.route(
-    "/api/market/trend",
-    methods=["GET"]
-)
+@market_bp.route("/api/market/trend", methods=["GET"])
 def api_market_trend():
-
-    login_redirect = _require_login()
-
-    if login_redirect:
-        return jsonify({
-            "success": False,
-            "message": "Authentication required."
-        }), 401
-
-    crop = request.args.get(
-        "crop",
-        ""
-    ).strip()
+    if not _is_logged_in():
+        return _auth_error()
 
     try:
+        records = _fetch(_filters(), limit=200)
+        points = [
+            {
+                "date": item.get("arrival_date"),
+                "market": item.get("market"),
+                "crop": item.get("crop"),
+                "price": item.get("modal_price"),
+            }
+            for item in records
+            if item.get("arrival_date")
+            and item.get("modal_price") is not None
+        ]
 
-        records = get_market_price(
-            crop=crop or None
-        )
-
-        points = []
-
-        for item in records:
-
-            modal = item.get(
-                "modal_price"
-            )
-
-            if modal is None:
-                continue
-
-            points.append({
-                "date": item.get(
-                    "arrival_date"
-                ),
-                "market": item.get(
-                    "market"
-                ),
-                "price": modal
-            })
+        points.sort(key=lambda item: item["date"])
 
         return jsonify({
             "success": True,
             "source": "data.gov.in",
-            "crop": crop,
-            "trend": points
+            "count": len(points),
+            "trend": points,
+            "intelligence": _trend_info(records),
         })
 
-    except Exception as exc:
-
-        logger.exception(
-            "Market trend error: %s",
-            exc
-        )
-
+    except Exception:
+        logger.exception("Market trend API error")
         return jsonify({
             "success": False,
-            "message": "Unable to fetch market trend."
+            "message": "Unable to fetch market trend.",
         }), 500
 
 
-# ============================================================
-# HEALTH
-# ============================================================
-
-@market_bp.route(
-    "/api/market/health",
-    methods=["GET"]
-)
+@market_bp.route("/api/market/health", methods=["GET"])
 def market_health():
+    # Health check reveals configuration status, so require login.
+    if not _is_logged_in():
+        return _auth_error()
 
     result = market_api_health()
-
-    status_code = (
-        200
-        if result.get("success")
-        else 503
+    return jsonify(result), (
+        200 if result.get("success") else 503
     )
 
-    return jsonify(result), status_code
-
-
-# ============================================================
-# INITIALIZER
-# ============================================================
 
 def initialize_market_service():
-    """
-    Called by app.py during application startup if required.
-
-    This function intentionally does not insert demo prices.
-    """
-
-    logger.info(
-        "KisanVision360+ Market service initialized."
-    )
-
+    logger.info("KisanVision360+ market service initialized.")
     return True
-
-

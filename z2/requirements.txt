@@ -1,0 +1,9 @@
+Flask>=3.0,<4.0
+python-dotenv>=1.0,<2.0
+psycopg2-binary>=2.9,<3.0
+requests>=2.31,<3.0
+Pillow>=10.0,<13.0
+numpy>=1.26,<3.0
+# TensorFlow is required for CNN disease inference; install a compatible build for your Python/OS.
+# tensorflow==2.15.1; python_version < "3.12"
+gunicorn>=21.2,<24.0

@@ -1,454 +1,832 @@
 ﻿
 """
-KisanVision360+ - Mandi Price Service
+KisanVision360+
+Mandi / Market Price Utility
 
-API:
-    https://mandi-api.onrender.com/v1/prices
+Data Source:
+Data.gov.in - Current Daily Price of Various Commodities
+from Various Markets (Mandi)
 
-Provides:
-    get_crop_prices()
-    get_market_price()
-    get_available_crops()
-    get_available_markets()
-    market_api_health()
-    check_mandi_api()
+File:
+utils/mandi_price.py
 
-Only real API records are returned. No sample or fabricated prices.
+IMPORTANT:
+- No fake/demo prices
+- API key comes from .env
+- Uses official Data.gov.in Mandi resource
 """
 
-import logging
 import os
+import logging
+from datetime import datetime
 
 import requests
 
+
 logger = logging.getLogger(__name__)
 
-API_URL = os.getenv(
-    "MANDI_API_URL",
-    "https://mandi-api.onrender.com/v1/prices",
+
+# ============================================================
+# CONFIGURATION
+# ============================================================
+
+# Official Data.gov.in Mandi resource
+DEFAULT_MANDI_RESOURCE_URL = (
+    "https://api.data.gov.in/resource/"
+    "9ef84268-d588-465a-a308-a864a43d0070"
 )
 
+DATA_GOV_URL = os.getenv(
+    "DATA_GOV_RESOURCE_URL",
+    DEFAULT_MANDI_RESOURCE_URL
+).strip()
+
+# IMPORTANT:
+# getenv() must contain the ENVIRONMENT VARIABLE NAME,
+# NOT the actual API key.
+DATA_GOV_API_KEY = os.getenv(
+    "DATA_GOV_API_KEY",
+    ""
+).strip()
+
 try:
-    API_TIMEOUT = max(5, int(os.getenv("MANDI_API_TIMEOUT", "30")))
+    REQUEST_TIMEOUT = int(
+        os.getenv("DATA_GOV_TIMEOUT", "15")
+    )
 except (TypeError, ValueError):
-    API_TIMEOUT = 30
+    REQUEST_TIMEOUT = 15
+
+REQUEST_TIMEOUT = max(5, min(REQUEST_TIMEOUT, 60))
 
 
-# =========================================================
-# HELPERS
-# =========================================================
+# ============================================================
+# COMMON HELPERS
+# ============================================================
 
 def _clean(value):
-    """Return a trimmed string."""
-    return "" if value is None else str(value).strip()
+    """Convert value to a clean string."""
+    if value is None:
+        return ""
+
+    return str(value).strip()
 
 
-def _number(value):
-    """Convert a valid price to float, or None."""
-    if value is None or _clean(value) == "":
+def _first_value(record, *keys):
+    """
+    Return the first non-empty value from a record.
+    Data.gov.in field names may vary slightly.
+    """
+
+    if not isinstance(record, dict):
+        return ""
+
+    for key in keys:
+        if key in record:
+            value = record.get(key)
+
+            if value is not None:
+                text = str(value).strip()
+
+                if text:
+                    return text
+
+    return ""
+
+
+def _to_float(value):
+    """Safely convert a price value to float."""
+
+    if value is None:
         return None
 
     try:
-        result = float(_clean(value).replace(",", ""))
-        return result if result >= 0 else None
-    except (TypeError, ValueError):
+        text = str(value).strip()
+
+        if not text:
+            return None
+
+        text = (
+            text
+            .replace(",", "")
+            .replace("₹", "")
+            .replace("Rs.", "")
+            .replace("Rs", "")
+            .strip()
+        )
+
+        return float(text)
+
+    except (ValueError, TypeError):
         return None
-
-
-def _matches(value, requested):
-    """Case-insensitive exact matching."""
-    if requested is None or _clean(requested) == "":
-        return True
-
-    return _clean(value).casefold() == _clean(requested).casefold()
 
 
 def _normalize_record(record):
-    """Normalize API fields without discarding original fields."""
+    """
+    Convert Data.gov.in Mandi record into
+    KisanVision360+ standard format.
+    """
+
     if not isinstance(record, dict):
         return None
 
-    item = dict(record)
+    crop = _first_value(
+        record,
+        "commodity",
+        "Commodity",
+        "crop",
+        "Crop",
+        "commodity_name",
+        "Commodity_Name"
+    )
 
-    aliases = {
-        "state": ("state", "state_name"),
-        "district": ("district", "district_name"),
-        "market": ("market", "market_name", "mandi"),
-        "commodity": ("commodity", "crop", "commodity_name"),
-        "variety": ("variety", "variety_name"),
-        "grade": ("grade", "quality"),
-        "arrival_date": ("arrival_date", "date", "price_date"),
-        "min_price": ("min_price", "minimum_price"),
-        "max_price": ("max_price", "maximum_price"),
-        "modal_price": ("modal_price", "modal", "price"),
+    market = _first_value(
+        record,
+        "market",
+        "Market",
+        "market_name",
+        "Market_Name",
+        "mandi",
+        "Mandi"
+    )
+
+    state = _first_value(
+        record,
+        "state",
+        "State",
+        "state_name",
+        "State_Name"
+    )
+
+    district = _first_value(
+        record,
+        "district",
+        "District",
+        "district_name",
+        "District_Name"
+    )
+
+    variety = _first_value(
+        record,
+        "variety",
+        "Variety"
+    )
+
+    grade = _first_value(
+        record,
+        "grade",
+        "Grade"
+    )
+
+    min_price = _first_value(
+        record,
+        "min_price",
+        "Min_Price",
+        "minimum_price",
+        "Minimum_Price"
+    )
+
+    max_price = _first_value(
+        record,
+        "max_price",
+        "Max_Price",
+        "maximum_price",
+        "Maximum_Price"
+    )
+
+    modal_price = _first_value(
+        record,
+        "modal_price",
+        "Modal_Price",
+        "modal",
+        "Modal"
+    )
+
+    arrival_date = _first_value(
+        record,
+        "arrival_date",
+        "Arrival_Date",
+        "date",
+        "Date",
+        "reported_date"
+    )
+
+    # Ignore completely empty records
+    if not any(
+        [
+            crop,
+            market,
+            state,
+            district,
+            min_price,
+            max_price,
+            modal_price
+        ]
+    ):
+        return None
+
+    return {
+        "crop": crop or "Unknown",
+        "commodity": crop or "Unknown",
+
+        "market": market or "Unknown",
+
+        "state": state or "",
+
+        "district": district or "",
+
+        "variety": variety,
+
+        "grade": grade,
+
+        "min_price": _to_float(min_price),
+
+        "max_price": _to_float(max_price),
+
+        "modal_price": _to_float(modal_price),
+
+        "arrival_date": arrival_date,
+
+        "source": "data.gov.in",
+
+        "fetched_at": datetime.now().strftime(
+            "%Y-%m-%d %H:%M:%S"
+        ),
+
+        "raw": record
     }
 
-    for target, keys in aliases.items():
-        for key in keys:
-            if key in record and record[key] is not None:
-                item[target] = record[key]
-                break
 
-    for field in (
-        "state",
-        "district",
-        "market",
-        "commodity",
-        "variety",
-        "grade",
-        "arrival_date",
-    ):
-        item[field] = _clean(item.get(field)) or None
-
-    for field in ("min_price", "max_price", "modal_price"):
-        item[field] = _number(item.get(field))
-
-    item["source"] = "Mandi API (third-party)"
-    return item
-
-
-def _extract_records(payload):
-    """Read records from supported JSON response formats."""
-    if isinstance(payload, list):
-        return payload
-
-    if not isinstance(payload, dict):
-        return []
-
-    if payload.get("success") is False:
-        error = payload.get("error", "API reported failure")
-        logger.warning("Mandi API error: %s", error)
-        return []
-
-    data = payload.get("data")
-
-    if data is None:
-        for key in ("records", "prices", "results"):
-            if isinstance(payload.get(key), list):
-                data = payload[key]
-                break
-
-    if isinstance(data, list):
-        return data
-
-    if isinstance(data, dict):
-        for key in ("records", "data", "prices", "results"):
-            if isinstance(data.get(key), list):
-                return data[key]
-
-        if any(
-            key in data
-            for key in ("commodity", "crop", "modal_price")
-        ):
-            return [data]
-
-    return []
-
-
-# =========================================================
-# FETCH MANDI RECORDS
-# =========================================================
+# ============================================================
+# API REQUEST
+# ============================================================
 
 def _request_data(
-    commodity=None,
+    crop=None,
     state=None,
     district=None,
     market=None,
-    limit=100,
-    offset=0,
+    limit=100
 ):
-    """Fetch real price records from the Mandi API."""
-    try:
-        limit = max(1, min(int(limit), 500))
-        offset = max(0, int(offset))
-    except (TypeError, ValueError):
-        limit, offset = 100, 0
+    """
+    Request Mandi records from Data.gov.in.
 
-    # The API requires state or commodity.
-    # Do not make an unfiltered request.
-    if not state and not commodity:
-        logger.warning(
-            "Mandi API requires at least one of state or commodity."
+    Returns:
+        list[dict]
+    """
+
+    if not DATA_GOV_API_KEY:
+        logger.error(
+            "DATA_GOV_API_KEY is not configured."
         )
         return []
 
+    try:
+        limit = int(limit)
+    except (TypeError, ValueError):
+        limit = 100
+
+    limit = max(1, min(limit, 1000))
+
     params = {
-        "limit": limit,
-        "offset": offset,
+        "api-key": DATA_GOV_API_KEY,
+        "format": "json",
+        "limit": limit
     }
 
-    if commodity:
-        params["commodity"] = commodity
+    # --------------------------------------------------------
+    # Data.gov.in filters
+    # --------------------------------------------------------
+
+    if crop:
+        params["filters[commodity]"] = str(crop).strip()
+
     if state:
-        params["state"] = state
+        params["filters[state]"] = str(state).strip()
+
     if district:
-        params["district"] = district
+        params["filters[district]"] = str(district).strip()
+
     if market:
-        params["market"] = market
+        params["filters[market]"] = str(market).strip()
+
+    logger.info(
+        "Requesting Data.gov.in Mandi data: %s",
+        DATA_GOV_URL
+    )
 
     try:
+
         response = requests.get(
-            API_URL,
+            DATA_GOV_URL,
             params=params,
-            timeout=(5, API_TIMEOUT),
-            headers={"Accept": "application/json"},
+            timeout=REQUEST_TIMEOUT,
+            headers={
+                "Accept": "application/json",
+                "User-Agent": "KisanVision360+/1.0"
+            }
         )
-        response.raise_for_status()
-
-        payload = response.json()
-        records = _extract_records(payload)
-        results = []
-
-        for record in records:
-            item = _normalize_record(record)
-            if item is None:
-                continue
-
-            # Apply local filtering in case the API ignores a filter.
-            if not _matches(item.get("commodity"), commodity):
-                continue
-            if not _matches(item.get("state"), state):
-                continue
-            if not _matches(item.get("district"), district):
-                continue
-            if not _matches(item.get("market"), market):
-                continue
-
-            results.append(item)
 
         logger.info(
-            "Mandi API returned %d records.",
-            len(results),
+            "Data.gov.in response status: %s",
+            response.status_code
         )
-        return results
+
+        response.raise_for_status()
+
+        data = response.json()
+
+        if not isinstance(data, dict):
+            logger.error(
+                "Data.gov.in returned non-dictionary JSON."
+            )
+            return []
+
+        records = data.get("records", [])
+
+        if not isinstance(records, list):
+            logger.error(
+                "Data.gov.in 'records' is not a list."
+            )
+            return []
+
+        logger.info(
+            "Data.gov.in records received: %s",
+            len(records)
+        )
+
+        return records
+
+    except requests.exceptions.Timeout:
+        logger.error(
+            "Data.gov.in request timed out after %s seconds.",
+            REQUEST_TIMEOUT
+        )
+        return []
 
     except requests.exceptions.HTTPError as exc:
+
         status = (
-            exc.response.status_code
-            if exc.response is not None
-            else None
+            response.status_code
+            if response is not None
+            else "unknown"
         )
-        body = (
-            exc.response.text[:300]
-            if exc.response is not None
-            else ""
-        )
+
         logger.error(
-            "Mandi API HTTP error %s: %s",
+            "Data.gov.in HTTP error %s: %s",
             status,
-            body,
+            exc
         )
+
+        # Log response body when available
+        if response is not None:
+            try:
+                logger.error(
+                    "Data.gov.in response: %s",
+                    response.text[:1000]
+                )
+            except Exception:
+                pass
+
+        return []
 
     except requests.exceptions.RequestException as exc:
+
         logger.error(
-            "Mandi API request failed (%s): %s",
-            type(exc).__name__,
-            str(exc)[:300],
+            "Data.gov.in request error: %s",
+            exc
         )
 
-    except (ValueError, TypeError) as exc:
+        return []
+
+    except ValueError:
+
         logger.error(
-            "Invalid Mandi API response: %s",
-            str(exc)[:300],
+            "Data.gov.in returned invalid JSON."
         )
+
+        return []
 
     except Exception:
-        logger.exception("Unexpected error fetching Mandi prices.")
 
-    return []
+        logger.exception(
+            "Unexpected Data.gov.in error."
+        )
+
+        return []
 
 
-# =========================================================
-# PUBLIC PRICE FUNCTIONS
-# =========================================================
+# ============================================================
+# GET CROP PRICES
+# ============================================================
 
 def get_crop_prices(
     crop=None,
     state=None,
     district=None,
     market=None,
-    limit=100,
-    offset=0,
-    **kwargs,
-):
-    """Get real prices for a crop and optional location filters."""
-    crop = (
-        crop
-        or kwargs.get("commodity")
-        or kwargs.get("crop_name")
-    )
-
-    state = state or kwargs.get("state_name")
-    district = district or kwargs.get("district_name")
-    market = market or kwargs.get("market_name")
-
-    return _request_data(
-        commodity=crop,
-        state=state,
-        district=district,
-        market=market,
-        limit=limit,
-        offset=offset,
-    )
-
-
-def get_market_price(
-    crop=None,
-    state=None,
-    district=None,
-    market=None,
-    limit=100,
-    offset=0,
-    **kwargs,
+    limit=100
 ):
     """
-    Compatibility function for existing market blueprint imports.
+    Get Mandi prices from Data.gov.in.
 
-    Supports calls using crop=, commodity= or crop_name=.
-    Returns a list of normalized records.
+    Example:
+
+        get_crop_prices(
+            crop="Wheat",
+            state="Maharashtra",
+            district="Nagpur"
+        )
     """
-    return get_crop_prices(
+
+    records = _request_data(
         crop=crop,
         state=state,
         district=district,
         market=market,
-        limit=limit,
-        offset=offset,
-        **kwargs,
+        limit=limit
     )
 
+    normalized = []
 
-def get_available_crops(state=None, district=None):
-    """List distinct crops returned by the API."""
-    records = _request_data(
+    for record in records:
+
+        item = _normalize_record(record)
+
+        if item:
+            normalized.append(item)
+
+    # --------------------------------------------------------
+    # Local filtering
+    # --------------------------------------------------------
+
+    return filter_market_prices(
+        normalized,
+        crop=crop,
         state=state,
         district=district,
-        limit=500,
+        market=market
     )
+
+
+# ============================================================
+# GET MARKET PRICE FOR ONE CROP
+# ============================================================
+
+def get_market_price(crop=None):
+    """
+    Get Mandi prices for one crop.
+
+    Example:
+
+        get_market_price("Wheat")
+    """
+
+    return get_crop_prices(
+        crop=crop,
+        limit=100
+    )
+
+
+# ============================================================
+# LOCAL FILTERING
+# ============================================================
+
+def filter_market_prices(
+    records,
+    crop=None,
+    state=None,
+    district=None,
+    market=None
+):
+    """
+    Perform additional local filtering.
+
+    This protects the application if Data.gov.in
+    ignores one of the supplied filters.
+    """
+
+    if not records:
+        return []
+
+    crop_text = _clean(crop).lower()
+    state_text = _clean(state).lower()
+    district_text = _clean(district).lower()
+    market_text = _clean(market).lower()
+
+    result = []
+
+    for item in records:
+
+        if crop_text:
+
+            value = (
+                _clean(item.get("crop"))
+                or _clean(item.get("commodity"))
+            ).lower()
+
+            if crop_text not in value:
+                continue
+
+        if state_text:
+
+            value = _clean(
+                item.get("state")
+            ).lower()
+
+            if state_text not in value:
+                continue
+
+        if district_text:
+
+            value = _clean(
+                item.get("district")
+            ).lower()
+
+            if district_text not in value:
+                continue
+
+        if market_text:
+
+            value = _clean(
+                item.get("market")
+            ).lower()
+
+            if market_text not in value:
+                continue
+
+        result.append(item)
+
+    return result
+
+
+# ============================================================
+# PRICE SUMMARY
+# ============================================================
+
+def calculate_market_summary(records):
+    """
+    Calculate market price statistics.
+    """
+
+    if not records:
+
+        return {
+            "records": 0,
+            "min_price": None,
+            "max_price": None,
+            "average_modal_price": None
+        }
+
+    min_values = []
+    max_values = []
+    modal_values = []
+
+    for item in records:
+
+        min_price = item.get("min_price")
+
+        if min_price is not None:
+            try:
+                min_values.append(
+                    float(min_price)
+                )
+            except (ValueError, TypeError):
+                pass
+
+        max_price = item.get("max_price")
+
+        if max_price is not None:
+            try:
+                max_values.append(
+                    float(max_price)
+                )
+            except (ValueError, TypeError):
+                pass
+
+        modal_price = item.get("modal_price")
+
+        if modal_price is not None:
+            try:
+                modal_values.append(
+                    float(modal_price)
+                )
+            except (ValueError, TypeError):
+                pass
+
+    return {
+        "records": len(records),
+
+        "min_price": (
+            min(min_values)
+            if min_values
+            else None
+        ),
+
+        "max_price": (
+            max(max_values)
+            if max_values
+            else None
+        ),
+
+        "average_modal_price": (
+            round(
+                sum(modal_values)
+                / len(modal_values),
+                2
+            )
+            if modal_values
+            else None
+        )
+    }
+
+
+# ============================================================
+# CROP LIST
+# ============================================================
+
+def get_available_crops(
+    state=None,
+    district=None,
+    limit=1000
+):
+    """
+    Get unique crop/commodity names.
+    """
+
+    records = get_crop_prices(
+        state=state,
+        district=district,
+        limit=limit
+    )
+
+    crops = set()
+
+    for item in records:
+
+        crop = _clean(
+            item.get("commodity")
+            or item.get("crop")
+        )
+
+        if crop:
+            crops.add(crop)
 
     return sorted(
-        {
-            _clean(record.get("commodity"))
-            for record in records
-            if _clean(record.get("commodity"))
-        },
-        key=str.casefold,
+        crops,
+        key=lambda value: value.lower()
     )
 
+
+# ============================================================
+# MARKET LIST
+# ============================================================
 
 def get_available_markets(
     state=None,
     district=None,
-    commodity=None,
+    limit=1000
 ):
-    """List distinct markets returned by the API."""
-    records = _request_data(
-        commodity=commodity,
+    """
+    Get unique Mandi/market names.
+    """
+
+    records = get_crop_prices(
         state=state,
         district=district,
-        limit=500,
+        limit=limit
     )
+
+    markets = set()
+
+    for item in records:
+
+        market = _clean(
+            item.get("market")
+        )
+
+        if market:
+            markets.add(market)
 
     return sorted(
-        {
-            _clean(record.get("market"))
-            for record in records
-            if _clean(record.get("market"))
-        },
-        key=str.casefold,
+        markets,
+        key=lambda value: value.lower()
     )
 
 
-# =========================================================
-# API HEALTH CHECK
-# =========================================================
+# ============================================================
+# HEALTH CHECK
+# ============================================================
 
 def market_api_health():
-    """Check API connectivity using the required commodity parameter."""
-    try:
-        response = requests.get(
-            API_URL,
-            params={
-                "state": "Maharashtra",
-                "commodity": "Onion",
-            },
-            timeout=(5, API_TIMEOUT),
-            headers={"Accept": "application/json"},
-        )
+    """
+    Check Data.gov.in Mandi API.
+    """
 
-        status_code = response.status_code
+    if not DATA_GOV_API_KEY:
 
-        if status_code != 200:
-            message = response.text[:300]
-            logger.warning(
-                "Mandi API health check returned HTTP %s: %s",
-                status_code,
-                message,
+        return {
+            "success": False,
+            "connected": False,
+            "message": (
+                "DATA_GOV_API_KEY is not configured."
             )
-            return {
-                "reachable": False,
-                "status_code": status_code,
-                "source": "Mandi API (third-party)",
-                "message": (
-                    f"API returned HTTP {status_code}: {message}"
-                ),
-            }
-
-        try:
-            payload = response.json()
-        except ValueError:
-            return {
-                "reachable": False,
-                "status_code": status_code,
-                "source": "Mandi API (third-party)",
-                "message": "API returned invalid JSON.",
-            }
-
-        if isinstance(payload, dict) and payload.get("success") is False:
-            return {
-                "reachable": False,
-                "status_code": status_code,
-                "source": "Mandi API (third-party)",
-                "message": str(payload.get("error", "API request failed")),
-            }
-
-        if not isinstance(payload, (dict, list)):
-            return {
-                "reachable": False,
-                "status_code": status_code,
-                "source": "Mandi API (third-party)",
-                "message": "Unexpected API response format.",
-            }
-
-        return {
-            "reachable": True,
-            "status_code": status_code,
-            "source": "Mandi API (third-party)",
-            "message": "Mandi API responded successfully.",
         }
 
-    except requests.exceptions.RequestException as exc:
+    records = _request_data(
+        limit=1
+    )
+
+    if records:
+
+        return {
+            "success": True,
+            "connected": True,
+            "message": (
+                "Data.gov.in Mandi API "
+                "is responding."
+            ),
+            "records_received": len(records),
+            "source": "data.gov.in"
+        }
+
+    return {
+        "success": False,
+        "connected": False,
+        "message": (
+            "Data.gov.in returned no records. "
+            "Check API key, resource URL, "
+            "network connection and dataset."
+        ),
+        "source": "data.gov.in"
+    }
+
+
+# ============================================================
+# MODULE INFORMATION
+# ============================================================
+
+def get_market_source_info():
+    """
+    Return configuration information useful for
+    debugging/API health pages.
+
+    API key itself is NEVER returned.
+    """
+
+    return {
+        "source": "Data.gov.in",
+        "resource_url": DATA_GOV_URL,
+        "api_key_configured": bool(DATA_GOV_API_KEY),
+        "timeout_seconds": REQUEST_TIMEOUT,
+        "fake_data": False
+    }
+
+
+# ============================================================
+# STARTUP CHECK
+# ============================================================
+
+def initialize_market_service():
+    """
+    Initialize/check market service.
+
+    Does not crash the application if Data.gov.in
+    is temporarily unavailable.
+    """
+
+    if not DATA_GOV_API_KEY:
+
         logger.warning(
-            "Mandi API health check failed: %s",
-            str(exc)[:300],
+            "Mandi service: DATA_GOV_API_KEY missing."
         )
-        return {
-            "reachable": False,
-            "status_code": None,
-            "source": "Mandi API (third-party)",
-            "message": str(exc)[:300],
-        }
 
-    except Exception as exc:
-        logger.exception("Unexpected Mandi API health-check error.")
-        return {
-            "reachable": False,
-            "status_code": None,
-            "source": "Mandi API (third-party)",
-            "message": str(exc)[:300],
-        }
+        return False
+
+    logger.info(
+        "Mandi service initialized."
+    )
+
+    logger.info(
+        "Mandi resource: %s",
+        DATA_GOV_URL
+    )
+
+    return True
 
 
-def check_mandi_api():
-    """Backward-compatible health-check alias."""
-    return market_api_health()
+# ============================================================
+# EXPORTS
+# ============================================================
+
+__all__ = [
+    "get_crop_prices",
+    "get_market_price",
+    "filter_market_prices",
+    "calculate_market_summary",
+    "get_available_crops",
+    "get_available_markets",
+    "market_api_health",
+    "get_market_source_info",
+    "initialize_market_service"
+]
+

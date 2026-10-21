@@ -1,0 +1,342 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mandi Prices | KisanVision360+</title>
+    <style>
+        :root {
+            --green: #1b5e20;
+            --green-light: #e8f5e9;
+            --orange: #fb8c00;
+            --background: #f5f8f5;
+            --text: #263238;
+            --muted: #607d8b;
+            --border: #dce5de;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--background);
+            color: var(--text);
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            background: var(--green);
+            color: white;
+            padding: 22px 5%;
+        }
+
+        header h1 { margin: 0 0 8px; }
+        header p { margin: 0; }
+
+        main {
+            width: min(1250px, 94%);
+            margin: 24px auto;
+        }
+
+        .panel {
+            background: white;
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 12px #00000008;
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            min-width: 0;
+            padding: 11px;
+            border: 1px solid #cbd5ce;
+            border-radius: 7px;
+            background: white;
+            font-size: 14px;
+        }
+
+        button, .button {
+            display: inline-block;
+            margin-top: 16px;
+            padding: 11px 18px;
+            background: var(--green);
+            color: white;
+            border: 0;
+            border-radius: 7px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .button-orange { background: var(--orange); }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .metric {
+            background: var(--green-light);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-wrap: anywhere;
+        }
+
+        .metric span {
+            display: block;
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 9px;
+        }
+
+        .metric strong {
+            font-size: 22px;
+            color: var(--green);
+        }
+
+        .notice {
+            padding: 13px 15px;
+            margin-bottom: 18px;
+            border-radius: 8px;
+            background: #fff3e0;
+            color: #7a4b00;
+        }
+
+        .table-wrap { overflow-x: auto; }
+
+        table {
+            width: 100%;
+            min-width: 900px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid #e6ece7;
+            font-size: 13px;
+        }
+
+        th {
+            background: #edf5ee;
+            color: var(--green);
+            white-space: nowrap;
+        }
+
+        .empty {
+            text-align: center;
+            color: var(--muted);
+            padding: 32px 12px;
+        }
+
+        .muted {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        @media (max-width: 850px) {
+            .filters, .summary {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 520px) {
+            .filters, .summary { grid-template-columns: 1fr; }
+            header h1 { font-size: 22px; }
+            .panel { padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>🌾 KisanVision360+ Mandi Prices</h1>
+    <p>Explore crop prices and available market observations.</p>
+</header>
+
+<main>
+    {% if api_error %}
+    <div class="notice">
+        {{ api_error }}
+        No demonstration prices are being substituted for real data.
+    </div>
+    {% endif %}
+
+    <section class="panel">
+        <h2>Search Market Prices</h2>
+
+        <form action="{{ url_for('market.market') }}" method="GET">
+            <div class="filters">
+                <div>
+                    <label for="crop">Crop</label>
+                    <input id="crop" name="crop"
+                           value="{{ selected_crop }}"
+                           placeholder="e.g. Onion">
+                </div>
+
+                <div>
+                    <label for="state">State</label>
+                    <input id="state" name="state"
+                           value="{{ selected_state }}"
+                           placeholder="e.g. Maharashtra">
+                </div>
+
+                <div>
+                    <label for="district">District</label>
+                    <input id="district" name="district"
+                           value="{{ selected_district }}"
+                           placeholder="e.g. Nagpur">
+                </div>
+
+                <div>
+                    <label for="market">Market</label>
+                    <input id="market" name="market"
+                           value="{{ selected_market }}"
+                           placeholder="Mandi name">
+                </div>
+            </div>
+
+            <button type="submit">Search Prices</button>
+            <a class="button button-orange"
+               href="{{ url_for('market.market') }}">Reset</a>
+        </form>
+    </section>
+
+    <section class="panel">
+        <h2>Market Summary</h2>
+
+        <div class="summary">
+            <div class="metric">
+                <span>Records Found</span>
+                <strong>{{ summary.total_records }}</strong>
+            </div>
+
+            <div class="metric">
+                <span>Average Modal Price</span>
+                <strong>
+                    {% if summary.average_price is not none %}
+                        ₹{{ "%.2f"|format(summary.average_price) }}
+                    {% else %}—{% endif %}
+                </strong>
+            </div>
+
+            <div class="metric">
+                <span>Lowest Modal Price</span>
+                <strong>
+                    {% if summary.minimum_price is not none %}
+                        ₹{{ "%.2f"|format(summary.minimum_price) }}
+                    {% else %}—{% endif %}
+                </strong>
+            </div>
+
+            <div class="metric">
+                <span>Highest Modal Price</span>
+                <strong>
+                    {% if summary.maximum_price is not none %}
+                        ₹{{ "%.2f"|format(summary.maximum_price) }}
+                    {% else %}—{% endif %}
+                </strong>
+            </div>
+        </div>
+
+        <p class="muted">
+            Prices are displayed in ₹/quintal where provided by this module.
+            Verify the original record and arrival date before making a sale.
+        </p>
+    </section>
+
+    <section class="panel">
+        <h2>Market Records</h2>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Arrival Date</th>
+                        <th>Crop</th>
+                        <th>Market</th>
+                        <th>District</th>
+                        <th>State</th>
+                        <th>Variety</th>
+                        <th>Min Price</th>
+                        <th>Max Price</th>
+                        <th>Modal Price</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for item in prices %}
+                    <tr>
+                        <td>{{ item.arrival_date or "—" }}</td>
+                        <td>{{ item.crop or "—" }}</td>
+                        <td>{{ item.market or "—" }}</td>
+                        <td>{{ item.district or "—" }}</td>
+                        <td>{{ item.state or "—" }}</td>
+                        <td>{{ item.variety or "—" }}</td>
+                        <td>
+                            {% if item.min_price is not none %}
+                                ₹{{ item.min_price }}
+                            {% else %}—{% endif %}
+                        </td>
+                        <td>
+                            {% if item.max_price is not none %}
+                                ₹{{ item.max_price }}
+                            {% else %}—{% endif %}
+                        </td>
+                        <td>
+                            {% if item.modal_price is not none %}
+                                ₹{{ item.modal_price }}
+                            {% else %}—{% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="empty">
+                            No market records found. Try another crop,
+                            district or market, or check API configuration.
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="panel">
+        <h2>Market API Status</h2>
+        <p>
+            Status:
+            <strong>
+                {% if api_status and api_status.get("success") %}
+                    Connected
+                {% else %}
+                    Unavailable or not configured
+                {% endif %}
+            </strong>
+        </p>
+        <p class="muted">
+            Data availability depends on the API key, resource ID,
+            network connection and source records.
+        </p>
+        <button type="button"
+                onclick="window.location.reload()">Refresh Data</button>
+    </section>
+</main>
+</body>
+</html>

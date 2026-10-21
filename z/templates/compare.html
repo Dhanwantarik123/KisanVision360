@@ -1,0 +1,1293 @@
+﻿{% extends "base.html" %}
+
+{% block title %}KisanVision360 | Machine Comparison{% endblock %}
+
+{% block head %}
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/compare.css') }}">
+<style>
+
+    /* =====================================================
+       KISANVISION360+ LANGUAGE / ACCESSIBILITY LAYER
+    ===================================================== */
+
+    .language-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 12px;
+        border-radius: 20px;
+        background: rgba(27, 94, 32, 0.08);
+        color: #1b5e20;
+        font-size: 12px;
+        font-weight: 700;
+        margin-top: 8px;
+    }
+
+    .language-status i {
+        font-size: 13px;
+    }
+
+    .smart-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 12px;
+        border-radius: 20px;
+        background: rgba(251, 140, 0, 0.10);
+        color: #e65100;
+        font-size: 12px;
+        font-weight: 700;
+        margin-top: 8px;
+        margin-left: 6px;
+    }
+
+    .comparison-note {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-top: 18px;
+        padding: 14px 16px;
+        border-radius: 14px;
+        background: #f7faf7;
+        border: 1px solid #e5eee5;
+    }
+
+    .comparison-note i {
+        color: #43a047;
+        margin-top: 3px;
+    }
+
+    .comparison-note strong {
+        display: block;
+        margin-bottom: 3px;
+    }
+
+    .comparison-note p {
+        margin: 0;
+        font-size: 13px;
+        color: #666;
+        line-height: 1.5;
+    }
+
+    .machine-score {
+        margin-top: 16px;
+        padding: 12px;
+        border-radius: 12px;
+        background: #f8faf8;
+        border: 1px solid #e8eee8;
+    }
+
+    .machine-score-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .score-value {
+        color: #1b5e20;
+    }
+
+    .score-bar {
+        width: 100%;
+        height: 8px;
+        background: #e6e6e6;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .score-fill {
+        height: 100%;
+        width: 0;
+        border-radius: 20px;
+        transition: width 1s ease;
+        background: #43a047;
+    }
+
+    .winner-row td {
+        background: rgba(67, 160, 71, 0.06);
+    }
+
+    .winner-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin-left: 7px;
+        padding: 3px 7px;
+        border-radius: 10px;
+        font-size: 10px;
+        font-weight: 800;
+        color: #1b5e20;
+        background: #e8f5e9;
+    }
+
+    .verdict-card {
+        position: relative;
+    }
+
+    .ai-recommendation {
+        margin-top: 12px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: rgba(67, 160, 71, 0.07);
+        border-left: 4px solid #43a047;
+    }
+
+    .ai-recommendation strong {
+        color: #1b5e20;
+    }
+
+    [dir="rtl"] .ai-recommendation {
+        border-left: 0;
+        border-right: 4px solid #43a047;
+    }
+
+    @media (max-width: 768px) {
+
+        .smart-badge {
+            margin-left: 0;
+            margin-top: 5px;
+        }
+
+        .comparison-note {
+            padding: 12px;
+        }
+
+    }
+
+</style>
+{% endblock %}
+
+{% block page_title %}Machine Comparison{% endblock %}
+{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+
+{% block content %}
+<div class="main-content">
+
+
+<!-- =====================================================
+     TOPBAR
+===================================================== -->
+
+
+
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="compare-hero">
+
+    <div>
+
+        <span class="hero-label">
+
+            <i class="fa-solid fa-tractor"></i>
+
+            <span data-i18n="smart_machine_selection">
+                SMART MACHINE SELECTION
+            </span>
+
+        </span>
+
+
+        <h2 data-i18n="compare_farm_machines">
+            Compare Farm Machines
+        </h2>
+
+
+        <p data-i18n="hero_description">
+            Compare price, horsepower, fuel type,
+            crop suitability and warranty before buying
+            agricultural machinery.
+        </p>
+
+    </div>
+
+
+    <div class="hero-icon">
+
+        <i class="fa-solid fa-gears"></i>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     MACHINE CARDS
+===================================================== -->
+
+<section class="machines">
+
+
+    <!-- =================================================
+         MAHINDRA
+    ================================================== -->
+
+    <div class="machine-card">
+
+        <div class="machine-image">
+
+            <i class="fa-solid fa-tractor"></i>
+
+        </div>
+
+
+        <div class="machine-content">
+
+            <span class="machine-brand">
+                MAHINDRA
+            </span>
+
+
+            <h2 data-i18n="mahindra_tractor">
+                Mahindra Tractor
+            </h2>
+
+
+            <p data-i18n="mahindra_description">
+                Reliable tractor suitable for
+                general agricultural operations.
+            </p>
+
+
+            <div class="machine-price">
+
+                <span data-i18n="starting_price">
+                    Starting Price
+                </span>
+
+                <strong>
+                    ₹6.5 Lakh
+                </strong>
+
+            </div>
+
+
+            <div class="machine-score">
+
+                <div class="machine-score-header">
+
+                    <span data-i18n="smart_suitability">
+                        Smart Suitability
+                    </span>
+
+                    <span class="score-value">
+                        88/100
+                    </span>
+
+                </div>
+
+                <div class="score-bar">
+
+                    <div
+                        class="score-fill"
+                        data-score="88">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         SWARAJ
+    ================================================== -->
+
+    <div class="machine-card">
+
+        <div class="machine-image">
+
+            <i class="fa-solid fa-tractor"></i>
+
+        </div>
+
+
+        <div class="machine-content">
+
+            <span class="machine-brand">
+                SWARAJ
+            </span>
+
+
+            <h2 data-i18n="swaraj_tractor">
+                Swaraj Tractor
+            </h2>
+
+
+            <p data-i18n="swaraj_description">
+                Powerful tractor designed for
+                demanding agricultural work.
+            </p>
+
+
+            <div class="machine-price">
+
+                <span data-i18n="starting_price">
+                    Starting Price
+                </span>
+
+                <strong>
+                    ₹6.8 Lakh
+                </strong>
+
+            </div>
+
+
+            <div class="machine-score">
+
+                <div class="machine-score-header">
+
+                    <span data-i18n="smart_suitability">
+                        Smart Suitability
+                    </span>
+
+                    <span class="score-value">
+                        84/100
+                    </span>
+
+                </div>
+
+                <div class="score-bar">
+
+                    <div
+                        class="score-fill"
+                        data-score="84">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     COMPARISON TABLE
+===================================================== -->
+
+<section class="comparison-section">
+
+
+    <div class="section-heading">
+
+        <span data-i18n="side_by_side">
+            SIDE-BY-SIDE COMPARISON
+        </span>
+
+
+        <h2 data-i18n="machine_specifications">
+            Machine Specifications
+        </h2>
+
+
+        <p data-i18n="specification_description">
+            Compare the important specifications of both tractors.
+        </p>
+
+    </div>
+
+
+
+    <div class="table-card">
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th data-i18n="feature">
+                            Feature
+                        </th>
+
+
+                        <th>
+
+                            <i class="fa-solid fa-tractor"></i>
+
+                            Mahindra Tractor
+
+                        </th>
+
+
+                        <th>
+
+                            <i class="fa-solid fa-tractor"></i>
+
+                            Swaraj Tractor
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    <!-- PRICE -->
+
+                    <tr>
+
+                        <td>
+
+                            <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                            <span data-i18n="price">
+                                Price
+                            </span>
+
+                        </td>
+
+                        <td>
+                            ₹6.5 Lakh
+                        </td>
+
+                        <td>
+                            ₹6.8 Lakh
+                        </td>
+
+                    </tr>
+
+
+
+                    <!-- HORSEPOWER -->
+
+                    <tr class="winner-row">
+
+                        <td>
+
+                            <i class="fa-solid fa-gauge-high"></i>
+
+                            <span data-i18n="horsepower">
+                                Horsepower
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <strong>
+                                45 HP
+                            </strong>
+
+                        </td>
+
+                        <td>
+
+                            <strong>
+                                50 HP
+                            </strong>
+
+                            <span class="winner-tag">
+
+                                <i class="fa-solid fa-trophy"></i>
+
+                                <span data-i18n="higher">
+                                    Higher
+                                </span>
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+
+
+                    <!-- FUEL -->
+
+                    <tr>
+
+                        <td>
+
+                            <i class="fa-solid fa-gas-pump"></i>
+
+                            <span data-i18n="fuel_type">
+                                Fuel Type
+                            </span>
+
+                        </td>
+
+                        <td data-i18n="diesel">
+                            Diesel
+                        </td>
+
+                        <td data-i18n="diesel">
+                            Diesel
+                        </td>
+
+                    </tr>
+
+
+
+                    <!-- CROPS -->
+
+                    <tr>
+
+                        <td>
+
+                            <i class="fa-solid fa-wheat-awn"></i>
+
+                            <span data-i18n="suitable_crops">
+                                Suitable Crops
+                            </span>
+
+                        </td>
+
+                        <td data-i18n="mahindra_crops">
+                            Wheat, Cotton
+                        </td>
+
+                        <td data-i18n="swaraj_crops">
+                            Sugarcane, Rice
+                        </td>
+
+                    </tr>
+
+
+
+                    <!-- WARRANTY -->
+
+                    <tr class="winner-row">
+
+                        <td>
+
+                            <i class="fa-solid fa-shield-halved"></i>
+
+                            <span data-i18n="warranty">
+                                Warranty
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            6 Years
+
+                            <span class="winner-tag">
+
+                                <i class="fa-solid fa-check"></i>
+
+                                <span data-i18n="better">
+                                    Better
+                                </span>
+
+                            </span>
+
+                        </td>
+
+                        <td>
+                            5 Years
+                        </td>
+
+                    </tr>
+
+
+
+                    <!-- SUITABILITY -->
+
+                    <tr>
+
+                        <td>
+
+                            <i class="fa-solid fa-ranking-star"></i>
+
+                            <span data-i18n="smart_score">
+                                Smart Score
+                            </span>
+
+                        </td>
+
+                        <td>
+                            <strong>88 / 100</strong>
+                        </td>
+
+                        <td>
+                            <strong>84 / 100</strong>
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="comparison-note">
+
+        <i class="fa-solid fa-circle-info"></i>
+
+        <div>
+
+            <strong data-i18n="comparison_note_title">
+                Comparison Note
+            </strong>
+
+            <p data-i18n="comparison_note">
+                Prices and specifications shown here are
+                indicative. Verify the latest model,
+                dealer price, warranty and specifications
+                before purchase.
+            </p>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     QUICK VERDICT
+===================================================== -->
+
+<section class="verdict-section">
+
+
+    <div class="verdict-card">
+
+
+        <div class="verdict-icon">
+
+            <i class="fa-solid fa-lightbulb"></i>
+
+        </div>
+
+
+        <div>
+
+            <span data-i18n="quick_comparison">
+                QUICK COMPARISON
+            </span>
+
+
+            <h2 data-i18n="which_better">
+                Which one is better?
+            </h2>
+
+
+            <p data-i18n="verdict">
+                Mahindra offers a lower listed price and
+                longer warranty, while Swaraj provides
+                higher horsepower.
+            </p>
+
+
+            <div class="ai-recommendation">
+
+                <strong>
+
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                    <span data-i18n="smart_recommendation">
+                        Smart Recommendation
+                    </span>
+
+                </strong>
+
+                <div
+                    style="margin-top:5px;"
+                    data-i18n="recommendation_text">
+
+                    For balanced farming use, Mahindra has
+                    the better overall value because of its
+                    lower listed price and longer warranty.
+                    Swaraj may be preferable when higher
+                    horsepower is the priority.
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     ACTIONS
+===================================================== -->
+
+<div class="page-actions">
+
+
+    <a href="/dealers"
+       class="dealer-btn">
+
+        <i class="fa-solid fa-location-dot"></i>
+
+        <span data-i18n="find_dealers">
+            Find Nearby Dealers
+        </span>
+
+    </a>
+
+
+    <a href="/tools"
+       class="back-btn">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        <span data-i18n="back_tools">
+            Back to Tools
+        </span>
+
+    </a>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <i class="fa-solid fa-leaf"></i>
+
+    <strong>
+        KisanVision360+
+    </strong>
+
+    <span>
+        •
+    </span>
+
+    <span data-i18n="smart_farm_machinery">
+        Smart Farm Machinery
+    </span>
+
+    <span>
+        •
+    </span>
+
+    © 2026
+
+</footer>
+
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+const CURRENT_LANGUAGE =
+    "{{ session.get('language', 'en') }}".toLowerCase();
+
+
+/*
+    IMPORTANT:
+    This page does NOT provide a separate language selector.
+
+    Language is selected once in the main KisanVision360+
+    language setup and stored in the session.
+
+    The same language is then used across the application.
+*/
+
+
+const translations = {
+
+    en: {
+
+        machine_comparison: "Machine Comparison",
+        compare_subtitle: "Compare farm machines and choose the right one",
+        app_language: "App Language",
+        smart_comparison: "Smart Comparison",
+        farmer: "Farmer",
+
+        smart_machine_selection: "SMART MACHINE SELECTION",
+        compare_farm_machines: "Compare Farm Machines",
+
+        hero_description:
+            "Compare price, horsepower, fuel type, crop suitability and warranty before buying agricultural machinery.",
+
+        mahindra_tractor: "Mahindra Tractor",
+        mahindra_description:
+            "Reliable tractor suitable for general agricultural operations.",
+
+        swaraj_tractor: "Swaraj Tractor",
+        swaraj_description:
+            "Powerful tractor designed for demanding agricultural work.",
+
+        starting_price: "Starting Price",
+        smart_suitability: "Smart Suitability",
+
+        side_by_side: "SIDE-BY-SIDE COMPARISON",
+        machine_specifications: "Machine Specifications",
+        specification_description:
+            "Compare the important specifications of both tractors.",
+
+        feature: "Feature",
+        price: "Price",
+        horsepower: "Horsepower",
+        fuel_type: "Fuel Type",
+        suitable_crops: "Suitable Crops",
+        warranty: "Warranty",
+        smart_score: "Smart Score",
+
+        diesel: "Diesel",
+        mahindra_crops: "Wheat, Cotton",
+        swaraj_crops: "Sugarcane, Rice",
+
+        higher: "Higher",
+        better: "Better",
+
+        comparison_note_title: "Comparison Note",
+        comparison_note:
+            "Prices and specifications shown here are indicative. Verify the latest model, dealer price, warranty and specifications before purchase.",
+
+        quick_comparison: "QUICK COMPARISON",
+        which_better: "Which one is better?",
+
+        verdict:
+            "Mahindra offers a lower listed price and longer warranty, while Swaraj provides higher horsepower.",
+
+        smart_recommendation: "Smart Recommendation",
+
+        recommendation_text:
+            "For balanced farming use, Mahindra has the better overall value because of its lower listed price and longer warranty. Swaraj may be preferable when higher horsepower is the priority.",
+
+        find_dealers: "Find Nearby Dealers",
+        back_tools: "Back to Tools",
+        smart_farm_machinery: "Smart Farm Machinery"
+
+    },
+
+
+    hi: {
+
+        machine_comparison: "मशीन तुलना",
+        compare_subtitle: "कृषि मशीनों की तुलना करें और सही मशीन चुनें",
+        app_language: "ऐप भाषा",
+        smart_comparison: "स्मार्ट तुलना",
+        farmer: "किसान",
+
+        smart_machine_selection: "स्मार्ट मशीन चयन",
+        compare_farm_machines: "कृषि मशीनों की तुलना करें",
+
+        hero_description:
+            "कृषि मशीन खरीदने से पहले कीमत, हॉर्सपावर, ईंधन, फसल उपयुक्तता और वारंटी की तुलना करें।",
+
+        mahindra_tractor: "महिंद्रा ट्रैक्टर",
+        mahindra_description:
+            "सामान्य कृषि कार्यों के लिए उपयुक्त विश्वसनीय ट्रैक्टर।",
+
+        swaraj_tractor: "स्वराज ट्रैक्टर",
+        swaraj_description:
+            "कठिन कृषि कार्यों के लिए बनाया गया शक्तिशाली ट्रैक्टर।",
+
+        starting_price: "शुरुआती कीमत",
+        smart_suitability: "स्मार्ट उपयुक्तता",
+
+        side_by_side: "सामने-सामने तुलना",
+        machine_specifications: "मशीन विनिर्देश",
+        specification_description:
+            "दोनों ट्रैक्टरों के महत्वपूर्ण विनिर्देशों की तुलना करें।",
+
+        feature: "विशेषता",
+        price: "कीमत",
+        horsepower: "हॉर्सपावर",
+        fuel_type: "ईंधन प्रकार",
+        suitable_crops: "उपयुक्त फसलें",
+        warranty: "वारंटी",
+        smart_score: "स्मार्ट स्कोर",
+
+        diesel: "डीजल",
+        mahindra_crops: "गेहूं, कपास",
+        swaraj_crops: "गन्ना, चावल",
+
+        higher: "अधिक",
+        better: "बेहतर",
+
+        comparison_note_title: "तुलना नोट",
+        comparison_note:
+            "यहां दिखाई गई कीमतें और विनिर्देश अनुमानित हैं। खरीदने से पहले नवीनतम मॉडल, डीलर कीमत, वारंटी और विनिर्देशों की पुष्टि करें।",
+
+        quick_comparison: "त्वरित तुलना",
+        which_better: "कौन सा बेहतर है?",
+
+        verdict:
+            "महिंद्रा की सूचीबद्ध कीमत कम और वारंटी लंबी है, जबकि स्वराज अधिक हॉर्सपावर प्रदान करता है।",
+
+        smart_recommendation: "स्मार्ट सुझाव",
+
+        recommendation_text:
+            "संतुलित खेती के लिए महिंद्रा बेहतर मूल्य प्रदान करता है क्योंकि इसकी कीमत कम और वारंटी लंबी है। यदि अधिक हॉर्सपावर प्राथमिकता है तो स्वराज बेहतर विकल्प हो सकता है।",
+
+        find_dealers: "नजदीकी डीलर खोजें",
+        back_tools: "टूल्स पर वापस जाएं",
+        smart_farm_machinery: "स्मार्ट कृषि मशीनरी"
+
+    },
+
+
+    mr: {
+
+        machine_comparison: "मशीन तुलना",
+        compare_subtitle: "कृषी मशीनची तुलना करा आणि योग्य मशीन निवडा",
+        app_language: "अॅप भाषा",
+        smart_comparison: "स्मार्ट तुलना",
+        farmer: "शेतकरी",
+
+        smart_machine_selection: "स्मार्ट मशीन निवड",
+        compare_farm_machines: "कृषी मशीनची तुलना करा",
+
+        hero_description:
+            "कृषी मशीन खरेदी करण्यापूर्वी किंमत, हॉर्सपॉवर, इंधन, पिकांची उपयुक्तता आणि वॉरंटीची तुलना करा.",
+
+        mahindra_tractor: "महिंद्रा ट्रॅक्टर",
+        mahindra_description:
+            "सामान्य शेतीच्या कामांसाठी योग्य आणि विश्वासार्ह ट्रॅक्टर.",
+
+        swaraj_tractor: "स्वराज ट्रॅक्टर",
+        swaraj_description:
+            "कठीण शेतीच्या कामांसाठी तयार केलेला शक्तिशाली ट्रॅक्टर.",
+
+        starting_price: "सुरुवातीची किंमत",
+        smart_suitability: "स्मार्ट उपयुक्तता",
+
+        side_by_side: "समोरासमोर तुलना",
+        machine_specifications: "मशीनची माहिती",
+        specification_description:
+            "दोन्ही ट्रॅक्टरच्या महत्त्वाच्या वैशिष्ट्यांची तुलना करा.",
+
+        feature: "वैशिष्ट्य",
+        price: "किंमत",
+        horsepower: "हॉर्सपॉवर",
+        fuel_type: "इंधन प्रकार",
+        suitable_crops: "योग्य पिके",
+        warranty: "वॉरंटी",
+        smart_score: "स्मार्ट स्कोअर",
+
+        diesel: "डिझेल",
+        mahindra_crops: "गहू, कापूस",
+        swaraj_crops: "ऊस, तांदूळ",
+
+        higher: "जास्त",
+        better: "चांगले",
+
+        comparison_note_title: "तुलना सूचना",
+        comparison_note:
+            "येथे दाखवलेल्या किंमती आणि माहिती अंदाजे आहेत. खरेदी करण्यापूर्वी नवीनतम मॉडेल, डीलर किंमत, वॉरंटी आणि माहिती तपासा.",
+
+        quick_comparison: "त्वरित तुलना",
+        which_better: "कोणता चांगला आहे?",
+
+        verdict:
+            "महिंद्राची किंमत कमी आणि वॉरंटी जास्त आहे, तर स्वराज अधिक हॉर्सपॉवर देते.",
+
+        smart_recommendation: "स्मार्ट शिफारस",
+
+        recommendation_text:
+            "संतुलित शेतीसाठी महिंद्रा अधिक चांगला पर्याय आहे कारण त्याची किंमत कमी आणि वॉरंटी जास्त आहे. अधिक हॉर्सपॉवर आवश्यक असल्यास स्वराज योग्य पर्याय ठरू शकतो.",
+
+        find_dealers: "जवळचे डीलर शोधा",
+        back_tools: "टूल्सवर परत जा",
+        smart_farm_machinery: "स्मार्ट कृषी मशीनरी"
+
+    },
+
+
+    kn: {
+
+        machine_comparison: "ಯಂತ್ರ ಹೋಲಿಕೆ",
+        compare_subtitle: "ಕೃಷಿ ಯಂತ್ರಗಳನ್ನು ಹೋಲಿಸಿ ಸರಿಯಾದದನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+        app_language: "ಆಪ್ ಭಾಷೆ",
+        smart_comparison: "ಸ್ಮಾರ್ಟ್ ಹೋಲಿಕೆ",
+        farmer: "ರೈತ",
+
+        smart_machine_selection: "ಸ್ಮಾರ್ಟ್ ಯಂತ್ರ ಆಯ್ಕೆ",
+        compare_farm_machines: "ಕೃಷಿ ಯಂತ್ರಗಳನ್ನು ಹೋಲಿಸಿ",
+
+        hero_description:
+            "ಕೃಷಿ ಯಂತ್ರ ಖರೀದಿಸುವ ಮೊದಲು ಬೆಲೆ, ಹಾರ್ಸ್‌ಪವರ್, ಇಂಧನ, ಬೆಳೆ ಹೊಂದಾಣಿಕೆ ಮತ್ತು ವಾರಂಟಿಯನ್ನು ಹೋಲಿಸಿ.",
+
+        mahindra_tractor: "ಮಹೀಂದ್ರಾ ಟ್ರ್ಯಾಕ್ಟರ್",
+        mahindra_description:
+            "ಸಾಮಾನ್ಯ ಕೃಷಿ ಕೆಲಸಗಳಿಗೆ ಸೂಕ್ತವಾದ ವಿಶ್ವಾಸಾರ್ಹ ಟ್ರ್ಯಾಕ್ಟರ್.",
+
+        swaraj_tractor: "ಸ್ವರಾಜ್ ಟ್ರ್ಯಾಕ್ಟರ್",
+        swaraj_description:
+            "ಕಠಿಣ ಕೃಷಿ ಕೆಲಸಗಳಿಗಾಗಿ ವಿನ್ಯಾಸಗೊಳಿಸಿದ ಶಕ್ತಿಶಾಲಿ ಟ್ರ್ಯಾಕ್ಟರ್.",
+
+        starting_price: "ಆರಂಭಿಕ ಬೆಲೆ",
+        smart_suitability: "ಸ್ಮಾರ್ಟ್ ಹೊಂದಾಣಿಕೆ",
+
+        side_by_side: "ಪಕ್ಕಪಕ್ಕದ ಹೋಲಿಕೆ",
+        machine_specifications: "ಯಂತ್ರದ ವಿವರಗಳು",
+        specification_description:
+            "ಎರಡೂ ಟ್ರ್ಯಾಕ್ಟರ್‌ಗಳ ಪ್ರಮುಖ ವಿವರಗಳನ್ನು ಹೋಲಿಸಿ.",
+
+        feature: "ವೈಶಿಷ್ಟ್ಯ",
+        price: "ಬೆಲೆ",
+        horsepower: "ಹಾರ್ಸ್‌ಪವರ್",
+        fuel_type: "ಇಂಧನ ಪ್ರಕಾರ",
+        suitable_crops: "ಸೂಕ್ತ ಬೆಳೆಗಳು",
+        warranty: "ವಾರಂಟಿ",
+        smart_score: "ಸ್ಮಾರ್ಟ್ ಸ್ಕೋರ್",
+
+        diesel: "ಡೀಸೆಲ್",
+        mahindra_crops: "ಗೋಧಿ, ಹತ್ತಿ",
+        swaraj_crops: "ಕಬ್ಬು, ಅಕ್ಕಿ",
+
+        higher: "ಹೆಚ್ಚು",
+        better: "ಉತ್ತಮ",
+
+        comparison_note_title: "ಹೋಲಿಕೆ ಸೂಚನೆ",
+        comparison_note:
+            "ಇಲ್ಲಿ ತೋರಿಸಿರುವ ಬೆಲೆಗಳು ಮತ್ತು ವಿವರಗಳು ಸೂಚಕವಾಗಿವೆ. ಖರೀದಿಸುವ ಮೊದಲು ಇತ್ತೀಚಿನ ಮಾದರಿ, ಡೀಲರ್ ಬೆಲೆ ಮತ್ತು ವಾರಂಟಿಯನ್ನು ಪರಿಶೀಲಿಸಿ.",
+
+        quick_comparison: "ತ್ವರಿತ ಹೋಲಿಕೆ",
+        which_better: "ಯಾವುದು ಉತ್ತಮ?",
+
+        verdict:
+            "ಮಹೀಂದ್ರಾ ಕಡಿಮೆ ಬೆಲೆ ಮತ್ತು ಹೆಚ್ಚು ವಾರಂಟಿ ನೀಡುತ್ತದೆ, ಆದರೆ ಸ್ವರಾಜ್ ಹೆಚ್ಚಿನ ಹಾರ್ಸ್‌ಪವರ್ ನೀಡುತ್ತದೆ.",
+
+        smart_recommendation: "ಸ್ಮಾರ್ಟ್ ಶಿಫಾರಸು",
+
+        recommendation_text:
+            "ಸಮತೋಲಿತ ಕೃಷಿಗಾಗಿ ಮಹೀಂದ್ರಾ ಉತ್ತಮ ಮೌಲ್ಯವನ್ನು ನೀಡುತ್ತದೆ. ಹೆಚ್ಚಿನ ಹಾರ್ಸ್‌ಪವರ್ ಅಗತ್ಯವಿದ್ದರೆ ಸ್ವರಾಜ್ ಉತ್ತಮ ಆಯ್ಕೆಯಾಗಬಹುದು.",
+
+        find_dealers: "ಹತ್ತಿರದ ಡೀಲರ್‌ಗಳನ್ನು ಹುಡುಕಿ",
+        back_tools: "ಟೂಲ್ಸ್‌ಗೆ ಹಿಂತಿರುಗಿ",
+        smart_farm_machinery: "ಸ್ಮಾರ್ಟ್ ಕೃಷಿ ಯಂತ್ರೋಪಕರಣಗಳು"
+
+    },
+
+
+    te: {
+
+        machine_comparison: "యంత్రాల పోలిక",
+        compare_subtitle: "వ్యవసాయ యంత్రాలను పోల్చి సరైనదాన్ని ఎంచుకోండి",
+        app_language: "యాప్ భాష",
+        smart_comparison: "స్మార్ట్ పోలిక",
+        farmer: "రైతు",
+
+        smart_machine_selection: "స్మార్ట్ యంత్ర ఎంపిక",
+        compare_farm_machines: "వ్యవసాయ యంత్రాలను పోల్చండి",
+
+        hero_description:
+            "వ్యవసాయ యంత్రం కొనుగోలు ముందు ధర, హార్స్‌పవర్, ఇంధనం, పంట అనుకూలత మరియు వారంటీని పోల్చండి.",
+
+        mahindra_tractor: "మహీంద్రా ట్రాక్టర్",
+        mahindra_description:
+            "సాధారణ వ్యవసాయ పనులకు అనుకూలమైన నమ్మకమైన ట్రాక్టర్.",
+
+        swaraj_tractor: "స్వరాజ్ ట్రాక్టర్",
+        swaraj_description:
+            "కఠినమైన వ్యవసాయ పనుల కోసం రూపొందించిన శక్తివంతమైన ట్రాక్టర్.",
+
+        starting_price: "ప్రారంభ ధర",
+        smart_suitability: "స్మార్ట్ అనుకూలత",
+
+        side_by_side: "పక్కపక్కన పోలిక",
+        machine_specifications: "యంత్ర వివరాలు",
+        specification_description:
+            "రెండు ట్రాక్టర్ల ముఖ్యమైన వివరాలను పోల్చండి.",
+
+        feature: "ఫీచర్",
+        price: "ధర",
+        horsepower: "హార్స్‌పవర్",
+        fuel_type: "ఇంధన రకం",
+        suitable_crops: "అనుకూల పంటలు",
+        warranty: "వారంటీ",
+        smart_score: "స్మార్ట్ స్కోర్",
+
+        diesel: "డీజిల్",
+        mahindra_crops: "గోధుమ, పత్తి",
+        swaraj_crops: "చెరకు, వరి",
+
+        higher: "ఎక్కువ",
+        better: "మెరుగైన",
+
+        comparison_note_title: "పోలిక గమనిక",
+        comparison_note:
+            "ఇక్కడ చూపిన ధరలు మరియు వివరాలు సూచికాత్మకమైనవి. కొనుగోలు ముందు తాజా మోడల్, డీలర్ ధర మరియు వారంటీని నిర్ధారించండి.",
+
+        quick_comparison: "త్వరిత పోలిక",
+        which_better: "ఏది మంచిది?",
+
+        verdict:
+            "మహీంద్రా తక్కువ ధర మరియు ఎక్కువ వారంటీ అందిస్తుంది, స్వరాజ్ ఎక్కువ హార్స్‌పవర్ అందిస్తుంది.",
+
+        smart_recommendation: "స్మార్ట్ సిఫార్సు",
+
+        recommendation_text:
+            "సమతుల్య వ్యవసాయ ఉపయోగం కోసం మహీంద్రా మంచి విలువను అందిస్తుంది. ఎక్కువ హార్స్‌పవర్ అవసరమైతే స్వరాజ్ మంచి ఎంపిక కావచ్చు.",
+
+        find_dealers: "సమీప డీలర్లను కనుగొనండి",
+        back_tools: "టూల్స్‌కు తిరిగి వెళ్ళండి",
+        smart_farm_machinery: "స్మార్ట్ వ్యవసాయ యంత్రాలు"
+
+    }
+
+};
+
+
+/* =====================================================
+   LANGUAGE FALLBACK
+===================================================== */
+
+const activeTranslations =
+    translations[CURRENT_LANGUAGE] || translations.en;
+
+
+/* =====================================================
+   APPLY TRANSLATIONS
+===================================================== */
+
+document.querySelectorAll("[data-i18n]").forEach(element => {
+
+    const key = element.getAttribute("data-i18n");
+
+    if (
+        activeTranslations[key] &&
+        typeof activeTranslations[key] === "string"
+    ) {
+        element.textContent = activeTranslations[key];
+    }
+
+});
+
+
+/* =====================================================
+   RTL LANGUAGES
+===================================================== */
+
+const rtlLanguages = [
+    "ur",
+    "ks",
+    "sd"
+];
+
+if (rtlLanguages.includes(CURRENT_LANGUAGE)) {
+
+    document.documentElement.setAttribute("dir", "rtl");
+
+} else {
+
+    document.documentElement.setAttribute("dir", "ltr");
+
+}
+
+
+/* =====================================================
+   LANGUAGE NAME DISPLAY
+===================================================== */
+
+const languageNames = {
+
+    en: "English",
+    hi: "Hindi",
+    mr: "Marathi",
+    kn: "Kannada",
+    te: "Telugu",
+    ta: "Tamil",
+    ml: "Malayalam",
+    gu: "Gujarati",
+    pa: "Punjabi",
+    bn: "Bengali",
+    as: "Assamese",
+    or: "Odia",
+    ur: "Urdu",
+    ne: "Nepali",
+    sa: "Sanskrit",
+    kok: "Konkani",
+    mai: "Maithili",
+    ks: "Kashmiri",
+    sd: "Sindhi",
+    mni: "Manipuri"
+
+};
+
+const languageElement =
+    document.getElementById("currentLanguage");
+
+if (languageElement) {
+
+    languageElement.textContent =
+        languageNames[CURRENT_LANGUAGE] ||
+        languageNames.en;
+
+}
+
+
+/* =====================================================
+   SMART MACHINE SCORE ANIMATION
+===================================================== */
+
+document.querySelectorAll(".score-fill").forEach(bar => {
+
+    const score =
+        Number(bar.getAttribute("data-score")) || 0;
+
+    setTimeout(() => {
+
+        bar.style.width =
+            Math.min(score, 100) + "%";
+
+    }, 300);
+
+});
+
+
+/* =====================================================
+   SAVE LANGUAGE FOR PAGE CONSISTENCY
+===================================================== */
+
+try {
+
+    localStorage.setItem(
+        "kisanvision360_language",
+        CURRENT_LANGUAGE
+    );
+
+} catch (error) {
+
+    console.warn(
+        "Language preference could not be stored locally."
+    );
+
+}
+
+</script>
+{% endblock %}
+

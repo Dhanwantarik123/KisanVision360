@@ -1,0 +1,1405 @@
+﻿<!-- =========================================================
+     KISANVISION360+ COMPLETE SIDEBAR
+     Farmer + Consumer + Admin
+     SOS + Notification Unread Badge
+========================================================= -->
+
+{% set role = session.get('role', '')|lower|trim %}
+{% set current_endpoint = request.endpoint or '' %}
+{% set current_path = request.path or '' %}
+{% set user_name = session.get('name', 'User') %}
+
+
+<!-- =========================================================
+     MOBILE MENU BUTTON
+========================================================= -->
+
+<button
+    type="button"
+    class="kv-mobile-menu-btn"
+    id="kvMobileMenuBtn"
+    aria-label="Open menu"
+>
+    <i class="fas fa-bars"></i>
+</button>
+
+
+<!-- =========================================================
+     SIDEBAR OVERLAY
+========================================================= -->
+
+<div
+    class="kv-sidebar-overlay"
+    id="kvSidebarOverlay">
+</div>
+
+
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside
+    class="kv-sidebar"
+    id="kvSidebar"
+>
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="kv-sidebar-header">
+
+        <a
+            class="kv-brand"
+            href="{% if role == 'farmer' %}
+                        {{ url_for('farmer.farmer') }}
+                  {% elif role == 'consumer' %}
+                        {{ url_for('consumer.consumer') }}
+                  {% elif role == 'admin' %}
+                        {{ url_for('admin.admin') }}
+                  {% else %}
+                        /
+                  {% endif %}"
+        >
+
+            <div class="kv-brand-logo">
+                <i class="fas fa-seedling"></i>
+            </div>
+
+            <div class="kv-brand-text">
+                <strong>
+                    KisanVision360<span>+</span>
+                </strong>
+
+                <small>
+                    Smart Agriculture
+                </small>
+            </div>
+
+        </a>
+
+        <button
+            type="button"
+            class="kv-sidebar-close"
+            id="kvSidebarClose"
+            aria-label="Close menu"
+        >
+            <i class="fas fa-times"></i>
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         USER PROFILE
+    ====================================================== -->
+
+    <div class="kv-user-box">
+
+        <div class="kv-user-avatar">
+            {{ user_name[:1]|upper }}
+        </div>
+
+        <div class="kv-user-info">
+
+            <strong>
+                {{ user_name }}
+            </strong>
+
+            <span>
+                {{ role|capitalize if role else 'User' }}
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SCROLL AREA
+    ====================================================== -->
+
+    <div class="kv-sidebar-scroll">
+
+
+        <!-- =================================================
+             FARMER
+        ================================================== -->
+
+        {% if role == 'farmer' %}
+
+        <div class="kv-menu-section">
+
+            <div class="kv-section-title">
+                FARMER
+            </div>
+
+            <a
+                href="{{ url_for('farmer.farmer') }}"
+                class="kv-menu-item {% if current_endpoint == 'farmer.farmer' %}active{% endif %}"
+            >
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a
+                href="{{ url_for('profile.profile') }}"
+                class="kv-menu-item {% if current_endpoint == 'profile.profile' %}active{% endif %}"
+            >
+                <i class="fas fa-user"></i>
+                <span>My Profile</span>
+            </a>
+
+            <a
+                href="{{ url_for('weather.weather') }}"
+                class="kv-menu-item {% if current_endpoint == 'weather.weather' %}active{% endif %}"
+            >
+                <i class="fas fa-cloud-sun"></i>
+                <span>Weather</span>
+            </a>
+
+            <a
+                href="{{ url_for('recommendation.recommendation') }}"
+                class="kv-menu-item {% if current_endpoint == 'recommendation.recommendation' %}active{% endif %}"
+            >
+                <i class="fas fa-leaf"></i>
+                <span>Crop Recommendation</span>
+            </a>
+
+            <a
+                href="{{ url_for('crop.crop_details') }}"
+                class="kv-menu-item {% if current_endpoint == 'crop.crop_details' %}active{% endif %}"
+            >
+                <i class="fas fa-seedling"></i>
+                <span>Crop Details</span>
+            </a>
+
+            <a
+                href="{{ url_for('disease.disease') }}"
+                class="kv-menu-item {% if current_endpoint == 'disease.disease' %}active{% endif %}"
+            >
+                <i class="fas fa-microscope"></i>
+                <span>Disease Detection</span>
+            </a>
+
+            <a
+                href="{{ url_for('irrigation.irrigation') }}"
+                class="kv-menu-item {% if current_endpoint == 'irrigation.irrigation' %}active{% endif %}"
+            >
+                <i class="fas fa-droplet"></i>
+                <span>Smart Irrigation</span>
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             MARKETPLACE
+        ================================================== -->
+
+        <div class="kv-menu-section">
+
+            <div class="kv-section-title">
+                MARKETPLACE
+            </div>
+
+            <a
+                href="{{ url_for('market.market') }}"
+                class="kv-menu-item {% if current_endpoint == 'market.market' %}active{% endif %}"
+            >
+                <i class="fas fa-chart-line"></i>
+                <span>Market Prices</span>
+            </a>
+
+            <a
+                href="{{ url_for('marketplace.farmer_marketplace') }}"
+                class="kv-menu-item {% if current_endpoint == 'marketplace.farmer_marketplace' %}active{% endif %}"
+            >
+                <i class="fas fa-store"></i>
+                <span>Marketplace</span>
+            </a>
+
+            <a
+                href="{{ url_for('marketplace.farmer_products') }}"
+                class="kv-menu-item {% if current_endpoint == 'marketplace.farmer_products' %}active{% endif %}"
+            >
+                <i class="fas fa-boxes-stacked"></i>
+                <span>My Products</span>
+            </a>
+
+            <a
+                href="{{ url_for('marketplace.add_product') }}"
+                class="kv-menu-item {% if current_endpoint == 'marketplace.add-product' %}active{% endif %}"
+            >
+                <i class="fas fa-plus-circle"></i>
+                <span>Add Product</span>
+            </a>
+
+            <a
+                href="{{ url_for('marketplace.farmer_orders') }}"
+                class="kv-menu-item {% if current_endpoint == 'marketplace.farmer_orders' %}active{% endif %}"
+            >
+                <i class="fas fa-shopping-bag"></i>
+                <span>My Orders</span>
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             FARM MANAGEMENT
+        ================================================== -->
+
+        <div class="kv-menu-section">
+
+            <div class="kv-section-title">
+                FARM MANAGEMENT
+            </div>
+
+            <a
+                href="{{ url_for('finance.finance') }}"
+                class="kv-menu-item {% if current_endpoint == 'finance.finance' %}active{% endif %}"
+            >
+                <i class="fas fa-wallet"></i>
+                <span>Finance</span>
+            </a>
+
+            <a
+                href="{{ url_for('government.government') }}"
+                class="kv-menu-item {% if current_endpoint == 'government.government' %}active{% endif %}"
+            >
+                <i class="fas fa-landmark"></i>
+                <span>Government Schemes</span>
+            </a>
+
+            <a
+                href="{{ url_for('reports.reports') }}"
+                class="kv-menu-item {% if current_endpoint == 'reports.reports' %}active{% endif %}"
+            >
+                <i class="fas fa-chart-column"></i>
+                <span>Reports</span>
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             TOOLS
+        ================================================== -->
+
+        <div class="kv-menu-section">
+
+            <div class="kv-section-title">
+                TOOLS
+            </div>
+
+            <a
+                href="{{ url_for('tools.tools') }}"
+                class="kv-menu-item {% if current_endpoint == 'tools.tools' %}active{% endif %}"
+            >
+                <i class="fas fa-toolbox"></i>
+                <span>Farmer Tools</span>
+            </a>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             CONSUMER
+        ================================================== -->
+
+        {% if role == 'consumer' %}
+
+        <div class="kv-menu-section">
+
+            <div class="kv-section-title">
+                CONSUMER
+            </div>
+
+            <a
+                href="{{ url_for('consumer.consumer') }}"
+                class="kv-menu-item {% if current_endpoint == 'consumer.consumer' %}active{% endif %}"
+            >
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a
+                href="{{ url_for('marketplace.consumer_marketplace') }}"
+                class="kv-menu-item {% if current_endpoint == 'marketplace.consumer_marketplace' %}active{% endif %}"
+            >
+                <i class="fas fa-store"></i>
+                <span>Marketplace</span>
+            </a>
+
+            <a
+                href="{{ url_for('marketplace.wishlist') }}"
+                class="kv-menu-item {% if current_endpoint == 'marketplace.wishlist' %}active{% endif %}"
+            >
+                <i class="fas fa-heart"></i>
+                <span>Wishlist</span>
+            </a>
+
+            <a
+                href="{{ url_for('marketplace.cart') }}"
+                class="kv-menu-item {% if current_endpoint == 'marketplace.cart' %}active{% endif %}"
+            >
+                <i class="fas fa-cart-shopping"></i>
+                <span>My Cart</span>
+            </a>
+
+            <a
+                href="{{ url_for('marketplace.consumer_orders') }}"
+                class="kv-menu-item {% if current_endpoint == 'marketplace.consumer_orders' %}active{% endif %}"
+            >
+                <i class="fas fa-box"></i>
+                <span>My Orders</span>
+            </a>
+
+            <a
+                href="{{ url_for('marketplace.consumer_reports') }}"
+                class="kv-menu-item {% if current_endpoint == 'marketplace.consumer_reports' %}active{% endif %}"
+            >
+                <i class="fas fa-file-lines"></i>
+                <span>Reports</span>
+            </a>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             ADMIN
+        ================================================== -->
+
+        {% if role == 'admin' %}
+
+        <div class="kv-menu-section">
+
+            <div class="kv-section-title">
+                ADMINISTRATION
+            </div>
+
+            <a
+                href="{{ url_for('admin.admin') }}"
+                class="kv-menu-item {% if current_endpoint == 'admin.admin' %}active{% endif %}"
+            >
+                <i class="fas fa-gauge-high"></i>
+                <span>Admin Dashboard</span>
+            </a>
+
+            <a
+                href="{{ url_for('admin.admin_notifications') }}"
+                class="kv-menu-item {% if current_endpoint == 'admin.admin_notifications' %}active{% endif %}"
+            >
+                <span class="kv-icon-with-badge">
+                    <i class="fas fa-bell"></i>
+
+                    <span
+                        class="kv-notification-badge"
+                        id="kvNotificationBadgeAdmin"
+                        style="display:none;"
+                    >
+                        0
+                    </span>
+                </span>
+
+                <span>Notifications</span>
+            </a>
+
+            <a
+                href="{{ url_for('reports.reports') }}"
+                class="kv-menu-item {% if current_endpoint == 'reports.reports' %}active{% endif %}"
+            >
+                <i class="fas fa-chart-column"></i>
+                <span>Reports</span>
+            </a>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             COMMUNICATION
+             ALL ROLES
+        ================================================== -->
+
+        <div class="kv-menu-section">
+
+            <div class="kv-section-title">
+                COMMUNICATION
+            </div>
+
+
+            <!-- =================================================
+                 NOTIFICATIONS
+                 FARMER + CONSUMER
+            ================================================== -->
+
+            {% if role == 'farmer' or role == 'consumer' %}
+
+            <a
+                href="{{ url_for('notifications.notifications') }}"
+                class="kv-menu-item {% if current_endpoint == 'notifications.notifications' %}active{% endif %}"
+            >
+
+                <span class="kv-icon-with-badge">
+
+                    <i class="fas fa-bell"></i>
+
+                    <span
+                        class="kv-notification-badge"
+                        id="kvNotificationBadge"
+                        style="display:none;"
+                    >
+                        0
+                    </span>
+
+                </span>
+
+                <span>Notifications</span>
+
+            </a>
+
+            {% endif %}
+
+
+            <!-- =================================================
+                 SOS EMERGENCY
+                 FARMER + CONSUMER + ADMIN
+            ================================================== -->
+
+            <a
+                href="/sos"
+                class="kv-menu-item {% if current_path.startswith('/sos') %}active{% endif %}"
+            >
+
+                <span class="kv-sos-icon">
+                    <i class="fas fa-triangle-exclamation"></i>
+                </span>
+
+                <span>SOS Emergency</span>
+
+            </a>
+
+
+            <!-- =================================================
+                 AI ASSISTANT
+                 FARMER + CONSUMER
+            ================================================== -->
+
+            {% if role == 'farmer' or role == 'consumer' %}
+
+            <a
+                href="{{ url_for('chatbot.chatbot') }}"
+                class="kv-menu-item {% if current_endpoint == 'chatbot.chatbot' %}active{% endif %}"
+            >
+                <i class="fas fa-robot"></i>
+                <span>AI Assistant</span>
+            </a>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- =================================================
+             ACCOUNT
+        ================================================== -->
+
+        <div class="kv-menu-section">
+
+            <div class="kv-section-title">
+                ACCOUNT
+            </div>
+
+            <a
+                href="{{ url_for('settings.settings') }}"
+                class="kv-menu-item {% if current_endpoint == 'settings.settings' %}active{% endif %}"
+            >
+                <i class="fas fa-gear"></i>
+                <span>Settings</span>
+            </a>
+
+            <a
+                href="{{ url_for('help.help_page') }}"
+                class="kv-menu-item {% if current_endpoint == 'help.help_page' %}active{% endif %}"
+            >
+                <i class="fas fa-circle-question"></i>
+                <span>Help & Support</span>
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <div class="kv-sidebar-footer">
+
+        {% if session.get('user_id') or session.get('name') %}
+
+        <a
+            href="{{ url_for('logout') }}"
+            class="kv-logout-btn"
+            onclick="return confirm('Are you sure you want to logout?');"
+        >
+            <i class="fas fa-right-from-bracket"></i>
+            <span>Logout</span>
+        </a>
+
+        {% else %}
+
+        <a
+            href="{{ url_for('login') }}"
+            class="kv-logout-btn"
+        >
+            <i class="fas fa-right-to-bracket"></i>
+            <span>Login</span>
+        </a>
+
+        {% endif %}
+
+    </div>
+
+</aside>
+
+
+<!-- =========================================================
+     SIDEBAR CSS
+========================================================= -->
+
+<style>
+
+:root {
+    --kv-green-dark: #0b3d02;
+    --kv-green-deep: #1b5e20;
+    --kv-green: #2e7d32;
+    --kv-green-light: #43a047;
+    --kv-green-soft: #81c784;
+
+    --kv-orange: #fb8c00;
+    --kv-orange-light: #ffb300;
+
+    --kv-white: #ffffff;
+    --kv-text: #e8f5e9;
+    --kv-muted: rgba(255,255,255,.70);
+
+    --kv-sidebar-width: 275px;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.kv-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: var(--kv-sidebar-width);
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    background:
+        linear-gradient(
+            180deg,
+            #0b3d02 0%,
+            #0e4d17 45%,
+            #145a1d 100%
+        );
+
+    color: white;
+
+    z-index: 9999;
+
+    box-shadow:
+        8px 0 30px rgba(0,0,0,.18);
+
+    border-right:
+        1px solid rgba(255,255,255,.08);
+
+    transition:
+        transform .3s ease;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.kv-sidebar-header {
+    min-height: 78px;
+
+    padding: 16px 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom:
+        1px solid rgba(255,255,255,.10);
+}
+
+.kv-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    color: white;
+    text-decoration: none;
+}
+
+.kv-brand-logo {
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #43a047,
+            #81c784
+        );
+
+    color: white;
+    font-size: 22px;
+
+    box-shadow:
+        0 5px 15px rgba(0,0,0,.20);
+}
+
+.kv-brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.kv-brand-text strong {
+    font-size: 18px;
+    line-height: 1.2;
+    font-weight: 800;
+}
+
+.kv-brand-text strong span {
+    color: var(--kv-orange-light);
+}
+
+.kv-brand-text small {
+    margin-top: 3px;
+
+    color: var(--kv-muted);
+
+    font-size: 10px;
+    letter-spacing: .6px;
+}
+
+.kv-sidebar-close {
+    display: none;
+
+    border: none;
+    background: transparent;
+
+    color: white;
+    font-size: 20px;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   USER
+========================================================= */
+
+.kv-user-box {
+    margin: 15px;
+    padding: 12px;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    border-radius: 15px;
+
+    background:
+        rgba(255,255,255,.08);
+
+    border:
+        1px solid rgba(255,255,255,.08);
+}
+
+.kv-user-avatar {
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--kv-orange),
+            var(--kv-orange-light)
+        );
+
+    color: white;
+
+    font-weight: 800;
+    font-size: 17px;
+}
+
+.kv-user-info {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.kv-user-info strong {
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    font-size: 14px;
+}
+
+.kv-user-info span {
+    margin-top: 3px;
+
+    color: var(--kv-green-soft);
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   SCROLL
+========================================================= */
+
+.kv-sidebar-scroll {
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding:
+        5px 12px 15px;
+}
+
+.kv-sidebar-scroll::-webkit-scrollbar {
+    width: 5px;
+}
+
+.kv-sidebar-scroll::-webkit-scrollbar-thumb {
+    background:
+        rgba(255,255,255,.18);
+
+    border-radius: 20px;
+}
+
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.kv-menu-section {
+    margin-bottom: 20px;
+}
+
+.kv-section-title {
+    padding:
+        7px 12px;
+
+    color:
+        rgba(255,255,255,.45);
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
+}
+
+
+/* =========================================================
+   MENU ITEM
+========================================================= */
+
+.kv-menu-item {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    min-height: 45px;
+
+    padding:
+        10px 13px;
+
+    margin:
+        3px 0;
+
+    border-radius: 11px;
+
+    color:
+        rgba(255,255,255,.82);
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    transition:
+        background .2s ease,
+        color .2s ease,
+        transform .2s ease;
+}
+
+.kv-menu-item i {
+    width: 21px;
+
+    text-align: center;
+
+    font-size: 15px;
+}
+
+.kv-menu-item:hover {
+    color: white;
+
+    background:
+        rgba(255,255,255,.10);
+
+    transform:
+        translateX(3px);
+}
+
+.kv-menu-item.active {
+    color: white;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(67,160,71,.90),
+            rgba(46,125,50,.70)
+        );
+
+    box-shadow:
+        0 5px 15px rgba(0,0,0,.12);
+}
+
+.kv-menu-item.active::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    top: 8px;
+    bottom: 8px;
+
+    width: 3px;
+
+    border-radius:
+        0 5px 5px 0;
+
+    background:
+        var(--kv-orange-light);
+}
+
+
+/* =========================================================
+   NOTIFICATION ICON + BADGE
+========================================================= */
+
+.kv-icon-with-badge {
+    position: relative;
+
+    width: 21px;
+
+    display: flex;
+    justify-content: center;
+}
+
+.kv-notification-badge {
+    position: absolute;
+
+    top: -8px;
+    right: -10px;
+
+    min-width: 17px;
+    height: 17px;
+
+    padding:
+        0 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+
+    background:
+        #ef5350;
+
+    color: white;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    border:
+        2px solid var(--kv-green-deep);
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   SOS
+========================================================= */
+
+.kv-sos-icon {
+    width: 21px;
+
+    display: flex;
+    justify-content: center;
+
+    color: #ff5252;
+}
+
+.kv-menu-item:hover .kv-sos-icon,
+.kv-menu-item.active .kv-sos-icon {
+    color: #ff8a80;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.kv-sidebar-footer {
+    padding: 13px;
+
+    border-top:
+        1px solid rgba(255,255,255,.10);
+
+    background:
+        rgba(0,0,0,.10);
+}
+
+.kv-logout-btn {
+    width: 100%;
+
+    min-height: 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    color:
+        rgba(255,255,255,.85);
+
+    background:
+        rgba(255,255,255,.07);
+
+    font-size: 13px;
+
+    transition:
+        .2s ease;
+}
+
+.kv-logout-btn:hover {
+    color: white;
+
+    background:
+        rgba(244,67,54,.18);
+}
+
+
+/* =========================================================
+   MOBILE BUTTON
+========================================================= */
+
+.kv-mobile-menu-btn {
+    position: fixed;
+
+    top: 15px;
+    left: 15px;
+
+    width: 43px;
+    height: 43px;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background:
+        var(--kv-green-deep);
+
+    color: white;
+
+    font-size: 19px;
+
+    z-index: 10001;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 5px 18px rgba(0,0,0,.20);
+}
+
+
+/* =========================================================
+   OVERLAY
+========================================================= */
+
+.kv-sidebar-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background:
+        rgba(0,0,0,.50);
+
+    z-index: 9998;
+
+    display: none;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.main-content {
+    margin-left:
+        var(--kv-sidebar-width);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .kv-sidebar {
+        transform:
+            translateX(-100%);
+
+        width: 285px;
+    }
+
+    .kv-sidebar.open {
+        transform:
+            translateX(0);
+    }
+
+    .kv-sidebar-close {
+        display: block;
+    }
+
+    .kv-mobile-menu-btn {
+        display: flex;
+    }
+
+    .kv-sidebar-overlay.show {
+        display: block;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .kv-sidebar {
+        width: 85vw;
+        max-width: 300px;
+    }
+
+    .kv-brand-text strong {
+        font-size: 16px;
+    }
+}
+
+</style>
+
+
+<!-- =========================================================
+     SIDEBAR JAVASCRIPT
+========================================================= -->
+
+<script>
+
+(function () {
+
+    const sidebar =
+        document.getElementById("kvSidebar");
+
+    const openBtn =
+        document.getElementById("kvMobileMenuBtn");
+
+    const closeBtn =
+        document.getElementById("kvSidebarClose");
+
+    const overlay =
+        document.getElementById("kvSidebarOverlay");
+
+
+    /* =====================================================
+       MOBILE SIDEBAR
+    ===================================================== */
+
+    function openSidebar() {
+
+        if (!sidebar) return;
+
+        sidebar.classList.add("open");
+
+        if (overlay) {
+            overlay.classList.add("show");
+        }
+
+        document.body.style.overflow = "hidden";
+    }
+
+
+    function closeSidebar() {
+
+        if (!sidebar) return;
+
+        sidebar.classList.remove("open");
+
+        if (overlay) {
+            overlay.classList.remove("show");
+        }
+
+        document.body.style.overflow = "";
+    }
+
+
+    if (openBtn) {
+        openBtn.addEventListener(
+            "click",
+            openSidebar
+        );
+    }
+
+
+    if (closeBtn) {
+        closeBtn.addEventListener(
+            "click",
+            closeSidebar
+        );
+    }
+
+
+    if (overlay) {
+        overlay.addEventListener(
+            "click",
+            closeSidebar
+        );
+    }
+
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Escape") {
+                closeSidebar();
+            }
+
+        }
+    );
+
+
+    document
+        .querySelectorAll(
+            ".kv-menu-item, .kv-logout-btn"
+        )
+        .forEach(function (item) {
+
+            item.addEventListener(
+                "click",
+                function () {
+
+                    if (window.innerWidth <= 900) {
+                        closeSidebar();
+                    }
+
+                }
+            );
+
+        });
+
+
+    window.addEventListener(
+        "resize",
+        function () {
+
+            if (window.innerWidth > 900) {
+                closeSidebar();
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       NOTIFICATION UNREAD BADGE
+       API:
+       /api/notifications/unread-count
+    ===================================================== */
+
+    async function updateNotificationBadge() {
+
+        try {
+
+            const response = await fetch(
+                "/api/notifications/unread-count",
+                {
+                    method: "GET",
+                    credentials: "same-origin",
+                    cache: "no-store",
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                }
+            );
+
+
+            if (!response.ok) {
+                return;
+            }
+
+
+            const data =
+                await response.json();
+
+
+            let count =
+                Number(
+                    data.unread_count ??
+                    data.count ??
+                    data.unread ??
+                    0
+                );
+
+
+            if (!Number.isFinite(count) || count < 0) {
+                count = 0;
+            }
+
+
+            const badges =
+                document.querySelectorAll(
+                    "#kvNotificationBadge, #kvNotificationBadgeAdmin"
+                );
+
+
+            badges.forEach(function (badge) {
+
+                if (count > 0) {
+
+                    badge.textContent =
+                        count > 99 ? "99+" : count;
+
+                    badge.style.display =
+                        "flex";
+
+                } else {
+
+                    badge.textContent = "0";
+
+                    badge.style.display =
+                        "none";
+                }
+
+            });
+
+
+        } catch (error) {
+
+            console.warn(
+                "Notification badge error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /*
+     * Load immediately
+     */
+
+    updateNotificationBadge();
+
+
+    /*
+     * Refresh every 30 seconds
+     */
+
+    setInterval(
+        updateNotificationBadge,
+        30000
+    );
+
+
+    /*
+     * Refresh when user returns to tab
+     */
+
+    document.addEventListener(
+        "visibilitychange",
+        function () {
+
+            if (!document.hidden) {
+                updateNotificationBadge();
+            }
+
+        }
+    );
+
+})();
+
+</script>

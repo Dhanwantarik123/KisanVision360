@@ -1,0 +1,1145 @@
+/* =========================================================
+   KISANVISION360+
+   GLOBAL RESPONSIVE SYSTEM
+   File: static/css/responsive.css
+
+   Purpose:
+   - Mobile / Tablet / Desktop adaptation
+   - Sidebar + topbar support
+   - Forms, cards, tables and grids
+   - APK / mobile-web friendly
+   - RTL support
+   - Accessibility
+========================================================= */
+
+
+/* =========================================================
+   GLOBAL RESPONSIVE HELPERS
+========================================================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+}
+
+img,
+svg,
+video,
+canvas {
+    max-width: 100%;
+}
+
+img {
+    height: auto;
+}
+
+button,
+input,
+select,
+textarea {
+    max-width: 100%;
+}
+
+
+/* =========================================================
+   RESPONSIVE CONTAINERS
+========================================================= */
+
+.container,
+.page-container,
+.main-container,
+.content-container,
+.dashboard-container {
+    width: 100%;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.responsive-container {
+    width: 100%;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+
+/* =========================================================
+   GLOBAL GRID HELPERS
+========================================================= */
+
+.responsive-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.responsive-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.responsive-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.two-column-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(280px, .75fr);
+    gap: 20px;
+}
+
+.three-column-layout {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+
+/* =========================================================
+   SIDEBAR DESKTOP
+========================================================= */
+
+.kv-sidebar {
+    width: 260px;
+    max-width: 260px;
+    flex-shrink: 0;
+}
+
+.main-content,
+.kv-main-content,
+.page-content {
+    min-width: 0;
+    width: 100%;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.kv-topbar,
+.topbar,
+.page-topbar {
+    min-width: 0;
+}
+
+.topbar-actions,
+.kv-topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+
+/* =========================================================
+   FLEX HELPERS
+========================================================= */
+
+.responsive-flex {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.responsive-flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.min-width-0 {
+    min-width: 0;
+}
+
+
+/* =========================================================
+   TABLE RESPONSIVENESS
+========================================================= */
+
+.table-responsive,
+.responsive-table,
+.table-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive table,
+.responsive-table table,
+.table-wrapper table {
+    width: 100%;
+    min-width: 650px;
+}
+
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.card,
+.dashboard-card,
+.info-card,
+.feature-card,
+.service-card,
+.report-card,
+.market-card,
+.product-card {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+
+/* =========================================================
+   IMAGES / PRODUCT IMAGES
+========================================================= */
+
+.product-image,
+.card-image,
+.profile-image,
+.avatar,
+.hero-image {
+    max-width: 100%;
+    object-fit: cover;
+}
+
+.product-image img,
+.card-image img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* =========================================================
+   FORMS
+========================================================= */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+}
+
+.form-group {
+    min-width: 0;
+}
+
+.form-group.full-width,
+.full-width {
+    grid-column: 1 / -1;
+}
+
+input,
+select,
+textarea {
+    min-width: 0;
+}
+
+textarea {
+    max-width: 100%;
+    resize: vertical;
+}
+
+
+/* =========================================================
+   BUTTON GROUPS
+========================================================= */
+
+.button-group,
+.action-buttons,
+.form-actions,
+.quick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.button-group button,
+.button-group a,
+.action-buttons button,
+.action-buttons a {
+    max-width: 100%;
+}
+
+
+/* =========================================================
+   SEARCH / FILTER TOOLBARS
+========================================================= */
+
+.search-toolbar,
+.filter-toolbar,
+.market-toolbar,
+.reports-toolbar,
+.marketplace-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.search-box,
+.search-wrapper {
+    min-width: 0;
+    flex: 1;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+
+/* =========================================================
+   HERO SECTIONS
+========================================================= */
+
+.hero,
+.page-hero,
+.dashboard-hero,
+.market-hero,
+.reports-hero,
+.weather-hero {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.hero-content,
+.page-hero-content,
+.dashboard-hero-content {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.hero-title,
+.page-title,
+.dashboard-title {
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   LONG TEXT PROTECTION
+========================================================= */
+
+p,
+span,
+strong,
+small,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+td,
+th,
+label,
+a {
+    overflow-wrap: anywhere;
+}
+
+pre,
+code {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+========================================================= */
+
+@media (max-width: 1300px) {
+
+    .container,
+    .page-container,
+    .main-container,
+    .content-container,
+    .dashboard-container {
+        max-width: 1200px;
+    }
+
+    .responsive-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+
+/* =========================================================
+   DESKTOP / SMALL LAPTOP
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .kv-sidebar {
+        width: 230px;
+        max-width: 230px;
+    }
+
+    .responsive-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .responsive-grid-3,
+    .three-column-layout {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .two-column-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .hero,
+    .page-hero,
+    .dashboard-hero {
+        gap: 18px;
+    }
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .responsive-container {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .kv-sidebar {
+        width: 225px;
+        max-width: 225px;
+    }
+
+    .main-content,
+    .kv-main-content,
+    .page-content {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full-width,
+    .full-width {
+        grid-column: auto;
+    }
+
+    .search-toolbar,
+    .filter-toolbar,
+    .market-toolbar,
+    .reports-toolbar,
+    .marketplace-toolbar {
+        flex-wrap: wrap;
+    }
+
+    .search-box,
+    .search-wrapper {
+        flex-basis: 100%;
+        width: 100%;
+    }
+
+    .filter-group {
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   TABLET / MOBILE SIDEBAR
+========================================================= */
+
+@media (max-width: 768px) {
+
+    /*
+       Sidebar becomes an off-canvas drawer.
+       This works with the sidebar JS already used
+       by KisanVision360+.
+    */
+
+    .kv-sidebar {
+        position: fixed;
+        z-index: 10000;
+
+        top: 0;
+        bottom: 0;
+        left: 0;
+
+        width: min(290px, 84vw);
+        max-width: min(290px, 84vw);
+
+        transform: translateX(-105%);
+
+        transition:
+            transform .28s ease;
+
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .kv-sidebar.active,
+    .kv-sidebar.open,
+    body.sidebar-open .kv-sidebar {
+        transform: translateX(0);
+    }
+
+    /*
+       Common overlay compatibility.
+    */
+
+    .kv-sidebar-overlay,
+    .sidebar-overlay,
+    #sidebarOverlay {
+        position: fixed;
+        z-index: 9999;
+
+        inset: 0;
+
+        display: none;
+
+        background:
+            rgba(0, 0, 0, .48);
+
+        backdrop-filter:
+            blur(2px);
+    }
+
+    .kv-sidebar-overlay.active,
+    .sidebar-overlay.active,
+    #sidebarOverlay.active,
+    body.sidebar-open .kv-sidebar-overlay,
+    body.sidebar-open .sidebar-overlay {
+        display: block;
+    }
+
+    .main-content,
+    .kv-main-content,
+    .page-content {
+        width: 100%;
+        margin-left: 0 !important;
+    }
+
+    .kv-topbar,
+    .topbar,
+    .page-topbar {
+        width: 100%;
+    }
+
+    .mobile-menu-btn,
+    .sidebar-toggle,
+    .kv-menu-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .responsive-grid,
+    .responsive-grid-3,
+    .card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .three-column-layout {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .hero,
+    .page-hero,
+    .dashboard-hero {
+        padding: 22px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .responsive-container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .container,
+    .page-container,
+    .main-container,
+    .content-container,
+    .dashboard-container {
+        width: 100%;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    /*
+       Main grids
+    */
+
+    .responsive-grid,
+    .responsive-grid-3,
+    .responsive-grid-2,
+    .card-grid,
+    .three-column-layout,
+    .two-column-layout {
+        grid-template-columns: 1fr;
+    }
+
+    /*
+       Forms
+    */
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    /*
+       Flex sections
+    */
+
+    .responsive-flex,
+    .responsive-flex-between {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .responsive-flex-between {
+        justify-content: flex-start;
+    }
+
+    /*
+       Toolbars
+    */
+
+    .search-toolbar,
+    .filter-toolbar,
+    .market-toolbar,
+    .reports-toolbar,
+    .marketplace-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .search-box,
+    .search-wrapper,
+    .filter-group {
+        width: 100%;
+        max-width: none;
+    }
+
+    .filter-group {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .filter-group select,
+    .filter-group button {
+        width: 100%;
+    }
+
+    /*
+       Buttons
+    */
+
+    .button-group,
+    .action-buttons,
+    .form-actions,
+    .quick-actions {
+        width: 100%;
+    }
+
+    .button-group button,
+    .button-group a,
+    .action-buttons button,
+    .action-buttons a,
+    .form-actions button,
+    .form-actions a,
+    .quick-actions button,
+    .quick-actions a {
+        flex: 1 1 100%;
+        width: 100%;
+        min-height: 42px;
+    }
+
+    /*
+       Hero
+    */
+
+    .hero,
+    .page-hero,
+    .dashboard-hero,
+    .reports-hero,
+    .weather-hero,
+    .market-hero {
+        width: 100%;
+        min-height: auto;
+        padding: 18px;
+        border-radius: 17px;
+    }
+
+    .hero-content,
+    .page-hero-content,
+    .dashboard-hero-content {
+        width: 100%;
+    }
+
+    /*
+       Typography
+    */
+
+    h1 {
+        font-size: clamp(24px, 7vw, 34px);
+    }
+
+    h2 {
+        font-size: clamp(19px, 5vw, 27px);
+    }
+
+    h3 {
+        font-size: clamp(16px, 4.5vw, 21px);
+    }
+
+    /*
+       Cards
+    */
+
+    .card,
+    .dashboard-card,
+    .info-card,
+    .feature-card,
+    .service-card,
+    .report-card,
+    .market-card,
+    .product-card {
+        width: 100%;
+    }
+
+    /*
+       Tables remain scrollable rather than
+       breaking the mobile layout.
+    */
+
+    .table-responsive,
+    .responsive-table,
+    .table-wrapper {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    /*
+       Profile / avatar
+    */
+
+    .profile-header,
+    .profile-card-header {
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    /*
+       Chatbot
+    */
+
+    .chatbot-window,
+    .chat-window,
+    .kv-chatbot-window {
+        width: calc(100vw - 20px) !important;
+        max-width: calc(100vw - 20px) !important;
+
+        right: 10px !important;
+        left: 10px !important;
+
+        bottom: 10px;
+    }
+
+    .chatbot-fab,
+    .chat-fab,
+    .kv-chatbot-button {
+        right: 14px;
+        bottom: 14px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .responsive-container {
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+
+    .container,
+    .page-container,
+    .main-container,
+    .content-container,
+    .dashboard-container {
+        padding-left: 9px;
+        padding-right: 9px;
+    }
+
+    .kv-sidebar {
+        width: min(275px, 88vw);
+        max-width: min(275px, 88vw);
+    }
+
+    .hero,
+    .page-hero,
+    .dashboard-hero,
+    .reports-hero,
+    .weather-hero,
+    .market-hero {
+        padding: 15px;
+        border-radius: 15px;
+    }
+
+    .topbar-actions,
+    .kv-topbar-actions {
+        gap: 6px;
+    }
+
+    input,
+    select,
+    textarea {
+        font-size: 16px;
+    }
+
+    /*
+       Prevent iOS / Android browser zoom
+       on focused form controls.
+    */
+
+    button {
+        min-height: 40px;
+    }
+
+    .table-responsive table,
+    .responsive-table table,
+    .table-wrapper table {
+        min-width: 580px;
+    }
+}
+
+
+/* =========================================================
+   EXTRA SMALL DEVICES
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .responsive-container,
+    .container,
+    .page-container,
+    .main-container,
+    .content-container,
+    .dashboard-container {
+        padding-left: 7px;
+        padding-right: 7px;
+    }
+
+    .kv-sidebar {
+        width: 90vw;
+        max-width: 90vw;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+
+    h2 {
+        font-size: 19px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    .button-group,
+    .action-buttons {
+        gap: 7px;
+    }
+}
+
+
+/* =========================================================
+   LANDSCAPE MOBILE
+========================================================= */
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+    .kv-sidebar {
+        overflow-y: auto;
+    }
+
+    .hero,
+    .page-hero,
+    .dashboard-hero {
+        padding-top: 14px;
+        padding-bottom: 14px;
+    }
+
+    .chatbot-window,
+    .chat-window,
+    .kv-chatbot-window {
+        max-height: 88vh;
+        overflow-y: auto;
+    }
+}
+
+
+/* =========================================================
+   TOUCH DEVICE OPTIMIZATION
+========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+
+    button,
+    a,
+    select,
+    input[type="checkbox"],
+    input[type="radio"] {
+        touch-action: manipulation;
+    }
+
+    button,
+    .btn,
+    .button,
+    a.action,
+    .action-button {
+        min-height: 42px;
+    }
+
+    /*
+       Remove hover-only movement on touch devices.
+    */
+
+    .card:hover,
+    .product-card:hover,
+    .service-card:hover,
+    .feature-card:hover,
+    .report-card:hover {
+        transform: none;
+    }
+}
+
+
+/* =========================================================
+   RTL SUPPORT
+========================================================= */
+
+html[dir="rtl"],
+body[dir="rtl"] {
+    direction: rtl;
+}
+
+html[dir="rtl"] .kv-sidebar,
+body[dir="rtl"] .kv-sidebar {
+    left: auto;
+    right: 0;
+
+    transform:
+        translateX(105%);
+}
+
+html[dir="rtl"] .kv-sidebar.active,
+html[dir="rtl"] .kv-sidebar.open,
+body[dir="rtl"].sidebar-open .kv-sidebar {
+    transform:
+        translateX(0);
+}
+
+html[dir="rtl"] .main-content,
+html[dir="rtl"] .kv-main-content,
+html[dir="rtl"] .page-content,
+body[dir="rtl"] .main-content,
+body[dir="rtl"] .kv-main-content,
+body[dir="rtl"] .page-content {
+    margin-right: 0;
+}
+
+html[dir="rtl"] .reports-search i,
+html[dir="rtl"] .search-box i,
+body[dir="rtl"] .reports-search i,
+body[dir="rtl"] .search-box i {
+    left: auto;
+    right: 12px;
+}
+
+html[dir="rtl"] .reports-search input,
+html[dir="rtl"] .search-box input,
+body[dir="rtl"] .reports-search input,
+body[dir="rtl"] .search-box input {
+    padding-left: 12px;
+    padding-right: 36px;
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+html.dark,
+body.dark-mode,
+html[data-theme="dark"],
+body[data-theme="dark"] {
+    color-scheme: dark;
+}
+
+
+/* =========================================================
+   PRINT
+========================================================= */
+
+@media print {
+
+    .kv-sidebar,
+    .kv-topbar,
+    .topbar,
+    .page-topbar,
+    .mobile-menu-btn,
+    .sidebar-toggle,
+    .kv-menu-btn,
+    .chatbot-fab,
+    .chat-fab,
+    .kv-chatbot-button,
+    .no-print,
+    .reports-toolbar,
+    .filter-toolbar,
+    .search-toolbar {
+        display: none !important;
+    }
+
+    .main-content,
+    .kv-main-content,
+    .page-content {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .container,
+    .page-container,
+    .main-container,
+    .content-container,
+    .dashboard-container {
+        width: 100% !important;
+        max-width: none !important;
+        padding: 0 !important;
+    }
+
+    .card,
+    .dashboard-card,
+    .info-card,
+    .report-card,
+    .market-card,
+    .product-card {
+        break-inside: avoid;
+        box-shadow: none !important;
+    }
+
+    body {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+    }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+
+/* =========================================================
+   SAFE AREA FOR MOBILE APK
+========================================================= */
+
+@supports (padding: env(safe-area-inset-bottom)) {
+
+    body {
+        padding-bottom:
+            env(safe-area-inset-bottom);
+    }
+
+    .kv-topbar,
+    .topbar,
+    .page-topbar {
+        padding-top:
+            env(safe-area-inset-top);
+    }
+
+    .chatbot-fab,
+    .chat-fab,
+    .kv-chatbot-button {
+        bottom:
+            calc(
+                14px +
+                env(safe-area-inset-bottom)
+            );
+    }
+}

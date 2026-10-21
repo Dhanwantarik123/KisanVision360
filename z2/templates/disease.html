@@ -513,84 +513,51 @@
         <div class="info-box">
 
 
-            <!-- SYMPTOMS -->
+            
+<!-- Symptoms -->
+<div class="info-card">
+    <h3>Symptoms</h3>
 
-            <div class="info-card symptoms">
+    {% if symptoms %}
+        <ul class="guidance-list">
+            {% for item in symptoms %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No symptom information available.</p>
+    {% endif %}
+</div>
 
-                <div class="info-icon">
+<!-- Treatment -->
+<div class="info-card">
+    <h3>Treatment</h3>
 
-                    <i class="fa-solid fa-eye"></i>
+    {% if treatment %}
+        <ul class="guidance-list">
+            {% for item in treatment %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No treatment information available.</p>
+    {% endif %}
+</div>
 
-                </div>
+<!-- Prevention -->
+<div class="info-card">
+    <h3>Prevention</h3>
 
-                <div>
-
-                    <h3>
-                        Symptoms
-                    </h3>
-
-                    <p>
-                        {{ symptoms|default("No symptom information available.") }}
-                    </p>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- TREATMENT -->
-
-            <div class="info-card treatment">
-
-                <div class="info-icon">
-
-                    <i class="fa-solid fa-prescription-bottle-medical"></i>
-
-                </div>
-
-                <div>
-
-                    <h3>
-                        Treatment
-                    </h3>
-
-                    <p>
-                        {{ treatment|default("No treatment information available.") }}
-                    </p>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- PREVENTION -->
-
-            <div class="info-card prevention">
-
-                <div class="info-icon">
-
-                    <i class="fa-solid fa-shield-heart"></i>
-
-                </div>
-
-                <div>
-
-                    <h3>
-                        Prevention
-                    </h3>
-
-                    <p>
-                        {{ prevention|default("No prevention information available.") }}
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
+    {% if prevention %}
+        <ul class="guidance-list">
+            {% for item in prevention %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No prevention information available.</p>
+    {% endif %}
+</div>
 
 
         <!-- =================================================

@@ -1,1388 +1,342 @@
-﻿{% extends "base.html" %}
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mandi Prices | KisanVision360+</title>
+    <style>
+        :root {
+            --green: #1b5e20;
+            --green-light: #e8f5e9;
+            --orange: #fb8c00;
+            --background: #f5f8f5;
+            --text: #263238;
+            --muted: #607d8b;
+            --border: #dce5de;
+        }
 
-{% block title %}KisanVision360 | Government Mandi Market{% endblock %}
+        * { box-sizing: border-box; }
 
-{% block head %}
-<link rel="stylesheet"
-          href="{{ url_for('static', filename='css/market.css') }}">
-{% endblock %}
+        body {
+            margin: 0;
+            background: var(--background);
+            color: var(--text);
+            font-family: Arial, sans-serif;
+        }
 
-{% block page_title %}Government Mandi Market{% endblock %}
-{% block page_subtitle %}Smart Agriculture Platform{% endblock %}
+        header {
+            background: var(--green);
+            color: white;
+            padding: 22px 5%;
+        }
 
-{% block content %}
-<!-- =====================================================
-         GLOBAL SIDEBAR
-    ====================================================== -->
+        header h1 { margin: 0 0 8px; }
+        header p { margin: 0; }
 
-    
+        main {
+            width: min(1250px, 94%);
+            margin: 24px auto;
+        }
 
+        .panel {
+            background: white;
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 12px #00000008;
+        }
 
-    <!-- =====================================================
-         MAIN CONTENT
-    ====================================================== -->
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
 
-    <main class="main-content">
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 13px;
+            font-weight: bold;
+        }
 
-        <!-- =================================================
-             TOP BAR
-        ================================================== -->
+        input, select {
+            width: 100%;
+            min-width: 0;
+            padding: 11px;
+            border: 1px solid #cbd5ce;
+            border-radius: 7px;
+            background: white;
+            font-size: 14px;
+        }
 
-        
+        button, .button {
+            display: inline-block;
+            margin-top: 16px;
+            padding: 11px 18px;
+            background: var(--green);
+            color: white;
+            border: 0;
+            border-radius: 7px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+        }
 
+        .button-orange { background: var(--orange); }
 
-        <!-- =================================================
-             FLASH MESSAGES
-        ================================================== -->
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
+        .metric {
+            background: var(--green-light);
+            border-radius: 10px;
+            padding: 16px;
+            overflow-wrap: anywhere;
+        }
 
-            {% if messages %}
+        .metric span {
+            display: block;
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 9px;
+        }
 
-                <div class="flash-container">
+        .metric strong {
+            font-size: 22px;
+            color: var(--green);
+        }
 
-                    {% for category, message in messages %}
+        .notice {
+            padding: 13px 15px;
+            margin-bottom: 18px;
+            border-radius: 8px;
+            background: #fff3e0;
+            color: #7a4b00;
+        }
 
-                        <div class="flash-message {{ category }}">
+        .table-wrap { overflow-x: auto; }
 
-                            <span>
-                                {{ message }}
-                            </span>
+        table {
+            width: 100%;
+            min-width: 900px;
+            border-collapse: collapse;
+        }
 
-                            <button
-                                type="button"
-                                onclick="this.parentElement.remove()">
+        th, td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid #e6ece7;
+            font-size: 13px;
+        }
 
-                                ×
+        th {
+            background: #edf5ee;
+            color: var(--green);
+            white-space: nowrap;
+        }
 
-                            </button>
+        .empty {
+            text-align: center;
+            color: var(--muted);
+            padding: 32px 12px;
+        }
 
-                        </div>
+        .muted {
+            font-size: 12px;
+            color: var(--muted);
+        }
 
-                    {% endfor %}
+        @media (max-width: 850px) {
+            .filters, .summary {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
 
-                </div>
+        @media (max-width: 520px) {
+            .filters, .summary { grid-template-columns: 1fr; }
+            header h1 { font-size: 22px; }
+            .panel { padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>🌾 KisanVision360+ Mandi Prices</h1>
+    <p>Explore crop prices and available market observations.</p>
+</header>
 
-            {% endif %}
+<main>
+    {% if api_error %}
+    <div class="notice">
+        {{ api_error }}
+        No demonstration prices are being substituted for real data.
+    </div>
+    {% endif %}
 
-        {% endwith %}
+    <section class="panel">
+        <h2>Search Market Prices</h2>
 
-
-        <!-- =================================================
-             HERO
-        ================================================== -->
-
-        <section class="market-hero">
-
-            <div class="hero-content">
-
-                <div class="live-badge">
-
-                    <span class="live-dot"></span>
-
-                    GOVERNMENT MARKET DATA
-
-                </div>
-
-                <h2>
-                    Today's Mandi Prices
-                </h2>
-
-                <p>
-                    Check agricultural commodity prices from
-                    Government of India market data.
-                </p>
-
-                <div class="hero-meta">
-
-                    <span>
-                        <i class="fa-solid fa-database"></i>
-                        Data.gov.in
-                    </span>
-
-                    <span>
-                        <i class="fa-solid fa-calendar-day"></i>
-                        Daily market data
-                    </span>
-
-                    <span>
-                        <i class="fa-solid fa-arrows-rotate"></i>
-                        API powered
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <div class="hero-icon">
-
-                <i class="fa-solid fa-wheat-awn"></i>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             FILTERS
-        ================================================== -->
-
-        <section class="filter-card">
-
-            <div class="section-title">
-
+        <form action="{{ url_for('market.market') }}" method="GET">
+            <div class="filters">
                 <div>
-
-                    <h2>
-                        <i class="fa-solid fa-filter"></i>
-                        Market Filters
-                    </h2>
-
-                    <p>
-                        Find the latest available mandi price
-                    </p>
-
-                </div>
-
-                <button
-                    type="button"
-                    class="refresh-btn"
-                    id="refreshMarket">
-
-                    <i class="fa-solid fa-arrows-rotate"></i>
-
-                    Refresh
-
-                </button>
-
-            </div>
-
-
-            <div class="filter-grid">
-
-                <!-- Crop -->
-
-                <div class="filter-group">
-
-                    <label for="cropFilter">
-                        Crop / Commodity
-                    </label>
-
-                    <div class="input-wrapper">
-
-                        <i class="fa-solid fa-seedling"></i>
-
-                        <input
-                            type="text"
-                            id="cropFilter"
-                            placeholder="e.g. Soybean">
-
-                    </div>
-
-                </div>
-
-
-                <!-- Market -->
-
-                <div class="filter-group">
-
-                    <label for="marketFilter">
-                        Market
-                    </label>
-
-                    <div class="input-wrapper">
-
-                        <i class="fa-solid fa-store"></i>
-
-                        <input
-                            type="text"
-                            id="marketFilter"
-                            placeholder="e.g. Nagpur">
-
-                    </div>
-
-                </div>
-
-
-                <!-- State -->
-
-                <div class="filter-group">
-
-                    <label for="stateFilter">
-                        State
-                    </label>
-
-                    <div class="input-wrapper">
-
-                        <i class="fa-solid fa-map-location-dot"></i>
-
-                        <input
-                            type="text"
-                            id="stateFilter"
-                            value="{{ state|default('Maharashtra') }}"
-                            placeholder="e.g. Maharashtra">
-
-                    </div>
-
-                </div>
-
-
-                <!-- Apply -->
-
-                <div class="filter-group filter-action">
-
-                    <button
-                        type="button"
-                        id="applyFilters"
-                        class="apply-btn">
-
-                        <i class="fa-solid fa-magnifying-glass"></i>
-
-                        Search Market
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             MARKET SUMMARY
-        ================================================== -->
-
-        <section class="market-stats">
-
-            <div class="stat-card">
-
-                <div class="stat-icon">
-                    <i class="fa-solid fa-wheat-awn"></i>
+                    <label for="crop">Crop</label>
+                    <input id="crop" name="crop"
+                           value="{{ selected_crop }}"
+                           placeholder="e.g. Onion">
                 </div>
 
                 <div>
-
-                    <span class="stat-label">
-                        Commodities
-                    </span>
-
-                    <strong id="commodityCount">
-                        {{ prices|length }}
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <div class="stat-icon">
-                    <i class="fa-solid fa-store"></i>
+                    <label for="state">State</label>
+                    <input id="state" name="state"
+                           value="{{ selected_state }}"
+                           placeholder="e.g. Maharashtra">
                 </div>
 
                 <div>
-
-                    <span class="stat-label">
-                        Market Records
-                    </span>
-
-                    <strong id="recordCount">
-                        {{ prices|length }}
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <div class="stat-icon">
-                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                    <label for="district">District</label>
+                    <input id="district" name="district"
+                           value="{{ selected_district }}"
+                           placeholder="e.g. Nagpur">
                 </div>
 
                 <div>
-
-                    <span class="stat-label">
-                        Price Unit
-                    </span>
-
-                    <strong>
-                        ₹ / Quintal
-                    </strong>
-
+                    <label for="market">Market</label>
+                    <input id="market" name="market"
+                           value="{{ selected_market }}"
+                           placeholder="Mandi name">
                 </div>
-
             </div>
 
+            <button type="submit">Search Prices</button>
+            <a class="button button-orange"
+               href="{{ url_for('market.market') }}">Reset</a>
+        </form>
+    </section>
 
-            <div class="stat-card">
+    <section class="panel">
+        <h2>Market Summary</h2>
 
-                <div class="stat-icon">
-                    <i class="fa-solid fa-database"></i>
-                </div>
-
-                <div>
-
-                    <span class="stat-label">
-                        Source
-                    </span>
-
-                    <strong>
-                        Government
-                    </strong>
-
-                </div>
-
+        <div class="summary">
+            <div class="metric">
+                <span>Records Found</span>
+                <strong>{{ summary.total_records }}</strong>
             </div>
 
-        </section>
-
-
-        <!-- =================================================
-             MANDI PRICE TABLE
-        ================================================== -->
-
-        <section class="market-card">
-
-            <div class="section-header">
-
-                <div>
-
-                    <h2>
-
-                        <i class="fa-solid fa-chart-column"></i>
-
-                        Government Mandi Prices
-
-                    </h2>
-
-                    <p>
-                        Commodity-wise market price information
-                    </p>
-
-                </div>
-
-
-                <div class="data-source-badge">
-
-                    <i class="fa-solid fa-circle-check"></i>
-
-                    Data.gov.in
-
-                </div>
-
+            <div class="metric">
+                <span>Average Modal Price</span>
+                <strong>
+                    {% if summary.average_price is not none %}
+                        ₹{{ "%.2f"|format(summary.average_price) }}
+                    {% else %}—{% endif %}
+                </strong>
             </div>
 
-
-            <!-- Loading -->
-
-            <div id="marketLoading"
-                 class="market-loading"
-                 style="display:none;">
-
-                <i class="fa-solid fa-spinner fa-spin"></i>
-
-                <span>
-                    Fetching latest government market data...
-                </span>
-
+            <div class="metric">
+                <span>Lowest Modal Price</span>
+                <strong>
+                    {% if summary.minimum_price is not none %}
+                        ₹{{ "%.2f"|format(summary.minimum_price) }}
+                    {% else %}—{% endif %}
+                </strong>
             </div>
 
-
-            <!-- Error -->
-
-            <div id="marketError"
-                 class="market-error"
-                 style="display:none;">
-
-                <i class="fa-solid fa-triangle-exclamation"></i>
-
-                <span id="marketErrorText">
-                    Unable to load market data.
-                </span>
-
+            <div class="metric">
+                <span>Highest Modal Price</span>
+                <strong>
+                    {% if summary.maximum_price is not none %}
+                        ₹{{ "%.2f"|format(summary.maximum_price) }}
+                    {% else %}—{% endif %}
+                </strong>
             </div>
-
-
-            <!-- Table -->
-
-            <div class="table-wrapper">
-
-                <table id="priceTable">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
-                                Crop
-                            </th>
-
-                            <th>
-                                Market
-                            </th>
-
-                            <th>
-                                State
-                            </th>
-
-                            <th>
-                                Modal Price
-                            </th>
-
-                            <th>
-                                Arrival Date
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody id="priceTableBody">
-
-                    {% for crop in prices %}
-
-                        <tr class="price-row">
-
-                            <!-- Crop -->
-
-                            <td>
-
-                                <div class="crop-name">
-
-                                    <div class="crop-icon">
-
-                                        <i class="fa-solid fa-wheat-awn"></i>
-
-                                    </div>
-
-                                    <span>
-                                        {{ crop.commodity|default("N/A") }}
-                                    </span>
-
-                                </div>
-
-                            </td>
-
-
-                            <!-- Market -->
-
-                            <td>
-
-                                <span class="market-name">
-
-                                    <i class="fa-solid fa-location-dot"></i>
-
-                                    {{ crop.market|default("N/A") }}
-
-                                </span>
-
-                            </td>
-
-
-                            <!-- State -->
-
-                            <td>
-
-                                {{ crop.state|default("N/A") }}
-
-                            </td>
-
-
-                            <!-- Price -->
-
-                            <td>
-
-                                {% if crop.modal_price is not none
-                                      and crop.modal_price != "" %}
-
-                                    <strong class="price">
-
-                                        ₹ {{ crop.modal_price }}
-
-                                    </strong>
-
-                                {% else %}
-
-                                    <span class="not-available">
-                                        N/A
-                                    </span>
-
-                                {% endif %}
-
-                            </td>
-
-
-                            <!-- Date -->
-
-                            <td>
-
-                                <span class="date">
-
-                                    <i class="fa-regular fa-calendar"></i>
-
-                                    {{ crop.arrival_date|default("N/A") }}
-
-                                </span>
-
-                            </td>
-
-                        </tr>
-
-                    {% else %}
-
-                        <tr id="noServerData">
-
-                            <td colspan="5"
-                                class="no-data">
-
-                                <div class="empty-state">
-
-                                    <i class="fa-solid fa-database"></i>
-
-                                    <h3>
-                                        No Mandi Data Available
-                                    </h3>
-
-                                    <p>
-                                        No government market records
-                                        were returned for the current filter.
-                                    </p>
-
-                                    <button
-                                        type="button"
-                                        class="retry-btn"
-                                        onclick="loadMarketData()">
-
-                                        <i class="fa-solid fa-arrows-rotate"></i>
-
-                                        Try Again
-
-                                    </button>
-
-                                </div>
-
-                            </td>
-
-                        </tr>
-
-                    {% endfor %}
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-
-            <!-- No Search Result -->
-
-            <div id="noSearchResult"
-                 class="empty-state"
-                 style="display:none;">
-
-                <i class="fa-solid fa-magnifying-glass"></i>
-
-                <h3>
-                    No Matching Records
-                </h3>
-
-                <p>
-                    Try another crop or market name.
-                </p>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             PRICE INTELLIGENCE
-        ================================================== -->
-
-        <section class="intelligence-card">
-
-            <div class="section-header">
-
-                <div>
-
-                    <h2>
-
-                        <i class="fa-solid fa-brain"></i>
-
-                        Market Intelligence
-
-                    </h2>
-
-                    <p>
-                        Use current mandi prices for farm decisions
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="intelligence-grid">
-
-                <div class="intelligence-item">
-
-                    <div class="intelligence-icon">
-
-                        <i class="fa-solid fa-chart-line"></i>
-
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            Compare Markets
-                        </h3>
-
-                        <p>
-                            Compare available prices across markets
-                            before deciding where to sell.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="intelligence-item">
-
-                    <div class="intelligence-icon">
-
-                        <i class="fa-solid fa-indian-rupee-sign"></i>
-
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            Modal Price
-                        </h3>
-
-                        <p>
-                            Modal price represents the commonly
-                            reported market price in the returned record.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="intelligence-item">
-
-                    <div class="intelligence-icon">
-
-                        <i class="fa-solid fa-calendar-day"></i>
-
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            Daily Data
-                        </h3>
-
-                        <p>
-                            Market records are based on daily
-                            government mandi information.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="intelligence-item">
-
-                    <div class="intelligence-icon">
-
-                        <i class="fa-solid fa-shield-halved"></i>
-
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            Government Source
-                        </h3>
-
-                        <p>
-                            Prices are obtained from the
-                            Data.gov.in government data platform.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             BACK TO FARMER
-        ================================================== -->
-
-        <div class="dashboard-button">
-
-            <a href="/farmer">
-
-                <button type="button">
-
-                    <i class="fa-solid fa-house"></i>
-
-                    Back to Dashboard
-
-                </button>
-
-            </a>
-
         </div>
 
-
-        <!-- =================================================
-             FOOTER
-        ================================================== -->
-
-        <footer>
-
-            <i class="fa-solid fa-leaf"></i>
-
-            KisanVision360
-
-            <span>•</span>
-
-            Government Mandi Market
-
-        </footer>
-
-    </main>
-{% endblock %}
-
-{% block scripts %}
-<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
-<script>
-
-(function () {
-
-    "use strict";
-
-
-    /* =================================================
-       ELEMENTS
-    ================================================== */
-
-    const marketSearch =
-        document.getElementById("marketSearch");
-
-    const cropFilter =
-        document.getElementById("cropFilter");
-
-    const marketFilter =
-        document.getElementById("marketFilter");
-
-    const stateFilter =
-        document.getElementById("stateFilter");
-
-    const applyFilters =
-        document.getElementById("applyFilters");
-
-    const refreshMarket =
-        document.getElementById("refreshMarket");
-
-    const tableBody =
-        document.getElementById("priceTableBody");
-
-    const marketLoading =
-        document.getElementById("marketLoading");
-
-    const marketError =
-        document.getElementById("marketError");
-
-    const marketErrorText =
-        document.getElementById("marketErrorText");
-
-    const noSearchResult =
-        document.getElementById("noSearchResult");
-
-    const commodityCount =
-        document.getElementById("commodityCount");
-
-    const recordCount =
-        document.getElementById("recordCount");
-
-
-    /* =================================================
-       SHOW LOADING
-    ================================================== */
-
-    function showLoading(show) {
-
-        if (!marketLoading) return;
-
-        marketLoading.style.display =
-            show ? "flex" : "none";
-
-    }
-
-
-    /* =================================================
-       ERROR
-    ================================================== */
-
-    function showError(message) {
-
-        if (!marketError) return;
-
-        marketError.style.display = "flex";
-
-        if (marketErrorText) {
-
-            marketErrorText.textContent =
-                message || "Unable to load market data.";
-
-        }
-
-    }
-
-
-    function hideError() {
-
-        if (!marketError) return;
-
-        marketError.style.display = "none";
-
-    }
-
-
-    /* =================================================
-       FORMAT PRICE
-    ================================================== */
-
-    function formatPrice(value) {
-
-        if (
-            value === null ||
-            value === undefined ||
-            value === ""
-        ) {
-
-            return "N/A";
-
-        }
-
-        const number =
-            Number(
-                String(value)
-                .replace(/,/g, "")
-                .trim()
-            );
-
-        if (Number.isNaN(number)) {
-
-            return String(value);
-
-        }
-
-        return number.toLocaleString("en-IN");
-
-    }
-
-
-    /* =================================================
-       ESCAPE HTML
-    ================================================== */
-
-    function escapeHtml(value) {
-
-        return String(value ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-
-    }
-
-
-    /* =================================================
-       RENDER TABLE
-    ================================================== */
-
-    function renderPrices(prices) {
-
-        if (!tableBody) return;
-
-        tableBody.innerHTML = "";
-
-        if (!Array.isArray(prices) ||
-            prices.length === 0) {
-
-            tableBody.innerHTML = `
-
-                <tr>
-
-                    <td colspan="5"
-                        class="no-data">
-
-                        <div class="empty-state">
-
-                            <i class="fa-solid fa-database"></i>
-
-                            <h3>
-                                No Mandi Data Available
-                            </h3>
-
-                            <p>
-                                No government market records
-                                were returned.
-                            </p>
-
-                        </div>
-
-                    </td>
-
-                </tr>
-
-            `;
-
-            updateCounts(0);
-
-            return;
-
-        }
-
-
-        prices.forEach(function (crop) {
-
-            const commodity =
-                crop.commodity || "N/A";
-
-            const market =
-                crop.market || "N/A";
-
-            const state =
-                crop.state || "N/A";
-
-            const modalPrice =
-                crop.modal_price;
-
-            const arrivalDate =
-                crop.arrival_date || "N/A";
-
-
-            const row =
-                document.createElement("tr");
-
-            row.className =
-                "price-row";
-
-
-            row.innerHTML = `
-
-                <td>
-
-                    <div class="crop-name">
-
-                        <div class="crop-icon">
-
-                            <i class="fa-solid fa-wheat-awn"></i>
-
-                        </div>
-
-                        <span>
-                            ${escapeHtml(commodity)}
-                        </span>
-
-                    </div>
-
-                </td>
-
-
-                <td>
-
-                    <span class="market-name">
-
-                        <i class="fa-solid fa-location-dot"></i>
-
-                        ${escapeHtml(market)}
-
-                    </span>
-
-                </td>
-
-
-                <td>
-                    ${escapeHtml(state)}
-                </td>
-
-
-                <td>
-
-                    <strong class="price">
-
-                        ₹ ${escapeHtml(formatPrice(modalPrice))}
-
-                    </strong>
-
-                </td>
-
-
-                <td>
-
-                    <span class="date">
-
-                        <i class="fa-regular fa-calendar"></i>
-
-                        ${escapeHtml(arrivalDate)}
-
-                    </span>
-
-                </td>
-
-            `;
-
-
-            tableBody.appendChild(row);
-
-        });
-
-
-        updateCounts(prices.length);
-
-    }
-
-
-    /* =================================================
-       UPDATE COUNTS
-    ================================================== */
-
-    function updateCounts(count) {
-
-        if (commodityCount) {
-
-            commodityCount.textContent =
-                count;
-
-        }
-
-        if (recordCount) {
-
-            recordCount.textContent =
-                count;
-
-        }
-
-    }
-
-
-    /* =================================================
-       LOAD LIVE MARKET DATA
-    ================================================== */
-
-    window.loadMarketData =
-    async function () {
-
-        showLoading(true);
-
-        hideError();
-
-        noSearchResult.style.display =
-            "none";
-
-
-        const crop =
-            cropFilter?.value.trim() || "";
-
-        const market =
-            marketFilter?.value.trim() || "";
-
-        const state =
-            stateFilter?.value.trim() || "";
-
-
-        const params =
-            new URLSearchParams();
-
-
-        if (crop) {
-
-            params.set(
-                "crop",
-                crop
-            );
-
-        }
-
-
-        if (market) {
-
-            params.set(
-                "market",
-                market
-            );
-
-        }
-
-
-        if (state) {
-
-            params.set(
-                "state",
-                state
-            );
-
-        }
-
-
-        try {
-
-            const response =
-                await fetch(
-                    "/api/market/prices?" +
-                    params.toString(),
-                    {
-                        method: "GET",
-                        credentials: "same-origin",
-                        headers: {
-                            "Accept": "application/json"
-                        }
-                    }
-                );
-
-
-            if (response.status === 401) {
-
-                window.location.href =
-                    "/login";
-
-                return;
-
-            }
-
-
-            const data =
-                await response.json();
-
-
-            if (!response.ok ||
-                data.success === false) {
-
-                throw new Error(
-                    data.message ||
-                    "Government market API failed."
-                );
-
-            }
-
-
-            const prices =
-                data.prices ||
-                data.data ||
-                [];
-
-
-            renderPrices(prices);
-
-        }
-        catch (error) {
-
-            console.error(
-                "Market API Error:",
-                error
-            );
-
-            showError(
-                error.message ||
-                "Unable to fetch government mandi data."
-            );
-
-        }
-        finally {
-
-            showLoading(false);
-
-        }
-
-    };
-
-
-    /* =================================================
-       LOCAL SEARCH
-    ================================================== */
-
-    function filterVisibleRows() {
-
-        if (!tableBody) return;
-
-
-        const search =
-            marketSearch?.value
-            .toLowerCase()
-            .trim() || "";
-
-
-        const rows =
-            tableBody.querySelectorAll(
-                "tr.price-row"
-            );
-
-
-        let visible =
-            0;
-
-
-        rows.forEach(function (row) {
-
-            const text =
-                row.innerText
-                .toLowerCase();
-
-
-            const match =
-                !search ||
-                text.includes(search);
-
-
-            row.style.display =
-                match ? "" : "none";
-
-
-            if (match) {
-
-                visible++;
-
-            }
-
-        });
-
-
-        if (noSearchResult) {
-
-            noSearchResult.style.display =
-                rows.length > 0 && visible === 0
-                ? "block"
-                : "none";
-
-        }
-
-    }
-
-
-    /* =================================================
-       EVENTS
-    ================================================== */
-
-    if (marketSearch) {
-
-        marketSearch.addEventListener(
-            "input",
-            filterVisibleRows
-        );
-
-    }
-
-
-    if (applyFilters) {
-
-        applyFilters.addEventListener(
-            "click",
-            loadMarketData
-        );
-
-    }
-
-
-    if (refreshMarket) {
-
-        refreshMarket.addEventListener(
-            "click",
-            loadMarketData
-        );
-
-    }
-
-
-    [
-        cropFilter,
-        marketFilter,
-        stateFilter
-    ]
-    .forEach(function (input) {
-
-        if (!input) return;
-
-        input.addEventListener(
-            "keydown",
-            function (event) {
-
-                if (
-                    event.key === "Enter"
-                ) {
-
-                    loadMarketData();
-
-                }
-
-            }
-        );
-
-    });
-
-
-    /* =================================================
-       AUTO LOAD LIVE DATA
-    ================================================== */
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        function () {
-
-            /*
-             * Initial server-rendered prices remain visible.
-             * Then fetch latest API data.
-             */
-
-            loadMarketData();
-
-        }
-    );
-
-
-    /* =================================================
-       AUTO REFRESH
-       15 MINUTES
-    ================================================== */
-
-    setInterval(
-        function () {
-
-            if (
-                document.visibilityState ===
-                "visible"
-            ) {
-
-                loadMarketData();
-
-            }
-
-        },
-        15 * 60 * 1000
-    );
-
-
-})();
-
-</script>
-{% endblock %}
+        <p class="muted">
+            Prices are displayed in ₹/quintal where provided by this module.
+            Verify the original record and arrival date before making a sale.
+        </p>
+    </section>
+
+    <section class="panel">
+        <h2>Market Records</h2>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Arrival Date</th>
+                        <th>Crop</th>
+                        <th>Market</th>
+                        <th>District</th>
+                        <th>State</th>
+                        <th>Variety</th>
+                        <th>Min Price</th>
+                        <th>Max Price</th>
+                        <th>Modal Price</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for item in prices %}
+                    <tr>
+                        <td>{{ item.arrival_date or "—" }}</td>
+                        <td>{{ item.crop or "—" }}</td>
+                        <td>{{ item.market or "—" }}</td>
+                        <td>{{ item.district or "—" }}</td>
+                        <td>{{ item.state or "—" }}</td>
+                        <td>{{ item.variety or "—" }}</td>
+                        <td>
+                            {% if item.min_price is not none %}
+                                ₹{{ item.min_price }}
+                            {% else %}—{% endif %}
+                        </td>
+                        <td>
+                            {% if item.max_price is not none %}
+                                ₹{{ item.max_price }}
+                            {% else %}—{% endif %}
+                        </td>
+                        <td>
+                            {% if item.modal_price is not none %}
+                                ₹{{ item.modal_price }}
+                            {% else %}—{% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="empty">
+                            No market records found. Try another crop,
+                            district or market, or check API configuration.
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="panel">
+        <h2>Market API Status</h2>
+        <p>
+            Status:
+            <strong>
+                {% if api_status and api_status.get("success") %}
+                    Connected
+                {% else %}
+                    Unavailable or not configured
+                {% endif %}
+            </strong>
+        </p>
+        <p class="muted">
+            Data availability depends on the API key, resource ID,
+            network connection and source records.
+        </p>
+        <button type="button"
+                onclick="window.location.reload()">Refresh Data</button>
+    </section>
+</main>
+</body>
+</html>
