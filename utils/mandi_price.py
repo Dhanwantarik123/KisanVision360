@@ -1,14 +1,7 @@
 ﻿
 """
-KisanVision360+ — Live Mandi Price Service
-Data source: Data.gov.in AGMARKNET API
-
-Required environment variables:
-    DATA_GOV_API_KEY=your_actual_api_key
-    DATA_GOV_RESOURCE_URL=https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070
-    DATA_GOV_TIMEOUT=30
-
-This module never creates demo or fabricated market prices.
+KisanVision360+ Live Mandi Price Service
+Source: Data.gov.in AGMARKNET API
 """
 
 import logging
@@ -19,17 +12,14 @@ from pathlib import Path
 import requests
 from dotenv import load_dotenv
 
-# ---------------------------------------------------------
-# Configuration
-# ---------------------------------------------------------
-
 logger = logging.getLogger(__name__)
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-ENV_FILE = PROJECT_ROOT / ".env"
+# --------------------------------------------------
+# Configuration
+# --------------------------------------------------
 
-# Do not override environment variables already configured on Render.
-load_dotenv(dotenv_path=ENV_FILE, override=False)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+load_dotenv(PROJECT_ROOT / ".env", override=False)
 
 DEFAULT_MANDI_RESOURCE_URL = (
     "https://api.data.gov.in/resource/"
@@ -50,29 +40,22 @@ except (TypeError, ValueError):
     REQUEST_TIMEOUT = 30
 
 REQUEST_TIMEOUT = max(5, min(REQUEST_TIMEOUT, 60))
-
 USER_AGENT = "KisanVision360Plus/1.0"
-MAX_RECORDS = 1000
 
 
-# ---------------------------------------------------------
-# Internal helpers
-# ---------------------------------------------------------
+# --------------------------------------------------
+# Helpers
+# --------------------------------------------------
 
 def _clean(value):
-    """Convert a value to a clean string."""
-    if value is None:
-        return ""
-    return str(value).strip()
+    return "" if value is None else str(value).strip()
 
 
 def _number(value):
-    """Convert a numeric API value to float, or None."""
     if value is None:
         return None
 
-    value = str(value).strip().replace(",", "")
-
+    value = _clean(value).replace(",", "")
     if not value or value.lower() in {
         "na", "n/a", "none", "null", "-", "--"
     }:
@@ -84,55 +67,49 @@ def _number(value):
         return None
 
 
-def _normalize_record(record):
-    """
-    Normalize an AGMARKNET record while retaining its original fields.
-    Actual API field names can vary, so common alternatives are supported.
-    """
-    if not isinstance(record, dict):
-        return {}
-
-    result = dict(record)
-
-    # Normalize field names without discarding original data.
-    lower_fields = {
+def _field_map(record):
+    return {
         str(key).strip().lower().replace(" ", "_"): value
         for key, value in record.items()
     }
 
-    def first_value(*keys):
-        for key in keys:
-            value = lower_fields.get(key)
-            if value is not None and _clean(value):
-                return value
-        return ""
 
-    commodity = first_value("commodity", "crop", "commodity_name")
-    state = first_value("state", "state_name")
-    district = first_value("district", "district_name")
-    market = first_value("market", "market_name", "mandi")
-    variety = first_value("variety", "commodity_variety")
-    grade = first_value("grade")
-    arrival_date = first_value(
-        "arrival_date", "date", "reported_date"
+def _first(fields, *names):
+    for name in names:
+        value = fields.get(name)
+        if value is not None and _clean(value):
+            return value
+    return ""
+
+
+def _normalize_record(record):
+    if not isinstance(record, dict):
+        return {}
+
+    fields = _field_map(record)
+
+    commodity = _first(fields, "commodity", "crop", "commodity_name")
+    state = _first(fields, "state", "state_name")
+    district = _first(fields, "district", "district_name")
+    market = _first(fields, "market", "market_name", "mandi")
+    variety = _first(fields, "variety", "commodity_variety")
+    grade = _first(fields, "grade")
+    arrival_date = _first(
+        fields, "arrival_date", "date", "reported_date"
     )
 
     min_price = _number(
-        first_value("min_price", "minimum_price", "min")
+        _first(fields, "min_price", "minimum_price", "min")
     )
     max_price = _number(
-        first_value("max_price", "maximum_price", "max")
+        _first(fields, "max_price", "maximum_price", "max")
     )
     modal_price = _number(
-        first_value(
-            "modal_price",
-            "model_price",
-            "modal",
-            "price",
-        )
+        _first(fields, "modal_price", "model_price", "modal", "price")
     )
 
-    result.update({
+    normalized = dict(record)
+    normalized.update({
         "commodity": _clean(commodity),
         "state": _clean(state),
         "district": _clean(district),
@@ -146,8 +123,12 @@ def _normalize_record(record):
         "source": "Data.gov.in AGMARKNET",
     })
 
-    return result
+    return normalized
 
+
+# --------------------------------------------------
+# Live API request
+# --------------------------------------------------
 
 def _request_data(
     commodity=None,
@@ -157,17 +138,10 @@ def _request_data(
     limit=100,
     offset=0,
 ):
-    """
-    Fetch genuine records from Data.gov.in.
+    """Fetch real API records. Return [] on failure; never fake data."""
 
-    Returns:
-        list[dict]: API records, or [] if the request fails.
-    """
     if not DATA_GOV_API_KEY:
-        logger.error(
-            "Data.gov.in API key is not configured. "
-            "Set DATA_GOV_API_KEY in the environment."
-        )
+        logger.error("DATA_GOV_API_KEY is not configured.")
         return []
 
     if not DATA_GOV_URL.startswith(("https://", "http://")):
@@ -175,11 +149,10 @@ def _request_data(
         return []
 
     try:
-        limit = max(1, min(int(limit), MAX_RECORDS))
+        limit = max(1, min(int(limit), 1000))
         offset = max(0, int(offset))
     except (TypeError, ValueError):
-        limit = 100
-        offset = 0
+        limit, offset = 100, 0
 
     params = {
         "api-key": DATA_GOV_API_KEY,
@@ -188,7 +161,6 @@ def _request_data(
         "offset": offset,
     }
 
-    # Data.gov.in API filtering syntax.
     filters = {
         "commodity": commodity,
         "state": state,
@@ -217,28 +189,20 @@ def _request_data(
         data = response.json()
 
         if not isinstance(data, dict):
-            logger.error(
-                "Data.gov.in returned an unexpected JSON structure."
-            )
+            logger.error("Data.gov.in returned unexpected JSON.")
             return []
 
         records = data.get("records", [])
 
         if not isinstance(records, list):
-            logger.error(
-                "Data.gov.in response does not contain a records list."
-            )
+            logger.error("Data.gov.in response has no valid records list.")
             return []
 
-        logger.info(
-            "Data.gov.in request succeeded: %s record(s) received.",
-            len(records),
-        )
-
+        logger.info("Data.gov.in returned %d records.", len(records))
         return [
-            _normalize_record(record)
-            for record in records
-            if isinstance(record, dict)
+            _normalize_record(item)
+            for item in records
+            if isinstance(item, dict)
         ]
 
     except requests.exceptions.Timeout as exc:
@@ -250,17 +214,16 @@ def _request_data(
 
     except requests.exceptions.HTTPError as exc:
         status = response.status_code if response is not None else None
-
-        # Do not log response/request URLs because they can contain the API key.
         logger.error(
-            "Data.gov.in HTTP error %s: %s",
+            "Data.gov.in HTTP error %s (%s).",
             status,
             type(exc).__name__,
         )
 
         if response is not None:
+            # Response body only; do not log the request URL/API key.
             logger.error(
-                "Data.gov.in response body: %s",
+                "Data.gov.in response: %s",
                 response.text[:500],
             )
 
@@ -286,9 +249,10 @@ def _request_data(
             message[:1000],
         )
 
-    except ValueError as exc:
+    except (ValueError, TypeError) as exc:
         logger.error(
-            "Data.gov.in returned invalid JSON: %s",
+            "Invalid Data.gov.in response (%s): %s",
+            type(exc).__name__,
             str(exc)[:500],
         )
 
@@ -298,21 +262,21 @@ def _request_data(
     return []
 
 
-# ---------------------------------------------------------
-# Market price functions
-# ---------------------------------------------------------
+# --------------------------------------------------
+# Filtering and public functions
+# --------------------------------------------------
 
 def filter_market_prices(
     records,
     commodity=None,
+    crop=None,
     state=None,
     district=None,
     market=None,
 ):
-    """Filter records locally using case-insensitive comparisons."""
-    if not records:
-        return []
+    """Apply case-insensitive filters to returned records."""
 
+    commodity = commodity or crop
     filters = {
         "commodity": commodity,
         "state": state,
@@ -320,27 +284,27 @@ def filter_market_prices(
         "market": market,
     }
 
-    filtered = []
+    result = []
 
-    for record in records:
-        normalized = _normalize_record(record)
+    for record in records or []:
+        item = _normalize_record(record)
         matches = True
 
         for field, expected in filters.items():
             if not expected:
                 continue
 
-            actual_value = _clean(normalized.get(field)).casefold()
-            expected_value = _clean(expected).casefold()
+            actual = _clean(item.get(field)).casefold()
+            expected = _clean(expected).casefold()
 
-            if actual_value != expected_value:
+            if actual != expected:
                 matches = False
                 break
 
         if matches:
-            filtered.append(normalized)
+            result.append(item)
 
-    return filtered
+    return result
 
 
 def get_crop_prices(
@@ -352,12 +316,8 @@ def get_crop_prices(
     offset=0,
     **kwargs,
 ):
-    """
-    Get live crop prices.
+    """Return live prices for a crop and/or location."""
 
-    `crop` is supported for existing application code.
-    `commodity` is also accepted as an alternative keyword.
-    """
     commodity = crop or kwargs.get("commodity")
 
     records = _request_data(
@@ -369,7 +329,6 @@ def get_crop_prices(
         offset=offset,
     )
 
-    # Do not return records that fail the requested local filters.
     return filter_market_prices(
         records,
         commodity=commodity,
@@ -379,13 +338,9 @@ def get_crop_prices(
     )
 
 
-def get_market_price(
-    crop,
-    state=None,
-    district=None,
-    market=None,
-):
-    """Return the first matching genuine market-price record."""
+def get_market_price(crop, state=None, district=None, market=None):
+    """Return one matching record, or None if unavailable."""
+
     records = get_crop_prices(
         crop=crop,
         state=state,
@@ -398,85 +353,68 @@ def get_market_price(
 
 
 def calculate_market_summary(records):
-    """Calculate a summary from real records with available prices."""
+    """Summarize available real prices."""
+
     records = records or []
 
-    modal_prices = [
-        record.get("modal_price")
-        for record in records
-        if record.get("modal_price") is not None
+    modal = [
+        item["modal_price"]
+        for item in records
+        if item.get("modal_price") is not None
     ]
-
-    min_prices = [
-        record.get("min_price")
-        for record in records
-        if record.get("min_price") is not None
+    minimum = [
+        item["min_price"]
+        for item in records
+        if item.get("min_price") is not None
     ]
-
-    max_prices = [
-        record.get("max_price")
-        for record in records
-        if record.get("max_price") is not None
+    maximum = [
+        item["max_price"]
+        for item in records
+        if item.get("max_price") is not None
     ]
 
     return {
         "total_records": len(records),
-        "records_with_modal_price": len(modal_prices),
+        "records_with_modal_price": len(modal),
         "average_modal_price": (
-            round(sum(modal_prices) / len(modal_prices), 2)
-            if modal_prices else None
+            round(sum(modal) / len(modal), 2) if modal else None
         ),
-        "lowest_min_price": min(min_prices) if min_prices else None,
-        "highest_max_price": max(max_prices) if max_prices else None,
+        "lowest_min_price": min(minimum) if minimum else None,
+        "highest_max_price": max(maximum) if maximum else None,
         "source": "Data.gov.in AGMARKNET",
         "updated_at": datetime.now().astimezone().isoformat(),
     }
 
 
 def get_available_crops(state=None, district=None, limit=1000):
-    """Return unique crop names present in live API records."""
     records = _request_data(
         state=state,
         district=district,
         limit=limit,
     )
-
-    crops = {
-        record["commodity"]
-        for record in records
-        if record.get("commodity")
-    }
-
-    return sorted(crops, key=str.casefold)
+    return sorted({
+        item["commodity"]
+        for item in records
+        if item.get("commodity")
+    }, key=str.casefold)
 
 
 def get_available_markets(state=None, district=None, limit=1000):
-    """Return unique market names present in live API records."""
     records = _request_data(
         state=state,
         district=district,
         limit=limit,
     )
+    return sorted({
+        item["market"]
+        for item in records
+        if item.get("market")
+    }, key=str.casefold)
 
-    markets = {
-        record["market"]
-        for record in records
-        if record.get("market")
-    }
-
-    return sorted(markets, key=str.casefold)
-
-
-# ---------------------------------------------------------
-# Health and configuration helpers
-# ---------------------------------------------------------
 
 def market_api_health():
-    """
-    Check configuration and attempt a small real API request.
-    A successful HTTP response with zero records still means
-    the API is reachable.
-    """
+    """Attempt a real request and report its result."""
+
     result = {
         "configured": bool(DATA_GOV_API_KEY and DATA_GOV_URL),
         "api_key_configured": bool(DATA_GOV_API_KEY),
@@ -493,14 +431,18 @@ def market_api_health():
 
     records = _request_data(limit=1)
     result["records_received"] = len(records)
-    result["reachable"] = True
-    result["message"] = "Request completed; inspect records for data."
-
+    result["reachable"] = len(records) > 0
+    result["message"] = (
+        "Live records received."
+        if records
+        else "No records received; inspect server logs."
+    )
     return result
 
 
 def get_market_source_info():
-    """Return safe configuration details without exposing the API key."""
+    """Return safe configuration information; never expose the API key."""
+
     return {
         "source": "Data.gov.in AGMARKNET",
         "resource_url": DATA_GOV_URL,
@@ -511,20 +453,17 @@ def get_market_source_info():
 
 
 def initialize_market_service(app=None):
-    """
-    Initialize market service logging.
-    Safe to call from a Flask application factory.
-    """
-    if app is not None:
-        app.logger.info(
-            "KisanVision360+ market service initialized. "
-            "Data.gov.in API key configured: %s",
-            bool(DATA_GOV_API_KEY),
-        )
+    """Initialize service logging; compatible with Flask startup."""
 
     logger.info(
-        "Market service initialized. API key configured: %s",
+        "Mandi service initialized. API key configured: %s",
         bool(DATA_GOV_API_KEY),
     )
+
+    if app is not None:
+        app.logger.info(
+            "Mandi service initialized. API key configured: %s",
+            bool(DATA_GOV_API_KEY),
+        )
 
     return True
