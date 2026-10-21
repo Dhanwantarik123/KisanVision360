@@ -321,10 +321,28 @@ def _request_data(
                 response.text[:500],
             )
 
+    
+except requests.exceptions.ConnectionError as exc:
+    # Avoid exposing the API key in server logs.
+    message = str(exc)
+    if DATA_GOV_API_KEY:
+        message = message.replace(DATA_GOV_API_KEY, "[REDACTED]")
+
+    logger.error(
+        "Data.gov.in connection failure (%s): %s",
+        type(exc).__name__,
+        message[:1000],
+    )
+
     except requests.exceptions.RequestException as exc:
+        message = str(exc)
+        if DATA_GOV_API_KEY:
+            message = message.replace(DATA_GOV_API_KEY, "[REDACTED]")
+
         logger.error(
-            "Data.gov.in network request failed: %s",
+            "Data.gov.in request failure (%s): %s",
             type(exc).__name__,
+            message[:1000],
         )
 
     except Exception:
